@@ -1,0 +1,6 @@
+---
+en:
+  decidim:
+    components:
+      time_tracker:
+        name: TimeTracker
