@@ -5,7 +5,7 @@ class CreateDecidimTimeTrackerTimeEntries < ActiveRecord::Migration[5.2]
     create_table :decidim_time_tracker_time_entries do |t|
       t.references :assignee, foreign_key: { to_table: :decidim_time_tracker_assignees }
       t.references :activity, foreign_key: { to_table: :decidim_time_tracker_activities }
-      t.references :milestone, foreign_key: { to_table: :decidim_time_tracker_milestones } 
+      t.references :milestone, foreign_key: { to_table: :decidim_time_tracker_milestones }
       t.datetime :time_start
       t.datetime :time_end
       t.datetime :validated_at

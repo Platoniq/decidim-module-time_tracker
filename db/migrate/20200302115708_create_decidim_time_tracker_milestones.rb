@@ -7,7 +7,6 @@ class CreateDecidimTimeTrackerMilestones < ActiveRecord::Migration[5.2]
       t.references :decidim_user, null: false, index: true
       t.jsonb :title
       t.jsonb :description
-      # t.string :attachment
     end
   end
 end

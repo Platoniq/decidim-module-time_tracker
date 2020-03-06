@@ -7,16 +7,16 @@ module Decidim
       self.table_name = :decidim_time_tracker_time_entries
 
       belongs_to :assignee,
-                 foreign_key: 'decidim_time_trackers_assignee_id',
-                 class_name: 'Decidim::TimeTracker::Assignee'
+                 class_name: "Decidim::TimeTracker::Assignee"
 
       belongs_to :milestone,
-                 foreign_key: 'decidim_time_trackers_milestone_id',
-                 class_name: 'Decidim::TimeTracker::Milestone'
+                 class_name: "Decidim::TimeTracker::Milestone"
 
       belongs_to :activity,
-                 foreign_key: 'decidim_time_trackers_activity_id',
-                 class_name: 'Decidim::TimeTracker::Activity'
+                 class_name: "Decidim::TimeTracker::Activity"
+
+      belongs_to :validated_by_user,
+                 class_name: "Decidim::User"
     end
   end
 end

@@ -8,16 +8,13 @@ module Decidim
       self.table_name = :decidim_time_tracker_activities
 
       belongs_to :task,
-                 foreign_key: 'decidim_time_trackers_task_id',
-                 class_name: 'Decidim::TimeTracker::Task'
+                 class_name: "Decidim::TimeTracker::Task"
 
       has_many :assignees,
-               foreign_key: 'decidim_time_trackers_activity_id',
-               class_name: 'Decidim::TimeTracker::Assignees'
+               class_name: "Decidim::TimeTracker::Assignee"
 
       has_many :time_entries,
-               foreign_key: 'decidim_time_trackers_activity_id',
-               class_name: 'Decidim::TimeTracker::TimeEntry'
+               class_name: "Decidim::TimeTracker::TimeEntry"
     end
   end
 end
