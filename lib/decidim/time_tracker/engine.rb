@@ -16,7 +16,7 @@ module Decidim
       end
 
       initializer "decidim_time_tracker.assets" do |app|
-        app.config.assets.precompile += %w[decidim_time_tracker_manifest.js decidim_time_tracker_manifest.css]
+        app.config.assets.precompile += %w(decidim_time_tracker_manifest.js decidim_time_tracker_manifest.css)
       end
     end
   end
