@@ -3,4 +3,15 @@ en:
   decidim:
     components:
       time_tracker:
-        name: TimeTracker
+        name: Time Tracker
+        settings:
+          step:
+            name: Name
+            comments_blocked: Comments blocked
+          global:
+            vote_limit: Vote limit
+    time_tracker:
+      admin:
+        tasks:
+          index:
+            title: Tasks

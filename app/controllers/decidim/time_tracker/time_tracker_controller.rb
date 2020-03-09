@@ -2,6 +2,7 @@
 
 module Decidim
   module TimeTracker
-    class TimeTrackerController < ApplicationController 
+    class TimeTrackerController < ApplicationController
+    end
   end
 end

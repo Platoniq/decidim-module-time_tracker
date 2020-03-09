@@ -12,7 +12,7 @@ module Decidim
       routes do
         # Add engine routes here
         # resources :time_tracker
-        # root to: "time_tracker#index"
+        root to: "time_tracker#index"
       end
 
       initializer "decidim_time_tracker.assets" do |app|

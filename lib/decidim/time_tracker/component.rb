@@ -8,9 +8,10 @@ Decidim.register_component(:time_tracker) do |component|
   component.icon = "decidim/time_tracker/icon.svg"
   component.permissions_class_name = "Decidim::TimeTracker::Permissions"
 
-  # component.on(:before_destroy) do |instance|
-  #   # Code executed before removing the component
-  # end
+  component.on(:before_destroy) do |instance|
+    # Code executed before removing the component
+    raise StandardEerror, "Can't remove this component" if Decidim::TimeTracker::TimeTracker.where(component: instance).any?
+  end
 
   # These actions permissions can be configured in the admin panel
   # component.actions = %w()
@@ -18,11 +19,12 @@ Decidim.register_component(:time_tracker) do |component|
   component.settings(:global) do |settings|
     # Add your global settings
     # Available types: :integer, :boolean
-    # settings.attribute :vote_limit, type: :integer, default: 0
+    settings.attribute :vote_limit, type: :integer, default: 0
   end
 
   component.settings(:step) do |settings|
     # Add your settings per step
+    settings.attribute :comments_blocked, type: :boolean, default: false
   end
 
   component.register_resource(:time_tracker) do |resource|

@@ -11,12 +11,11 @@ module Decidim
 
       routes do
         # Add admin engine routes here
-        # resources :time_tracker do
-        #   collection do
-        #     resources :exports, only: [:create]
-        #   end
-        # end
-        # root to: "time_tracker#index"
+        resources :tasks do
+          resources :activities
+          resources :assignees
+        end
+        root to: "tasks#index"
       end
 
       def load_seed
