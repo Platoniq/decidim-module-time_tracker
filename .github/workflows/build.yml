@@ -65,4 +65,4 @@ jobs:
           export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
           ./cc-test-reporter after-build -r "$CC_TEST_REPORTER_ID"
         env:
-          CC_TEST_REPORTER_ID: 8505f94e84c79558f9c34f04aebb7f858f9bb07c96dce647664363d5ad88e2e4
+          CC_TEST_REPORTER_ID: f4e29abf77907a77f577de201af7791c8f202265a63c09535551146810780eb3
