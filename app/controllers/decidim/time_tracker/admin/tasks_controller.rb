@@ -57,6 +57,17 @@ module Decidim
           end
         end
 
+        def destroy
+          enforce_permission_to :destroy, :task, task: current_task
+
+          DestroyTask.call(current_task, current_user) do
+            on(:ok) do
+              flash[:notice] = I18n.t("taks.destroy.success", scope: "decidim.time_tracker.admin")
+              redirect_to tasks_path
+            end
+          end
+        end
+
         private
 
         def time_tracker

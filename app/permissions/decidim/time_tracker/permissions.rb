@@ -6,7 +6,7 @@ module Decidim
       def permissions
         return permission_action if permission_action.scope != :admin
 
-        permission_action.allow! if permission_action.action == :update
+        permission_action.allow! if permission_action.action.in? [:update, :create, :destroy]
 
         permission_action
       end
