@@ -13,18 +13,25 @@ Decidim.register_component(:time_tracker) do |component|
     raise StandardEerror, "Can't remove this component" if Decidim::TimeTracker::TimeTracker.where(component: instance).any?
   end
 
+  component.on(:create) do |instance|
+    Decidim::TimeTracker::Admin::CreateTimeTracker.call(instance) do
+      on(:invalid) { raise "Can't create time tracker" }
+    end
+  end
+
   # These actions permissions can be configured in the admin panel
   # component.actions = %w()
 
   component.settings(:global) do |settings|
     # Add your global settings
     # Available types: :integer, :boolean
-    settings.attribute :vote_limit, type: :integer, default: 0
+    settings.attribute :announcement, type: :text, translated: true, editor: true
+    settings.attribute :max_number_of_assignees, type: :integer
   end
 
   component.settings(:step) do |settings|
     # Add your settings per step
-    settings.attribute :comments_blocked, type: :boolean, default: false
+    settings.attribute :announcement, type: :text, translated: true, editor: true
   end
 
   component.register_resource(:time_tracker) do |resource|

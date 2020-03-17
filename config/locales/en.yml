@@ -6,12 +6,32 @@ en:
         name: Time Tracker
         settings:
           step:
-            name: Name
-            comments_blocked: Comments blocked
+            announcement: Announcement
           global:
-            vote_limit: Vote limit
+            announcement: Announcement
+            max_number_of_assignees: Maximum number of assignees
     time_tracker:
       admin:
         tasks:
           index:
             title: Tasks
+          new:
+            title: New
+            create: Create
+          edit:
+            title: Edit
+            update: Update
+        models:
+          task:
+            name: Task
+      models:
+        task:
+          name: Task
+          fields:
+            id: Id
+            name: Name
+      actions:
+        title: Actions
+        new: New
+        edit: Edit
+        destroy: Destroy
