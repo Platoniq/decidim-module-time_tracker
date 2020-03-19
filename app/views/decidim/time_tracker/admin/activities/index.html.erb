@@ -1,0 +1,66 @@
+<div class="card">
+  <div class="card-divider">
+    <h2 class="card-title">
+      <%= t(".title") %>
+      <div class="button--title">
+         <%= link_to t("actions.new", scope: "decidim.time_tracker", name: t("models.activity.name", scope: "decidim.time_tracker.admin")), new_task_activity_path, class: "button tiny button--simple" %> 
+      </div>
+    </h2>
+  </div>
+
+    <div class="card-section">
+    <div class="table-scroll">
+      <table class="table-list">
+        <thead>
+          <tr>
+            <th><%= t("models.activity.fields.id", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.description", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.start_date", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.end_date", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.max_minutes_per_day", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.requests_start_at", scope: "decidim.time_tracker") %></th>
+            <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% activities.each do |activity| %>
+            <tr data-id="<%= activity.id %>">
+              <td>
+                <%= activity.id %><br>
+              </td>
+              <td>
+                <%= translated_attribute activity.description %><br>
+              </td>
+              <td>
+                <%= activity.start_date %><br>
+              </td>
+              <td>
+                <%= activity.end_date %><br>
+              </td>
+              <td>
+                <%= activity.max_minutes_per_day %><br>
+              </td>
+              <td>
+                <%= activity.requests_start_at %><br>
+              </td>
+              <td class="table-list__actions"> 
+                <% if allowed_to? :update, :activity, activity: activity %>
+                  <%= icon_link_to "pencil", edit_task_activity_path(@current_task, activity), t("actions.edit", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
+                <% end %>
+
+                <% if allowed_to? :destroy, :activity, activity: activity %>
+                  <%= icon_link_to "circle-x", task_activity_path(@current_task, activity), t("actions.destroy", scope: "decidim.time_tracker"), method: :delete, class: "action-icon--remove", data: { confirm: t("actions.confirm_destroy", scope: "decidim.time_tracker") } %>
+                <% end %> 
+              </td>  
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%
+=begin%>
+ <%= paginate activities, theme: "decidim" %> 
+<%
+=end%>
+    </div>
+  </div>
+</div>

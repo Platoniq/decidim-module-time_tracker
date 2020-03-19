@@ -28,6 +28,11 @@
                 <%= translated_attribute(task.name) %><br>
               </td>
               <td class="table-list__actions">
+              
+                <% if allowed_to? :update, :task, task: task %>
+                    <%= icon_link_to "folder", task_activities_path(task), t("actions.activities", scope: "decidim.time_tracker"), class: "action-icon--attachment_collections" %>
+                <% end %>
+
                 <% if allowed_to? :update, :task, task: task %>
                   <%= icon_link_to "pencil", edit_task_path(task), t("actions.edit", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
                 <% end %>
