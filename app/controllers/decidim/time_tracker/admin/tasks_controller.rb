@@ -28,12 +28,12 @@ module Decidim
 
           CreateTask.call(@form) do
             on(:ok) do
-              flash[:notice] = I18n.t("task.create.success", scope: "decidim.time_tracker.admin")
+              flash[:notice] = I18n.t("tasks.create.success", scope: "decidim.time_tracker.admin")
               redirect_to tasks_path
             end
 
             on(:invalid) do
-              flash.now[:alert] = I18n.t("task.create.error", scope: "decidim.time_tracker.admin")
+              flash.now[:alert] = I18n.t("tasks.create.error", scope: "decidim.time_tracker.admin")
               render :new
             end
           end
@@ -51,7 +51,7 @@ module Decidim
             end
 
             on(:invalid) do
-              flash.now[:alert] = I18n.t("task.update.error", scope: "decidim.time_tracker.admin")
+              flash.now[:alert] = I18n.t("tasks.update.error", scope: "decidim.time_tracker.admin")
               render :edit
             end
           end
@@ -62,7 +62,7 @@ module Decidim
 
           DestroyTask.call(current_task, current_user) do
             on(:ok) do
-              flash[:notice] = I18n.t("taks.destroy.success", scope: "decidim.time_tracker.admin")
+              flash[:notice] = I18n.t("tasks.destroy.success", scope: "decidim.time_tracker.admin")
               redirect_to tasks_path
             end
           end
