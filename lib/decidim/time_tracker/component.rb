@@ -27,6 +27,7 @@ Decidim.register_component(:time_tracker) do |component|
     # Available types: :integer, :boolean
     settings.attribute :announcement, type: :text, translated: true, editor: true
     settings.attribute :max_number_of_assignees, type: :integer
+    settings.attribute :tos, type: :text, translated: true, editor: true
   end
 
   component.settings(:step) do |settings|
