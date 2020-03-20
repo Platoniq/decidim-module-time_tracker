@@ -26,7 +26,7 @@ module Decidim
 
           @form = form(TaskForm).from_params(params)
 
-          CreateTask.call(@form) do
+          CreateTask.call(@form, current_task) do
             on(:ok) do
               flash[:notice] = I18n.t("tasks.create.success", scope: "decidim.time_tracker.admin")
               redirect_to tasks_path
@@ -46,7 +46,7 @@ module Decidim
 
           UpdateTask.call(current_task, form, current_user) do
             on(:ok) do
-              flash[:notice] = I18n.t("task.update.success", scope: "decidim.time_tracker.admin")
+              flash[:notice] = I18n.t("tasks.update.success", scope: "decidim.time_tracker.admin")
               redirect_to tasks_path
             end
 

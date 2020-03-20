@@ -41,6 +41,8 @@ en:
           update:
             success: The activity has been updated.
             error: The activity has not been updated.
+          destroy:
+            success: The activity has been deleted.
         models:
           task:
             name: Task
