@@ -32,7 +32,7 @@ module Decidim
           Decidim.traceability.perform_action!(
             :delete,
             @task,
-            current_user
+            @user
           ) do
             @task.destroy!
           end

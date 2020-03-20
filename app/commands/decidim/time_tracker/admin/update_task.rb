@@ -36,7 +36,7 @@ module Decidim
             @task,
             @user,
             name: form.name,
-            time_tracker: time_tracker
+            time_tracker: @task.time_tracker
           )
         end
       end

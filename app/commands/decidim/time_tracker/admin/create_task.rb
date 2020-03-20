@@ -5,8 +5,9 @@ module Decidim
     module Admin
       # A command with all the business logic when creating a task
       class CreateTask < Rectify::Command
-        def initialize(form)
+        def initialize(form, time_tracker)
           @form = form
+          @time_tracker = time_tracker
         end
 
         # Creates the meeting if valid.
@@ -24,7 +25,7 @@ module Decidim
             Decidim::TimeTracker::Task,
             @form.current_user,
             name: @form.name,
-            time_tracker: time_tracker
+            time_tracker: @time_tracker
           )
         end
       end

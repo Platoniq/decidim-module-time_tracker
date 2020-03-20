@@ -34,7 +34,7 @@ module Decidim
         def update_activity!
           Decidim.traceability.update!(
             @activity,
-            @form.current_user,
+            @user,
             description: @form.description,
             active: @form.active,
             start_date: @form.start_date,
