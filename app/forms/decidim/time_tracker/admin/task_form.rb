@@ -10,7 +10,6 @@ module Decidim
         translatable_attribute :name, String
 
         validates :name, translatable_presence: true
-
       end
     end
   end
