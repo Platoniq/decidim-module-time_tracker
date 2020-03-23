@@ -47,7 +47,7 @@ module Decidim
           UpdateTask.call(current_task, form, current_user) do
             on(:ok) do
               flash[:notice] = I18n.t("tasks.update.success", scope: "decidim.time_tracker.admin")
-              redirect_to action: :index
+              redirect_to EngineRouter.admin_proxy(current_component).task_path id: time_tracker.id
             end
 
             on(:invalid) do
@@ -63,7 +63,7 @@ module Decidim
           DestroyTask.call(current_task, current_user) do
             on(:ok) do
               flash[:notice] = I18n.t("tasks.destroy.success", scope: "decidim.time_tracker.admin")
-              redirect_to tasks_path
+              redirect_to EngineRouter.admin_proxy(current_component).task_path id: time_tracker.id
             end
           end
         end

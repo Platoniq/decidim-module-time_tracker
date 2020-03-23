@@ -62,8 +62,6 @@ module Decidim
         describe "POST #create" do
           let(:params) do
             {
-              # component_id: component.id,
-              # participatory_process_slug: component.participatory_space.id,
               task: form
             }
           end
@@ -78,6 +76,62 @@ module Decidim
             it "creates the new task" do
               post :create, params: params
               expect(Decidim::TimeTracker::Task.first.name).to eq(form[:name])
+            end
+          end
+        end
+
+        describe "PATCH #update" do
+          let!(:task) { create :task, time_tracker: time_tracker }
+          let(:form) do
+            {
+              name: Decidim::Faker::Localized.word
+            }
+          end
+
+          let(:params) do
+            {
+              component_id: time_tracker.component.id,
+              participatory_process_slug:  time_tracker.component.participatory_space.slug,
+              id: task.id,
+              task: form
+            }
+          end
+
+          context "when there is permission" do
+            it "returns ok" do
+              patch :update, params: params
+              expect(flash[:notice]).not_to be_empty
+              expect(response).to have_http_status(:found)
+            end
+
+            it "updates the new task" do
+              patch :update, params: params
+              expect(Decidim::TimeTracker::Task.first.name).to eq(form[:name])
+            end
+          end
+        end
+
+        describe "DELETE #destroy" do
+          let!(:task) { create :task, time_tracker: time_tracker }
+
+          let(:params) do
+            {
+              component_id: time_tracker.component.id,
+              participatory_process_slug: time_tracker.component.participatory_space.slug,
+              id: task.id
+            }
+          end
+
+          context "when there is permission" do
+            it "returns ok" do
+              delete :destroy, params: params
+              expect(flash[:notice]).not_to be_empty
+              expect(response).to have_http_status(:found)
+            end
+
+            it "updates the new task" do
+              delete :destroy, params: params
+              expect{ task.reload }.to raise_error(ActiveRecord::RecordNotFound)
             end
           end
         end
