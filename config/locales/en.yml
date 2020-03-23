@@ -10,7 +10,7 @@ en:
           global:
             announcement: Announcement
             max_number_of_assignees: Maximum number of assignees
-            tos: Terms Of Service
+            tos: Terms and conditions
     time_tracker:
       admin:
         tasks:

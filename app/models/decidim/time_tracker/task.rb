@@ -12,7 +12,6 @@ module Decidim
       has_many :activities,
                class_name: "Decidim::TimeTracker::Activity",
                dependent: :destroy
-
     end
   end
 end

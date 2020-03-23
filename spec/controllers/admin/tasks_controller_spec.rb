@@ -22,6 +22,7 @@ module Decidim
 
         before do
           request.env["decidim.current_organization"] = organization
+          request.env["decidim.current_participatory_process"] = participatory_space
           request.env["decidim.current_component"] = component
           sign_in user
         end
@@ -61,25 +62,21 @@ module Decidim
         describe "POST #create" do
           let(:params) do
             {
-              time_tracker: {
-                decidim_assemblies_component_id: time_tracker.component.id
-              },
-              component_id: component.id,
-              participatory_process_slug: component.participatory_space.slug,
-              id: time_tracker.id,
+              # component_id: component.id,
+              # participatory_process_slug: component.participatory_space.id,
               task: form
             }
           end
 
           context "when there is permission" do
             it "returns ok" do
-              post :create, params: form
+              post :create, params: params
               expect(flash[:notice]).not_to be_empty
               expect(response).to have_http_status(:found)
             end
 
             it "creates the new task" do
-              post :create, params: form
+              post :create, params: params
               expect(Decidim::TimeTracker::Task.first.name).to eq(form[:name])
             end
           end
