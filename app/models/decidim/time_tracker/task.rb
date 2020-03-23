@@ -10,7 +10,9 @@ module Decidim
                  class_name: "Decidim::TimeTracker::TimeTracker"
 
       has_many :activities,
-               class_name: "Decidim::TimeTracker::Activity"
+               class_name: "Decidim::TimeTracker::Activity",
+               dependent: :destroy
+
     end
   end
 end
