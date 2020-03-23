@@ -4,14 +4,14 @@ module Decidim
   module TimeTracker
     module Admin
       class TasksController < Admin::ApplicationController
-        helper_method :tasks
+        helper_method :tasks, :time_tracker, :current_task
 
         def index
           @tasks
         end
 
         def new
-          # enforce_permission_to :create, :task
+          enforce_permission_to :create, :task
 
           @form = form(TaskForm).instance
         end
@@ -22,14 +22,14 @@ module Decidim
         end
 
         def create
-          # enforce_permission_to :create, :task
+          enforce_permission_to :create, :task
 
           @form = form(TaskForm).from_params(params)
 
-          CreateTask.call(@form, current_task) do
+          CreateTask.call(@form, time_tracker) do
             on(:ok) do
               flash[:notice] = I18n.t("tasks.create.success", scope: "decidim.time_tracker.admin")
-              redirect_to tasks_path
+              redirect_to action: :index, id: time_tracker.id
             end
 
             on(:invalid) do
@@ -47,7 +47,7 @@ module Decidim
           UpdateTask.call(current_task, form, current_user) do
             on(:ok) do
               flash[:notice] = I18n.t("tasks.update.success", scope: "decidim.time_tracker.admin")
-              redirect_to tasks_path
+              redirect_to action: :index
             end
 
             on(:invalid) do
