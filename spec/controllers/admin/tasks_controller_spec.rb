@@ -91,7 +91,7 @@ module Decidim
           let(:params) do
             {
               component_id: time_tracker.component.id,
-              participatory_process_slug:  time_tracker.component.participatory_space.slug,
+              participatory_process_slug: time_tracker.component.participatory_space.slug,
               id: task.id,
               task: form
             }
@@ -131,7 +131,7 @@ module Decidim
 
             it "updates the new task" do
               delete :destroy, params: params
-              expect{ task.reload }.to raise_error(ActiveRecord::RecordNotFound)
+              expect { task.reload }.to raise_error(ActiveRecord::RecordNotFound)
             end
           end
         end

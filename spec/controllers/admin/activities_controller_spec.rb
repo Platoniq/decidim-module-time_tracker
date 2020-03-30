@@ -23,7 +23,7 @@ module Decidim
             end_date: 1.month.from_now,
             max_minutes_per_day: 60,
             requests_start_at: Time.zone.today,
-            task: task,
+            task: task
           }
         end
 
