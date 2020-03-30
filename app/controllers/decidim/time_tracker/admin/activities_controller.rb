@@ -4,7 +4,7 @@ module Decidim
   module TimeTracker
     module Admin
       class ActivitiesController < Admin::ApplicationController
-        helper_method :activities
+        helper_method :activities, :current_task, :current_activity
 
         def index
           activities
@@ -13,18 +13,18 @@ module Decidim
         def new
           enforce_permission_to :create, :activities
 
-          @form = form(TaskActivityForm).instance
+          @form = form(ActivityForm).instance
         end
 
         def edit
           enforce_permission_to :update, :activity, activity: current_activity
-          @form = form(TaskActivityForm).from_model(current_activity, task: current_task, activity: current_activity)
+          @form = form(ActivityForm).from_model(current_activity, task: current_task, activity: current_activity)
         end
 
         def create
           enforce_permission_to :create, :activities
 
-          @form = form(TaskActivityForm).from_params(params)
+          @form = form(ActivityForm).from_params(params)
 
           CreateActivity.call(@form, current_task) do
             on(:ok) do
@@ -41,7 +41,7 @@ module Decidim
 
         def update
           enforce_permission_to :update, :activity, activity: current_activity
-          form = form(TaskActivityForm).from_params(params, task: current_task, activity: current_activity)
+          form = form(ActivityForm).from_params(params, task: current_task, activity: current_activity)
           UpdateActivity.call(current_activity, form, current_user) do
             on(:ok) do
               flash[:notice] = I18n.t("activities.update.success", scope: "decidim.time_tracker.admin")
