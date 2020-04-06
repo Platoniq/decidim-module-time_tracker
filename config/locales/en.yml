@@ -47,11 +47,19 @@ en:
             error: The activity has not been updated.
           destroy:
             success: The activity has been deleted.
+        assignees:
+          index:
+            title: Assignees
+          new:
+            title: New assignee to this activity
+            create: Create
         models:
           task:
             name: Task
           activity:
             name: Activity
+          assignee:
+            name: Assignee
       models:
         task:
           name: Task
@@ -67,6 +75,16 @@ en:
             end_date: End date
             max_minutes_per_day: Maximum minutes per day
             requests_start_at: Requests start at
+        assignee:
+          name: Assignee
+          fields:
+            id: Id
+            name: Name
+            email: Email
+            status: Status
+            invited_at: Invited at
+            invited_by_user: Invited by user
+            tos_accepted_at: Terms Of Service accepted at
       actions:
         title: Actions
         new: New
@@ -74,3 +92,4 @@ en:
         destroy: Destroy
         confirm_destroy: Are you sure you want to delete this?
         activities: Activities
+        assignees: Assignees  

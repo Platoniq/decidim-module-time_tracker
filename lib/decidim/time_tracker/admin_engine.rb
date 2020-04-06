@@ -12,8 +12,9 @@ module Decidim
       routes do
         # Add admin engine routes here
         resources :tasks do
-          resources :activities
-          resources :assignees
+          resources :activities do
+            resources :assignees
+          end
         end
         root to: "tasks#index"
       end

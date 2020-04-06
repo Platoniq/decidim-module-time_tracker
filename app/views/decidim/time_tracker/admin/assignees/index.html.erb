@@ -1,0 +1,66 @@
+<div class="card">
+  <div class="card-divider">
+    <h2 class="card-title">
+      <%= t(".title") %>
+      <div class="button--title">
+         <%= link_to t("actions.new", scope: "decidim.time_tracker", name: t("models.assignee.name", scope: "decidim.time_tracker.admin")), new_task_activity_assignee_path, class: "button tiny button--simple" %> 
+      </div>
+    </h2>
+  </div>
+
+    <div class="card-section">
+    <div class="table-scroll">
+      <table class="table-list">
+        <thead>
+          <tr>
+            <th><%= t("models.assignee.fields.id", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignee.fields.name", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignee.fields.email", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignee.fields.status", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignee.fields.invited_at", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignee.fields.invited_by_user", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignee.fields.tos_accepted_at", scope: "decidim.time_tracker") %></th>
+            <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% assignees.each do |assignee| %>
+            <tr data-id="<%= assignee.id %>">
+              <td>
+                <%= assignee.id %><br>
+              </td>
+              <td>
+                <%= assignee.user.name %><br>
+              </td>
+              <td>
+                <%= assignee.user.email %><br>
+              </td>
+              <td>
+                <%= assignee.status %><br>
+              </td>
+              <td>
+                <%= assignee.invited_at %><br>
+              </td>
+              <td>
+                <%= assignee.invited_by_user.name %><br>
+              </td>
+              <td>
+                <%= assignee.tos_accepted_at %><br>
+              </td>
+              <td class="table-list__actions"> 
+                <% if allowed_to? :destroy, :assignee, assignee: assignee %>
+                  <%= icon_link_to "circle-x", task_activity_assignee_path(current_activity, current_task, assignee), t("actions.destroy", scope: "decidim.time_tracker"), method: :delete, class: "action-icon--remove", data: { confirm: t("actions.confirm_destroy", scope: "decidim.time_tracker") } %>
+                <% end %> 
+              </td>  
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%
+=begin%>
+ <%= paginate activities, theme: "decidim" %> 
+<%
+=end%>
+    </div>
+  </div>
+</div>

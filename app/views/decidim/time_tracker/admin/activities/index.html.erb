@@ -48,6 +48,10 @@
                   <%= icon_link_to "pencil", edit_task_activity_path(@current_task, activity), t("actions.edit", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
                 <% end %>
 
+                <% if allowed_to? :update, :activity, activity: activity %>
+                  <%= icon_link_to "people", task_activity_assignees_path(@current_task, activity), t("actions.assignees", scope: "decidim.time_tracker"), class: "action-icon-registrations" %>
+                <% end %>
+
                 <% if allowed_to? :destroy, :activity, activity: activity %>
                   <%= icon_link_to "circle-x", task_activity_path(@current_task, activity), t("actions.destroy", scope: "decidim.time_tracker"), method: :delete, class: "action-icon--remove", data: { confirm: t("actions.confirm_destroy", scope: "decidim.time_tracker") } %>
                 <% end %> 
