@@ -5,91 +5,91 @@ en:
       time_tracker:
         name: Time Tracker
         settings:
-          step:
-            announcement: Announcement
           global:
             announcement: Announcement
             max_number_of_assignees: Maximum number of assignees
             tos: Terms and conditions
+          step:
+            announcement: Announcement
     time_tracker:
+      actions:
+        activities: Activities
+        assignees: Assignees
+        confirm_destroy: Are you sure you want to delete this?
+        destroy: Destroy
+        edit: Edit
+        new: New
+        title: Actions
       admin:
-        tasks:
-          index:
-            title: Tasks
-          new:
-            title: New
-            create: Create
+        activities:
+          create:
+            error: The activity has not been created.
+            success: The activity has been created.
+          destroy:
+            success: The activity has been deleted.
           edit:
             title: Edit
             update: Update
-          destroy:
-            success: The task has been deleted.
-          create:
-            success: The task has been created
-            error: The task has not been created.
-          update:
-            success: The task has been updated.
-            error: The task has not been updated.
-        activities:
           index:
             title: Activities
           new:
-            title: New
             create: Create
-          create:
-            success: The activity has been created.
-            error: The activity has not been created.
-          edit:
-            title: Edit
-            update: Update
+            title: New
           update:
-            success: The activity has been updated.
             error: The activity has not been updated.
-          destroy:
-            success: The activity has been deleted.
+            success: The activity has been updated.
         assignees:
           index:
             title: Assignees
           new:
-            title: New assignee to this activity
             create: Create
+            title: New assignee to this activity
         models:
-          task:
-            name: Task
           activity:
             name: Activity
           assignee:
             name: Assignee
+          task:
+            name: Task
+        tasks:
+          create:
+            error: The task has not been created.
+            success: The task has been created
+          destroy:
+            success: The task has been deleted.
+          edit:
+            title: Edit
+            update: Update
+          index:
+            title: Tasks
+          new:
+            create: Create
+            title: New
+          update:
+            error: The task has not been updated.
+            success: The task has been updated.
       models:
-        task:
-          name: Task
-          fields:
-            id: Id
-            name: Name
         activity:
-          name: Activity
           fields:
-            id: Id
             description: Description
-            start_date: Start date
             end_date: End date
+            id: Id
             max_minutes_per_day: Maximum minutes per day
             requests_start_at: Requests start at
+            start_date: Start date
+          name: Activity
         assignee:
+          fields:
+            email: Email
+            id: Id
+            invited_at: Invited at
+            invited_by_user: Invited by user
+            name: Name
+            status: Status
+            tos_accepted_at: Terms Of Service accepted at
           name: Assignee
+        task:
           fields:
             id: Id
             name: Name
-            email: Email
-            status: Status
-            invited_at: Invited at
-            invited_by_user: Invited by user
-            tos_accepted_at: Terms Of Service accepted at
-      actions:
-        title: Actions
-        new: New
-        edit: Edit
-        destroy: Destroy
-        confirm_destroy: Are you sure you want to delete this?
-        activities: Activities
-        assignees: Assignees  
+          name: Task

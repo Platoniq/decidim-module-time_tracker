@@ -28,7 +28,7 @@
                 <%= translated_attribute(task.name) %><br>
               </td>
               <td class="table-list__actions">
-              
+
                 <% if allowed_to? :update, :task, task: task %>
                     <%= icon_link_to "folder", task_activities_path(task), t("actions.activities", scope: "decidim.time_tracker"), class: "action-icon--attachment_collections" %>
                 <% end %>
@@ -40,16 +40,18 @@
                 <% if allowed_to? :destroy, :task, task: task %>
                   <%= icon_link_to "circle-x", task_path(task), t("actions.destroy", scope: "decidim.time_tracker"), method: :delete, class: "action-icon--remove", data: { confirm: t("actions.confirm_destroy", scope: "decidim.time_tracker") } %>
                 <% end %>
-              </td>  
+              </td>
             </tr>
           <% end %>
         </tbody>
       </table>
       <%
-=begin%>
- <%= paginate tasks, theme: "decidim" %> 
+=begin
+      %>
+ <%= paginate tasks, theme: "decidim" %>
 <%
-=end%>
+=end
+%>
     </div>
   </div>
 </div>

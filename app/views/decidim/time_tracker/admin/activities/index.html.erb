@@ -3,7 +3,7 @@
     <h2 class="card-title">
       <%= t(".title") %>
       <div class="button--title">
-         <%= link_to t("actions.new", scope: "decidim.time_tracker", name: t("models.activity.name", scope: "decidim.time_tracker.admin")), new_task_activity_path, class: "button tiny button--simple" %> 
+         <%= link_to t("actions.new", scope: "decidim.time_tracker", name: t("models.activity.name", scope: "decidim.time_tracker.admin")), new_task_activity_path, class: "button tiny button--simple" %>
       </div>
     </h2>
   </div>
@@ -43,7 +43,7 @@
               <td>
                 <%= activity.requests_start_at %><br>
               </td>
-              <td class="table-list__actions"> 
+              <td class="table-list__actions">
                 <% if allowed_to? :update, :activity, activity: activity %>
                   <%= icon_link_to "pencil", edit_task_activity_path(@current_task, activity), t("actions.edit", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
                 <% end %>
@@ -54,17 +54,19 @@
 
                 <% if allowed_to? :destroy, :activity, activity: activity %>
                   <%= icon_link_to "circle-x", task_activity_path(@current_task, activity), t("actions.destroy", scope: "decidim.time_tracker"), method: :delete, class: "action-icon--remove", data: { confirm: t("actions.confirm_destroy", scope: "decidim.time_tracker") } %>
-                <% end %> 
-              </td>  
+                <% end %>
+              </td>
             </tr>
           <% end %>
         </tbody>
       </table>
       <%
-=begin%>
- <%= paginate activities, theme: "decidim" %> 
+=begin
+      %>
+ <%= paginate activities, theme: "decidim" %>
 <%
-=end%>
+=end
+%>
     </div>
   </div>
 </div>
