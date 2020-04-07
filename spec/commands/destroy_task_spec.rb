@@ -6,8 +6,8 @@ module Decidim::TimeTracker::Admin
   describe DestroyTask do
     let(:subject) { described_class.new(task, user) }
     let(:organization) { create :organization }
-    let(:task) { create :task, time_tracker: time_tracker }
-    let(:time_tracker) { create :time_tracker }
+    let(:task) { create :task, component: component }
+    let(:component) { create :time_tracker_component }
     let(:user) { create(:user, :confirmed, :admin, organization: organization) }
 
     context "when everything is ok" do

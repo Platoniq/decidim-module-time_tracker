@@ -4,7 +4,7 @@ module Decidim
   module TimeTracker
     module Admin
       class TasksController < Admin::ApplicationController
-        helper_method :tasks, :time_tracker, :current_task
+        helper_method :tasks, :current_task
 
         def index
           @tasks
@@ -26,7 +26,7 @@ module Decidim
 
           @form = form(TaskForm).from_params(params)
 
-          CreateTask.call(@form, time_tracker) do
+          CreateTask.call(@form) do
             on(:ok) do
               flash[:notice] = I18n.t("tasks.create.success", scope: "decidim.time_tracker.admin")
               redirect_to EngineRouter.admin_proxy(current_component).tasks_path
@@ -63,19 +63,15 @@ module Decidim
           DestroyTask.call(current_task, current_user) do
             on(:ok) do
               flash[:notice] = I18n.t("tasks.destroy.success", scope: "decidim.time_tracker.admin")
-              redirect_to EngineRouter.admin_proxy(current_component).task_path id: time_tracker.id
+              redirect_to EngineRouter.admin_proxy(current_component).tasks_path
             end
           end
         end
 
         private
 
-        def time_tracker
-          @time_tracker = Decidim::TimeTracker::TimeTracker.find_by(component: current_component)
-        end
-
         def tasks
-          @tasks = Decidim::TimeTracker::Task.where(time_tracker: time_tracker.id)
+          @tasks = Decidim::TimeTracker::Task.where(component: current_component)
         end
 
         def current_task

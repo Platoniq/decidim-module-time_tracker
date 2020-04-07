@@ -10,13 +10,7 @@ Decidim.register_component(:time_tracker) do |component|
 
   component.on(:before_destroy) do |instance|
     # Code executed before removing the component
-    raise StandardEerror, "Can't remove this component" if Decidim::TimeTracker::TimeTracker.where(component: instance).any?
-  end
-
-  component.on(:create) do |instance|
-    Decidim::TimeTracker::Admin::CreateTimeTracker.call(instance) do
-      on(:invalid) { raise "Can't create time tracker" }
-    end
+    raise StandardEerror, "Can't remove this component" if Decidim::TimeTracker::Task.where(component: instance).any?
   end
 
   # These actions permissions can be configured in the admin panel
@@ -37,8 +31,12 @@ Decidim.register_component(:time_tracker) do |component|
 
   component.register_resource(:time_tracker) do |resource|
     # Register a optional resource that can be references from other resources.
-    resource.model_class_name = "Decidim::TimeTracker::TimeTracker"
-    resource.template = "decidim/time_tracker/time_tracker/linked_time_tracker"
+    resource.model_class_name = "Decidim::TimeTracker::Task"
+    # TODO!:
+    # resource.template = "decidim/time_tracker/time_tracker/linked_tasks"
+    # resource.card = "decidim/meetings/meeting"
+    # resource.actions = %w(join)
+    # resource.searchable = true
   end
 
   # component.register_stat :some_stat do |context, start_at, end_at|

@@ -7,14 +7,14 @@ module Decidim
     describe Milestone do
       subject { milestone }
 
-      let(:milestone) { create(:milestone, time_tracker: time_tracker, time_entries: time_entries, user: user) }
-      let(:time_tracker) { create(:time_tracker) }
+      let(:milestone) { create(:milestone, component: component, time_entries: time_entries, user: user) }
+      let(:component) { create(:time_tracker_component) }
       let(:time_entries) { create_list(:time_entry, 3) }
       let(:user) { create(:user) }
 
       context "when the milestone is correctly associated" do
-        it "belongs to a time tracker" do
-          expect(subject.time_tracker.id).to eq(time_tracker.id)
+        it "belongs to a component" do
+          expect(subject.component.id).to eq(component.id)
         end
 
         it "has many time_entries" do

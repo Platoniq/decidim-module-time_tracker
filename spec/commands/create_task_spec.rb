@@ -4,20 +4,21 @@ require "spec_helper"
 
 module Decidim::TimeTracker::Admin
   describe CreateTask do
-    let(:subject) { described_class.new(form, time_tracker) }
+    let(:subject) { described_class.new(form) }
     let(:form) do
       double(
         # taskForm,
-        time_tracker: time_tracker,
         name: Decidim::Faker::Localized.word,
         invalid?: invalid,
-        current_user: user
+        current_user: user,
+        current_component: component
       )
     end
 
-    let(:time_tracker) { create :time_tracker }
     let(:organization) { create :organization }
     let(:user) { create :user, :admin, :confirmed, organization: organization }
+    let(:participatory_process) { create :participatory_process, organization: organization }
+    let(:component) { create :time_tracker_component, participatory_space: participatory_process }
 
     let(:invalid) { false }
 

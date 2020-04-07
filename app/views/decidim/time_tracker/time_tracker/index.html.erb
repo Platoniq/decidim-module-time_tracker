@@ -1,0 +1,10 @@
+<%= render partial: "decidim/shared/component_announcement" %>
+
+<div class="row">
+  <div id="time_tracker" class="columns">
+    <% tasks.each do |task| %>
+      <%= task %>
+      <span class="text-alert"><%= icon("media-play", class: "icon", aria_label: "play", role: "img") %></span>
+    <% end %>
+  </div>
+</div>

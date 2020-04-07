@@ -6,13 +6,12 @@ module Decidim::TimeTracker::Admin
   describe UpdateTask do
     let(:subject) { described_class.new(task, form, user) }
     let(:organization) { create :organization }
-    let(:time_tracker) { create :time_tracker }
-    let(:task) { create :task, time_tracker: time_tracker }
+    let(:component) { create :time_tracker_component }
+    let(:task) { create :task, component: component }
     let(:user) { create(:user, :confirmed, :admin, organization: organization) }
     let(:form) do
       double(
         # taskForm,
-        time_tracker: time_tracker,
         name: Decidim::Faker::Localized.word,
         invalid?: invalid,
         current_user: user

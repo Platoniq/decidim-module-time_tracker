@@ -12,7 +12,6 @@ module Decidim
         let(:user) { create(:user, :confirmed, :admin, organization: organization) }
         let(:participatory_space) { create(:participatory_process, organization: organization) }
         let(:component) { create :time_tracker_component, participatory_space: participatory_space }
-        let!(:time_tracker) { create :time_tracker, component: component }
 
         let(:form) do
           {
@@ -31,8 +30,7 @@ module Decidim
           let(:params) do
             {
               component_id: component.id,
-              participatory_process_slug: component.participatory_space.slug,
-              id: time_tracker.id
+              participatory_process_slug: component.participatory_space.slug
             }
           end
 
@@ -47,8 +45,7 @@ module Decidim
           let(:params) do
             {
               component_id: component.id,
-              participatory_process_slug: component.participatory_space.slug,
-              id: time_tracker.id
+              participatory_process_slug: component.participatory_space.slug
             }
           end
 
@@ -81,7 +78,7 @@ module Decidim
         end
 
         describe "PATCH #update" do
-          let!(:task) { create :task, time_tracker: time_tracker }
+          let!(:task) { create :task, component: component }
           let(:form) do
             {
               name: Decidim::Faker::Localized.word
@@ -90,8 +87,8 @@ module Decidim
 
           let(:params) do
             {
-              component_id: time_tracker.component.id,
-              participatory_process_slug: time_tracker.component.participatory_space.slug,
+              component_id: component.id,
+              participatory_process_slug: component.participatory_space.slug,
               id: task.id,
               task: form
             }
@@ -112,12 +109,12 @@ module Decidim
         end
 
         describe "DELETE #destroy" do
-          let!(:task) { create :task, time_tracker: time_tracker }
+          let!(:task) { create :task, component: component }
 
           let(:params) do
             {
-              component_id: time_tracker.component.id,
-              participatory_process_slug: time_tracker.component.participatory_space.slug,
+              component_id: component.id,
+              participatory_process_slug: component.participatory_space.slug,
               id: task.id
             }
           end

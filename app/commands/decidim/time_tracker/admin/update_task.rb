@@ -35,8 +35,7 @@ module Decidim
           Decidim.traceability.update!(
             @task,
             @user,
-            name: form.name,
-            time_tracker: @task.time_tracker
+            name: form.name
           )
         end
       end

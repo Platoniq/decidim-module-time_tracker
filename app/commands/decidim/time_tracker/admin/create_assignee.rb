@@ -41,7 +41,7 @@ module Decidim
 
           @existing_user = User.find_by(
             email: @form.email,
-            organization: @activity.task.time_tracker.component.organization
+            organization: @activity.task.component.organization
           )
 
           InviteUserAgain.call(@existing_user, "invite_admin") if @existing_user && !@existing_user.invitation_accepted?
@@ -60,7 +60,7 @@ module Decidim
         def user_form
           OpenStruct.new(name: @form.name,
                          email: @form.email.downcase,
-                         organization: @activity.task.time_tracker.component.organization,
+                         organization: @activity.task.component.organization,
                          admin: false,
                          invited_by: @form.current_user,
                          invitation_instructions: "invite_admin")
