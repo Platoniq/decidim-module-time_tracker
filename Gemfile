@@ -5,15 +5,17 @@ source "https://rubygems.org"
 ruby RUBY_VERSION
 # DECIDIM_VERSION =  { git: "https://github.com/decidim/decidim" }
 DECIDIM_VERSION = "0.20"
+
 gem "decidim", DECIDIM_VERSION
 gem "decidim-time_tracker", path: "."
 
 gem "bootsnap", "~> 1.3"
-gem "puma", "~> 3.0"
+gem "puma", "~> 3.12.2"
 gem "uglifier", "~> 4.1"
 
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
+
   gem "decidim-dev", DECIDIM_VERSION
 end
 
