@@ -49,7 +49,7 @@
               </td>
               <td class="table-list__actions">
                 <% if allowed_to? :destroy, :assignee, assignee: assignee %>
-                  <%= icon_link_to "circle-x", task_activity_assignee_path(current_activity, current_task, assignee), t("actions.destroy", scope: "decidim.time_tracker"), method: :delete, class: "action-icon--remove", data: { confirm: t("actions.confirm_destroy", scope: "decidim.time_tracker") } %>
+                  <%= icon_link_to "circle-x", task_activity_assignee_path(current_task, current_activity, assignee), t("actions.destroy", scope: "decidim.time_tracker"), method: :delete, class: "action-icon--remove", data: { confirm: t("actions.confirm_destroy", scope: "decidim.time_tracker") } %>
                 <% end %>
               </td>
             </tr>
