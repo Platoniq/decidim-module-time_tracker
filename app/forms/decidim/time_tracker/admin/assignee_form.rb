@@ -15,7 +15,6 @@ module Decidim
         validates :email, presence: true, unless: proc { |object| object.existing_user }
         validates :user, presence: true, if: proc { |object| object.existing_user }
 
-
         def map_model(model)
           self.user_id = model.decidim_user_id
           self.existing_user = user_id.present?
