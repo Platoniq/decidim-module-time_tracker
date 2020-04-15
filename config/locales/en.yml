@@ -44,6 +44,11 @@ en:
           new:
             create: Create
             title: New assignee to this activity
+          form:
+            existing_user: Existing participant
+            non_user: Non participant
+            select_user: Select a participant
+            user_type: Participant type
         models:
           activity:
             name: Activity

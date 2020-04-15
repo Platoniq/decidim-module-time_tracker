@@ -19,6 +19,10 @@ module Decidim
         root to: "tasks#index"
       end
 
+      initializer "decidim_time_tracker.admin_assets" do |app|
+        app.config.assets.precompile += %w(admin/decidim_time_tracker_manifest.js admin/decidim_time_tracker_manifest.css)
+      end
+
       def load_seed
         nil
       end

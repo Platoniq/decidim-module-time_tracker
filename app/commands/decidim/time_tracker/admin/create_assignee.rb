@@ -39,12 +39,16 @@ module Decidim
         def existing_user
           return @existing_user if defined?(@existing_user)
 
-          @existing_user = User.find_by(
-            email: @form.email,
-            organization: @activity.task.component.organization
-          )
+          if @form.existing_user
+            @existing_user = @form.user
+          else
+            @existing_user = User.find_by(
+              email: @form.email,
+              organization: @activity.task.component.organization
+            )
 
-          InviteUserAgain.call(@existing_user, "invite_admin") if @existing_user && !@existing_user.invitation_accepted?
+            InviteUserAgain.call(@existing_user, "invite_admin") if @existing_user && !@existing_user.invitation_accepted?
+          end
 
           @existing_user
         end
