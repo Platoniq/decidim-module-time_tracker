@@ -28,27 +28,33 @@ en:
           destroy:
             success: The activity has been deleted.
           edit:
-            title: Edit
+            title: Edit activity
             update: Update
           index:
             title: Activities
           new:
-            create: Create
+            create: Create activity
             title: New
           update:
             error: The activity has not been updated.
             success: The activity has been updated.
+          actions:
+            new: New activity
         assignees:
           index:
             title: Assignees
           new:
-            create: Create
+            create: Create assignee
             title: New assignee to this activity
           form:
             existing_user: Existing participant
             non_user: Non participant
             select_user: Select a participant
             user_type: Participant type
+          create:
+            success: The assignee has been created
+          actions:
+            new: New assignee
         models:
           activity:
             name: Activity
@@ -63,16 +69,18 @@ en:
           destroy:
             success: The task has been deleted.
           edit:
-            title: Edit
+            title: Edit task
             update: Update
           index:
             title: Tasks
           new:
-            create: Create
-            title: New
+            create: Create task
+            title: New task
           update:
             error: The task has not been updated.
             success: The task has been updated.
+          actions:
+            new: New task
       models:
         activity:
           fields:

@@ -3,7 +3,7 @@
 <div class="row">
   <div id="time_tracker" class="columns">
     <% tasks.each do |task| %>
-      <%= task %>
+      <a href="<%= task_activities_path(task) %>"> <%= task.name %> </a>
       <span class="text-alert"><%= icon("media-play", class: "icon", aria_label: "play", role: "img") %></span>
     <% end %>
   </div>
