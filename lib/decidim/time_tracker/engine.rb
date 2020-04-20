@@ -12,6 +12,9 @@ module Decidim
       routes do
         # Add engine routes here
         # resources :time_tracker
+        resources :tasks do
+          resources :activities
+        end
         root to: "time_tracker#index"
       end
 
