@@ -47,7 +47,7 @@ module Decidim
               organization: @activity.task.component.organization
             )
 
-            InviteUserAgain.call(@existing_user, "invite_admin") if @existing_user && !@existing_user.invitation_accepted?
+            InviteUserAgain.call(@existing_user, "invite_private_user") if @existing_user && !@existing_user.invitation_accepted?
           end
 
           @existing_user
@@ -67,7 +67,7 @@ module Decidim
                          organization: @activity.task.component.organization,
                          admin: false,
                          invited_by: @form.current_user,
-                         invitation_instructions: "invite_admin")
+                         invitation_instructions: "invite_private_user")
         end
       end
     end
