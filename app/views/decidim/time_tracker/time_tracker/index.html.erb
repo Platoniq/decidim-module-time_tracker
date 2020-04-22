@@ -3,8 +3,33 @@
 <div class="row">
   <div id="time_tracker" class="columns">
     <% tasks.each do |task| %>
-      <a href="<%= task_activities_path(task) %>"> <%= task.name %> </a>
-      <span class="text-alert"><%= icon("media-play", class: "icon", aria_label: "play", role: "img") %></span>
+      <h2> <%= translated_attribute task.name %> </h2>
+        <div id="activities">
+          <% task.activities.each do |activity| %>
+            <% if activity.active %>
+                <div class="row activity" data-activity-id="<%= activity.id %>">
+                  <div class="columns large-8">
+                    <h2><%= translated_attribute activity.description %></h2>
+                    <span>Click on the button to track your time.</span>
+                    <div class="elapsed_time">Time  elapsed: <span id="elapsed_time" data-id="elapsed_time_<%= activity.id %>"> 0h 0m 0s </div>
+                  </div>
+                  <button id="start" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id)%>" data-activity-id="<%= activity.id %>" class="columns large-1 button">
+                    <%= icon("media-play", class: "icon icon--large", aria_label: "play", role: "img") %>
+                  </button>
+                  <button id="pause" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id)%>" data-activity-id="<%= activity.id %>" class="columns large-1 button">
+                    <%= icon("media-pause", class: "icon icon--large", aria_label: "play", role: "img") %>
+                  </button>
+                  <button id="stop" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id)%>" data-activity-id="<%= activity.id %>" class="columns large-1 button">
+                    <%= icon("media-stop", class: "icon icon--large", aria_label: "play", role: "img") %>
+                  </button>
+                </div>
+            <% end %>
+          <% end %>
+      </div>
+
     <% end %>
   </div>
 </div>
+
+<%= stylesheet_link_tag "decidim/time_tracker/time_tracker" %>
+<%= javascript_include_tag "decidim/time_tracker/time_tracker" %>

@@ -17,6 +17,15 @@ div#activities {
 
     .button {
       margin: 1rem;
+
+      &#pause {
+        background-color: var(--secondary)
+      }
+    }
+
+    .elapsed_time {
+      background-color: #fafafa;
+      width: max-content;
     }
   }
 }
