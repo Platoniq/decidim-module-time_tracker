@@ -13,7 +13,7 @@ module Decidim
 
       def last_time_entry(assignee)
         time_entry = Decidim::TimeTracker::TimeEntry.where(assignee: assignee).last
-        return time_entry if defined?(time_entry) && time_entry.time_end.nil?
+        return time_entry if !time_entry.nil? && time_entry.time_end.nil?
       end
     end
   end
