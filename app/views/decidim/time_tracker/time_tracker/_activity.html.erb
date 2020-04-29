@@ -1,0 +1,20 @@
+<%
+  assignee = Decidim::TimeTracker::Assignee.find_by(activity: activity, user: current_user)
+%>
+
+<div class="row activity" data-activity-id="<%= activity.id %>">
+  <div class="columns large-8">
+    <h2><%= translated_attribute activity.description %></h2>
+    <span>Click on the button to track your time.</span>
+    <div class="elapsed_time">Time  elapsed: <span id="elapsed_time" data-activity-id="elapsed_time_<%= activity.id %>" data-time-entry="<%= last_time_entry(assignee).to_json %>"> 0h 0m 0s </div>
+  </div>
+  <button id="start" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id)%>" data-activity-id="<%= activity.id %>" class="columns large-1 button">
+    <%= icon("media-play", class: "icon icon--large", aria_label: "play", role: "img") %>
+  </button>
+  <button id="pause" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id)%>" data-activity-id="<%= activity.id %>" class="columns large-1 button">
+    <%= icon("media-pause", class: "icon icon--large", aria_label: "play", role: "img") %>
+  </button>
+  <button id="stop" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id)%>" data-activity-id="<%= activity.id %>" class="columns large-1 button">
+    <%= icon("media-stop", class: "icon icon--large", aria_label: "play", role: "img") %>
+  </button>
+</div>
