@@ -15,6 +15,7 @@ module Decidim
         resources :tasks do
           resources :activities do
             resources :time_entries
+            resources :assignees
           end
         end
         root to: "time_tracker#index"

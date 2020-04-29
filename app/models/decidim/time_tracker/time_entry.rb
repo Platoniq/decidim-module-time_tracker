@@ -10,13 +10,15 @@ module Decidim
                  class_name: "Decidim::TimeTracker::Assignee"
 
       belongs_to :milestone,
-                 class_name: "Decidim::TimeTracker::Milestone"
+                 class_name: "Decidim::TimeTracker::Milestone",
+                 optional: true
 
       belongs_to :activity,
                  class_name: "Decidim::TimeTracker::Activity"
 
       belongs_to :validated_by_user,
-                 class_name: "Decidim::User"
+                 class_name: "Decidim::User",
+                 optional: true
     end
   end
 end

@@ -11,6 +11,10 @@ en:
             tos: Terms and conditions
           step:
             announcement: Announcement
+        views:
+          index:
+            account_message: <a href="%{sign_in_url}">Sign in with your account</a> or <a href="%{sign_up_url}">sign up</a> to participate in this activity.
+            request: Request to join activity
     time_tracker:
       actions:
         activities: Activities
