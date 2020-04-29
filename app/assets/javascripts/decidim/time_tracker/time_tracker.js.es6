@@ -16,12 +16,15 @@ $(function() {
       time_entry.id = last_time_entry.id;
       time_entry.setTimeStart = last_time_entry.time_start;
       activities[id] = time_entry;
-      
+
       let elapsed_time = time_entry.getElapsedTime;
-      var seconds = Math.floor(elapsed_time/ (1000));
-      var minutes = Math.floor(seconds/ 60);
-      var hour = Math.floor(minutes / 60);
-      $("[data-activity-id='elapsed_time_" + id +"'").html( hour % 60 + "h " + minutes % 60 + "m " + seconds % 60 + "s");
+      activities[id].interval = setInterval( function() {
+        elapsed_time += 100;
+        var seconds = Math.floor(elapsed_time/ (1000));
+        var minutes = Math.floor(seconds/ 60);
+        var hour = Math.floor(minutes / 60);
+        $("[data-activity-id='elapsed_time_" + id +"'").html( hour % 60 + "h " + minutes % 60 + "m " + seconds % 60 + "s");
+      }, 100);
     }
 
     var button_start = $("button[id='start'][data-activity-id='" + id + "']");
