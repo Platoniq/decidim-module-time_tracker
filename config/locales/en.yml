@@ -15,6 +15,9 @@ en:
           index:
             account_message: <a href="%{sign_in_url}">Sign in with your account</a> or <a href="%{sign_up_url}">sign up</a> to participate in this activity.
             request: Request to join activity
+          activity:
+            info: Click on the button to track your time.
+            time_elapsed: "Time elapsed:"
     time_tracker:
       actions:
         activities: Activities

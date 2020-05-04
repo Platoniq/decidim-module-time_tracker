@@ -26,6 +26,10 @@ div#activities {
     .elapsed_time {
       background-color: #fafafa;
       width: max-content;
+
+      #elapsed_time {
+        font-size: 2rem;
+      }
     }
   }
 }
