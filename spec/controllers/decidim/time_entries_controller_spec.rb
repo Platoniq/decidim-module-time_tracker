@@ -52,25 +52,6 @@ module Decidim
           # expect(response).to redirect_to(EngineRouter.main_proxy(component).new_task_activity_asignee_path(task, activity))
         end
       end
-
-      describe "patch #update" do
-        before do
-          let!(:time_entry) { create :time_entry, activity: activity, assignee: assignee, time_end: nil }
-        end
-
-        let(:params) do
-          {
-            task_id: task.id,
-            activity_id: activity.id,
-            id: time_entry.id
-          }
-        end
-
-        it "updates the time entry" do
-          patch :update, params: params
-          # expect(response).to redirect_to(EngineRouter.main_proxy(component).new_task_activity_asignee_path(task, activity))
-        end
-      end
     end
   end
 end
