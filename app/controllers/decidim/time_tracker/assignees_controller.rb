@@ -9,12 +9,12 @@ module Decidim
         CreateRequestAssignee.call(current_activity, current_user) do
           on(:ok) do
             # flash[:notice] = I18n.t("assignees.request.success", scope: "decidim.time_tracer")
-            redirect_to EngineRouter.main_proxy(current_component).new_task_activity_assignee_path(@activity.task, @activity)
+            redirect_to EngineRouter.main_proxy(current_component).root_path
           end
 
           on(:invalid) do
             # flash[:notice] = I18n.t("assignees.request.success", scope: "decidim.time_tracer")
-            redirect_to EngineRouter.main_proxy(current_component).new_task_activity_assignee_path(@activity.task, @activity)
+            redirect_to EngineRouter.main_proxy(current_component).root_path
           end
         end
       end
