@@ -10,7 +10,7 @@ $(function() {
   $activities.each(function() {
     var id = $(this).data('activity-id');
 
-    var last_time_entry = $("span[data-activity-id='elapsed_time_" + id + "'").data('time-entry');
+    var last_time_entry = $("div[data-activity-id='elapsed_time_" + id + "'").data('time-entry');
     if (last_time_entry) {
       let time_entry = new TimeEntry();
       time_entry.id = last_time_entry.id;
