@@ -16,7 +16,7 @@ module Decidim
 
       before do
         request.env["decidim.current_organization"] = organization
-        request.env["decidim.current_participatory_process"] = participatory_space
+        request.env["decidim.current_participatory_space"] = participatory_space
         request.env["decidim.current_component"] = component
         sign_in user
       end
@@ -31,7 +31,7 @@ module Decidim
 
         it "creates a new assignee" do
           get :new, params: params
-          expect(response).to redirect_to(EngineRouter.main_proxy(component).new_task_activity_asignee_path(task, activity))
+          expect(response).to redirect_to(EngineRouter.main_proxy(component).root_path)
         end
       end
     end

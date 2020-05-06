@@ -3,14 +3,14 @@
 module Decidim
   module TimeTracker
     class TimeEntriesController < Decidim::TimeTracker::ApplicationController
-      helper_method :activity, :task
+      helper_method :activity, :task, :assignee
 
       def create
         # enforce_permission_to :create, :time_entries
 
         CreateTimeEntry.call(activity, assignee, params[:time_entry]) do
           on(:ok) do |time_entry|
-            render json: { message: I18n.t("time_entries.create.success", scopre: "decidim.time_tracker"),
+            render json: { message: I18n.t("time_entries.create.success", scope: "decidim.time_tracker"),
                            time_entry_id: time_entry.id,
                            time_start: time_entry.time_start,
                            time_end: time_entry.time_end }

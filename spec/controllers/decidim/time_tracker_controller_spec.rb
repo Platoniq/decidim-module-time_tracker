@@ -15,21 +15,14 @@ module Decidim
 
       before do
         request.env["decidim.current_organization"] = organization
-        request.env["decidim.current_participatory_process"] = participatory_space
+        request.env["decidim.current_participatory_space"] = participatory_space
         request.env["decidim.current_component"] = component
         sign_in user
       end
 
       describe "GET #index" do
-        let(:params) do
-          {
-            participatory_process_slug: component.participatory_space.slug,
-            component_id: component.id
-          }
-        end
-
         it "renders the index listing" do
-          get :index, params: params
+          get :index
           expect(response).to have_http_status(:ok)
           expect(subject).to render_template(:index)
         end

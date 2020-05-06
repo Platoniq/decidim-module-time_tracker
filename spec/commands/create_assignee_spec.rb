@@ -10,6 +10,7 @@ module Decidim::TimeTracker::Admin
         # AssigneeForm,
         name: Faker::Name.name,
         email: "user@example.org",
+        existing_user: existing_user,
         invalid?: invalid,
         current_user: user
       )
@@ -20,6 +21,7 @@ module Decidim::TimeTracker::Admin
     let(:user) { create :user, :admin, :confirmed, organization: organization }
     let(:organization) { create :organization }
     let(:invalid) { false }
+    let(:existing_user) { false }
 
     context "when the form is not valid" do
       let(:invalid) { true }
@@ -34,7 +36,43 @@ module Decidim::TimeTracker::Admin
         expect { subject.call }.to broadcast(:ok)
       end
 
-      it "creates a new activity for the task" do
+      it "creates a new assignee for the activity" do
+        expect { subject.call }.to change { Decidim::TimeTracker::Assignee.count }.by(1)
+      end
+
+      it "traces the action", versioning: true do
+        expect(Decidim.traceability)
+          .to receive(:create!)
+          .with(Decidim::TimeTracker::Assignee, user, hash_including(:user, :activity, :status, :invited_at, :invited_by_user))
+          .and_call_original
+
+        expect { subject.call }.to change(Decidim::ActionLog, :count)
+        # action_log = Decidim::ActionLog.last
+        # expect(action_log.version).to be_present
+      end
+    end
+
+    context "when the form has an existing user" do
+      let(:existing_user) { true }
+      let(:user) { create :user, organization: organization }
+
+      let(:form) do
+        double(
+          # AssigneeForm,
+          name: user.name,
+          email: user.email,
+          existing_user: existing_user,
+          invalid?: false,
+          current_user: user,
+          user: user
+        )
+      end
+
+      it "broadcasts ok" do
+        expect { subject.call }.to broadcast(:ok)
+      end
+
+      it "creates a new assignee for the activity" do
         expect { subject.call }.to change { Decidim::TimeTracker::Assignee.count }.by(1)
       end
 
