@@ -8,13 +8,13 @@
     <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
     <div class="elapsed_time"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div id="elapsed_time" data-activity-id="elapsed_time_<%= activity.id %>" data-time-entry="<%= last_time_entry(assignee).to_json %>"> 0h 0m 0s </div></div>
   </div>
-  <button id="start" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id)%>" data-activity-id="<%= activity.id %>" class="columns large-1 button">
+  <button id="start" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id) %>" data-activity-id="<%= activity.id %>" class="columns large-1 button">
     <%= icon("media-play", class: "icon icon--large", aria_label: "play", role: "img") %>
   </button>
-  <button id="pause" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id)%>" data-activity-id="<%= activity.id %>" class="columns large-1 button">
+  <button id="pause" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id) %>" data-activity-id="<%= activity.id %>" class="columns large-1 button">
     <%= icon("media-pause", class: "icon icon--large", aria_label: "play", role: "img") %>
   </button>
-  <button id="stop" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id)%>" data-activity-id="<%= activity.id %>" class="columns large-1 button">
+  <button id="stop" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id) %>" data-activity-id="<%= activity.id %>" class="columns large-1 button">
     <%= icon("media-stop", class: "icon icon--large", aria_label: "play", role: "img") %>
   </button>
 </div>
