@@ -19,10 +19,6 @@ module Decidim
           end
         end
 
-        authenticate(:user) do
-          resources :voluntary_work
-        end
-
         root to: "time_tracker#index"
       end
 
@@ -33,7 +29,7 @@ module Decidim
       initializer "decidim.user_menu" do
         Decidim.menu :user_menu do |menu|
           menu.item t("voluntary_work", scope: "layouts.decidim.user_profile"),
-                    decidim.account_path,
+                    decidim.voluntary_work_index_path,
                     position: 5.0,
                     active: :exact
         end
