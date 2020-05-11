@@ -1,0 +1,35 @@
+@import "decidim/variables";
+@import "decidim/utils/settings";
+@import "decidim/utils/mixins";
+@import "decidim/time_tracker/variables";
+
+
+div#activities {
+  div.activity {
+    background-color: white;
+    border: 1px solid #eee;
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    h2 {
+      color: var(--secondary);
+    }
+
+    .button {
+      margin: 1rem;
+
+      &#pause {
+        background-color: var(--secondary)
+      }
+    }
+
+    .elapsed_time {
+      background-color: #fafafa;
+      width: max-content;
+
+      #elapsed_time {
+        font-size: 2rem;
+      }
+    }
+  }
+}

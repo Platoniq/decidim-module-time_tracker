@@ -9,7 +9,7 @@ DECIDIM_VERSION = "0.20"
 gem "decidim", DECIDIM_VERSION
 gem "decidim-time_tracker", path: "."
 
-gem "bootsnap", "~> 1.3"
+gem "bootsnap", "~> 1.4"
 gem "puma", "~> 3.12.2"
 gem "uglifier", "~> 4.1"
 
@@ -30,4 +30,8 @@ end
 
 group :test do
   gem "codecov", require: false
+  # Workaround for cc-test-reporter with SimpleCov 0.18.
+  # Stop upgrading SimpleCov until the following issue will be resolved.
+  # https://github.com/codeclimate/test-reporter/issues/418
+  gem "simplecov", "~> 0.10", "< 0.18"
 end

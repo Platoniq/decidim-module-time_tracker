@@ -9,10 +9,6 @@ FactoryBot.define do
     participatory_space { create(:participatory_process, :with_steps) }
   end
 
-  factory :time_tracker, class: "Decidim::TimeTracker::TimeTracker" do
-    component { create(:time_tracker_component) }
-  end
-
   factory :activity, class: "Decidim::TimeTracker::Activity" do
     task { create(:task) }
     description { Decidim::Faker::Localized.sentence(3) }
@@ -50,14 +46,14 @@ FactoryBot.define do
   end
 
   factory :milestone, class: "Decidim::TimeTracker::Milestone" do
-    time_tracker { create(:time_tracker) }
+    component { create(:time_tracker_component) }
     user { create(:user) }
     title { Decidim::Faker::Localized.word }
     description { Decidim::Faker::Localized.sentence(3) }
   end
 
   factory :task, class: "Decidim::TimeTracker::Task" do
-    time_tracker { create(:time_tracker) }
+    component { create(:time_tracker_component) }
     name { Decidim::Faker::Localized.word }
   end
 

@@ -17,7 +17,8 @@ module Decidim
                  class_name: "Decidim::User"
 
       belongs_to :invited_by_user,
-                 class_name: "Decidim::User"
+                 class_name: "Decidim::User",
+                 optional: true
     end
   end
 end

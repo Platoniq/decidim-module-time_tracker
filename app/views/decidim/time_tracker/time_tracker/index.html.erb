@@ -1,0 +1,26 @@
+<%= render partial: "decidim/shared/component_announcement" %>
+
+<div class="row">
+  <div id="time_tracker" class="columns">
+    <% if !user_signed_in? %>
+      <%= render partial: "sign_in" %>
+    <% end %>
+    <% tasks.each do |task| %>
+      <h2> <%= translated_attribute task.name %> </h2>
+        <div id="activities">
+          <% task.activities.each do |activity| %>
+            <% if activity.active %>
+              <% if assignee_accepted(activity, current_user) %>
+                <%= render partial: "activity", locals: { activity: activity } %>
+              <% else %>
+                <%= render partial: "request_activity", locals: { activity: activity } %>
+              <% end %>
+            <% end %>
+          <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%= stylesheet_link_tag "decidim/time_tracker/time_tracker" %>
+<%= javascript_include_tag "decidim/time_tracker/time_tracker" %>

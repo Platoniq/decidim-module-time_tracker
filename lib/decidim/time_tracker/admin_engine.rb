@@ -11,12 +11,16 @@ module Decidim
 
       routes do
         # Add admin engine routes here
-        # resources :time_tracker do
-        #   collection do
-        #     resources :exports, only: [:create]
-        #   end
-        # end
-        # root to: "time_tracker#index"
+        resources :tasks do
+          resources :activities do
+            resources :assignees
+          end
+        end
+        root to: "tasks#index"
+      end
+
+      initializer "decidim_time_tracker.admin_assets" do |app|
+        app.config.assets.precompile += %w(admin/decidim_time_tracker_manifest.js admin/decidim_time_tracker_manifest.css)
       end
 
       def load_seed

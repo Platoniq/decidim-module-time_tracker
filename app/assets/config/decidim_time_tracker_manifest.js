@@ -1,0 +1,1 @@
+//= link decidim/time_tracker/admin/time_tracker.js

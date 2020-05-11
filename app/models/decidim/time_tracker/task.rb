@@ -4,13 +4,15 @@ module Decidim
   module TimeTracker
     # The data store for a Task in the Decidim::TimeTracker component.
     class Task < ApplicationRecord
+      include Decidim::HasComponent
+
+      component_manifest_name "time_tracker"
+
       self.table_name = :decidim_time_tracker_tasks
 
-      belongs_to :time_tracker,
-                 class_name: "Decidim::TimeTracker::TimeTracker"
-
       has_many :activities,
-               class_name: "Decidim::TimeTracker::Activity"
+               class_name: "Decidim::TimeTracker::Activity",
+               dependent: :destroy
     end
   end
 end

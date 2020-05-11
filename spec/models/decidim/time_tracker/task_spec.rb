@@ -7,33 +7,21 @@ module Decidim
     describe Task do
       subject { task }
 
-      let(:time_tracker) { create(:time_tracker) }
+      let(:component) { create(:time_tracker_component) }
       let(:activities) { create_list(:activity, 3) }
-      let(:task) { create(:task, time_tracker: time_tracker, activities: activities) }
+      let(:task) { create(:task, component: component, activities: activities) }
 
       it { is_expected.to be_valid }
 
       context "when the task is correctly associated" do
-        it "is associated with a time tracker" do
-          expect(subject.time_tracker).to eq(time_tracker)
+        it "is associated with a time tracker component" do
+          expect(subject.component).to eq(component)
         end
 
         it "is associated with activities" do
           expect(subject.activities.first.id).to eq(activities.first.id)
           expect(subject.activities.second.id).to eq(activities.second.id)
           expect(subject.activities.third.id).to eq(activities.third.id)
-        end
-      end
-
-      context "when changing the time tracker" do
-        let!(:time_tracker) { create(:time_tracker) }
-
-        before do
-          task.update(time_tracker: time_tracker)
-        end
-
-        it "updates the time tracker" do
-          expect(task.time_tracker.id).to eq(time_tracker.id)
         end
       end
 
