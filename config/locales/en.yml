@@ -129,3 +129,7 @@ en:
         create:
           error: Error creating time entry
           success: Success creating time entry
+  layouts:
+    decidim:
+      user_profile:
+        voluntary_work: My voluntary work
