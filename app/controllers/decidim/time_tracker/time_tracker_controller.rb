@@ -18,7 +18,7 @@ module Decidim
 
       def assignee_accepted(activity, current_user)
         assignee = Decidim::TimeTracker::Assignee.find_by(activity: activity, user: current_user)
-        assignee.status == "accepted"
+        assignee&.status == "accepted"
       end
     end
   end
