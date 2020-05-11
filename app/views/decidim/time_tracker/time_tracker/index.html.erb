@@ -10,7 +10,7 @@
         <div id="activities">
           <% task.activities.each do |activity| %>
             <% if activity.active %>
-              <% if Decidim::TimeTracker::Assignee.find_by(activity: activity, user: current_user).status == "accepted" %>
+              <% if assignee_accepted(activity, current_user) %>
                 <%= render partial: "activity", locals: { activity: activity } %>
               <% else %>
                 <%= render partial: "request_activity", locals: { activity: activity } %>
