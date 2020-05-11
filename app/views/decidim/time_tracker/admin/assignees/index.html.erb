@@ -42,7 +42,7 @@
                 <%= assignee.invited_at %><br>
               </td>
               <td>
-                <%= assignee.invited_by_user.name unless assignee.invited_by_user.nil? %><br>
+                <%= assignee.invited_by_user&.name %><br>
               </td>
               <td>
                 <%= assignee.tos_accepted_at %><br>

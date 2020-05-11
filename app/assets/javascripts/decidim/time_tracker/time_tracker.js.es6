@@ -1,5 +1,3 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
 //= require decidim/time_tracker/time_entry
 //= require_self
 
@@ -47,7 +45,7 @@ $(function() {
           success: function(data, status) {
               time_entry.id = data.time_entry_id
             }
-        });  
+        });
       }  else if (!time_entry.interval) {
         time_entry.resume();
       }

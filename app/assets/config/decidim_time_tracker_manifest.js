@@ -1,1 +1,1 @@
-//= link decidim/time_tracker/admin/assignees.js
+//= link decidim/time_tracker/admin/time_tracker.js
