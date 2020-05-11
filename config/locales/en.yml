@@ -21,8 +21,8 @@ en:
             request: Request to join activity
     time_tracker:
       actions:
-        activities: Activities
         activate: Activate
+        activities: Activities
         assignees: Assignees
         confirm_destroy: Are you sure you want to delete this?
         destroy: Destroy
@@ -54,22 +54,22 @@ en:
             new: New assignee
           create:
             success: The assignee has been created
+          destroy:
+            error: The assignee has not been removed
+            succcess: The assignee has been removed
           form:
             existing_user: Existing participant
             non_user: Non participant
             select_user: Select a participant
             user_type: Participant type
-          destroy:
-            succcess: The assignee has been removed
-            error: The assignee has not been removed
-          update:
-            success: The assignee has been updated
-            error: The assignee has not been updated
           index:
             title: Assignees
           new:
             create: Create assignee
             title: New assignee to this activity
+          update:
+            error: The assignee has not been updated
+            success: The assignee has been updated
         models:
           activity:
             name: Activity
