@@ -42,12 +42,15 @@
                 <%= assignee.invited_at %><br>
               </td>
               <td>
-                <%= assignee.invited_by_user.name %><br>
+                <%= assignee.invited_by_user.name unless assignee.invited_by_user.nil? %><br>
               </td>
               <td>
                 <%= assignee.tos_accepted_at %><br>
               </td>
               <td class="table-list__actions">
+                <% if allowed_to? :update, :assignee, assignee: assignee && assignee.status == :pending %>
+                  <%= icon_link_to "check", task_activity_assignee_path(current_task, current_activity, assignee), t("actions.activate", scope: "decidim.time_tracker"), method: :patch, class: "action-icon--activate" %>
+                <% end %>
                 <% if allowed_to? :destroy, :assignee, assignee: assignee %>
                   <%= icon_link_to "circle-x", task_activity_assignee_path(current_task, current_activity, assignee), t("actions.destroy", scope: "decidim.time_tracker"), method: :delete, class: "action-icon--remove", data: { confirm: t("actions.confirm_destroy", scope: "decidim.time_tracker") } %>
                 <% end %>

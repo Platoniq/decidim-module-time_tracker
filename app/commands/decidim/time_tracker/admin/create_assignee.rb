@@ -30,7 +30,7 @@ module Decidim
             @form.current_user,
             activity: @activity,
             user: @user,
-            status: :pending,
+            status: :accepted,
             invited_at: Time.current,
             invited_by_user: @form.current_user
           )

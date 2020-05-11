@@ -45,6 +45,17 @@ module Decidim
           end
         end
 
+        def update
+          enforce_permission_to :update, :assignee, assignee: current_assignee
+
+          UpdateAssignee.call(current_assignee, current_user) do
+            on(:ok) do
+              flash[:notice] = I18n.t("assignees.update.success", scope: "decidim.time_tracker.admin")
+              redirect_to EngineRouter.admin_proxy(current_component).task_activity_assignees_path(current_task, current_activity)
+            end
+          end
+        end
+
         def assignees
           @assignees = Assignee.where(activity: current_activity.id)
         end

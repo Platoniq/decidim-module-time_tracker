@@ -22,6 +22,7 @@ en:
     time_tracker:
       actions:
         activities: Activities
+        activate: Activate
         assignees: Assignees
         confirm_destroy: Are you sure you want to delete this?
         destroy: Destroy
@@ -58,6 +59,12 @@ en:
             non_user: Non participant
             select_user: Select a participant
             user_type: Participant type
+          destroy:
+            succcess: The assignee has been removed
+            error: The assignee has not been removed
+          update:
+            success: The assignee has been updated
+            error: The assignee has not been updated
           index:
             title: Assignees
           new:
