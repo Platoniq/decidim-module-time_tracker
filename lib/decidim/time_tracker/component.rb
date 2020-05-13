@@ -50,6 +50,6 @@ end
 
 Decidim.register_global_engine(
   :time_tracker_directory,
-  Decidim::TimeTracker::DirectoryEngine,
-  at: "/voluntary_work"
+  ::Decidim::TimeTracker::DirectoryEngine,
+  at: "/timetracker"
 )

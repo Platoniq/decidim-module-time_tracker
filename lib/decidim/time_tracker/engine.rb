@@ -25,15 +25,6 @@ module Decidim
       initializer "decidim_time_tracker.assets" do |app|
         app.config.assets.precompile += %w(decidim_time_tracker_manifest.js decidim_time_tracker_manifest.css)
       end
-
-      initializer "decidim.user_menu" do
-        Decidim.menu :user_menu do |menu|
-          menu.item t("voluntary_work", scope: "layouts.decidim.user_profile"),
-                    decidim.voluntary_work_index_path,
-                    position: 5.0,
-                    active: :exact
-        end
-      end
     end
   end
 end
