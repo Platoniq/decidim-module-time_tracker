@@ -49,7 +49,7 @@ Decidim.register_component(:time_tracker) do |component|
 end
 
 Decidim.register_global_engine(
-  :time_tracker_directory,
+  :decidim_time_tracker, # this is the name of the global method to access engine routes
   ::Decidim::TimeTracker::DirectoryEngine,
   at: "/timetracker"
 )

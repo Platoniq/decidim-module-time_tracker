@@ -21,7 +21,7 @@ module Decidim
       initializer "decidim.user_menu" do
         Decidim.menu :user_menu do |menu|
           menu.item t("voluntary_work", scope: "layouts.decidim.user_profile"),
-                    voluntary_work_index_path,
+                    decidim_time_tracker.voluntary_work_index_path,
                     position: 5.0,
                     active: :exact
         end
