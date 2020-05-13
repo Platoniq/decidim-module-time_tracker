@@ -5,6 +5,10 @@ module Decidim
     # The controller to handle the user's voluntary work page.
     class VoluntaryWorkController < Decidim::ApplicationController
       include Decidim::UserProfile
+
+      def index
+        enforce_permission_to :read, :user, current_user: current_user
+      end
     end
   end
 end
