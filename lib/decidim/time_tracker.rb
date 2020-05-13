@@ -3,6 +3,8 @@
 require "decidim/time_tracker/admin"
 require "decidim/time_tracker/engine"
 require "decidim/time_tracker/admin_engine"
+require "decidim/time_tracker/directory"
+require "decidim/time_tracker/directory_engine"
 require "decidim/time_tracker/component"
 
 module Decidim

@@ -47,3 +47,9 @@ Decidim.register_component(:time_tracker) do |component|
   #   # Add some seeds for this component
   # end
 end
+
+Decidim.register_global_engine(
+  :time_tracker_directory,
+  Decidim::TimeTracker::DirectoryEngine,
+  at: "/voluntary_work"
+)

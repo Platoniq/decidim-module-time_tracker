@@ -2,7 +2,7 @@
 
 module Decidim
   module TimeTracker
-    class AssigneesController < ApplicationController
+    class AssigneesController < Decidim::TimeTracker::ApplicationController
       def new
         # enforce_permission_to :create, :assignee
 
