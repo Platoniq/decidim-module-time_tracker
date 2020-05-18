@@ -30,7 +30,8 @@ module Decidim
           @time_entry,
           current_user,
           time_start: @params[:time_start],
-          time_end: @params[:time_end]
+          time_end: @params[:time_end],
+          elapsed_time: @params[:elapsed_time]
         )
       end
     end

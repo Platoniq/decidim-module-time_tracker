@@ -19,6 +19,25 @@ module Decidim
       belongs_to :invited_by_user,
                  class_name: "Decidim::User",
                  optional: true
+
+      # Public: Checks if the assignee is verified.
+      def accepted?
+        status == "accepted"
+      end
+
+      # Public: Checks if the assignee is rejected.
+      def rejected?
+        status == "rejected"
+      end
+
+      # Public: Checks if the assignee is pending.
+      def pending?
+        status == "pending"
+      end
+
+      def time_dedicated?
+        time_entries.sum(:elapsed_time)
+      end
     end
   end
 end

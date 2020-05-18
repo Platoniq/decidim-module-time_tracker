@@ -129,6 +129,11 @@ en:
         create:
           error: Error creating time entry
           success: Success creating time entry
+      directory:
+        voluntary_work:
+          index:
+            accepted: Accepted
+            pending: Pending
   layouts:
     decidim:
       user_profile:
