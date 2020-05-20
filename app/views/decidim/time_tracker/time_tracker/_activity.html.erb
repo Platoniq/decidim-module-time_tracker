@@ -1,12 +1,13 @@
 <%
   assignee = Decidim::TimeTracker::Assignee.find_by(activity: activity, user: current_user)
+  time_entry = last_time_entry(assignee)
 %>
 
 <div class="row activity" data-activity-id="<%= activity.id %>">
   <div class="columns large-8">
     <h2><%= translated_attribute activity.description %></h2>
     <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
-    <div class="elapsed_time"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div id="elapsed_time" data-activity-id="elapsed_time_<%= activity.id %>" data-time-entry="<%= last_time_entry(assignee).to_json %>"> 0h 0m 0s </div></div>
+    <div class="elapsed_time"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div id="elapsed_time" data-activity-id="elapsed_time_<%= activity.id %>" data-time-entry="<%= time_entry.to_json %>" data-elapsed-time="<%= time_entry&.elapsed_time&.to_i %>"> 0h 0m 0s </div></div>
   </div>
   <button id="start" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id) %>" data-activity-id="<%= activity.id %>" class="columns large-1 button">
     <%= icon("media-play", class: "icon icon--large", aria_label: "play", role: "img") %>

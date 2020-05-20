@@ -31,7 +31,9 @@ module Decidim
           current_user,
           time_start: @params[:time_start],
           time_end: @params[:time_end],
-          elapsed_time: @params[:elapsed_time]
+          time_pause: @params[:time_pause],
+          time_resume: @params[:time_resume],
+          elapsed_time: Time.zone.at(@params[:elapsed_time])
         )
       end
     end

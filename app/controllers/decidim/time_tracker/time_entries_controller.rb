@@ -24,13 +24,10 @@ module Decidim
 
       def update
         # enforce_permission_to :update, :time_entries
-
         UpdateTimeEntry.call(current_time_entry, params[:time_entry]) do
           on(:ok) do |time_entry|
-            render json: { message: I18n.t("time_entries.update.success", scopre: "decidim.time_tracker"),
-                           time_entry_id: time_entry.id,
-                           time_start: time_entry.time_start,
-                           time_end: time_entry.time_end }
+            render json: { message: I18n.t("time_entries.update.success", scope: "decidim.time_tracker"),
+                           time_entry: time_entry.to_json }
           end
           on(:error) do |message|
             render json: { message: I18n.t("time_entries.update.error", scope: "decidim.time_tracker"),

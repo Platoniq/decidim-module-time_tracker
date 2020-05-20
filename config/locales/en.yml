@@ -129,11 +129,15 @@ en:
         create:
           error: Error creating time entry
           success: Success creating time entry
+        update:
+          error: Error updating time entry
+          success: Success updating time entry
       directory:
         voluntary_work:
           index:
             accepted: Accepted
             pending: Pending
+            dedicated_time: Time dedicated so far %{hours}h %{minutes}m %{seconds}s.
   layouts:
     decidim:
       user_profile:

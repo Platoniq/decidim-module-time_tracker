@@ -2,6 +2,11 @@
   <section class="section">
     <div class="card card--list">
       <% assignees.each do |assignee| %>
+        <% time_dedicated = assignee.time_dedicated?.to_i
+           seconds = ( time_dedicated / 1000 );
+           minutes = ( seconds / 60 );
+           hours = ( minutes / 60 );
+        %>
         <div class="card--list__item">
           <div class="card--list__text">
             <div>
@@ -18,7 +23,10 @@
             </div>
           </div>
           <div class="card--list__annotation">
-            Time Dedicated so far: <%= assignee.time_dedicated? / 3600000 %>h <%= assignee.time_dedicated? / 60000 %>m  <%= assignee.time_dedicated? / 1000 %>s
+            <%= t(".dedicated_time",
+                  hours: hours,
+                  minutes: minutes,
+                  seconds: seconds ) %>
           </div>
         </div>
       <% end %>
