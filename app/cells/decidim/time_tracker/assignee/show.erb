@@ -1,0 +1,49 @@
+<div id="a" class="column">
+  <article class="card card--process">
+    <a href="">
+      <img class="card__image" src="">
+    </a>
+
+    <div class="card__content">
+      <div class="card__header">
+        <a class="card__link" href="">
+          <h5 class="card__title"> <%= t(".assignees_activity", user_name: model.user.name) %> </h5>
+        </a>
+
+        <div class="author--inline">
+          <div class="collapsible-list ">
+            <div class="author-data">
+              <div class="author-data__main">
+                <div class="author author--inline">
+                  <%= link_to decidim.profile_path(model.user.nickname) do %>
+                    <span class="author__avatar">
+                      <%= image_tag model.user.avatar_url %>
+                    </span>
+                    <span class="author__name">
+                      <%= model.user.name %>  
+                    </span>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card__text">
+        <div class="card__text--paragraph">
+          <p>
+            <%= last_milestone&.description %>
+          </p>
+        </div>
+      </div>
+
+    </div>
+    <div class="card__footer card__footer--spaces">
+      <div class="card__support">
+        <div class="text-ellipsis"><strong> <%= model.time_dedicated? %></strong></div>
+        <div class="text-uppercase">Time spent</div>
+      </div>
+    </div>
+  </article>
+</div>
