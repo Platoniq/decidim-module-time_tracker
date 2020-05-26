@@ -1,5 +1,5 @@
 <%
-  assignee = Decidim::TimeTracker::Assignee.find_by(activity: activity, user: current_user)
+  assignee = current_assignee(activity)
   time_entry = last_time_entry(assignee)
 %>
 
