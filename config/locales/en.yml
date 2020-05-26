@@ -102,6 +102,7 @@ en:
           success: Success requesting to be an assignee
       assignee:
         assignees_activity: "%{user_name}'s activity"
+        dedicated_time: "%{hours}h %{minutes}m %{seconds}s."
       models:
         activity:
           fields:
