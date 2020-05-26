@@ -33,3 +33,15 @@ div#activities {
     }
   }
 }
+
+div.milestone {
+  background-color: white;
+  border: 1px solid #eee;
+  padding: 1rem;
+  margin-bottom: 1rem;
+
+  h3 {
+    color: var(--secondary);
+  }
+
+}

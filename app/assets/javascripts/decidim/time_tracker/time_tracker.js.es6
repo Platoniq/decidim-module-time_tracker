@@ -1,4 +1,6 @@
 //= require decidim/time_tracker/time_entry
+//= require decidim/time_tracker/milestone
+//= require jsrender.min
 //= require_self
 
 $(function() {
@@ -115,6 +117,30 @@ $(function() {
         },
         data: JSON.stringify({ time_entry })
       });
+
+      if (!activities[id].milestone) {
+        var milestone = new Milestone(time_entry);
+        activities[id].milestone = milestone;
+        milestone.url = button_stop.data('endpoint') + '/' + time_entry.id +  '/milestones'
+        var tmpl = $.templates("#milestone_form");
+        var html = tmpl.render(milestone);
+        var object = $("div[data-activity-id='" + id + "']").after(html);
+        var $form = object.next().find('form');
+        $form.find(':submit').click(function(event) {
+          event.preventDefault();
+
+          $.ajax({
+            type: "POST",
+            url: milestone.url,
+            contentType: "application/json",
+            headers: {
+              'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
+            },
+            data: $form.serialize() // serializes the form's elements.
+          });
+        })
+      }
+    
     });
   });
 

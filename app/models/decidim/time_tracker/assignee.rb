@@ -36,7 +36,7 @@ module Decidim
       end
 
       def time_dedicated?
-        time_entries.sum(&:elapsed_time)
+        time_entries.where.not(elapsed_time: [nil]).sum(&:elapsed_time)
       end
     end
   end

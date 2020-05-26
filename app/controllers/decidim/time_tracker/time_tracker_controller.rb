@@ -3,7 +3,13 @@
 module Decidim
   module TimeTracker
     class TimeTrackerController < Decidim::TimeTracker::ApplicationController
-      helper_method :tasks, :last_time_entry, :assignee_accepted
+      include Decidim::FormFactory
+
+      helper_method :tasks, :last_time_entry, :assignee_accepted, :assignees, :current_assignee
+
+      def index
+        @form = form(AttachmentForm).instance
+      end
 
       private
 
@@ -19,6 +25,14 @@ module Decidim
       def assignee_accepted(activity, current_user)
         assignee = Decidim::TimeTracker::Assignee.find_by(activity: activity, user: current_user)
         assignee&.status == "accepted"
+      end
+
+      def assignees
+        Assignee.joins(:activity).where("decidim_time_tracker_activities.task_id": tasks.select(:id))
+      end
+
+      def current_assignee(activity)
+        Assignee.find_by(activity: activity, user: current_user)
       end
     end
   end
