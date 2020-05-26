@@ -2,11 +2,8 @@
 
 source "https://rubygems.org"
 
-$LOAD_PATH.push File.expand_path("lib", __dir__)
-require "decidim/time_tracker/version"
-
 ruby RUBY_VERSION
-DECIDIM_VERSION = Decidim::TimeTracker::DECIDIM_VERSION
+DECIDIM_VERSION = "0.21"
 
 gem "decidim", DECIDIM_VERSION
 gem "decidim-time_tracker", path: "."
