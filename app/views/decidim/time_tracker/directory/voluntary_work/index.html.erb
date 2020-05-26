@@ -25,8 +25,8 @@
           <div class="card--list__annotation">
             <%= t(".dedicated_time",
                   hours: hours,
-                  minutes: minutes,
-                  seconds: seconds ) %>
+                  minutes: minutes % 60,
+                  seconds: seconds % 60 ) %>
           </div>
         </div>
       <% end %>
