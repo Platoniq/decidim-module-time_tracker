@@ -97,14 +97,28 @@ en:
           update:
             error: The task has not been updated.
             success: The task has been updated.
-      assignees:
-        request:
-          error: Error requesting to be an assignee
-          success: Success requesting to be an assignee
       assignee:
         assignees_activity: "%{user_name}'s activity"
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
         time_spent: Time spent
+      assignees:
+        request:
+          error: Error requesting to be an assignee
+          success: Success requesting to be an assignee
+      directory:
+        voluntary_work:
+          index:
+            accepted: Accepted
+            dedicated_time: Time dedicated so far %{hours}h %{minutes}m %{seconds}s.
+            pending: Pending
+      milestone:
+        button_no: No thanks
+        button_submit: Send milestone
+        description: Leave a proof of your work by uploading a picture and a simple
+          phrase
+        input_file: File
+        input_title: Title
+        title: Leave your mark!
       models:
         activity:
           fields:
@@ -130,13 +144,6 @@ en:
             id: Id
             name: Name
           name: Task
-      milestone:
-        title: Leave your mark!
-        description: Leave a proof of your work by uploading a picture and a simple phrase
-        input_title: Title
-        input_file: File
-        button_no: No thanks
-        button_submit: Send milestone
       time_entries:
         create:
           error: Error creating time entry
@@ -144,12 +151,6 @@ en:
         update:
           error: Error updating time entry
           success: Success updating time entry
-      directory:
-        voluntary_work:
-          index:
-            accepted: Accepted
-            pending: Pending
-            dedicated_time: Time dedicated so far %{hours}h %{minutes}m %{seconds}s.
   layouts:
     decidim:
       user_profile:
