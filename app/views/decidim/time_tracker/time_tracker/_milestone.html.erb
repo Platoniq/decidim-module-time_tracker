@@ -13,13 +13,15 @@
 
     <%= decidim_form_for(@form) do |f| %>
       <%= f.text_field :title %>
-      <%= f.upload :file %> 
+      <%= f.upload :file %>
 
       <%
-=begin%>
- <button class="button secondary hollow"> <%= t("button_no", scope: "decidim.time_tracker.milestone") %> </button> 
+=begin
+      %>
+ <button class="button secondary hollow"> <%= t("button_no", scope: "decidim.time_tracker.milestone") %> </button>
 <%
-=end%>
+=end
+%>
       <%= f.submit  t("button_submit", scope: "decidim.time_tracker.milestone") %>
     <% end %>
     </div>
