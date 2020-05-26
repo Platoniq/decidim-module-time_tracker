@@ -23,7 +23,7 @@ module Decidim
 
           CreateAssignee.call(@form, current_activity) do
             on(:ok) do
-              flash[:notice] = I18n.t("assignees.create.success", scope: "decidim.time_tracer.admin")
+              flash[:notice] = I18n.t("assignees.create.success", scope: "decidim.time_tracker.admin")
               redirect_to EngineRouter.admin_proxy(current_component).task_activity_assignees_path(current_task, current_activity)
             end
 

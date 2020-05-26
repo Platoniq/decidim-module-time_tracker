@@ -11,7 +11,7 @@ module Decidim
         attribute :name, String
         attribute :email, String
 
-        validates :name, presence: true
+        validates :name, presence: true, unless: proc { |object| object.existing_user }
         validates :email, presence: true, unless: proc { |object| object.existing_user }
         validates :user, presence: true, if: proc { |object| object.existing_user }
 

@@ -54,6 +54,7 @@ en:
             new: New assignee
           create:
             success: The assignee has been created
+            error: The assignee has not been created
           destroy:
             error: The assignee has not been removed
             succcess: The assignee has been removed
