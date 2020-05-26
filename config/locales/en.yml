@@ -100,6 +100,8 @@ en:
         request:
           error: Error requesting to be an assignee
           success: Success requesting to be an assignee
+      assignee:
+        assignees_activity: "%{user_name}'s activity"
       models:
         activity:
           fields:
@@ -125,6 +127,13 @@ en:
             id: Id
             name: Name
           name: Task
+      milestone:
+        title: Leave your mark!
+        description: Leave a proof of your work by uploading a picture and a simple phrase
+        input_title: Title
+        input_file: File
+        button_no: No thanks
+        button_submit: Send milestone
       time_entries:
         create:
           error: Error creating time entry
