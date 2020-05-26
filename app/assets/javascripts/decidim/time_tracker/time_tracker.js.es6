@@ -132,11 +132,18 @@ $(function() {
           $.ajax({
             type: "POST",
             url: milestone.url,
-            contentType: "application/json",
+            processData: false,
+            contentType: false,
             headers: {
               'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
             },
-            data: $form.serialize() // serializes the form's elements.
+            data: new FormData($form[0]), // serializes the form's elements.
+            success: function() {
+              location.reload();
+            },
+            error: function() {
+              location.reload()
+            }
           });
         })
       }

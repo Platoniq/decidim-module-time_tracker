@@ -8,7 +8,7 @@
 <div id="a" class="column">
   <article class="card card--process">
     <a href="">
-      <img class="card__image" src="">
+      <img class="card__image" src="<%= last_milestone&.attachments&.first&.url %>">
     </a>
 
     <div class="card__content">
@@ -40,7 +40,7 @@
       <div class="card__text">
         <div class="card__text--paragraph">
           <p>
-            <%= last_milestone&.description %>
+            <%= last_milestone&.title %>
           </p>
         </div>
       </div>

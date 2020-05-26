@@ -3,12 +3,18 @@
 module Decidim
   module TimeTracker
     class MilestonesController < Decidim::TimeTracker::ApplicationController
+      include Decidim::FormFactory
 
       def create
         # enforce_permission_to :create, :time_entries
 
-        CreateMilestone.call(activity, assignee, params[:time_entry]) do
-          on(:ok) do |time_entry|
+        @form = form(AttachmentForm).from_params(params)
+
+        CreateMilestone.call(@form) do
+          on(:ok) do |milestone|
+            time_entry = current_time_entry
+            time_entry.milestone = milestone
+            time_entry.save!
             render json: { message: I18n.t("time_entries.create.success", scope: "decidim.time_tracker") }
           end
           on(:error) do |message|
@@ -31,7 +37,7 @@ module Decidim
       end
 
       def current_time_entry
-        Milestone.find(params[:time_entry][:id])
+        @time_entry = TimeEntry.find(params[:time_entry_id])
       end
     end
   end
