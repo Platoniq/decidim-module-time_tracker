@@ -5,8 +5,8 @@ $LOAD_PATH.push File.expand_path("lib", __dir__)
 require "decidim/time_tracker/version"
 
 Gem::Specification.new do |s|
-  s.version = Decidim::TimeTracker.version
-  s.authors = ["Ivan Vergés"]
+  s.version = Decidim::TimeTracker::VERSION
+  s.authors = ["Ivan Vergés", "David Benabarre"]
   s.email = ["ivan@platoniq.net"]
   s.license = "AGPL-3.0"
   s.homepage = "https://github.com/decidim/decidim-module-time_tracker"
@@ -18,5 +18,5 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,lib}/**/*", "LICENSE-AGPLv3.txt", "Rakefile", "README.md"]
 
-  s.add_dependency "decidim-core", Decidim::TimeTracker.version
+  s.add_dependency "decidim-core", Decidim::TimeTracker::MIN_DECIDIM_VERSION
 end

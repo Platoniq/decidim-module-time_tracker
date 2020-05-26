@@ -2,15 +2,17 @@
 
 source "https://rubygems.org"
 
+$LOAD_PATH.push File.expand_path("lib", __dir__)
+require "decidim/time_tracker/version"
+
 ruby RUBY_VERSION
-# DECIDIM_VERSION =  { git: "https://github.com/decidim/decidim" }
-DECIDIM_VERSION = "0.20"
+DECIDIM_VERSION = Decidim::TimeTracker::DECIDIM_VERSION
 
 gem "decidim", DECIDIM_VERSION
 gem "decidim-time_tracker", path: "."
 
 gem "bootsnap", "~> 1.4"
-gem "puma", "~> 3.12.2"
+gem "puma", ">= 4.3"
 gem "uglifier", "~> 4.1"
 
 group :development, :test do
@@ -30,8 +32,4 @@ end
 
 group :test do
   gem "codecov", require: false
-  # Workaround for cc-test-reporter with SimpleCov 0.18.
-  # Stop upgrading SimpleCov until the following issue will be resolved.
-  # https://github.com/codeclimate/test-reporter/issues/418
-  gem "simplecov", "~> 0.10", "< 0.18"
 end
