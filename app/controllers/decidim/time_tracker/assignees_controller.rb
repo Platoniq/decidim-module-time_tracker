@@ -8,12 +8,12 @@ module Decidim
 
         CreateRequestAssignee.call(current_activity, current_user) do
           on(:ok) do
-            flash[:notice] = I18n.t("assignees.request.success", scope: "decidim.time_tracer")
+            flash[:notice] = I18n.t("assignees.request.success", scope: "decidim.time_tracker")
             redirect_to EngineRouter.main_proxy(current_task.component).root_path
           end
 
           on(:invalid) do
-            flash[:notice] = I18n.t("assignees.request.error", scope: "decidim.time_tracer")
+            flash[:notice] = I18n.t("assignees.request.error", scope: "decidim.time_tracker")
             redirect_to EngineRouter.main_proxy(current_task.component).root_path
           end
         end

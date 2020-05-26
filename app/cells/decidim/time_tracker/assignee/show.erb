@@ -7,15 +7,12 @@
 
 <div id="a" class="column">
   <article class="card card--process">
-    <a href="">
-      <img class="card__image" src="<%= last_milestone&.attachments&.first&.url %>">
-    </a>
-
+    <% if last_milestone&.attachments.present? %>
+      <img class="card__image" src="<%= last_milestone.attachments&.first&.url %>">
+    <% end %>
     <div class="card__content">
       <div class="card__header">
-        <a class="card__link" href="">
-          <h5 class="card__title"> <%= t(".assignees_activity", user_name: model.user.name) %> </h5>
-        </a>
+        <h5 class="card__title"> <%= t(".assignees_activity", user_name: model.user.name) %> </h5>
 
         <div class="author--inline">
           <div class="collapsible-list ">
