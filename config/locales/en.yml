@@ -105,6 +105,9 @@ en:
         request:
           error: Error requesting to be an assignee
           success: Success requesting to be an assignee
+        show:
+          assignees_activity: "%{user_name}'s activity"
+          milestones_list: List of milestones
       directory:
         voluntary_work:
           index:
@@ -151,6 +154,9 @@ en:
         update:
           error: Error updating time entry
           success: Success updating time entry
+      time_tracker:
+        index:
+          assignees_list: "Assignee's activities"
   layouts:
     decidim:
       user_profile:
