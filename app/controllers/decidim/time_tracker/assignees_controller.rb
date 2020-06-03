@@ -3,6 +3,8 @@
 module Decidim
   module TimeTracker
     class AssigneesController < Decidim::TimeTracker::ApplicationController
+      helper_method :assignee, :milestones
+
       def new
         # enforce_permission_to :create, :assignee
 
@@ -19,6 +21,9 @@ module Decidim
         end
       end
 
+      def show
+      end
+
       private
 
       def current_task
@@ -27,6 +32,14 @@ module Decidim
 
       def current_activity
         @activity = Activity.find(params[:activity_id])
+      end
+
+      def assignee
+        @assignee = Assignee.find(params[:id])
+      end
+
+      def milestones
+        @milestones = Milestone.where(id: assignee.time_entries.select(:id))
       end
     end
   end

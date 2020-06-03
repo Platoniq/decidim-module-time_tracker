@@ -1,0 +1,40 @@
+<div class="row column view-header">
+  <h2 class="heading2"> <%= t(".assignees_activity", user_name: assignee.user.name) %> </h2>
+  <div class="author-data author-data--small">
+    <div class="author-data__main">
+      <div class="author author--inline">
+        <%= link_to decidim.profile_path(assignee.user.nickname) do %>
+          <span class="author__avatar">
+            <%= image_tag assignee.user.avatar_url %>
+          </span>
+          <span class="author__name">
+            <%= assignee.user.name %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row columns large-12">
+  <h4 class="section-heading"><%= t('.milestones_list') %></h4>
+</div>
+
+<div class="row columns">
+  <% milestones.each do |milestone| %>
+    <div class="large-2">
+      <div class="card">
+      <% if milestone.attachments.present? %>
+        <img class="card__image card__image--larger" src="<%= milestone.attachments.first.url %>">
+      <% end %>
+      </div>
+      <div class="card__text">
+        <div class="card__text--paragraph">
+          <p>
+            <%= milestone.title %>
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

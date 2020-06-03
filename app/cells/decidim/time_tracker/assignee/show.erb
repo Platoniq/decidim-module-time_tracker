@@ -12,8 +12,9 @@
     <% end %>
     <div class="card__content">
       <div class="card__header">
-        <h5 class="card__title"> <%= t(".assignees_activity", user_name: model.user.name) %> </h5>
-
+        <a href="<%= Decidim::EngineRouter.main_proxy(model.activity.task.component).task_activity_assignee_path(model.activity.task, model.activity, model) %>">
+          <h5 class="card__title"> <%= t(".assignees_activity", user_name: model.user.name) %> </h5>
+        </a>
         <div class="author--inline">
           <div class="collapsible-list ">
             <div class="author-data">
