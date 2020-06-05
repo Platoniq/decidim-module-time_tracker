@@ -33,7 +33,7 @@ module Decidim
           time_end: @params[:time_end],
           time_pause: @params[:time_pause],
           time_resume: @params[:time_resume],
-          elapsed_time: Time.zone.at(@params[:elapsed_time])
+          elapsed_time: Time.zone.at(@params[:elapsed_time].to_i)
         )
       end
     end

@@ -63,6 +63,7 @@ FactoryBot.define do
     milestone { create(:milestone) }
     time_start { 1.month.ago }
     time_end { 1.month.ago }
+    elapsed_time { Time.zone.at(1.hour.ago - 1.minute.ago ) }
     validated_at { Time.zone.today }
     validated_by_user { create(:user) }
   end
