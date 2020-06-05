@@ -53,8 +53,8 @@ en:
           actions:
             new: New assignee
           create:
-            success: The assignee has been created
             error: The assignee has not been created
+            success: The assignee has been created
           destroy:
             error: The assignee has not been removed
             succcess: The assignee has been removed
@@ -156,7 +156,7 @@ en:
           success: Success updating time entry
       time_tracker:
         index:
-          assignees_list: "Assignee's activities"
+          assignees_list: Assignee's activities
   layouts:
     decidim:
       user_profile:
