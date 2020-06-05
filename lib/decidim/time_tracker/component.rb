@@ -29,12 +29,12 @@ Decidim.register_component(:time_tracker) do |component|
     settings.attribute :announcement, type: :text, translated: true, editor: true
   end
 
-  component.register_resource(:time_tracker) do |resource|
+  component.register_resource(:assignee) do |resource|
     # Register a optional resource that can be references from other resources.
-    resource.model_class_name = "Decidim::TimeTracker::Task"
+    resource.model_class_name = "Decidim::TimeTracker::Assignee"
     # TODO!:
     # resource.template = "decidim/time_tracker/time_tracker/linked_tasks"
-    # resource.card = "decidim/meetings/meeting"
+    resource.card = "decidim/time_tracker/assignee"
     # resource.actions = %w(join)
     # resource.searchable = true
   end
@@ -47,3 +47,9 @@ Decidim.register_component(:time_tracker) do |component|
   #   # Add some seeds for this component
   # end
 end
+
+Decidim.register_global_engine(
+  :decidim_time_tracker, # this is the name of the global method to access engine routes
+  ::Decidim::TimeTracker::DirectoryEngine,
+  at: "/timetracker"
+)

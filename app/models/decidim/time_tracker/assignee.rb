@@ -4,6 +4,7 @@ module Decidim
   module TimeTracker
     # The data store for an assigne in the Decidim::TimeTracker component.
     class Assignee < ApplicationRecord
+      include Decidim::Resourceable
       self.table_name = :decidim_time_tracker_assignees
 
       belongs_to :activity,
@@ -19,6 +20,25 @@ module Decidim
       belongs_to :invited_by_user,
                  class_name: "Decidim::User",
                  optional: true
+
+      # Public: Checks if the assignee is verified.
+      def accepted?
+        status == "accepted"
+      end
+
+      # Public: Checks if the assignee is rejected.
+      def rejected?
+        status == "rejected"
+      end
+
+      # Public: Checks if the assignee is pending.
+      def pending?
+        status == "pending"
+      end
+
+      def time_dedicated?
+        time_entries.where.not(elapsed_time: [nil]).sum(&:elapsed_time)
+      end
     end
   end
 end

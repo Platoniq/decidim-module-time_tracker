@@ -34,6 +34,23 @@ module Decidim
           expect(response).to redirect_to(EngineRouter.main_proxy(component).root_path)
         end
       end
+
+      describe "get #show" do
+        let(:assignee) { create(:assignee, activity: activity, user: user) }
+        let(:params) do
+          {
+            task_id: task.id,
+            activity_id: activity.id,
+            id: assignee.id
+          }
+        end
+
+        it "returns the show view" do
+          get :show, params: params
+          expect(response).to have_http_status(:ok)
+          expect(subject).to render_template(:show)
+        end
+      end
     end
   end
 end

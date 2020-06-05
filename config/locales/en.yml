@@ -53,6 +53,7 @@ en:
           actions:
             new: New assignee
           create:
+            error: The assignee has not been created
             success: The assignee has been created
           destroy:
             error: The assignee has not been removed
@@ -96,10 +97,31 @@ en:
           update:
             error: The task has not been updated.
             success: The task has been updated.
+      assignee:
+        assignees_activity: "%{user_name}'s activity"
+        dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
+        time_spent: Time spent
       assignees:
         request:
           error: Error requesting to be an assignee
           success: Success requesting to be an assignee
+        show:
+          assignees_activity: "%{user_name}'s activity"
+          milestones_list: List of milestones
+      directory:
+        voluntary_work:
+          index:
+            accepted: Accepted
+            dedicated_time: Time dedicated so far %{hours}h %{minutes}m %{seconds}s.
+            pending: Pending
+      milestone:
+        button_no: No thanks
+        button_submit: Send milestone
+        description: Leave a proof of your work by uploading a picture and a simple
+          phrase
+        input_file: File
+        input_title: Title
+        title: Leave your mark!
       models:
         activity:
           fields:
@@ -129,3 +151,13 @@ en:
         create:
           error: Error creating time entry
           success: Success creating time entry
+        update:
+          error: Error updating time entry
+          success: Success updating time entry
+      time_tracker:
+        index:
+          assignees_list: Assignee's activities
+  layouts:
+    decidim:
+      user_profile:
+        voluntary_work: My voluntary work

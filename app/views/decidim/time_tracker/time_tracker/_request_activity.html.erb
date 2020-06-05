@@ -4,7 +4,7 @@
   </div>
   <% if user_signed_in? %>
     <a id="request" href="<%= Decidim::EngineRouter.main_proxy(current_component).new_task_activity_assignee_path(activity.task, activity.id) %>" data-activity-id="<%= activity.id %>" class="columns large-3 button large">
-      <%= t('index.request', scope: "decidim.components.time_tracker.views") %>
+      <%= t("index.request", scope: "decidim.components.time_tracker.views") %>
     </a>
   <% end %>
 </div>

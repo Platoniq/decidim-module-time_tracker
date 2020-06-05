@@ -3,8 +3,7 @@
 module Decidim
   # This holds the decidim-meetings version.
   module TimeTracker
-    def self.version
-      "0.20.0"
-    end
+    VERSION = "0.2"
+    MIN_DECIDIM_VERSION = ">= 0.21"
   end
 end

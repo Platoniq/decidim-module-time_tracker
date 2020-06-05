@@ -49,7 +49,8 @@ module Decidim
           {
             id: time_entry.id,
             time_start: time_entry.time_start,
-            time_end: 1.second.ago
+            time_end: 1.second.ago,
+            elapsed_time: 1.minute.ago.to_i - 2.hours.ago.to_i
           }
         end
 
@@ -64,7 +65,7 @@ module Decidim
 
         it "updates the time entry" do
           patch :update, params: params
-          expect(JSON.parse(response.body)["time_end"].to_time.iso8601).to eq(new_time_entry[:time_end].to_time.iso8601)
+          expect(JSON.parse(JSON.parse(response.body)["time_entry"])["time_end"].to_time.iso8601).to eq(new_time_entry[:time_end].to_time.iso8601)
         end
       end
     end

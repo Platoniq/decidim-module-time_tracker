@@ -1,0 +1,34 @@
+<div class="row column voluntary-work-list">
+  <section class="section">
+    <div class="card card--list">
+      <% assignees.each do |assignee| %>
+        <% time_dedicated = assignee.time_dedicated?.to_i
+           seconds = ( time_dedicated / 1000 );
+           minutes = ( seconds / 60 );
+           hours = ( minutes / 60 ); %>
+        <div class="card--list__item">
+          <div class="card--list__text">
+            <div>
+              <h5 class="card--list__heading">
+                <%= translated_attribute assignee.activity.description %>
+              </h5>
+              <span class="text-small">
+                <% if assignee.accepted? %>
+                  <%= l(assignee.invited_at || assignee.requested_at, format: :long) %> <span class="success label"><%= t(".accepted") %></span>
+                <% else assignee.pending? %>
+                  <%= l(assignee.requested_at, format: :long) %> <span class="warning label"><%= t(".pending") %></span>
+                <% end %>
+              </span>
+            </div>
+          </div>
+          <div class="card--list__annotation">
+            <%= t(".dedicated_time",
+                  hours: hours,
+                  minutes: minutes % 60,
+                  seconds: seconds % 60 ) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+</div>
