@@ -16,6 +16,14 @@ module Decidim
             resources :assignees
           end
         end
+
+        get :time_tracker_exports, to: "time_tracker_exports#export"
+        # resource :time_tracker_exports, shallow: false do
+        #   collection do
+        #     get :export
+        #   end
+        # end
+
         root to: "tasks#index"
       end
 
