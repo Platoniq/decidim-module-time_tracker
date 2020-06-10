@@ -80,7 +80,7 @@ module Decidim
             params = {
               component: @accountability_component,
               title: task.name,
-              decidim_accountability_status_id: @not_started,
+              decidim_accountability_status_id: @not_started
             }
 
             result = Decidim.traceability.create!(
@@ -97,7 +97,7 @@ module Decidim
                 title: activity.description,
                 start_date: activity.start_date,
                 end_date: activity.end_date,
-                decidim_accountability_status_id: @not_started,
+                decidim_accountability_status_id: @not_started
               }
 
               Decidim.traceability.create!(
