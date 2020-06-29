@@ -77,33 +77,57 @@ module Decidim
 
         def export_time_tracker
           tasks.each do |task|
-            params = {
+
+            params_category = {
+              name: task.name,
+              weight: 0,
+              description: task.name,
+              participatory_space: current_participatory_space
+            }
+
+            category = Decidim.traceability.create!(
+              Decidim::Category,
+              @user,
+              params_category
+            )
+
+            status = @not_started
+            status = @work_in_progress unless task.activities.joins(:time_entries).empty?
+            status = @completed if task.activities.where("decidim_time_tracker_activities.end_date > ?", Time.zone.today).empty?
+
+            params_task = {
               component: @accountability_component,
               title: task.name,
-              decidim_accountability_status_id: @not_started
+              category: category,
+              status: @not_started
             }
 
             result = Decidim.traceability.create!(
               Decidim::Accountability::Result,
               @user,
-              params,
+              params_task,
               visibility: "all"
             )
 
             task_activities(task).each do |activity|
-              params = {
+              status = @not_started
+              status = @work_in_progress unless activity.time_entries.nil?
+              status = @completed if activity.end_date < Time.zone.today
+
+              params_activity = {
                 component: @accountability_component,
                 parent_id: result.id,
                 title: activity.description,
                 start_date: activity.start_date,
                 end_date: activity.end_date,
-                decidim_accountability_status_id: @not_started
+                category: category,
+                status: status
               }
 
               Decidim.traceability.create!(
                 Decidim::Accountability::Result,
                 @user,
-                params,
+                params_activity,
                 visibility: "all"
               )
             end
