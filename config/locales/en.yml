@@ -99,8 +99,9 @@ en:
             error: The task has not been updated.
             success: The task has been updated.
         time_tracker_exports:
-          error: Error importing the Time Tracker data to an Accountability component
-          success: Success exportint the Time Tracker data to an Accountability component
+          create:
+            error: Error importing the Time Tracker data to an Accountability component
+            success: Success exportint the Time Tracker data to an Accountability component
       assignee:
         assignees_activity: "%{user_name}'s activity"
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
