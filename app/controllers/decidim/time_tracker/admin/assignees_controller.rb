@@ -4,7 +4,8 @@ module Decidim
   module TimeTracker
     module Admin
       class AssigneesController < ApplicationController
-        helper_method :assignees, :current_task, :current_activity, :current_assignee
+        include Decidim::TimeTracker::ApplicationHelper
+        helper_method :assignees, :current_task, :current_activity, :current_assignee, :assignees_label
 
         def index
           @assignees = assignees
