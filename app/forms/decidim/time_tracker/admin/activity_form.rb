@@ -13,8 +13,10 @@ module Decidim
         attribute :start_date, Decidim::Attributes::LocalizedDate
         attribute :end_date, Decidim::Attributes::LocalizedDate
         attribute :max_minutes_per_day, Integer
+        attribute :estimated_time, Integer
         attribute :requests_start_at, Decidim::Attributes::TimeWithZone
 
+        validates :estimated_time, presence: true
         validates :max_minutes_per_day, presence: true
         validates :description, translatable_presence: true
         # TODO: validate end_date after start_date if not empty

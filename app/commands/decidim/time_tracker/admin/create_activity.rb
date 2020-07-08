@@ -28,6 +28,7 @@ module Decidim
             active: @form.active,
             start_date: @form.start_date,
             end_date: @form.end_date,
+            estimated_time: @form.estimated_time,
             max_minutes_per_day: @form.max_minutes_per_day,
             requests_start_at: @form.requests_start_at,
             task: @task

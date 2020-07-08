@@ -17,6 +17,7 @@
             <th><%= t("models.activity.fields.description", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.start_date", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.end_date", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.estimated_time", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.max_minutes_per_day", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.requests_start_at", scope: "decidim.time_tracker") %></th>
             <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker") %></th>
@@ -36,6 +37,9 @@
               </td>
               <td>
                 <%= activity.end_date %><br>
+              </td>
+              <td>
+                <%= activity.estimated_time %><br>
               </td>
               <td>
                 <%= activity.max_minutes_per_day %><br>

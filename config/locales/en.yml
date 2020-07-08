@@ -132,6 +132,7 @@ en:
           fields:
             description: Description
             end_date: End date
+            estimated_time: Estimated time in hours
             id: Id
             max_minutes_per_day: Maximum minutes per day
             requests_start_at: Requests start at
