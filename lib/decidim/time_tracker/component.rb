@@ -27,7 +27,6 @@ Decidim.register_component(:time_tracker) do |component|
     settings.attribute :assignees_label, type: :string, translated: true, editor: true
     settings.attribute :time_entries_label, type: :string, translated: true, editor: true
     settings.attribute :milestones_label, type: :string, translated: true, editor: true
-
   end
 
   component.settings(:step) do |settings|
