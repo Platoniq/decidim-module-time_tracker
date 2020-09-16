@@ -6,14 +6,14 @@ en:
         name: Time Tracker
         settings:
           global:
+            activities_label: Name for "Activities"
             announcement: Announcement
+            assignees_label: Name for "Assignees"
             max_number_of_assignees: Maximum number of assignees
+            milestones_label: Name for "Milestones"
+            tasks_label: Name for "Tasks"
+            time_entries_label: Name for "Time Entries"
             tos: Terms and conditions
-            tasks_label: 'Name for "Tasks"'
-            activities_label: 'Name for "Activities"'
-            assignees_label: 'Name for "Assignees"'
-            time_entries_label: 'Name for "Time Entries"'
-            milestones_label: 'Name for "Milestones"'
           step:
             announcement: Announcement
         views:
