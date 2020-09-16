@@ -4,8 +4,7 @@
       <% total_time_dedicated = assignees.map(&:time_dedicated?).sum.to_i
          total_seconds = (total_time_dedicated / 1000)
          total_minutes = ( total_seconds / 60 )
-         total_hours = ( total_minutes / 60 )
-        %>
+         total_hours = ( total_minutes / 60 ) %>
         <div class="card--list__data__number">
           <%= t(".dedicated_time",
                   hours: total_hours,
