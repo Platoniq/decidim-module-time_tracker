@@ -114,6 +114,8 @@ module Decidim
               status = @work_in_progress unless activity.time_entries.nil?
               status = @completed if activity.end_date < Time.zone.today
 
+              progress = activity.estimated_time * 360000   - activity.dedicated_time.to_i
+
               params_activity = {
                 component: @accountability_component,
                 parent_id: result.id,
@@ -121,7 +123,8 @@ module Decidim
                 start_date: activity.start_date,
                 end_date: activity.end_date,
                 category: category,
-                status: status
+                status: status,
+                progress: progress
               }
 
               Decidim.traceability.create!(
