@@ -101,7 +101,8 @@ en:
         time_tracker_exports:
           create:
             error: Error importing the Time Tracker data to an Accountability component
-            success: Success exportint the Time Tracker data to an Accountability component
+            success: Success exportint the Time Tracker data to an Accountability
+              component
       assignee:
         assignees_activity: "%{user_name}'s activity"
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
