@@ -4,7 +4,8 @@ module Decidim
   module TimeTracker
     module Admin
       class TasksController < Admin::ApplicationController
-        helper_method :tasks, :current_task
+        include Decidim::TimeTracker::ApplicationHelper
+        helper_method :tasks, :current_task, :tasks_label
 
         def index
           @tasks
