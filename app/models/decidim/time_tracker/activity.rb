@@ -15,6 +15,10 @@ module Decidim
 
       has_many :time_entries,
                class_name: "Decidim::TimeTracker::TimeEntry"
+
+      def dedicated_time
+        time_entries.where.not(elapsed_time: [nil]).sum(&:elapsed_time)
+      end
     end
   end
 end

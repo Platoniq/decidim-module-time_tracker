@@ -3,6 +3,7 @@
     <h2 class="card-title">
       <%= t(".title") %>
       <div class="button--title">
+        <%= link_to t("tasks.actions.export_to_accountability", scope: "decidim.time_tracker.admin", name: t("models.task.name", scope: "decidim.time_tracker.admin")), time_tracker_exports_path, class: "button tiny button--simple" %>
         <%= link_to t("tasks.actions.new", scope: "decidim.time_tracker.admin", name: tasks_label), new_task_path, class: "button tiny button--simple" %>
       </div>
     </h2>
