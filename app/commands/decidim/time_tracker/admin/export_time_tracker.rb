@@ -77,7 +77,6 @@ module Decidim
 
         def export_time_tracker
           tasks.each do |task|
-
             params_category = {
               name: task.name,
               weight: 0,
