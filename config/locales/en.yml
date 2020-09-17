@@ -6,8 +6,13 @@ en:
         name: Time Tracker
         settings:
           global:
+            activities_label: Name for "Activities"
             announcement: Announcement
+            assignees_label: Name for "Assignees"
             max_number_of_assignees: Maximum number of assignees
+            milestones_label: Name for "Milestones"
+            tasks_label: Name for "Tasks"
+            time_entries_label: Name for "Time Entries"
             tos: Terms and conditions
           step:
             announcement: Announcement
@@ -97,6 +102,11 @@ en:
           update:
             error: The task has not been updated.
             success: The task has been updated.
+        time_tracker_exports:
+          create:
+            error: Error importing the Time Tracker data to an Accountability component
+            success: Success exportint the Time Tracker data to an Accountability
+              component
       assignee:
         assignees_activity: "%{user_name}'s activity"
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
