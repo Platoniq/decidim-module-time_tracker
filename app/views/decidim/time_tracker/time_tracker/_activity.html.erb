@@ -9,13 +9,13 @@
     <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
     <div class="elapsed_time"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div id="elapsed_time" data-activity-id="elapsed_time_<%= activity.id %>" data-time-entry="<%= time_entry.to_json %>" data-elapsed-time="<%= time_entry&.elapsed_time&.to_i %>"> 0h 0m 0s </div></div>
   </div>
-  <button  id="activity-stop-<%= activity.id %>" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id) %>" data-activity-id="<%= activity.id %>" class="large-1 float-right button time-tracker-activity-stop hide">
-    <%= icon("media-stop", class: "icon icon--large", aria_label: "play", role: "img") %>
+  <button id="activity-stop-<%= activity.id %>" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id) %>" data-activity-id="<%= activity.id %>" class="danger large-1 float-right button time-tracker-activity-stop hide">
+    <%= icon("media-stop", class: "icon icon--large", aria_label: "stop", role: "img") %>
   </button>
-  <button  id="activity-pause-<%= activity.id %>" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id) %>" data-activity-id="<%= activity.id %>" class="large-1 float-right button time-tracker-activity-pause hide">
-    <%= icon("media-pause", class: "icon icon--large", aria_label: "play", role: "img") %>
+  <button id="activity-pause-<%= activity.id %>" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id) %>" data-activity-id="<%= activity.id %>" class="secondary large-1 float-right button time-tracker-activity-pause hide">
+    <%= icon("media-pause", class: "icon icon--large", aria_label: "pause", role: "img") %>
   </button>
-  <button id="activity-start-<%= activity.id %>" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id) %>" data-activity-id="<%= activity.id %>" class="large-1 float-right button time-tracker-activity-start">
+  <button id="activity-start-<%= activity.id %>" data-endpoint="<%= Decidim::EngineRouter.main_proxy(current_component).task_activity_time_entries_path(activity.task, activity.id) %>" data-activity-id="<%= activity.id %>" class="success large-1 float-right button time-tracker-activity-start">
     <%= icon("media-play", class: "icon icon--large", aria_label: "play", role: "img") %>
   </button>
 </div>
