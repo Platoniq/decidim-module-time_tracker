@@ -10,7 +10,7 @@ Decidim.register_component(:time_tracker) do |component|
 
   component.on(:before_destroy) do |instance|
     # Code executed before removing the component
-    raise StandardEerror, "Can't remove this component" if Decidim::TimeTracker::Task.where(component: instance).any?
+    raise StandardError, "Can't remove this component" if Decidim::TimeTracker::Task.where(component: instance).any?
   end
 
   # These actions permissions can be configured in the admin panel
@@ -48,13 +48,72 @@ Decidim.register_component(:time_tracker) do |component|
   #   # Register some stat number to the application
   # end
 
-  # component.seeds do |participatory_space|
-  #   # Add some seeds for this component
-  # end
-end
+  component.seeds do |participatory_space|
+    # Add some seeds for this component
+    admin_user = Decidim::User.find_by(
+      organization: participatory_space.organization,
+      email: "admin@example.org"
+    )
 
-Decidim.register_global_engine(
-  :decidim_time_tracker, # this is the name of the global method to access engine routes
-  ::Decidim::TimeTracker::DirectoryEngine,
-  at: "/timetracker"
-)
+    params = {
+      name: Decidim::Components::Namer.new(participatory_space.organization.available_locales, :time_tracker).i18n_name,
+      manifest_name: :time_tracker,
+      published_at: Time.current,
+      participatory_space: participatory_space,
+      settings: {
+        max_number_of_assignees: 10,
+        tos: Decidim::Faker::Localized.wrapped("<p>", "</p>") do
+          Decidim::Faker::Localized.paragraph(3)
+        end
+      }
+    }
+
+    component = Decidim.traceability.perform_action!(
+      "publish",
+      Decidim::Component,
+      admin_user,
+      visibility: "all"
+    ) do
+      Decidim::Component.create!(params)
+    end
+
+    # Create some tasks
+    3.times do
+      task = Decidim.traceability.create!(
+        Decidim::TimeTracker::Task,
+        admin_user,
+        name: Decidim::Faker::Localized.sentence(2),
+        component: component
+      )
+
+      # Create activites for these tasks
+      5.times do |index|
+        activity = Decidim.traceability.create!(
+          Decidim::TimeTracker::Activity,
+          admin_user,
+          description: Decidim::Faker::Localized.sentence(4),
+          active: [true, false].sample,
+          start_date: 1.week.ago + (index * 1.week),
+          end_date: 1.week.from_now + (index * 1.week),
+          max_minutes_per_day: [15, 30, 45, 60].sample,
+          requests_start_at: 1.week.ago + (index * 3.days),
+          task: task
+        )
+
+        # Add assignees
+        Decidim::User.confirmed.not_deleted.not_managed.where(admin: false).sample(10).each do |user|
+          Decidim.traceability.create!(
+            Decidim::TimeTracker::Assignee,
+            admin_user,
+            activity: activity,
+            user: user,
+            status: [:accepted, :rejected, :pending].sample,
+            invited_at: 1.week.ago,
+            invited_by_user: admin_user,
+            tos_accepted_at: [nil, Time.zone.now].sample
+          )
+        end
+      end
+    end
+  end
+end

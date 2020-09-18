@@ -2,9 +2,9 @@
 
 module Decidim
   module TimeTracker
-    # This is the engine that runs on the public interface of `decidim-meetings`.
-    # It mostly handles rendering the created meeting associated to a participatory
-    # process.
+    # This is the engine that runs on the global space for `decidim-time_tracker`.
+    # It handles stuff unrelated to participatory spaces or components
+    # Such as user space managemt
     class DirectoryEngine < ::Rails::Engine
       isolate_namespace Decidim::TimeTracker::Directory
 

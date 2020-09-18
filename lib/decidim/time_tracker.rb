@@ -13,3 +13,9 @@ module Decidim
   module TimeTracker
   end
 end
+
+Decidim.register_global_engine(
+  :decidim_time_tracker, # this is the name of the global method to access engine routes
+  ::Decidim::TimeTracker::DirectoryEngine,
+  at: "/timetracker"
+)

@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     decidim-time_tracker (0.2)
+      decidim-admin (>= 0.21)
       decidim-core (>= 0.21)
 
 GEM
