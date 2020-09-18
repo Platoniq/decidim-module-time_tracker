@@ -2,7 +2,9 @@
 
 [![Build Status](https://github.com/Platoniq/decidim-module-time_tracker/workflows/Build/badge.svg)](https://github.com/Platoniq/decidim-module-time_tracker/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9372a7def91c50d04e8c/maintainability)](https://codeclimate.com/github/Platoniq/decidim-module-time_tracker/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/9372a7def91c50d04e8c/test_coverage)](https://codeclimate.com/github/Platoniq/decidim-module-time_tracker/test_coverage)
+[![codecov](https://codecov.io/gh/Platoniq/decidim-module-time_tracker/branch/master/graph/badge.svg)](https://codecov.io/gh/Platoniq/decidim-module-time_tracker)
+
+
 
 A tool for Decidim that allows to track time spent by volunteers doing any arbitrary task.
 
@@ -118,6 +120,13 @@ SIMPLECOV=1 bundle exec rspec
 
 This will generate a folder named `coverage` in the project root which contains
 the code coverage report.
+
+### Localization
+
+If you would like to see this module in your own language, you can help with its
+translation at Crowdin:
+
+https://crowdin.com/project/decidim-module-time_tracker
 
 ## License
 
