@@ -8,13 +8,11 @@
     <% tasks.each do |task| %>
       <h2> <%= translated_attribute task.name %> </h2>
         <div id="activities">
-          <% task.activities.each do |activity| %>
-            <% if activity.active %>
-              <% if assignee_accepted(activity, current_user) %>
-                <%= render partial: "activity", locals: { activity: activity } %>
-              <% else %>
-                <%= render partial: "request_activity", locals: { activity: activity } %>
-              <% end %>
+          <% task.activities.active.each do |activity| %>
+            <% if activity.assignee_accepted? current_user %>
+              <%= render partial: "activity", locals: { activity: activity } %>
+            <% else %>
+              <%= render partial: "request_activity", locals: { activity: activity } %>
             <% end %>
           <% end %>
       </div>

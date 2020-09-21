@@ -16,8 +16,22 @@ module Decidim
       has_many :time_entries,
                class_name: "Decidim::TimeTracker::TimeEntry"
 
+      scope :active, -> { where(active: true) }
+
       def dedicated_time
         time_entries.where.not(elapsed_time: [nil]).sum(&:elapsed_time)
+      end
+
+      def assignee_pending?(user)
+        assignees.pending.where(user: user).count.positive?
+      end
+
+      def assignee_accepted?(user)
+        assignees.accepted.where(user: user).count.positive?
+      end
+
+      def assignee_rejected?(user)
+        assignees.rejected.where(user: user).count.positive?
       end
     end
   end
