@@ -18,9 +18,12 @@ module Decidim
 
       scope :active, -> { where(active: true) }
 
-      # FIXME!
-      def dedicated_time
-        time_events.where.not(elapsed_time: [nil]).sum(&:elapsed_time)
+      def user_total_seconds(user)
+        time_events.where(user: user).sum(&:total_seconds)
+      end
+
+      def user_total_seconds_for_date(user, date)
+        time_events.created_between(date.beginning_of_day, date.end_of_day).where(user: user).sum(&:total_seconds)
       end
 
       def assignee_pending?(user)

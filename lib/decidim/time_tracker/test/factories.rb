@@ -12,7 +12,7 @@ FactoryBot.define do
   factory :activity, class: "Decidim::TimeTracker::Activity" do
     task { create(:task) }
     description { Decidim::Faker::Localized.sentence(3) }
-    active { false }
+    active { true }
     start_date { 1.day.ago }
     end_date { 1.month.from_now }
     max_minutes_per_day { 60 }
