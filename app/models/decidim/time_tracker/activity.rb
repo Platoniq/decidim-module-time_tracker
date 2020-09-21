@@ -13,13 +13,14 @@ module Decidim
       has_many :assignees,
                class_name: "Decidim::TimeTracker::Assignee"
 
-      has_many :time_entries,
-               class_name: "Decidim::TimeTracker::TimeEntry"
+      has_many :time_events,
+               class_name: "Decidim::TimeTracker::TimeEvent"
 
       scope :active, -> { where(active: true) }
 
+      # FIXME!
       def dedicated_time
-        time_entries.where.not(elapsed_time: [nil]).sum(&:elapsed_time)
+        time_events.where.not(elapsed_time: [nil]).sum(&:elapsed_time)
       end
 
       def assignee_pending?(user)

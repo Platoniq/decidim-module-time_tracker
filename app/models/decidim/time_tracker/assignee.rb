@@ -10,8 +10,9 @@ module Decidim
       belongs_to :activity,
                  class_name: "Decidim::TimeTracker::Activity"
 
-      has_many :time_entries,
-               class_name: "Decidim::TimeTracker::TimeEntry"
+      has_many :time_events,
+               class_name: "Decidim::TimeTracker::TimeEvent",
+               dependent: :nullify
 
       belongs_to :user,
                  foreign_key: "decidim_user_id",

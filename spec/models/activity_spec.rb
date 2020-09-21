@@ -14,20 +14,20 @@ module Decidim
 
       context "when the activity is correctly associated" do
         let!(:assignees) { create_list(:assignee, 2, activity: activity) }
-        let!(:time_entries) { create_list(:time_entry, 3, activity: activity) }
+        let!(:time_events) { create_list(:time_event, 3, activity: activity) }
 
         it "is associated with a task" do
           expect(subject.task). to eq(task)
         end
 
         it "is associated with assignees" do
-          expect(subject.time_entries.count).to eq time_entries.count
-          expect(subject.time_entries.first.id).to eq(time_entries.first.id)
-          expect(subject.time_entries.second.id).to eq(time_entries.second.id)
-          expect(subject.time_entries.third.id).to eq(time_entries.third.id)
+          expect(subject.time_events.count).to eq time_events.count
+          expect(subject.time_events.first.id).to eq(time_events.first.id)
+          expect(subject.time_events.second.id).to eq(time_events.second.id)
+          expect(subject.time_events.third.id).to eq(time_events.third.id)
         end
 
-        it "is associated with time_entries" do
+        it "is associated with time_events" do
           expect(subject.assignees.count).to eq assignees.count
           expect(subject.assignees.first.id).to eq(assignees.first.id)
           expect(subject.assignees.second.id).to eq(assignees.second.id)
