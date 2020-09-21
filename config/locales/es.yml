@@ -164,6 +164,8 @@ es:
       time_tracker:
         index:
           assignees_list: Assignee's activities
+        request_activity:
+          assignee_pending: Already applied! Soon an admin will review your application.
   layouts:
     decidim:
       user_profile:
