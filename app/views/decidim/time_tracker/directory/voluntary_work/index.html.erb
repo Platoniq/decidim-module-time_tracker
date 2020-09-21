@@ -1,7 +1,7 @@
 <div class="row column voluntary-work-list">
   <section class="section">
     <div class="card__extra card--list__data">
-      <% total_time_dedicated = assignees.map(&:time_dedicated?).sum.to_i
+      <% total_time_dedicated = assignees.map(&:time_dedicated).sum.to_i
          total_seconds = (total_time_dedicated / 1000)
          total_minutes = ( total_seconds / 60 )
          total_hours = ( total_minutes / 60 ) %>
@@ -14,7 +14,7 @@
     </div>
     <div class="card card--list">
       <% assignees.each do |assignee| %>
-        <% time_dedicated = assignee.time_dedicated?.to_i
+        <% time_dedicated = assignee.time_dedicated.to_i
            seconds = ( time_dedicated / 1000 );
            minutes = ( seconds / 60 );
            hours = ( minutes / 60 ); %>

@@ -21,6 +21,10 @@ module Decidim
                  class_name: "Decidim::User",
                  optional: true
 
+      scope :accepted, -> { where(status: :accepted) }
+      scope :rejected, -> { where(status: :rejected) }
+      scope :pending, -> { where(status: :pending) }
+
       # Public: Checks if the assignee is verified.
       def accepted?
         status == "accepted"
@@ -36,8 +40,12 @@ module Decidim
         status == "pending"
       end
 
-      def time_dedicated?
+      def time_dedicated
         time_entries.where.not(elapsed_time: [nil]).sum(&:elapsed_time)
+      end
+
+      def time_dedicated_to(activity)
+        time_entries.where(activity: activity).not(elapsed_time: [nil]).sum(&:elapsed_time)
       end
     end
   end

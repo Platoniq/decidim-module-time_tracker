@@ -1,6 +1,6 @@
-// Controlls milestones
+// Controls milestones
 
-class Milestone {
+class Milestone { // eslint-disable-line no-unused-vars
 
   constructor() {
   }

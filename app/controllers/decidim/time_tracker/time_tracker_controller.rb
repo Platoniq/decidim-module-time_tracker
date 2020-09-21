@@ -22,11 +22,6 @@ module Decidim
         return time_entry if !time_entry.nil? && time_entry.time_end.nil?
       end
 
-      def assignee_accepted(activity, current_user)
-        assignee = Decidim::TimeTracker::Assignee.find_by(activity: activity, user: current_user)
-        assignee&.status == "accepted"
-      end
-
       def assignees
         Assignee.joins(:activity).where("decidim_time_tracker_activities.task_id": tasks.select(:id))
       end

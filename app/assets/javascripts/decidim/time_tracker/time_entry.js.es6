@@ -1,6 +1,6 @@
 // Controlls time entries
 
-class TimeEntry {
+class TimeEntry { // eslint-disable-line no-unused-vars
 
   constructor() {
     this.elapsed_time = 0;
