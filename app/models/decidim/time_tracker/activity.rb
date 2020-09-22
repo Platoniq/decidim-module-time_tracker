@@ -26,6 +26,12 @@ module Decidim
         time_events.created_between(date.beginning_of_day, date.end_of_day).where(user: user).sum(&:total_seconds)
       end
 
+      # Returns how many seconds are available for this task in the current day
+      # this can be less than the activity is allowed due the change of date
+      def remaining_seconds_for_the_day
+        [max_minutes_per_day * 60, (Time.current.end_of_day - Time.current).to_i].min
+      end
+
       def assignee_pending?(user)
         assignees.pending.where(user: user).count.positive?
       end

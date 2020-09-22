@@ -12,6 +12,7 @@ module Decidim::TimeTracker
     let(:status) { :accepted }
     let(:organization) { create :organization }
     let(:action) { :start }
+    let(:created) { 15.minutes.ago }
 
     let(:form) do
       TimeEventForm.from_params(attributes)
@@ -23,6 +24,11 @@ module Decidim::TimeTracker
         assignee: assignee,
         action: action
       }
+    end
+
+    # Mock Time.current to middle of the day, to avoid pass-day incoherences
+    before do
+      allow(Time).to receive(:current).and_return(Date.current + 12.hours)
     end
 
     context "when the user is assigned to the activity" do
@@ -91,13 +97,28 @@ module Decidim::TimeTracker
       it_behaves_like "returns error", :activity
     end
 
-    context "when last entry is a start event" do
-      before do
-        allow(Time).to receive(:current).and_return(Date.current + 12.hours)
+    context "when user is tracking another activity" do
+      let!(:prev_entry) { create(:time_event, action: :start, assignee: assignee, created_at: created) }
+
+      it "broadcasts ok" do
+        expect { subject.call }.to broadcast(:ok)
       end
 
+      it "stops the previous activity" do
+        subject.call
+        prev_last = Decidim::TimeTracker::TimeEvent.where(activity: prev_entry.activity).last_for(user)
+        last = Decidim::TimeTracker::TimeEvent.where(activity: activity).last_for(user)
+
+        expect(prev_last.action).to eq("stop")
+        expect(last.action).to eq("start")
+      end
+
+      it "creates a new entry for the new activity" do
+      end
+    end
+
+    context "when last entry is a start event" do
       let(:last_assignee) { assignee }
-      let(:created) { 15.minutes.ago }
       let!(:last_entry) { create(:time_event, action: :start, assignee: last_assignee, activity: activity, created_at: created) }
 
       context "and last assignee is not the same user" do
@@ -134,6 +155,26 @@ module Decidim::TimeTracker
 
     context "when entry is a stop event" do
       let(:action) { :stop }
+      let!(:last_entry) { create(:time_event, action: :start, assignee: assignee, activity: activity, created_at: created) }
+
+      context "when there's a previous start entry" do
+        let(:total) { (Time.current - created).to_i }
+        let!(:unrelated_entry) { create(:time_event, action: :start) }
+
+        it "broadcasts ok" do
+          expect { subject.call }.to broadcast(:ok)
+        end
+
+        it "creates a new time event" do
+          expect { subject.call }.to change { Decidim::TimeTracker::TimeEvent.count }.by(1)
+        end
+
+        it "adds the time passed since last start" do
+          subject.call
+
+          expect(Decidim::TimeTracker::TimeEvent.last_for(user).total_seconds).to eq(total)
+        end
+      end
 
       context "and there are no entries for the user" do
         let!(:last_entry) { create(:time_event, action: :start) }
@@ -148,7 +189,7 @@ module Decidim::TimeTracker
       end
 
       context "and last entry is a stop event" do
-        let!(:last_entry) { create(:time_event, action: :stop, assignee: assignee, activity: activity) }
+        let!(:last_entry) { create(:time_event, action: :stop, assignee: assignee, activity: activity, created_at: created) }
 
         it "broadcasts ok" do
           expect { subject.call }.to broadcast(:ok)
@@ -158,6 +199,10 @@ module Decidim::TimeTracker
           expect { subject.call }.to change { Decidim::TimeTracker::TimeEvent.count }.by(0)
         end
       end
+    end
+
+    context "when events are in different dates" do
+      # 
     end
   end
 end

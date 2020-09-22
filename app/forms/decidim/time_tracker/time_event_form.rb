@@ -25,6 +25,19 @@ module Decidim
         assignee.user
       end
 
+      def previous_entry
+        @previous_entry ||= TimeEvent.where(activity: activity).last_for(user)
+      end
+
+      # returns number of seconds elapsed from last entry  if it is a "start"
+      # returns zero otherwise
+      def total_seconds
+        return 0 unless previous_entry
+        return 0 if previous_entry.action != "start"
+
+        previous_entry.seconds_elapsed
+      end
+
       private
 
       def assigned_to_activity?
@@ -44,12 +57,11 @@ module Decidim
       end
 
       def user_has_time_available
-        time_entry = TimeEvent.last_for(user)
-        return false unless time_entry
-        return false if time_entry.action != action
+        return false unless previous_entry
+        return false if previous_entry.action != action
 
-        elapsed = time_entry.seconds_elapsed + activity.user_total_seconds_for_date(user, Time.current)
-        errors.add(:activity, :no_time_available) if elapsed >= (activity.max_minutes_per_day * 60)
+        elapsed = previous_entry.seconds_elapsed + activity.user_total_seconds_for_date(user, Time.current)
+        errors.add(:activity, :no_time_available) if elapsed >= activity.remaining_seconds_for_the_day
       end
     end
   end

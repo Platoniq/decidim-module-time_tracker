@@ -5,13 +5,14 @@ en:
       models:
         time_event:
           attributes:
+            activity:
+              finished: Activity has finished already
+              inactive: Activity is not active
+              no_time_available: User has reached the maximum amount of time available
+                for the day
+              not_started: Activity has not started yet
             assignee:
               unassigned: User is not assigneed to the task
-            activity:
-              inactive: Activity is not active
-              not_started: Activity has not started yet
-              finished: Activity has finished already
-              no_time_available: User has reached the maximum amount of time available for the day
   decidim:
     components:
       time_tracker:
