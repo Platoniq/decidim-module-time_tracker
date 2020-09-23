@@ -60,12 +60,8 @@ FactoryBot.define do
   factory :time_event, class: "Decidim::TimeTracker::TimeEvent" do
     assignee { create(:assignee) }
     activity { create(:activity) }
-    action { :start }
+    start { Time.current }
     user { assignee.user }
-
-    trait :stop do
-      action { :stop }
-    end
   end
 
   # Add engine factories here

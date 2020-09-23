@@ -5,6 +5,11 @@ en:
       models:
         time_event:
           attributes:
+            start:
+              date_format: Start time is not a date
+            stop:
+              date_format: Stop time is not a date
+              stop_before_start: Stop is before start
             activity:
               finished: Activity has finished already
               inactive: Activity is not active
@@ -25,7 +30,7 @@ en:
             max_number_of_assignees: Maximum number of assignees
             milestones_label: Name for "Milestones"
             tasks_label: Name for "Tasks"
-            time_entries_label: Name for "Time Entries"
+            time_events_label: Name for "Time Entries"
             tos: Terms and conditions
           step:
             announcement: Announcement
@@ -146,6 +151,10 @@ en:
         input_file: File
         input_title: Title
         title: Leave your mark!
+      commands:
+        errors:
+          time_event:
+            already_stopped: Counter already stopped
       models:
         activity:
           fields:
@@ -171,7 +180,7 @@ en:
             id: Id
             name: Name
           name: Task
-      time_entries:
+      time_events:
         create:
           error: Error creating time entry
           success: Success creating time entry

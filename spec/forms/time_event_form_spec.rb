@@ -7,29 +7,43 @@ module Decidim::TimeTracker
     subject(:form) { described_class.from_params(attributes) }
 
     let(:user) { create(:user) }
-    let(:assignee) { create(:assignee) }
+    let(:assignee) { create(:assignee, activity: activity) }
     let(:activity) { create(:activity) }
-    let(:action) { :start }
+    let(:start) { Time.current }
+    let(:stop) { nil }
 
     let(:attributes) do
       {
         activity: activity,
         user_id: user.id,
         assignee: assignee,
-        action: action
+        start: start,
+        stop: stop
       }
     end
 
     it { is_expected.to be_valid }
 
-    context "when action is stop" do
-      let(:action) { :stop }
+    context "when user is not assgined to activity" do
+      let(:assignee) { create(:assignee) }
 
-      it { is_expected.to be_valid }
+      it { is_expected.to be_invalid }
     end
 
-    context "when action is not be_valid" do
-      let(:action) { :weird_action }
+    context "when start is not a Time" do
+      let(:start) { 2134 }
+
+      it { is_expected.to be_invalid }
+    end
+
+    context "when stop is not a Time" do
+      let(:stop) { 1234 }
+
+      it { is_expected.to be_invalid }
+    end
+
+    context "when stop is lower than start" do
+      let(:stop) { Time.current - 10.minutes }
 
       it { is_expected.to be_invalid }
     end
@@ -39,7 +53,7 @@ module Decidim::TimeTracker
         {
           activity: activity,
           assignee: assignee,
-          action: action
+          start: start
         }
       end
 

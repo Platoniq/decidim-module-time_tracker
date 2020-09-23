@@ -23,7 +23,7 @@ module Decidim
       end
 
       def user_total_seconds_for_date(user, date)
-        time_events.created_between(date.beginning_of_day, date.end_of_day).where(user: user).sum(&:total_seconds)
+        time_events.started_between(date.beginning_of_day, date.end_of_day).where(user: user).sum(&:total_seconds)
       end
 
       # Returns how many seconds are available for this task in the current day

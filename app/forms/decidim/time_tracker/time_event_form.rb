@@ -8,34 +8,20 @@ module Decidim
       attribute :activity, Decidim::TimeTracker::Activity
       attribute :assignee, Decidim::TimeTracker::Assignee
       attribute :user_id, Integer
-      attribute :action, String
+      attribute :start, Integer
+      attribute :stop, Integer
 
       validates :assignee, presence: true
-      validates :action, inclusion: { in: %w(start stop) }
 
       validate :assigned_to_activity?
       validate :activity_is_active
-      validate :activity_has_started
-      validate :activity_has_not_finished
-      validate :user_has_time_available
+      validate :dates_are_valid
+      validates :stop, date: { after: ->(form) { form.start } }, if: ->(form) { form.stop.present? && form.start.present? }
 
       def user
         return Decidim::User.find(user_id) if user_id.present?
 
         assignee.user
-      end
-
-      def previous_entry
-        @previous_entry ||= TimeEvent.where(activity: activity).last_for(user)
-      end
-
-      # returns number of seconds elapsed from last entry  if it is a "start"
-      # returns zero otherwise
-      def total_seconds
-        return 0 unless previous_entry
-        return 0 if previous_entry.action != "start"
-
-        previous_entry.seconds_elapsed
       end
 
       private
@@ -48,20 +34,12 @@ module Decidim
         errors.add(:activity, :inactive) unless activity.active?
       end
 
-      def activity_has_started
-        errors.add(:activity, :not_started) if activity.start_date >= Time.current
-      end
+      def dates_are_valid
+        [:start, :stop].each do |key|
+          next unless attributes[key]
 
-      def activity_has_not_finished
-        errors.add(:activity, :finished) if activity.end_date <= Time.current
-      end
-
-      def user_has_time_available
-        return false unless previous_entry
-        return false if previous_entry.action != action
-
-        elapsed = previous_entry.seconds_elapsed + activity.user_total_seconds_for_date(user, Time.current)
-        errors.add(:activity, :no_time_available) if elapsed >= activity.remaining_seconds_for_the_day
+          errors.add(key, :date_format) unless attributes[key].is_a?(Time)
+        end
       end
     end
   end

@@ -16,8 +16,8 @@ module Decidim
                  foreign_key: "decidim_user_id",
                  class_name: "Decidim::User"
 
-      default_scope { order(created_at: :desc) }
-      scope :created_between, ->(start_date, end_date) { where("created_at >= ? AND created_at <= ?", start_date, end_date) }
+      default_scope { order(start: :desc) }
+      scope :started_between, ->(start_date, end_date) { where("start >= ? AND start <= ?", start_date.to_i, end_date.to_i) }
 
       def self.last_for(user)
         if user.is_a?(Assignee)
@@ -29,6 +29,10 @@ module Decidim
 
       def seconds_elapsed
         (Time.current - created_at).to_i
+      end
+
+      def stopped?
+        stop.to_i >= start
       end
     end
   end
