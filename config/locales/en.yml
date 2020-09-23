@@ -5,11 +5,6 @@ en:
       models:
         time_event:
           attributes:
-            start:
-              date_format: Start time is not a date
-            stop:
-              date_format: Stop time is not a date
-              stop_before_start: Stop is before start
             activity:
               finished: Activity has finished already
               inactive: Activity is not active
@@ -18,6 +13,11 @@ en:
               not_started: Activity has not started yet
             assignee:
               unassigned: User is not assigneed to the task
+            start:
+              date_format: Start time is not a date
+            stop:
+              date_format: Stop time is not a date
+              stop_before_start: Stop is before start
   decidim:
     components:
       time_tracker:
@@ -137,6 +137,10 @@ en:
         show:
           assignees_activity: "%{user_name}'s activity"
           milestones_list: List of milestones
+      commands:
+        errors:
+          time_event:
+            already_stopped: Counter already stopped
       directory:
         voluntary_work:
           index:
@@ -151,10 +155,6 @@ en:
         input_file: File
         input_title: Title
         title: Leave your mark!
-      commands:
-        errors:
-          time_event:
-            already_stopped: Counter already stopped
       models:
         activity:
           fields:
