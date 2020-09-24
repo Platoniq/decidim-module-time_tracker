@@ -34,6 +34,14 @@ module Decidim
       def stopped?
         stop.to_i >= start
       end
+
+      def start_time
+        Time.zone.at start
+      end
+
+      def stop_time
+        Time.zone.at stop
+      end
     end
   end
 end

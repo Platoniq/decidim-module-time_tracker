@@ -181,12 +181,12 @@ en:
             name: Name
           name: Task
       time_events:
-        create:
-          error: Error creating time entry
-          success: Success creating time entry
-        update:
-          error: Error updating time entry
-          success: Success updating time entry
+        start:
+          error: Error starting counter
+          success: Success starting counter
+        stop:
+          error: Error stopping counter
+          success: Success stopping counter
       time_tracker:
         index:
           assignees_list: Assignee's activities

@@ -7,9 +7,8 @@ module Decidim
       # Public: Initializes the command.
       #
       # form - A form object with the params.
-      def initialize(form, current_user)
+      def initialize(form)
         @form = form
-        @current_user = current_user
       end
 
       # Executes the command. Broadcasts these events:
@@ -35,7 +34,7 @@ module Decidim
         broadcast(:ok, @time_entry)
       end
 
-      attr_reader :current_user, :form
+      attr_reader :form
 
       private
 
