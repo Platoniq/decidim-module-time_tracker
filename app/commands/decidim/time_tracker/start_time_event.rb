@@ -20,7 +20,7 @@ module Decidim
       def call
         return broadcast(:invalid, form.errors&.first&.second) if form.invalid?
 
-        return broadcast(:ok, @time_entry) if already_active?
+        return broadcast(:already_active, @time_entry) if already_active?
 
         return broadcast(:invalid, form.errors&.first&.second) if activity_invalid?
 

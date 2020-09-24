@@ -1,11 +1,11 @@
+//= require decidim/time_tracker/timer_api
+//= require decidim/time_tracker/activity_ui
 //= require decidim/time_tracker/time_entry
 //= require decidim/time_tracker/milestone
 //= require jsrender.min
 //= require_self
 
 $(() => {
-  const $activities = $('.activity');
-  let activities = {};
 
    const updateElapsedTime = (id) => {
     const elapsed_time = activities[id].getElapsedTime
@@ -13,10 +13,65 @@ $(() => {
     const minutes = Math.floor(seconds/ 60);
     const hour = Math.floor(minutes / 60);
     $("[data-activity-id='elapsed_time_" + id +"'").html( hour % 60 + "h " + minutes % 60 + "m " + seconds % 60 + "s");
-  }
+  };
 
+
+  $(".time-tracker-activity-start").on("click", (e) => {
+    const activity = new ActivityUI(e.currentTarget);
+    const api = new TimerApi(activity.startEndpoint, activity.stopEndpoint);
+    
+    activity.showPauseStop();
+    api.start()
+      .done((data) => activity.startCounter(data))
+      .fail(activity.showError.bind(activity));
+  });
+
+
+  $(".time-tracker-activity-pause").on("click", (e) => {
+    const activity = new ActivityUI(e.currentTarget);
+    const api = new TimerApi(activity.startEndpoint, activity.stopEndpoint);
+    
+    activity.showPlayStop();
+    api.stop()
+      .done((data) => activity.stopCounter(data))
+      .fail(activity.showError.bind(activity));
+  });
+
+  $(".time-tracker-activity-stop").on("click", (e) => {
+    const activity = new ActivityUI(e.currentTarget);
+    const api = new TimerApi(activity.startEndpoint, activity.stopEndpoint);
+    
+    activity.showStart();
+    api.stop()
+      .done((data) => { 
+        activity.stopCounter(data);
+        console.log("TODO: show milestone creator");
+       })
+      .fail(activity.showError.bind(activity));
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  let activities = {};
+  const $activities = $('.activity');
   $activities.each(function() {
     const id = $(this).data('activity-id');
+    const api = new TimerApi($(this).data('start-endpoint'), $(this).data('stop-endpoint'))
 
     const last_time_entry = $("div[data-activity-id='elapsed_time_" + id + "'").data('time-entry');
     const timestamp = $("div[data-activity-id='elapsed_time_" + id + "'").data('elapsed-time'); 
@@ -51,38 +106,42 @@ $(() => {
       $button_start.addClass("hide");
       $button_pause.removeClass("hide");
       $button_stop.removeClass("hide");
-      if (!time_entry) {
-        time_entry = new TimeEntry();
-        time_entry.start();
-        activities[id] = time_entry;
-        $.ajax({
-          method: "POST",
-          url: $button_start.data('start-endpoint'),
-          contentType: "application/json",
-          headers: {
-            'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
-          },
-          success: (data) => {
-            time_entry.id = data.time_entry_id
-          },
-          error: (jq, textStatus) => {
-            console.error("error starting time",textStatus);
-          }
-        });
-      }  else if (!time_entry.interval) {
-        time_entry.resume();
-        $.ajax({
-          method: "POST",
-          url: $button_stop.data('stop-endpoint'),
-          contentType: "application/json",
-          headers: {
-            'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
-          },
-          error: (jq, textStatus) => {
-            console.error("error resuming time", textStatus);
-          }
-        });
-      }
+      api.start()
+         .done((data) => { console.log("ok", data) })
+         .fail(() => { console.log("failed") });
+
+      // if (!time_entry) {
+      //   time_entry = new TimeEntry();
+      //   time_entry.start();
+      //   activities[id] = time_entry;
+      //   $.ajax({
+      //     method: "POST",
+      //     url: $button_start.data('start-endpoint'),
+      //     contentType: "application/json",
+      //     headers: {
+      //       'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
+      //     },
+      //     success: (data) => {
+      //       time_entry.id = data.time_entry_id
+      //     },
+      //     error: (jq, textStatus) => {
+      //       console.error("error starting time",textStatus);
+      //     }
+      //   });
+      // }  else if (!time_entry.interval) {
+      //   time_entry.resume();
+      //   $.ajax({
+      //     method: "POST",
+      //     url: $button_stop.data('stop-endpoint'),
+      //     contentType: "application/json",
+      //     headers: {
+      //       'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
+      //     },
+      //     error: (jq, textStatus) => {
+      //       console.error("error resuming time", textStatus);
+      //     }
+      //   });
+      // }
 
       elapsed_time = time_entry.getElapsedTime;
       if (!time_entry.interval) {

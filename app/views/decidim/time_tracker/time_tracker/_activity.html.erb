@@ -1,21 +1,21 @@
-<%
-  assignee = current_assignee(activity)
-  time_entry = last_time_event(assignee)
-%>
-
-<div class="row activity" data-activity-id="<%= activity.id %>">
-  <div class="columns large-8">
-    <h2><%= translated_attribute activity.description %></h2>
-    <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
-    <div class="elapsed_time"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div id="elapsed_time" data-activity-id="elapsed_time_<%= activity.id %>" data-time-entry="<%= time_entry.to_json %>" data-elapsed-time="<%= time_entry&.total_seconds %>">0h 0m 0s </div></div>
+<div class="time-tracker-activity" id="activity-<%= activity.id %>" data-activity-id="<%= activity.id %>" data-start-endpoint="<%= start_endpoint(activity) %>"data-stop-endpoint="<%= stop_endpoint(activity) %>">
+  <div class="row">
+    <div class="columns large-8 medium-9">
+      <h2><%= translated_attribute activity.description %></h2>
+      <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
+      <div class="elapsed_time"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div id="elapsed_time" data-activity-id="elapsed_time_<%= activity.id %>" data-time-entry="<%= last_time_event.to_json %>" data-elapsed-time="<%= last_time_event&.total_seconds %>">0h 0m 0s </div></div>
+    </div>
+    <div class="columns large-4 medium-3">
+      <button class="danger float-right button time-tracker-activity-stop hide">
+        <%= icon("media-stop", class: "icon icon--large", aria_label: "stop", role: "img") %>
+      </button>
+      <button class="secondary float-right button time-tracker-activity-pause hide">
+        <%= icon("media-pause", class: "icon icon--large", aria_label: "pause", role: "img") %>
+      </button>
+      <button class="success float-right button time-tracker-activity-start">
+        <%= icon("media-play", class: "icon icon--large", aria_label: "play", role: "img") %>
+      </button>
+    </div>
   </div>
-  <button id="activity-stop-<%= activity.id %>" data-start-endpoint="<%= start_endpoint(activity) %>"data-stop-endpoint="<%= stop_endpoint(activity) %>" data-activity-id="<%= activity.id %>" class="danger large-1 float-right button time-tracker-activity-stop hide">
-    <%= icon("media-stop", class: "icon icon--large", aria_label: "stop", role: "img") %>
-  </button>
-  <button id="activity-pause-<%= activity.id %>" data-start-endpoint="<%= start_endpoint(activity) %>"data-stop-endpoint="<%= stop_endpoint(activity) %>" data-activity-id="<%= activity.id %>" class="secondary large-1 float-right button time-tracker-activity-pause hide">
-    <%= icon("media-pause", class: "icon icon--large", aria_label: "pause", role: "img") %>
-  </button>
-  <button id="activity-start-<%= activity.id %>" data-start-endpoint="<%= start_endpoint(activity) %>"data-stop-endpoint="<%= stop_endpoint(activity) %>" data-activity-id="<%= activity.id %>" class="success large-1 float-right button time-tracker-activity-start">
-    <%= icon("media-play", class: "icon icon--large", aria_label: "play", role: "img") %>
-  </button>
+  <div class="callout alert hide"></div>
 </div>

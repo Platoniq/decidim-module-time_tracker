@@ -18,7 +18,7 @@ module Decidim
       #
       # Returns nothing.
       def call
-        return broadcast(:invalid, I18n.t("decidim.time_tracker.commands.errors.time_event.already_stopped")) if last_entry.stopped?
+        return broadcast(:already_stopped, @last_entry) if last_entry.stopped?
 
         begin
           stop_time_event!

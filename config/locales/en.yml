@@ -137,10 +137,6 @@ en:
         show:
           assignees_activity: "%{user_name}'s activity"
           milestones_list: List of milestones
-      commands:
-        errors:
-          time_event:
-            already_stopped: Counter already stopped
       directory:
         voluntary_work:
           index:
@@ -183,10 +179,12 @@ en:
       time_events:
         start:
           error: Error starting counter
-          success: Success starting counter
+          success: Counter started succesfully
+          already_started: Counter already started
         stop:
           error: Error stopping counter
-          success: Success stopping counter
+          success: Counter stopped succesfully
+          already_stopped: Counter already stopped
       time_tracker:
         index:
           assignees_list: Assignee's activities
