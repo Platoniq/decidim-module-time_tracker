@@ -8,7 +8,8 @@ module Decidim
       helper_method :activity, :task, :assignee
 
       def start
-        # enforce_permission_to :create, :time_events
+        enforce_permission_to :start, :time_events
+
         form = form(TimeEventForm).from_params(activity: activity, assignee: assignee)
         StartTimeEvent.call(form) do
           on(:ok) do |time_event|
@@ -25,7 +26,8 @@ module Decidim
       end
 
       def stop
-        # enforce_permission_to :update, :time_events
+        enforce_permission_to :stop, :time_events
+        
         StopLastTimeEvent.call(current_user) do
           on(:ok) do |time_event|
             render json: { message: I18n.t("time_events.stop.success", scope: "decidim.time_tracker"),

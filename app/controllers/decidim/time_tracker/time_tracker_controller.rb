@@ -5,7 +5,7 @@ module Decidim
     class TimeTrackerController < Decidim::TimeTracker::ApplicationController
       include Decidim::FormFactory
 
-      helper_method :tasks, :last_time_entry, :assignee_accepted, :assignees, :current_assignee
+      helper_method :tasks, :last_time_event, :assignee_accepted, :assignees, :current_assignee, :start_endpoint, :stop_endpoint
 
       def index
         @form = form(AttachmentForm).instance
@@ -17,9 +17,10 @@ module Decidim
         Task.where(component: current_component)
       end
 
-      def last_time_entry(assignee)
-        time_entry = Decidim::TimeTracker::TimeEntry.where(assignee: assignee).last
-        return time_entry if !time_entry.nil? && time_entry.time_end.nil?
+      def last_time_event(assignee)
+        time_event = TimeEvent.last_for(assignee)
+        return unless time_event
+        return time_event if time_event.stop.blank?
       end
 
       def assignees
@@ -28,6 +29,14 @@ module Decidim
 
       def current_assignee(activity)
         Assignee.find_by(activity: activity, user: current_user)
+      end
+
+      def start_endpoint(activity)
+        Decidim::EngineRouter.main_proxy(current_component).task_activity_start_path(activity.task, activity.id)
+      end
+
+      def stop_endpoint(activity)
+        Decidim::EngineRouter.main_proxy(current_component).task_activity_stop_path(activity.task, activity.id)
       end
     end
   end

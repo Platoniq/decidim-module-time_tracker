@@ -42,11 +42,11 @@ module Decidim
       end
 
       def time_dedicated
-        time_entries.where.not(elapsed_time: [nil]).sum(&:elapsed_time)
+        time_events.sum(&:total_seconds)
       end
 
       def time_dedicated_to(activity)
-        time_entries.where(activity: activity).not(elapsed_time: [nil]).sum(&:elapsed_time)
+        time_events.where(activity: activity).sum(&:total_seconds)
       end
     end
   end

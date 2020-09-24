@@ -15,7 +15,7 @@ module Decidim
       private
 
       def last_milestone
-        model.time_entries.last&.milestone
+        Milestone.where(user: model.user).last
       end
     end
   end

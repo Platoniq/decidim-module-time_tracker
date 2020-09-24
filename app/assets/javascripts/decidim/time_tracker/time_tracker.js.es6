@@ -8,10 +8,10 @@ $(() => {
   let activities = {};
 
    const updateElapsedTime = (id) => {
-    var elapsed_time = activities[id].getElapsedTime
-    var seconds = Math.floor(elapsed_time/ (1000));
-    var minutes = Math.floor(seconds/ 60);
-    var hour = Math.floor(minutes / 60);
+    const elapsed_time = activities[id].getElapsedTime
+    const seconds = Math.floor(elapsed_time/ (1000));
+    const minutes = Math.floor(seconds/ 60);
+    const hour = Math.floor(minutes / 60);
     $("[data-activity-id='elapsed_time_" + id +"'").html( hour % 60 + "h " + minutes % 60 + "m " + seconds % 60 + "s");
   }
 
@@ -57,12 +57,11 @@ $(() => {
         activities[id] = time_entry;
         $.ajax({
           method: "POST",
-          url: $button_start.data('endpoint'),
+          url: $button_start.data('start-endpoint'),
           contentType: "application/json",
           headers: {
             'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
           },
-          data: JSON.stringify({ time_entry }),
           success: (data) => {
             time_entry.id = data.time_entry_id
           },
@@ -73,13 +72,12 @@ $(() => {
       }  else if (!time_entry.interval) {
         time_entry.resume();
         $.ajax({
-          method: "PATCH",
-          url: $button_stop.data('endpoint') + '/' + time_entry.id,
+          method: "POST",
+          url: $button_stop.data('stop-endpoint'),
           contentType: "application/json",
           headers: {
             'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
           },
-          data: JSON.stringify({ time_entry }),
           error: (jq, textStatus) => {
             console.error("error resuming time", textStatus);
           }
@@ -110,13 +108,12 @@ $(() => {
       clearInterval(time_entry.interval);
       time_entry.interval = 0;
       $.ajax({
-        method: "PATCH",
-        url: $button_stop.data('endpoint') + '/' + time_entry.id,
+        method: "POST",
+        url: $button_stop.data('stop-endpoint'),
         contentType: "application/json",
         headers: {
           'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
         },
-        data: JSON.stringify({ time_entry }),
         error: (jq, textStatus) => {
           console.error("error pausing time", textStatus);
         }
@@ -135,8 +132,8 @@ $(() => {
       clearInterval(time_entry.interval);
       time_entry.interval = -1;
       $.ajax({
-        method: "PATCH",
-        url: $button_stop.data('endpoint') + '/' + time_entry.id,
+        method: "POST",
+        url: $button_stop.data('stop-endpoint'),
         contentType: "application/json",
         headers: {
           'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
