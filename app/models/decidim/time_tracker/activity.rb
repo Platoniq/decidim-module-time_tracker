@@ -34,6 +34,10 @@ module Decidim
         @user_seconds_elapsed ||= user_total_seconds(user) + time_events.last_for(user).seconds_elapsed
       end
 
+      def counter_active_for?(user)
+        !time_events.last_for(user).stopped?
+      end
+
       # Returns how many seconds are available for this task in the current day
       # this can be less than the activity is allowed due the change of date
       def remaining_seconds_for_the_day

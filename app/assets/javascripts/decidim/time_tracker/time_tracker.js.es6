@@ -11,6 +11,11 @@ $(() => {
     const activity = new ActivityUI($activity);
     const api = new TimerApi(activity.startEndpoint, activity.stopEndpoint);
 
+    if($activity.data("counter-active")) {
+      activity.showPauseStop();
+      activity.startCounter();
+    }
+
     $activity.find(".time-tracker-activity-start").on("click", () => {
       activity.showPauseStop();
       api.start()
