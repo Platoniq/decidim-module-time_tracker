@@ -14,7 +14,8 @@
         "$": false,
         "jQuery": false,
         "Milestone": false,
-        "TimeEntry": false
+        "TimerApi": false,
+        "ActivityUI": false
     },
     "rules": {
     }

@@ -18,18 +18,26 @@ module Decidim
 
       scope :active, -> { where(active: true) }
 
+      # total number of seconds spent by the user
+      # not counting current counters
       def user_total_seconds(user)
-        @user_total_seconds ||= time_events.where(user: user).sum(&:total_seconds)
+        @user_total_seconds ||= time_events.where(user: user).sum(&:total_seconds).to_i
       end
 
       def user_total_seconds_for_date(user, date)
-        @user_total_seconds_for_date ||= time_events.started_between(date.beginning_of_day, date.end_of_day).where(user: user).sum(&:total_seconds)
+        @user_total_seconds_for_date ||= time_events.started_between(date.beginning_of_day, date.end_of_day).where(user: user).sum(&:total_seconds).to_i
+      end
+
+      # Total number of secons spent by the user
+      # and counting any possible running counters
+      def user_seconds_elapsed(user)
+        @user_seconds_elapsed ||= user_total_seconds(user) + time_events.last_for(user).seconds_elapsed
       end
 
       # Returns how many seconds are available for this task in the current day
       # this can be less than the activity is allowed due the change of date
       def remaining_seconds_for_the_day
-        [max_minutes_per_day * 60, (Time.current.end_of_day - Time.current).to_i].min
+        @remaining_seconds_for_the_day ||= [max_minutes_per_day * 60, (Time.current.end_of_day - Time.current).to_i].min
       end
 
       def assignee_pending?(user)

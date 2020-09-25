@@ -32,6 +32,7 @@ module Decidim
         sign_in user
       end
 
+      # rubocop:disable Rails/Date
       describe "post #start" do
         it "creates a new time event" do
           get :start, params: params
@@ -42,6 +43,7 @@ module Decidim
           expect(resp["time_start"].to_time).to eq(Time.current)
         end
       end
+      # rubocop:enable Rails/Date
 
       describe "post #stop" do
         let!(:time_event) { create :time_event, start: (Time.current - 1.hour), activity: activity, assignee: assignee }

@@ -83,6 +83,7 @@ module Decidim
         @time_entry = TimeEvent.where(activity: form.activity).last_for(form.user)
 
         return false unless @time_entry
+        return false if @time_entry.stopped?
 
         elapsed = (start.to_i - @time_entry.start) + form.activity.user_total_seconds_for_date(form.user, start)
         elapsed < form.activity.remaining_seconds_for_the_day

@@ -1,9 +1,13 @@
-<div class="time-tracker-activity" id="activity-<%= activity.id %>" data-activity-id="<%= activity.id %>" data-start-endpoint="<%= start_endpoint(activity) %>"data-stop-endpoint="<%= stop_endpoint(activity) %>">
+<div class="time-tracker-activity" id="activity-<%= activity.id %>"
+  data-activity-id="<%= activity.id %>"
+  data-start-endpoint="<%= start_endpoint(activity) %>"
+  data-stop-endpoint="<%= stop_endpoint(activity) %>"
+  data-elapsed-time="<%= activity.user_seconds_elapsed(current_user) %>">
   <div class="row">
     <div class="columns large-8 medium-9">
       <h2><%= translated_attribute activity.description %></h2>
       <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
-      <div class="elapsed_time"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div id="elapsed_time" data-activity-id="elapsed_time_<%= activity.id %>" data-time-entry="<%= last_time_event.to_json %>" data-elapsed-time="<%= last_time_event&.total_seconds %>">0h 0m 0s </div></div>
+      <div class="elapsed-time"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div class="elapsed-time-clock"><%= clockify_seconds(activity.user_seconds_elapsed(current_user)) %></div></div>
     </div>
     <div class="columns large-4 medium-3">
       <button class="danger float-right button time-tracker-activity-stop hide">

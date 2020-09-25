@@ -1,4 +1,4 @@
-<div class="row activity" data-activity-id="<%= activity.id %>">
+<div class="row time-tracker-activity" data-activity-id="<%= activity.id %>">
   <div class="columns large-8">
     <h2><%= translated_attribute activity.description %></h2>
   </div>
@@ -7,7 +7,7 @@
       <% if activity.assignee_pending? current_user %>
         <div class="callout warning"><%= t ".assignee_pending" %></div>
       <% else %>
-        <a id="request" href="<%= Decidim::EngineRouter.main_proxy(current_component).new_task_activity_assignee_path(activity.task, activity.id) %>" data-activity-id="<%= activity.id %>" class="button large">
+        <a id="request" href="<%= request_path(activity) %>" data-activity-id="<%= activity.id %>" class="button large">
           <%= t("index.request", scope: "decidim.components.time_tracker.views") %>
         </a>
       <% end %>

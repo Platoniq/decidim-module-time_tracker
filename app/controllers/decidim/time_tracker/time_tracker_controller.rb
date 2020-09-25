@@ -5,7 +5,7 @@ module Decidim
     class TimeTrackerController < Decidim::TimeTracker::ApplicationController
       include Decidim::FormFactory
 
-      helper_method :tasks, :last_time_event, :assignee_accepted, :assignees, :start_endpoint, :stop_endpoint
+      helper_method :tasks, :last_time_event, :assignee_accepted, :assignees, :start_endpoint, :stop_endpoint, :request_path
 
       def index
         @form = form(AttachmentForm).instance
@@ -33,6 +33,10 @@ module Decidim
 
       def stop_endpoint(activity)
         Decidim::EngineRouter.main_proxy(current_component).task_activity_stop_path(activity.task, activity.id)
+      end
+
+      def request_path(activity)
+        Decidim::EngineRouter.main_proxy(current_component).new_task_activity_assignee_path(activity.task, activity.id)
       end
     end
   end
