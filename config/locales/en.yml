@@ -178,13 +178,13 @@ en:
           name: Task
       time_events:
         start:
+          already_started: Counter already started
           error: Error starting counter
           success: Counter started succesfully
-          already_started: Counter already started
         stop:
+          already_stopped: Counter already stopped
           error: Error stopping counter
           success: Counter stopped succesfully
-          already_stopped: Counter already stopped
       time_tracker:
         index:
           assignees_list: Assignee's activities

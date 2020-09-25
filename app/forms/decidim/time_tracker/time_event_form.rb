@@ -11,6 +11,7 @@ module Decidim
       attribute :start, Integer
       attribute :stop, Integer
 
+      validates :activity, presence: true
       validates :assignee, presence: true
 
       validate :assigned_to_activity?
@@ -27,7 +28,7 @@ module Decidim
       private
 
       def assigned_to_activity?
-        errors.add(:assignee, :unassigned) unless activity.assignees.find_by(id: assignee.id)
+        errors.add(:assignee, :unassigned) unless activity.assignees.accepted.find_by(id: assignee&.id)
       end
 
       def activity_is_active

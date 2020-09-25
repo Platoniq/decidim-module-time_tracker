@@ -9,11 +9,12 @@ module Decidim::TimeTracker
     let(:user) { create :user, :confirmed }
     let(:assignee) { create :assignee, user: user, activity: activity, status: status }
 
-    let(:start_time) { 30.minutes.ago }
-    let(:stop_time) { 15.minutes.ago }
     let!(:time_event) { create :time_event, user: user, activity: activity, start: start_time.to_i }
 
+    let(:start_time) { Date.current + 12.hours - 30.minutes }
+    let(:stop_time) { Date.current + 12.hours - 15.minutes }
     # Mock Time.current to middle of the day, to avoid pass-day incoherences
+
     before do
       allow(Time).to receive(:current).and_return(Date.current + 12.hours)
     end
@@ -33,8 +34,14 @@ module Decidim::TimeTracker
 
         expect(last.stopped?).to eq(true)
         expect(last.stop).to eq(Time.current.to_i)
-        expect(last.total_seconds).not_to be(0)
+        expect(last.total_seconds).to be(30 * 60)
         expect(last.total_seconds).to be(last.stop.to_i - last.start)
+      end
+    end
+
+    shared_examples "returns already_stopped" do
+      it "broadcasts invalid" do
+        expect { subject.call }.to broadcast(:already_stopped)
       end
     end
 
@@ -51,13 +58,13 @@ module Decidim::TimeTracker
     context "when the user has not started the counter" do
       let!(:time_event) { create :time_event, user: user, activity: activity, start: start_time.to_i, stop: stop_time.to_i }
 
-      it_behaves_like "returns error"
+      it_behaves_like "returns already_stopped"
 
       context "when the last entry is not the user" do
         let!(:time_event) { create :time_event, user: user, activity: activity, start: start_time.to_i, stop: stop_time.to_i }
         let!(:another_time_event) { create :time_event, activity: activity, start: (start_time.to_i + 1), stop: (stop_time.to_i + 1) }
 
-        it_behaves_like "returns error"
+        it_behaves_like "returns already_stopped"
       end
     end
   end

@@ -4,13 +4,14 @@ require "spec_helper"
 
 module Decidim::TimeTracker
   describe StartTimeEvent do
-    let(:subject) { described_class.new(form, current_user) }
+    let(:subject) { described_class.new(form) }
     let(:activity) { create :activity, max_minutes_per_day: 60 }
     let(:user) { create :user, :confirmed, organization: organization }
     let(:assignee) { create :assignee, user: user, activity: activity, status: status }
-    let(:current_user) { user }
     let(:status) { :accepted }
     let(:organization) { create :organization }
+    let(:start_time) { Date.current + 12.hours - 30.minutes }
+    let(:stop_time) { Date.current + 12.hours - 15.minutes }
 
     let(:form) do
       TimeEventForm.from_params(attributes)
@@ -93,7 +94,7 @@ module Decidim::TimeTracker
     end
 
     context "when user is tracking another activity" do
-      let!(:prev_entry) { create(:time_event, start: 30.minutes.ago.to_i, assignee: assignee) }
+      let!(:prev_entry) { create(:time_event, start: start_time, assignee: assignee) }
 
       it_behaves_like "returns ok"
 
@@ -112,7 +113,7 @@ module Decidim::TimeTracker
 
     context "when last entry is still running" do
       let(:last_assignee) { assignee }
-      let!(:last_entry) { create(:time_event, start: 15.minutes.ago.to_i, assignee: last_assignee, activity: activity) }
+      let!(:last_entry) { create(:time_event, start: start_time, assignee: last_assignee, activity: activity) }
 
       context "and last assignee is not the same user" do
         let(:last_assignee) { create(:assignee) }
@@ -120,9 +121,15 @@ module Decidim::TimeTracker
         it_behaves_like "returns ok"
       end
 
+      context "and there's previous stopped entries" do
+        let!(:last_entry) { create(:time_event, start: start_time, stop: stop_time, assignee: last_assignee, activity: activity) }
+
+        it_behaves_like "returns ok"
+      end
+
       context "and still has minutes available for the day" do
         it "broadcasts ok" do
-          expect { subject.call }.to broadcast(:ok)
+          expect { subject.call }.to broadcast(:already_active)
         end
 
         it "do not create a new time event" do

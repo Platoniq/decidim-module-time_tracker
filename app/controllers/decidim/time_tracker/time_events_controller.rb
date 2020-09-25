@@ -21,6 +21,7 @@ module Decidim
           end
           on(:already_active) do |time_event|
             render json: { message: I18n.t("time_events.start.already_started", scope: "decidim.time_tracker"),
+                           error: I18n.t("time_events.start.already_started", scope: "decidim.time_tracker"),
                            id: time_event.id }
           end
           on(:invalid) do |message|
@@ -60,7 +61,7 @@ module Decidim
       end
 
       def assignee
-        Assignee.find_by(user: current_user.id, activity: activity.id)
+        Assignee.find_by(user: current_user, activity: activity)
       end
     end
   end

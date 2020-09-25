@@ -34,13 +34,61 @@ module Decidim
 
       # rubocop:disable Rails/Date
       describe "post #start" do
-        it "creates a new time event" do
-          get :start, params: params
-          resp = JSON.parse(response.body)
-          last = Decidim::TimeTracker::TimeEvent.last
+        context "when is a new entry" do
+          it "creates a new time event" do
+            get :start, params: params
+            expect(response).to have_http_status(:success)
 
-          expect(resp["time_entry_id"]).to eq(last.id)
-          expect(resp["time_start"].to_time).to eq(Time.current)
+            resp = JSON.parse(response.body)
+            last = Decidim::TimeTracker::TimeEvent.first # default scope is order by :desc
+
+            expect(resp["id"]).to eq(last.id)
+            expect(resp["start"]).to eq(Time.current.to_i)
+            expect(resp["start_time"].to_time).to eq(Time.current)
+          end
+        end
+
+        context "when a previous counter exists" do
+          let!(:time_event) { create(:time_event, start: (Time.current - 15.minutes), assignee: assignee, activity: activity) }
+
+          it "returns already active" do
+            get :start, params: params
+            expect(response).to have_http_status(:success)
+
+            resp = JSON.parse(response.body)
+            expect(resp["id"]).to eq(time_event.id)
+            expect(resp["error"]).to eq("Counter already started")
+          end
+        end
+
+        context "when the assignee is not in the activity" do
+          let(:assignee) { create(:assignee, user: user) }
+
+          it "returns error" do
+            get :start, params: params
+
+            expect(response).to have_http_status(:unprocessable_entity)
+          end
+        end
+
+        context "when the assignee is not accepted in the activity" do
+          let(:assignee) { create(:assignee, :pending, activity: activity, user: user) }
+
+          it "returns error" do
+            get :start, params: params
+
+            expect(response).to have_http_status(:unprocessable_entity)
+          end
+        end
+
+        context "when the assignee is not in the time window for the activity" do
+          let(:activity) { create :activity, task: task, start_date: (Time.current + 1.day) }
+
+          it "returns error" do
+            get :start, params: params
+
+            expect(response).to have_http_status(:unprocessable_entity)
+          end
         end
       end
       # rubocop:enable Rails/Date
@@ -48,15 +96,30 @@ module Decidim
       describe "post #stop" do
         let!(:time_event) { create :time_event, start: (Time.current - 1.hour), activity: activity, assignee: assignee }
 
-        it "updates the time entry" do
-          get :stop, params: params
-          resp = JSON.parse(response.body)
-          entry = JSON.parse(resp["time_entry"])
+        context "when counter is active" do
+          it "stops the time entry" do
+            get :stop, params: params
+            resp = JSON.parse(response.body)
+            entry = JSON.parse(resp["time_entry"])
 
-          expect(entry["id"]).to eq(time_event.id)
-          expect(entry["start"]).to eq(time_event.start)
-          expect(entry["stop"]).to eq(Time.current.to_i)
-          expect(entry["total_seconds"]).to eq(3600)
+            expect(response).to have_http_status(:success)
+            expect(entry["id"]).to eq(time_event.id)
+            expect(entry["start"]).to eq(time_event.start)
+            expect(entry["stop"]).to eq(Time.current.to_i)
+            expect(entry["total_seconds"]).to eq(3600)
+          end
+        end
+
+        context "when counter is stopped" do
+          let!(:time_event) { create :time_event, start: (Time.current - 1.hour), stop: (Time.current - 15.minutes), activity: activity, assignee: assignee }
+
+          it "returns already stopped" do
+            get :stop, params: params
+            expect(response).to have_http_status(:success)
+
+            resp = JSON.parse(response.body)
+            expect(resp["error"]).to eq("Counter already stopped")
+          end
         end
       end
     end
