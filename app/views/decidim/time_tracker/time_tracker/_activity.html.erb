@@ -3,7 +3,8 @@
   data-start-endpoint="<%= start_endpoint(activity) %>"
   data-stop-endpoint="<%= stop_endpoint(activity) %>"
   data-elapsed-time="<%= activity.user_seconds_elapsed(current_user) %>"
-  data-counter-active="<%= activity.counter_active_for?(current_user) %>">
+  data-counter-active="<%= activity.counter_active_for?(current_user) %>"
+  data-remaining-time="<%= activity.user_remaining_for_today(current_user) %>">
   <div class="row">
     <div class="columns large-8 medium-9">
       <h2><%= translated_attribute activity.description %></h2>

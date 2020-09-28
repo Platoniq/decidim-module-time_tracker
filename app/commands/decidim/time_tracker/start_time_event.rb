@@ -27,6 +27,7 @@ module Decidim
         begin
           stop_previous_activity
           create_time_event!
+          StopCounterJob.set(wait: form.activity.remaining_seconds_for_today.seconds).perform_later(@time_entry)
         rescue StandardError => e
           return broadcast(:invalid, e.message)
         end
@@ -60,11 +61,11 @@ module Decidim
           user: form.user,
           assignee: form.assignee,
           activity: form.activity,
-          start: start
+          start: start_time.to_i
         )
       end
 
-      def start
+      def start_time
         form.start.presence || Time.current
       end
 
@@ -72,11 +73,9 @@ module Decidim
         previous = TimeEvent.where.not(activity: form.activity).last_for(form.user)
 
         return unless previous
-        return if previous.stopped? && previous.stop.to_i < start.to_i
+        return if previous.stopped? && previous.stop.to_i < start_time.to_i
 
-        previous.stop = start.to_i
-        previous.total_seconds = previous.stop - previous.start
-        previous.save!
+        previous.stop!
       end
 
       def already_active?
@@ -85,20 +84,20 @@ module Decidim
         return false unless @time_entry
         return false if @time_entry.stopped?
 
-        elapsed = (start.to_i - @time_entry.start) + form.activity.user_total_seconds_for_date(form.user, start)
-        elapsed < form.activity.remaining_seconds_for_the_day
+        elapsed = (start_time.to_i - @time_entry.start) + form.activity.user_total_seconds_for_date(form.user, start_time)
+        elapsed < form.activity.remaining_seconds_for_today
       end
 
       def activity_started?
-        form.activity.start_date.beginning_of_day <= start
+        form.activity.start_date.beginning_of_day <= start_time
       end
 
       def activity_finished?
-        form.activity.end_date.end_of_day <= start
+        form.activity.end_date.end_of_day <= start_time
       end
 
       def time_available?
-        form.activity.user_total_seconds_for_date(form.user, start) < form.activity.remaining_seconds_for_the_day
+        form.activity.user_total_seconds_for_date(form.user, start_time) < form.activity.remaining_seconds_for_today
       end
     end
   end

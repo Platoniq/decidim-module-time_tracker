@@ -38,9 +38,7 @@ module Decidim
       end
 
       def stop_time_event!
-        last_entry.stop = Time.current.to_i
-        last_entry.total_seconds = last_entry.stop - last_entry.start
-        last_entry.save!
+        last_entry.stop!
       end
     end
   end

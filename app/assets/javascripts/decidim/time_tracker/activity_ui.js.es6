@@ -2,8 +2,12 @@ class ActivityUI { // eslint-disable-line no-unused-vars
   constructor(target) {
     this.$activity = $(target);
     this.$elapsed = this.$activity.find(".elapsed-time-clock");
+    this.$startButton = this.$activity.find(".time-tracker-activity-start");
+    this.$pauseButton = this.$activity.find(".time-tracker-activity-pause");
+    this.$stopButton = this.$activity.find(".time-tracker-activity-stop");
     this.interval = null;
     this.initTime = this.now;
+    this.onStop = $.noop;
   }
 
   get startEndpoint() {
@@ -26,22 +30,30 @@ class ActivityUI { // eslint-disable-line no-unused-vars
     this.$activity.data("elapsed-time", seconds); 
   }
 
+  get remaining() {
+    return parseInt(this.$activity.data("remaining-time"), 10);
+  }
+
+  set remaining(seconds) {
+    this.$activity.data("remaining-time", seconds); 
+  }
+
   showStart() {
-    this.$activity.find(".time-tracker-activity-start").removeClass("hide");
-    this.$activity.find(".time-tracker-activity-pause").addClass("hide");
-    this.$activity.find(".time-tracker-activity-stop").addClass("hide");
+    this.$startButton.removeClass("hide");
+    this.$pauseButton.addClass("hide");
+    this.$stopButton.addClass("hide");
   }
 
   showPauseStop() {
-    this.$activity.find(".time-tracker-activity-start").addClass("hide");
-    this.$activity.find(".time-tracker-activity-pause").removeClass("hide");
-    this.$activity.find(".time-tracker-activity-stop").removeClass("hide");
+    this.$startButton.addClass("hide");
+    this.$pauseButton.removeClass("hide");
+    this.$stopButton.removeClass("hide");
   }
 
   showPlayStop() {
-    this.$activity.find(".time-tracker-activity-start").removeClass("hide");
-    this.$activity.find(".time-tracker-activity-pause").addClass("hide");
-    this.$activity.find(".time-tracker-activity-stop").removeClass("hide");
+    this.$startButton.removeClass("hide");
+    this.$pauseButton.addClass("hide");
+    this.$stopButton.removeClass("hide");
   }
 
   showError(error) {
@@ -58,8 +70,13 @@ class ActivityUI { // eslint-disable-line no-unused-vars
   }
 
   updateElapsedTime() {
-    console.log(this.now, this.initTime, this)
-    this.$elapsed.html(this.clockifySeconds(this.elapsed + this.now - this.initTime))
+    const diff = this.now - this.initTime
+    if(this.remaining <= diff) {
+      this.stopCounter()
+      return this.onStop();
+    }
+    console.log(diff, this.remaining, this)
+    this.$elapsed.html(this.clockifySeconds(this.elapsed + diff))
   }
 
   startCounter(data) {
@@ -72,8 +89,10 @@ class ActivityUI { // eslint-disable-line no-unused-vars
   }
 
   stopCounter(data) {
+    const diff = this.now - this.initTime
     console.log("stopping counter", data)
-    this.elapsed = this.elapsed + this.now - this.initTime;
+    this.elapsed = this.elapsed + diff;
+    this.remaining = this.remaining - diff;
     clearInterval(this.interval);
   }
   

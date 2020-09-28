@@ -21,17 +21,17 @@ module Decidim
       # total number of seconds spent by the user
       # not counting current counters
       def user_total_seconds(user)
-        @user_total_seconds ||= time_events.where(user: user).sum(&:total_seconds).to_i
+        time_events.where(user: user).sum(&:total_seconds).to_i
       end
 
       def user_total_seconds_for_date(user, date)
-        @user_total_seconds_for_date ||= time_events.started_between(date.beginning_of_day, date.end_of_day).where(user: user).sum(&:total_seconds).to_i
+        time_events.started_between(date.beginning_of_day, date.end_of_day).where(user: user).sum(&:total_seconds).to_i
       end
 
       # Total number of secons spent by the user
       # and counting any possible running counters
       def user_seconds_elapsed(user)
-        @user_seconds_elapsed ||= user_total_seconds(user) + time_events.last_for(user).seconds_elapsed
+        user_total_seconds(user) + time_events.last_for(user).seconds_elapsed
       end
 
       def counter_active_for?(user)
@@ -40,8 +40,21 @@ module Decidim
 
       # Returns how many seconds are available for this task in the current day
       # this can be less than the activity is allowed due the change of date
-      def remaining_seconds_for_the_day
-        @remaining_seconds_for_the_day ||= [max_minutes_per_day * 60, (Time.current.end_of_day - Time.current).to_i].min
+      def remaining_seconds_for_today
+        @remaining_seconds_for_today ||= [max_minutes_per_day * 60, (Time.current.end_of_day - Time.current).to_i].min
+      end
+
+      # how many seconds ara available for this task and user for the current day
+      def user_remaining_for_date(user, date)
+        total_seconds = user_total_seconds_for_date(user, date)
+        remaining = max_minutes_per_day * 60
+        remaining = remaining_seconds_for_today if date.beginning_of_day == Date.current
+
+        [remaining - total_seconds, 0].max
+      end
+
+      def user_remaining_for_today(user)
+        user_remaining_for_date(user, Date.current)
       end
 
       def assignee_pending?(user)

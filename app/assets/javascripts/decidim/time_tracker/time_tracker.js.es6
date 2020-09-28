@@ -16,6 +16,10 @@ $(() => {
       activity.startCounter();
     }
 
+    activity.onStop = () => {
+      console.log("automatic stop");
+    };
+
     $activity.find(".time-tracker-activity-start").on("click", () => {
       activity.showPauseStop();
       api.start()

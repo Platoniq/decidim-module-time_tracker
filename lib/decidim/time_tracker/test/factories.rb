@@ -61,8 +61,8 @@ FactoryBot.define do
     assignee { create(:assignee) }
     activity { create(:activity) }
     start { Time.current }
+    stop { nil }
+    total_seconds { stop.present? ? (stop - start) : 0 }
     user { assignee.user }
   end
-
-  # Add engine factories here
 end

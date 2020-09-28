@@ -51,6 +51,12 @@ module Decidim
       def stop_time
         Time.zone.at stop
       end
+
+      def stop!
+        self.stop = Time.current.to_i
+        self.total_seconds = stop - start
+        save!
+      end
     end
   end
 end
