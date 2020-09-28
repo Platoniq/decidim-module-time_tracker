@@ -18,6 +18,8 @@ $(() => {
 
     activity.onStop = () => {
       console.log("automatic stop");
+      activity.showStart();
+      api.stop(); // Unnecessary if the job is working well
     };
 
     $activity.find(".time-tracker-activity-start").on("click", () => {

@@ -75,7 +75,6 @@ class ActivityUI { // eslint-disable-line no-unused-vars
       this.stopCounter()
       return this.onStop();
     }
-    console.log(diff, this.remaining, this)
     this.$elapsed.html(this.clockifySeconds(this.elapsed + diff))
   }
 
