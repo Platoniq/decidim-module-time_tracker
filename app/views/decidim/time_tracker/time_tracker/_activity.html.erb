@@ -2,6 +2,7 @@
   data-activity-id="<%= activity.id %>"
   data-start-endpoint="<%= start_endpoint(activity) %>"
   data-stop-endpoint="<%= stop_endpoint(activity) %>"
+  data-text-counter-stopped="<%= t ".counter_stopped" %>"
   data-elapsed-time="<%= activity.user_seconds_elapsed(current_user) %>"
   data-counter-active="<%= activity.counter_active_for?(current_user) %>"
   data-remaining-time="<%= activity.user_remaining_for_today(current_user) %>">
@@ -24,4 +25,6 @@
     </div>
   </div>
   <div class="callout alert hide"></div>
+
+  <%= render partial: "milestone_form" %>
 </div>

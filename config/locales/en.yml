@@ -186,6 +186,8 @@ en:
           error: Error stopping counter
           success: Counter stopped succesfully
       time_tracker:
+        activity:
+          counter_stopped: Counter has been stopped automatically
         index:
           assignees_list: Assignee's activities
         request_activity:

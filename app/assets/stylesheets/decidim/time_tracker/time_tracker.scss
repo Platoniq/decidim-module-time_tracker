@@ -14,8 +14,11 @@
     color: var(--secondary);
   }
 
-  .button + .button {
-    margin-right: 1rem;
+  .button {
+    margin-left: 1rem;
+  }
+  .button:last-child {
+    margin-left: 0;
   }
 
   .callout {
@@ -23,23 +26,28 @@
   }
 
   .elapsed-time {
-    background-color: #fafafa;
     width: max-content;
 
     .elapsed-time-clock {
       font-size: 2rem;
     }
   }
-}
 
-div.milestone {
-  background-color: white;
-  border: 1px solid #eee;
-  padding: 1rem;
-  margin-bottom: 1rem;
-
-  h3 {
-    color: var(--secondary);
+  .milestone {
+    margin: 1em;
+    padding-top: 1em;
+    border-top: 1px solid #eee;
   }
-
 }
+
+// div.milestone {
+//   background-color: white;
+//   border: 1px solid #eee;
+//   padding: 1rem;
+//   margin-bottom: 1rem;
+
+//   h3 {
+//     color: var(--secondary);
+//   }
+
+// }

@@ -14,7 +14,13 @@ module Decidim
 
       context "when the activity is correctly associated" do
         let!(:assignees) { create_list(:assignee, 2, activity: activity) }
-        let!(:time_events) { create_list(:time_event, 3, activity: activity) }
+        let!(:time_events) do
+          [
+            create(:time_event, activity: activity, start: 1000),
+            create(:time_event, activity: activity, start: 2000),
+            create(:time_event, activity: activity, start: 3000)
+          ]
+        end
 
         it "is associated with a task" do
           expect(subject.task). to eq(task)

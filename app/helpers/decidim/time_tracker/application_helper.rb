@@ -29,6 +29,7 @@ module Decidim
 
       # turns a number of seconds to a string 0h 0m 0s
       def clockify_seconds(total_seconds)
+        total_seconds = total_seconds.to_i
         hours = total_seconds / (60 * 60)
         minutes = (total_seconds / 60) % 60
         seconds = total_seconds % 60

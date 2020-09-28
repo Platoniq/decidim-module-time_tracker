@@ -8,6 +8,7 @@ $(() => {
 
   $(".time-tracker-activity").each(function() {
     const $activity = $(this);
+    const $milestone = $activity.find(".milestone");
     const activity = new ActivityUI($activity);
     const api = new TimerApi(activity.startEndpoint, activity.stopEndpoint);
 
@@ -18,6 +19,7 @@ $(() => {
 
     activity.onStop = () => {
       console.log("automatic stop");
+      activity.showError($activity.data("text-counter-stopped"));
       activity.showStart();
       api.stop(); // Unnecessary if the job is working well
     };
@@ -42,7 +44,8 @@ $(() => {
       api.stop()
         .done((data) => { 
           activity.stopCounter(data);
-          console.log("TODO: show milestone creator");
+          console.log("show milestone creator");
+          $milestone.removeClass("hide");
          })
         .fail(activity.showError.bind(activity));
     });

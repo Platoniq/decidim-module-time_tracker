@@ -23,7 +23,7 @@ class ActivityUI { // eslint-disable-line no-unused-vars
   }
 
   get elapsed() {
-    return parseInt(this.$activity.data("elapsed-time"), 10);
+    return parseInt(this.$activity.data("elapsed-time") || 0, 10);
   }
 
   set elapsed(seconds) {
@@ -31,7 +31,7 @@ class ActivityUI { // eslint-disable-line no-unused-vars
   }
 
   get remaining() {
-    return parseInt(this.$activity.data("remaining-time"), 10);
+    return parseInt(this.$activity.data("remaining-time") || 0, 10);
   }
 
   set remaining(seconds) {

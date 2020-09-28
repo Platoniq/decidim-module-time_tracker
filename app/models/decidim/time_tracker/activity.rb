@@ -31,11 +31,15 @@ module Decidim
       # Total number of secons spent by the user
       # and counting any possible running counters
       def user_seconds_elapsed(user)
-        user_total_seconds(user) + time_events.last_for(user).seconds_elapsed
+        total = user_total_seconds(user)
+        total += last_event_for(user).seconds_elapsed if last_event_for(user)
+        total
       end
 
       def counter_active_for?(user)
-        !time_events.last_for(user).stopped?
+        return false unless last_event_for(user)
+
+        !last_event_for(user).stopped?
       end
 
       # Returns how many seconds are available for this task in the current day
@@ -67,6 +71,12 @@ module Decidim
 
       def assignee_rejected?(user)
         assignees.rejected.where(user: user).count.positive?
+      end
+
+      private
+
+      def last_event_for(user)
+        time_events.last_for(user)
       end
     end
   end
