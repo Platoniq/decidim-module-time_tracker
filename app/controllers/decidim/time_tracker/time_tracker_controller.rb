@@ -5,10 +5,12 @@ module Decidim
     class TimeTrackerController < Decidim::TimeTracker::ApplicationController
       include Decidim::FormFactory
 
-      helper_method :tasks, :assignee_accepted, :assignees, :start_endpoint, :stop_endpoint, :request_path
+      helper_method :tasks, :assignee_accepted, :assignees, :start_endpoint, :stop_endpoint, :request_path, :milestones_path
 
       def index
-        @form = form(AttachmentForm).instance
+        @form = form(MilestoneForm).from_params(
+          attachment: form(AttachmentForm).instance
+        )
       end
 
       private
@@ -31,6 +33,10 @@ module Decidim
 
       def request_path(activity)
         Decidim::EngineRouter.main_proxy(current_component).new_task_activity_assignee_path(activity.task, activity.id)
+      end
+
+      def milestones_path
+        Decidim::EngineRouter.main_proxy(current_component).milestones_path
       end
     end
   end

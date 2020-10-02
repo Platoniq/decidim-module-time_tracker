@@ -10,11 +10,24 @@
     </div>
     <div class="column large-8 card-grid">
 
-    <%= decidim_form_for(@form) do |f| %>
-      <%= f.text_field :title %>
-      <%= f.upload :file %>
+    <%= decidim_form_for(@form, url: milestones_path) do |form| %>
+      <%= form.text_field :title %>
+      <%= form.hidden_field :activity_id, value: activity.id %>
 
-      <%= f.submit  t("button_submit", scope: "decidim.time_tracker.milestone") %>
+      <%= form.fields_for :attachment, @form.attachment do |nested_form| %>
+        <div class="field">
+          <%= nested_form.upload :file, optional: false %>
+          <% if @form.errors[:attachment].present? %>
+            <% @form.errors[:attachment].each do |message| %>
+              <small class="form-error is-visible">
+                <%= message %>
+              </small>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <%= form.submit  t("button_submit", scope: "decidim.time_tracker.milestone") %>
     <% end %>
     </div>
   </div>

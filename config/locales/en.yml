@@ -18,6 +18,9 @@ en:
             stop:
               date_format: Stop time is not a date
               stop_before_start: Stop is before start
+    attributes:
+      milestone:
+        title: What have you done?
   decidim:
     components:
       time_tracker:
@@ -52,6 +55,10 @@ en:
         edit: Edit
         new: New
         title: Actions
+      milestones:
+        create:
+          error: Error creating the milestone
+          success: Milestone created successfully
       admin:
         activities:
           actions:

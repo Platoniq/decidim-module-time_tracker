@@ -17,13 +17,9 @@ module Decidim
             post :start, controller: "time_events"
             post :stop, controller: "time_events"
             resources :assignees
-            resources :time_entries do
-              resources :milestones
-            end
           end
         end
-
-        resources :attachments, controller: "milestones_attachments"
+        resources :milestones
 
         root to: "time_tracker#index"
       end

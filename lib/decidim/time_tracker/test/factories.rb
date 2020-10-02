@@ -46,7 +46,7 @@ FactoryBot.define do
   end
 
   factory :milestone, class: "Decidim::TimeTracker::Milestone" do
-    component { create(:time_tracker_component) }
+    activity { create(:activity) }
     user { create(:user) }
     title { Decidim::Faker::Localized.word }
     description { Decidim::Faker::Localized.sentence(3) }
