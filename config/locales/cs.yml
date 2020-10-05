@@ -18,39 +18,39 @@ cs:
         views:
           activity:
             info: Klikněte na tlačítko pro zaznamenání času.
-            time_elapsed: 'Time elapsed:'
+            time_elapsed: 'Uplynulý čas:'
           index:
             account_message: <a href="%{sign_in_url}">Sign in with your account</a> or <a href="%{sign_up_url}">sign up</a> to participate in this activity.
-            request: Request to join activity
+            request: Žádost o připojení k aktivitě
     time_tracker:
       actions:
-        activate: Activate
-        activities: Activities
-        assignees: Assignees
-        confirm_destroy: Are you sure you want to delete this?
-        destroy: Destroy
-        edit: Edit
-        new: New
-        title: Actions
+        activate: Aktivovat
+        activities: Aktivity
+        assignees: Přiřazení
+        confirm_destroy: Opravdu to chcete odstranit?
+        destroy: Smazat
+        edit: Upravit
+        new: Nový
+        title: Akce
       admin:
         activities:
           actions:
-            new: New activity
+            new: Nová aktivita
           create:
-            error: The activity has not been created.
-            success: The activity has been created.
+            error: Aktivita nebyla vytvořena.
+            success: Aktivita byla vytvořena.
           destroy:
-            success: The activity has been deleted.
+            success: Aktivita byla smazána.
           edit:
-            title: Edit activity
-            update: Update
+            title: Upravit aktivitu
+            update: Aktualizovat
           index:
-            title: Activities
+            title: Aktivity
           new:
-            create: Create activity
-            title: New
+            create: Vytvořit aktivitu
+            title: Nová
           update:
-            error: The activity has not been updated.
+            error: Aktivita nebyla aktualizována.
             success: The activity has been updated.
         assignees:
           actions:
