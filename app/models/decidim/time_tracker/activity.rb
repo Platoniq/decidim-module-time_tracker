@@ -73,6 +73,20 @@ module Decidim
         assignees.rejected.where(user: user).count.positive?
       end
 
+      # Returns a identificative (I18n) string about the current status of activity
+      # Returns:
+      # :open if user can track time
+      # :finished if current date is passed end date
+      # :not_started if current date has not reach start date
+      # :inactive if current status is inactive
+      def current_status
+        return :inactive unless active?
+        return :not_started if start_date > Time.current.beginning_of_day
+        return :finished if end_date < Time.current.beginning_of_day
+
+        :open
+      end
+
       private
 
       def last_event_for(user)

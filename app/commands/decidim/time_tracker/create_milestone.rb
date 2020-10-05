@@ -22,11 +22,13 @@ module Decidim
       def call
         return broadcast(:invalid, form.errors) if form.invalid?
 
-        build_attachment
-        return broadcast(:invalid, form.attachment.errors) if attachment_invalid?
+        if attachment_present?
+          build_attachment
+          return broadcast(:invalid, form.attachment.errors) if attachment_invalid?
+        end
 
         transaction do
-          create_milestone
+          create_milestone!
           create_attachment if attachment_present?
         end
 
@@ -37,14 +39,18 @@ module Decidim
 
       attr_reader :form, :current_user, :milestone, :attachment
 
-      def create_milestone
-        @milestone = Decidim::TimeTracker::Milestone.create(
+      def create_milestone!
+        @milestone = Decidim::TimeTracker::Milestone.create!(
           title: form.title,
           # description: form.description,
           user: current_user,
           activity: form.activity
         )
         @attached_to = @milestone
+      end
+
+      def attachment_present?
+        @form.attachment && @form.attachment.file.present?
       end
     end
   end

@@ -39,6 +39,36 @@ module Decidim
           expect(subject.assignees.second.id).to eq(assignees.second.id)
         end
       end
+
+      context "when activity is inactive" do
+        let(:activity) { create(:activity, active: false) }
+
+        it "current status is :inactive" do
+          expect(subject.current_status).to eq(:inactive)
+        end
+      end
+
+      context "when hasn't started yet" do
+        let(:activity) { create(:activity, start_date: (Time.current.beginning_of_day + 1.day)) }
+
+        it "current status is :not_started" do
+          expect(subject.current_status).to eq(:not_started)
+        end
+      end
+
+      context "when activity has finished" do
+        let(:activity) { create(:activity, end_date: (Time.current.beginning_of_day - 1.day)) }
+
+        it "current status is :finished" do
+          expect(subject.current_status).to eq(:finished)
+        end
+      end
+
+      context "when activity is open for business" do
+        it "current status is :open" do
+          expect(subject.current_status).to eq(:open)
+        end
+      end
     end
   end
 end
