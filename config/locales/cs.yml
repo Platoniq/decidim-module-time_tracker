@@ -2,7 +2,7 @@ cs:
   decidim:
     components:
       time_tracker:
-        name: Time Tracker
+        name: Časový záznam
         settings:
           global:
             activities_label: Název pro "Aktivity"
@@ -20,7 +20,7 @@ cs:
             info: Klikněte na tlačítko pro zaznamenání času.
             time_elapsed: 'Uplynulý čas:'
           index:
-            account_message: <a href="%{sign_in_url}">Sign in with your account</a> or <a href="%{sign_up_url}">sign up</a> to participate in this activity.
+            account_message: <a href="%{sign_in_url}">Přihlaste se pomocí svého účtu</a> nebo se <a href="%{sign_up_url}">zaregistrujte</a> pro účast na této aktivitě.
             request: Žádost o připojení k aktivitě
     time_tracker:
       actions:
@@ -51,10 +51,10 @@ cs:
             title: Nová
           update:
             error: Aktivita nebyla aktualizována.
-            success: The activity has been updated.
+            success: Aktivita byla aktualizována.
         assignees:
           actions:
-            new: New assignee
+            new: Nový přiřazený
           create:
             error: The assignee has not been created
             success: The assignee has been created
