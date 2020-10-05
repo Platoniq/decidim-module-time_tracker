@@ -56,117 +56,117 @@ cs:
           actions:
             new: Nový přiřazený
           create:
-            error: The assignee has not been created
-            success: The assignee has been created
+            error: Přiřazená osoba nebyla vytvořena
+            success: Přiřazená osoba byla vytvořena
           destroy:
-            error: The assignee has not been removed
-            succcess: The assignee has been removed
+            error: Přiřazená osoba nebyla odebrána
+            succcess: Přiřazená osoba byla odebrána
           form:
-            existing_user: Existing participant
-            non_user: Non participant
-            select_user: Select a participant
-            user_type: Participant type
+            existing_user: Stávající účastník
+            non_user: Není účastníkem
+            select_user: Vybrat účastníka
+            user_type: Typ účastníka
           index:
-            title: Assignees
+            title: Přiřazení
           new:
-            create: Create assignee
-            title: New assignee to this activity
+            create: Vytvořit přiřazeného
+            title: Nový přiřazený k této aktivitě
           update:
-            error: The assignee has not been updated
-            success: The assignee has been updated
+            error: Přiřazená osoba nebyla aktualizována
+            success: Přiřazená osoba byla aktualizována
         models:
           activity:
-            name: Activity
+            name: Aktivita
           assignee:
-            name: Assignee
+            name: Přiřazený
           task:
-            name: Task
+            name: Úloha
         tasks:
           actions:
-            export_to_accountability: Export to Accountability
-            new: New task
+            export_to_accountability: Export do odpovědnosti
+            new: Nová úloha
           create:
-            error: The task has not been created.
-            success: The task has been created
+            error: Úloha nebyla vytvořena.
+            success: Úloha byla vytvořena
           destroy:
-            success: The task has been deleted.
+            success: Úloha byla smazána.
           edit:
-            title: Edit task
-            update: Update
+            title: Upravit úlohu
+            update: Aktualizovat
           index:
-            title: Tasks
+            title: Úlohy
           new:
-            create: Create task
-            title: New task
+            create: Vytvořit úlohu
+            title: Nová úloha
           update:
-            error: The task has not been updated.
-            success: The task has been updated.
+            error: Úloha nebyla aktualizována.
+            success: Úloha byla aktualizována.
         time_tracker_exports:
           create:
-            error: Error importing the Time Tracker data to an Accountability component
-            success: Success exportint the Time Tracker data to an Accountability component
+            error: Chyba při importu dat Sledování času do komponenty Zodpovědnosti
+            success: Úspěšný export dat Sledování času do komponenty Zodpovědnosti
       assignee:
-        assignees_activity: "%{user_name}'s activity"
+        assignees_activity: "Aktivita %{user_name}"
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
-        time_spent: Time spent
+        time_spent: Strávený čas
       assignees:
         request:
-          error: Error requesting to be an assignee
-          success: Success requesting to be an assignee
+          error: Chyba při požadavku být přiřazenou osobou
+          success: Úspěšný požadavek být pověřenou osobou
         show:
-          assignees_activity: "%{user_name}'s activity"
-          milestones_list: List of milestones
+          assignees_activity: "Aktivita %{user_name}"
+          milestones_list: Seznam milníků
       directory:
         voluntary_work:
           index:
-            accepted: Accepted
-            dedicated_time: Time dedicated so far %{hours}h %{minutes}m %{seconds}s.
-            pending: Pending
+            accepted: Přijato
+            dedicated_time: Dosud vyhrazený čas %{hours}h %{minutes}m %{seconds}s.
+            pending: Čekající
       milestone:
-        button_no: No thanks
-        button_submit: Send milestone
-        description: Leave a proof of your work by uploading a picture and a simple phrase
-        input_file: File
-        input_title: Title
-        title: Leave your mark!
+        button_no: Ne, děkuji
+        button_submit: Odeslat milník
+        description: Zanechte důkaz o své práci nahráním obrázku a jednoduchou frázi
+        input_file: Soubor
+        input_title: Název
+        title: Zanechte svou značku!
       models:
         activity:
           fields:
-            description: Description
-            end_date: End date
+            description: Popis
+            end_date: Datum ukončení
             id: Id
-            max_minutes_per_day: Maximum minutes per day
-            requests_start_at: Requests start at
-            start_date: Start date
-          name: Activity
+            max_minutes_per_day: Maximální počet minut za den
+            requests_start_at: Požadavky začínají v
+            start_date: Datum zahájení
+          name: Aktivita
         assignee:
           fields:
-            email: Email
+            email: E-mail
             id: Id
-            invited_at: Invited at
-            invited_by_user: Invited by user
-            name: Name
-            status: Status
-            tos_accepted_at: Terms Of Service accepted at
-          name: Assignee
+            invited_at: Pozván/a
+            invited_by_user: Pozván/a uživatelem
+            name: Jméno
+            status: Stav
+            tos_accepted_at: Podmínky služby přijaté
+          name: Přiřazený
         task:
           fields:
             id: Id
-            name: Name
-          name: Task
+            name: Jméno
+          name: Úloha
       time_entries:
         create:
-          error: Error creating time entry
-          success: Success creating time entry
+          error: Chyba při zadávání času
+          success: Úspěšné zadání času
         update:
-          error: Error updating time entry
-          success: Success updating time entry
+          error: Chyba při aktualizaci zadání času
+          success: Úspěšná aktualizace zadání času
       time_tracker:
         index:
-          assignees_list: Assignee's activities
+          assignees_list: Aktivity přiřazeného
         request_activity:
-          assignee_pending: Already applied! Soon an admin will review your application.
+          assignee_pending: Již aplikováno! Brzy správce zkontroluje vaši žádost.
   layouts:
     decidim:
       user_profile:
-        voluntary_work: My voluntary work
+        voluntary_work: Moje dobrovolnická práce
