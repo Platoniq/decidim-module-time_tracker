@@ -13,7 +13,6 @@
     "globals": {
         "$": false,
         "jQuery": false,
-        "Milestone": false,
         "TimerApi": false,
         "ActivityUI": false
     },

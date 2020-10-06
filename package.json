@@ -1,14 +1,9 @@
 {
   "name": "decidim-module-time_tracker",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A tool for Decidim that allows to track time spent by volunteers doing any arbitrary task",
-  "main": "index.js",
-  "directories": {
-    "example": "examples",
-    "lib": "lib"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint -c .eslintrc.json --ext .js,.js.es6 app/assets"
   },
   "repository": {
     "type": "git",
