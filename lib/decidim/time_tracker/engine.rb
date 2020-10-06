@@ -14,14 +14,12 @@ module Decidim
         # resources :time_tracker
         resources :tasks do
           resources :activities do
-            resources :assignees
-            resources :time_entries do
-              resources :milestones
-            end
+            post :start, controller: "time_events"
+            post :stop, controller: "time_events"
           end
         end
-
-        resources :attachments, controller: "milestones_attachments"
+        resources :milestones
+        resources :assignees
 
         root to: "time_tracker#index"
       end

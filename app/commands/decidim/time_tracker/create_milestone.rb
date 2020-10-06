@@ -4,11 +4,13 @@ module Decidim
   module TimeTracker
     # A command with all the business logic when a user creates a new milestone.
     class CreateMilestone < Rectify::Command
+      include ::Decidim::AttachmentMethods
       # Public: Initializes the command.
       #
       # form - A form object with the params.
-      def initialize(form)
+      def initialize(form, current_user)
         @form = form
+        @current_user = current_user
       end
 
       # Executes the command. Broadcasts these events:
@@ -18,14 +20,16 @@ module Decidim
       #
       # Returns nothing.
       def call
-        # return broadcast(:invalid) if form.invalid?
+        return broadcast(:invalid, form.errors) if form.invalid?
 
-        build_attachment
-        return broadcast(:invalid) if attachment_invalid?
+        if attachment_present?
+          build_attachment
+          return broadcast(:invalid, form.attachment.errors) if attachment_invalid?
+        end
 
         transaction do
-          create_milestone
-          create_attachment
+          create_milestone!
+          create_attachment if attachment_present?
         end
 
         broadcast(:ok, @milestone)
@@ -33,35 +37,20 @@ module Decidim
 
       private
 
-      attr_reader :form, :milestone, :attachment
+      attr_reader :form, :current_user, :milestone, :attachment
 
-      def attachment_invalid?
-        if attachment.invalid? && attachment.errors.has_key?(:file)
-          @form.attachment.errors.add :file, attachment.errors[:file]
-          true
-        end
-      end
-
-      def create_attachment
-        attachment.attached_to = @attached_to
-        attachment.save!
-      end
-
-      def build_attachment
-        @attachment = Attachment.new(
-          title: @form.title,
-          file: @form.file,
-          attached_to: @attached_to
-        )
-      end
-
-      def create_milestone
-        @milestone = Decidim::TimeTracker::Milestone.create(
+      def create_milestone!
+        @milestone = Decidim::TimeTracker::Milestone.create!(
           title: form.title,
+          # description: form.description,
           user: current_user,
-          component: current_component
+          activity: form.activity
         )
         @attached_to = @milestone
+      end
+
+      def attachment_present?
+        @form.attachment && @form.attachment.file.present?
       end
     end
   end

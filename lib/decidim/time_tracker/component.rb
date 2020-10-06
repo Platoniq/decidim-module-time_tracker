@@ -10,7 +10,7 @@ Decidim.register_component(:time_tracker) do |component|
 
   component.on(:before_destroy) do |instance|
     # Code executed before removing the component
-    raise StandardError, "Can't remove this component" if Decidim::TimeTracker::Task.where(component: instance).any?
+    raise StandardError, "Can't remove this component, there are tasks associated" if Decidim::TimeTracker::Task.where(component: instance).any?
   end
 
   # These actions permissions can be configured in the admin panel

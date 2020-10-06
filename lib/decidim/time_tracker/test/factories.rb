@@ -12,7 +12,7 @@ FactoryBot.define do
   factory :activity, class: "Decidim::TimeTracker::Activity" do
     task { create(:task) }
     description { Decidim::Faker::Localized.sentence(3) }
-    active { false }
+    active { true }
     start_date { 1.day.ago }
     end_date { 1.month.from_now }
     max_minutes_per_day { 60 }
@@ -46,7 +46,7 @@ FactoryBot.define do
   end
 
   factory :milestone, class: "Decidim::TimeTracker::Milestone" do
-    component { create(:time_tracker_component) }
+    activity { create(:activity) }
     user { create(:user) }
     title { Decidim::Faker::Localized.word }
     description { Decidim::Faker::Localized.sentence(3) }
@@ -57,16 +57,12 @@ FactoryBot.define do
     name { Decidim::Faker::Localized.word }
   end
 
-  factory :time_entry, class: "Decidim::TimeTracker::TimeEntry" do
+  factory :time_event, class: "Decidim::TimeTracker::TimeEvent" do
     assignee { create(:assignee) }
     activity { create(:activity) }
-    milestone { create(:milestone) }
-    time_start { 1.month.ago }
-    time_end { 1.month.ago }
-    elapsed_time { Time.zone.at(1.hour.ago - 1.minute.ago) }
-    validated_at { Time.zone.today }
-    validated_by_user { create(:user) }
+    start { Time.current }
+    stop { nil }
+    total_seconds { stop.present? ? (stop - start) : 0 }
+    user { assignee.user }
   end
-
-  # Add engine factories here
 end

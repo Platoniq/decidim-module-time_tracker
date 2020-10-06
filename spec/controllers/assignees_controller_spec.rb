@@ -18,20 +18,40 @@ module Decidim
         request.env["decidim.current_organization"] = organization
         request.env["decidim.current_participatory_space"] = participatory_space
         request.env["decidim.current_component"] = component
-        sign_in user
       end
 
-      describe "get #new" do
+      describe "get #create" do
         let(:params) do
           {
-            task_id: task.id,
             activity_id: activity.id
           }
         end
 
-        it "creates a new assignee" do
-          get :new, params: params
-          expect(response).to redirect_to(EngineRouter.main_proxy(component).root_path)
+        context "when user is signned in" do
+          before do
+            sign_in user
+          end
+
+          it "creates a new assignee" do
+            get :create, params: params
+            expect(response).to have_http_status(:ok)
+          end
+
+          context "when activity is not active" do
+            let(:activity) { create :activity, task: task, active: false }
+
+            it "do not create a new assignee" do
+              get :create, params: params
+              expect(response).to have_http_status(:unprocessable_entity)
+            end
+          end
+        end
+
+        context "when user is not logged in" do
+          it "redirects" do
+            get :create, params: params
+            expect(response).to redirect_to("/")
+          end
         end
       end
 
@@ -39,8 +59,6 @@ module Decidim
         let(:assignee) { create(:assignee, activity: activity, user: user) }
         let(:params) do
           {
-            task_id: task.id,
-            activity_id: activity.id,
             id: assignee.id
           }
         end

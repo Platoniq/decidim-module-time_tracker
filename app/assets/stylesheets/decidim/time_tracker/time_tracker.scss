@@ -4,8 +4,8 @@
 @import "decidim/time_tracker/variables";
 
 
-div#activities {
-  div.activity {
+.time-tracker {
+  &-activity, &-request {
     background-color: white;
     border: 1px solid #eee;
     padding: 1rem;
@@ -16,32 +16,40 @@ div#activities {
     }
 
     .button {
-      margin: 1rem;
-
-      &#pause {
-        background-color: var(--secondary)
-      }
+      margin-left: 1rem;
+    }
+    .button:last-child {
+      margin-left: 0;
     }
 
-    .elapsed_time {
-      background-color: #fafafa;
+    .callout {
+      margin: 0;
+    }
+
+    .elapsed-time {
       width: max-content;
 
-      #elapsed_time {
+      .elapsed-time-clock {
         font-size: 2rem;
       }
     }
+
+    .milestone {
+      margin: 1em;
+      padding-top: 1em;
+      border-top: 1px solid #eee;
+    }
   }
 }
 
-div.milestone {
-  background-color: white;
-  border: 1px solid #eee;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  // div.milestone {
+//   background-color: white;
+//   border: 1px solid #eee;
+//   padding: 1rem;
+//   margin-bottom: 1rem;
 
-  h3 {
-    color: var(--secondary);
-  }
+//   h3 {
+//     color: var(--secondary);
+//   }
 
-}
+// }

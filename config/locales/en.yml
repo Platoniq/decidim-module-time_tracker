@@ -1,5 +1,30 @@
 ---
 en:
+  activemodel:
+    attributes:
+      milestone:
+        title: What have you done?
+    errors:
+      models:
+        milestone:
+          attributes:
+            attachment:
+              needs_to_be_reattached: Needs to be reattached
+        time_event:
+          attributes:
+            activity:
+              finished: Activity has finished already
+              inactive: Activity is not active
+              no_time_available: User has reached the maximum amount of time available
+                for the day
+              not_started: Activity has not started yet
+            assignee:
+              unassigned: User is not assigneed to the task
+            start:
+              date_format: Start time is not a date
+            stop:
+              date_format: Stop time is not a date
+              stop_before_start: Stop is before start
   decidim:
     components:
       time_tracker:
@@ -12,7 +37,7 @@ en:
             max_number_of_assignees: Maximum number of assignees
             milestones_label: Name for "Milestones"
             tasks_label: Name for "Tasks"
-            time_entries_label: Name for "Time Entries"
+            time_events_label: Name for "Time Entries"
             tos: Terms and conditions
           step:
             announcement: Announcement
@@ -39,10 +64,10 @@ en:
           actions:
             new: New activity
           create:
-            error: The activity has not been created.
-            success: The activity has been created.
+            error: Error creating the activity
+            success: Activity created successfully
           destroy:
-            success: The activity has been deleted.
+            success: Activity deleted successfully
           edit:
             title: Edit activity
             update: Update
@@ -52,17 +77,17 @@ en:
             create: Create activity
             title: New
           update:
-            error: The activity has not been updated.
-            success: The activity has been updated.
+            error: Error updating activity
+            success: Activity updated successfully
         assignees:
           actions:
             new: New assignee
           create:
-            error: The assignee has not been created
-            success: The assignee has been created
+            error: Error creating assignee
+            success: Assignee created successfully
           destroy:
-            error: The assignee has not been removed
-            succcess: The assignee has been removed
+            error: Error removing assignee
+            succcess: Assignee removed successfully
           form:
             existing_user: Existing participant
             non_user: Non participant
@@ -74,8 +99,8 @@ en:
             create: Create assignee
             title: New assignee to this activity
           update:
-            error: The assignee has not been updated
-            success: The assignee has been updated
+            error: Error updating assignee
+            success: Assigne updated successfully
         models:
           activity:
             name: Activity
@@ -88,10 +113,10 @@ en:
             export_to_accountability: Export to Accountability
             new: New task
           create:
-            error: The task has not been created.
-            success: The task has been created
+            error: Error creating the task
+            success: Task created successfully
           destroy:
-            success: The task has been deleted.
+            success: Task deleted successfully
           edit:
             title: Edit task
             update: Update
@@ -101,21 +126,20 @@ en:
             create: Create task
             title: New task
           update:
-            error: The task has not been updated.
-            success: The task has been updated.
+            error: Error updating the task
+            success: Task updated successfully
         time_tracker_exports:
           create:
-            error: Error importing the Time Tracker data to an Accountability component
-            success: Success exportint the Time Tracker data to an Accountability
-              component
+            error: Error importing the Time Tracker data to accountability
+            success: Time Tracker data exported to accountability successfully
       assignee:
         assignees_activity: "%{user_name}'s activity"
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
         time_spent: Time spent
       assignees:
         request:
-          error: Error requesting to be an assignee
-          success: Success requesting to be an assignee
+          error: Activity assignation request failed!
+          success: Activity assignation request succeded!
         show:
           assignees_activity: "%{user_name}'s activity"
           milestones_list: List of milestones
@@ -133,6 +157,10 @@ en:
         input_file: File
         input_title: Title
         title: Leave your mark!
+      milestones:
+        create:
+          error: Error creating the milestone
+          success: Milestone created successfully
       models:
         activity:
           fields:
@@ -158,14 +186,22 @@ en:
             id: Id
             name: Name
           name: Task
-      time_entries:
-        create:
-          error: Error creating time entry
-          success: Success creating time entry
-        update:
-          error: Error updating time entry
-          success: Success updating time entry
+      time_events:
+        start:
+          already_started: Counter already started
+          error: Error starting counter
+          success: Counter started succesfully
+        stop:
+          already_stopped: Counter already stopped
+          error: Error stopping counter
+          success: Counter stopped succesfully
       time_tracker:
+        activity:
+          counter_stopped: Counter has been stopped automatically
+          finished: Ended on %{end_date}
+          inactive: Inactive
+          not_started: Will start on %{start_date}
+          open: Open
         index:
           assignees_list: Assignee's activities
         request_activity:

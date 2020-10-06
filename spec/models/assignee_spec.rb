@@ -14,14 +14,14 @@ module Decidim
       let(:activity) { create(:activity) }
 
       context "when the assignee is correctly associated" do
-        let!(:time_entries) { create_list(:time_entry, 3, assignee: assignee) }
+        let!(:time_events) { create_list(:time_event, 3, assignee: assignee) }
 
         it "belongs to an activity" do
           expect(subject.activity.id).to eq(activity.id)
         end
 
         it "is has time entries" do
-          expect(subject.time_entries.count).to eq(time_entries.count)
+          expect(subject.time_events.count).to eq(time_events.count)
         end
 
         it "belongs to a user" do

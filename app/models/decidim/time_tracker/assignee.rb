@@ -10,8 +10,9 @@ module Decidim
       belongs_to :activity,
                  class_name: "Decidim::TimeTracker::Activity"
 
-      has_many :time_entries,
-               class_name: "Decidim::TimeTracker::TimeEntry"
+      has_many :time_events,
+               class_name: "Decidim::TimeTracker::TimeEvent",
+               dependent: :nullify
 
       belongs_to :user,
                  foreign_key: "decidim_user_id",
@@ -41,11 +42,15 @@ module Decidim
       end
 
       def time_dedicated
-        time_entries.where.not(elapsed_time: [nil]).sum(&:elapsed_time)
+        time_events.sum(&:total_seconds)
       end
 
       def time_dedicated_to(activity)
-        time_entries.where(activity: activity).not(elapsed_time: [nil]).sum(&:elapsed_time)
+        time_events.where(activity: activity).sum(&:total_seconds)
+      end
+
+      def milestones
+        @milestones ||= Milestone.where(user: user)
       end
     end
   end
