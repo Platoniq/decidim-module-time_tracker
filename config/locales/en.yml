@@ -1,8 +1,15 @@
 ---
 en:
   activemodel:
+    attributes:
+      milestone:
+        title: What have you done?
     errors:
       models:
+        milestone:
+          attributes:
+            attachment:
+              needs_to_be_reattached: Needs to be reattached
         time_event:
           attributes:
             activity:
@@ -18,9 +25,6 @@ en:
             stop:
               date_format: Stop time is not a date
               stop_before_start: Stop is before start
-    attributes:
-      milestone:
-        title: What have you done?
   decidim:
     components:
       time_tracker:
@@ -55,10 +59,6 @@ en:
         edit: Edit
         new: New
         title: Actions
-      milestones:
-        create:
-          error: Error creating the milestone
-          success: Milestone created successfully
       admin:
         activities:
           actions:
@@ -158,6 +158,10 @@ en:
         input_file: File
         input_title: Title
         title: Leave your mark!
+      milestones:
+        create:
+          error: Error creating the milestone
+          success: Milestone created successfully
       models:
         activity:
           fields:
@@ -196,9 +200,9 @@ en:
         activity:
           counter_stopped: Counter has been stopped automatically
           finished: Ended on %{end_date}
-          open: Open
-          not_started: Will start on %{start_date}
           inactive: Inactive
+          not_started: Will start on %{start_date}
+          open: Open
         index:
           assignees_list: Assignee's activities
         request_activity:
