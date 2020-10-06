@@ -13,12 +13,18 @@ module Decidim
       #
       # Broadcasts :ok if successful, :invalid otherwise.
       def call
-        # return broadcast(:invalid)
+        begin
+          create_request_assignee
+        rescue StandardError
+          return broadcast(:invalid)
+        end
 
-        create_request_assignee
-
-        broadcast(:ok)
+        broadcast(:ok, activity)
       end
+
+      private
+
+      attr_reader :activity
 
       def create_request_assignee
         Decidim::TimeTracker::Assignee.create!(

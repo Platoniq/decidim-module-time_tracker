@@ -64,10 +64,10 @@ en:
           actions:
             new: New activity
           create:
-            error: The activity has not been created.
-            success: The activity has been created.
+            error: Error creating the activity
+            success: Activity created successfully
           destroy:
-            success: The activity has been deleted.
+            success: Activity deleted successfully
           edit:
             title: Edit activity
             update: Update
@@ -77,17 +77,17 @@ en:
             create: Create activity
             title: New
           update:
-            error: The activity has not been updated.
-            success: The activity has been updated.
+            error: Error updating activity
+            success: Activity updated successfully
         assignees:
           actions:
             new: New assignee
           create:
-            error: The assignee has not been created
-            success: The assignee has been created
+            error: Error creating assignee
+            success: Assignee created successfully
           destroy:
-            error: The assignee has not been removed
-            succcess: The assignee has been removed
+            error: Error removing assignee
+            succcess: Assignee removed successfully
           form:
             existing_user: Existing participant
             non_user: Non participant
@@ -99,8 +99,8 @@ en:
             create: Create assignee
             title: New assignee to this activity
           update:
-            error: The assignee has not been updated
-            success: The assignee has been updated
+            error: Error updating assignee
+            success: Assigne updated successfully
         models:
           activity:
             name: Activity

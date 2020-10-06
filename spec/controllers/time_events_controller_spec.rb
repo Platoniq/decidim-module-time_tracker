@@ -44,7 +44,7 @@ module Decidim
 
             expect(resp["id"]).to eq(last.id)
             expect(resp["start"]).to eq(Time.current.to_i)
-            expect(resp["start_time"].to_time).to eq(Time.current)
+            expect(resp["startTime"].to_time).to eq(Time.current)
           end
         end
 
@@ -100,7 +100,7 @@ module Decidim
           it "stops the time entry" do
             get :stop, params: params
             resp = JSON.parse(response.body)
-            entry = JSON.parse(resp["time_entry"])
+            entry = JSON.parse(resp["timeEvent"])
 
             expect(response).to have_http_status(:success)
             expect(entry["id"]).to eq(time_event.id)
