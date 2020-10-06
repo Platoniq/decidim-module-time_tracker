@@ -1,4 +1,28 @@
 cs:
+  activemodel:
+    attributes:
+      milestone:
+        title: What have you done?
+    errors:
+      models:
+        milestone:
+          attributes:
+            attachment:
+              needs_to_be_reattached: Needs to be reattached
+        time_event:
+          attributes:
+            activity:
+              finished: Activity has finished already
+              inactive: Activity is not active
+              no_time_available: User has reached the maximum amount of time available for the day
+              not_started: Activity has not started yet
+            assignee:
+              unassigned: User is not assigneed to the task
+            start:
+              date_format: Start time is not a date
+            stop:
+              date_format: Stop time is not a date
+              stop_before_start: Stop is before start
   decidim:
     components:
       time_tracker:
@@ -11,7 +35,7 @@ cs:
             max_number_of_assignees: Maximální počet přiřazených osob
             milestones_label: Název pro "Milníky"
             tasks_label: Název pro "Úkoly"
-            time_entries_label: Název pro "Časové záznamy"
+            time_events_label: Name for "Time Entries"
             tos: Podmínky používání
           step:
             announcement: Oznámení
@@ -37,10 +61,10 @@ cs:
           actions:
             new: Nová aktivita
           create:
-            error: Aktivita nebyla vytvořena.
-            success: Aktivita byla vytvořena.
+            error: Error creating the activity
+            success: Activity created successfully
           destroy:
-            success: Aktivita byla smazána.
+            success: Activity deleted successfully
           edit:
             title: Upravit aktivitu
             update: Aktualizovat
@@ -50,17 +74,17 @@ cs:
             create: Vytvořit aktivitu
             title: Nová
           update:
-            error: Aktivita nebyla aktualizována.
-            success: Aktivita byla aktualizována.
+            error: Error updating activity
+            success: Activity updated successfully
         assignees:
           actions:
             new: Nový přiřazený
           create:
-            error: Přiřazená osoba nebyla vytvořena
-            success: Přiřazená osoba byla vytvořena
+            error: Error creating assignee
+            success: Assignee created successfully
           destroy:
-            error: Přiřazená osoba nebyla odebrána
-            succcess: Přiřazená osoba byla odebrána
+            error: Error removing assignee
+            succcess: Assignee removed successfully
           form:
             existing_user: Stávající účastník
             non_user: Není účastníkem
@@ -72,8 +96,8 @@ cs:
             create: Vytvořit přiřazeného
             title: Nový přiřazený k této aktivitě
           update:
-            error: Přiřazená osoba nebyla aktualizována
-            success: Přiřazená osoba byla aktualizována
+            error: Error updating assignee
+            success: Assigne updated successfully
         models:
           activity:
             name: Aktivita
@@ -86,10 +110,10 @@ cs:
             export_to_accountability: Export do odpovědnosti
             new: Nová úloha
           create:
-            error: Úloha nebyla vytvořena.
-            success: Úloha byla vytvořena
+            error: Error creating the task
+            success: Task created successfully
           destroy:
-            success: Úloha byla smazána.
+            success: Task deleted successfully
           edit:
             title: Upravit úlohu
             update: Aktualizovat
@@ -99,20 +123,20 @@ cs:
             create: Vytvořit úlohu
             title: Nová úloha
           update:
-            error: Úloha nebyla aktualizována.
-            success: Úloha byla aktualizována.
+            error: Error updating the task
+            success: Task updated successfully
         time_tracker_exports:
           create:
-            error: Chyba při importu dat Sledování času do komponenty Zodpovědnosti
-            success: Úspěšný export dat Sledování času do komponenty Zodpovědnosti
+            error: Error importing the Time Tracker data to accountability
+            success: Time Tracker data exported to accountability successfully
       assignee:
         assignees_activity: "Aktivita %{user_name}"
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
         time_spent: Strávený čas
       assignees:
         request:
-          error: Chyba při požadavku být přiřazenou osobou
-          success: Úspěšný požadavek být pověřenou osobou
+          error: Activity assignation request failed!
+          success: Activity assignation request succeded!
         show:
           assignees_activity: "Aktivita %{user_name}"
           milestones_list: Seznam milníků
@@ -129,6 +153,10 @@ cs:
         input_file: Soubor
         input_title: Název
         title: Zanechte svou značku!
+      milestones:
+        create:
+          error: Error creating the milestone
+          success: Milestone created successfully
       models:
         activity:
           fields:
@@ -154,14 +182,22 @@ cs:
             id: Id
             name: Jméno
           name: Úloha
-      time_entries:
-        create:
-          error: Chyba při zadávání času
-          success: Úspěšné zadání času
-        update:
-          error: Chyba při aktualizaci zadání času
-          success: Úspěšná aktualizace zadání času
+      time_events:
+        start:
+          already_started: Counter already started
+          error: Error starting counter
+          success: Counter started succesfully
+        stop:
+          already_stopped: Counter already stopped
+          error: Error stopping counter
+          success: Counter stopped succesfully
       time_tracker:
+        activity:
+          counter_stopped: Counter has been stopped automatically
+          finished: Ended on %{end_date}
+          inactive: Inactive
+          not_started: Will start on %{start_date}
+          open: Open
         index:
           assignees_list: Aktivity přiřazeného
         request_activity:
