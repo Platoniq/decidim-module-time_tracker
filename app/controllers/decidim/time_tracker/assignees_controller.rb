@@ -3,42 +3,40 @@
 module Decidim
   module TimeTracker
     class AssigneesController < Decidim::TimeTracker::ApplicationController
-      helper_method :assignee, :milestones
+      helper_method :assignee
 
-      def new
-        # enforce_permission_to :create, :assignee
+      def show
+        enforce_permission_to :show, :assignee, assignee: assignee
+      end
 
-        CreateRequestAssignee.call(current_activity, current_user) do
+      def create
+        enforce_permission_to :create, :assignee
+
+        CreateRequestAssignee.call(activity, current_user) do
           on(:ok) do
-            flash[:notice] = I18n.t("assignees.request.success", scope: "decidim.time_tracker")
-            redirect_to EngineRouter.main_proxy(current_task.component).root_path
+            render json: {
+              message: I18n.t("assignees.request.success", scope: "decidim.time_tracker"),
+              activityId: activity.id
+            }
           end
 
           on(:invalid) do
-            flash[:notice] = I18n.t("assignees.request.error", scope: "decidim.time_tracker")
-            redirect_to EngineRouter.main_proxy(current_task.component).root_path
+            render json: {
+              message: I18n.t("assignees.request.error", scope: "decidim.time_tracker"),
+              activityId: activity.id
+            }, status: :unprocessable_entity
           end
         end
       end
 
-      def show; end
-
       private
 
-      def current_task
-        @task = Task.find(params[:task_id])
-      end
-
-      def current_activity
-        @activity = Activity.find(params[:activity_id])
+      def activity
+        @activity ||= Activity.find(params[:activity_id])
       end
 
       def assignee
-        @assignee = Assignee.find(params[:id])
-      end
-
-      def milestones
-        @milestones = Milestone.where(id: assignee.time_entries.select(:id))
+        @assignee ||= Assignee.find(params[:id])
       end
     end
   end

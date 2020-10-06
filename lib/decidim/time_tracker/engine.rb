@@ -16,10 +16,10 @@ module Decidim
           resources :activities do
             post :start, controller: "time_events"
             post :stop, controller: "time_events"
-            resources :assignees
           end
         end
         resources :milestones
+        resources :assignees
 
         root to: "time_tracker#index"
       end

@@ -21,9 +21,7 @@ module Decidim
       end
 
       def create_request_assignee
-        Decidim.traceability.create!(
-          Decidim::TimeTracker::Assignee,
-          @user,
+        Decidim::TimeTracker::Assignee.create!(
           activity: @activity,
           user: @user,
           status: :pending,

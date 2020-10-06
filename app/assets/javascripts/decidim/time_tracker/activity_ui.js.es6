@@ -61,10 +61,10 @@ class ActivityUI { // eslint-disable-line no-unused-vars
     this.showStart(this.$activity);
   }
 
-  clockifySeconds(total_seconds) {
-    const hours = Math.floor(total_seconds / (60 * 60))
-    const minutes = Math.floor((total_seconds / 60) % 60)
-    const seconds = total_seconds % 60
+  clockifySeconds(totalSeconds) {
+    const hours = Math.floor(totalSeconds / (60 * 60))
+    const minutes = Math.floor((totalSeconds / 60) % 60)
+    const seconds = totalSeconds % 60
 
     return `${ hours }h ${ minutes }m ${ seconds }s`
   }

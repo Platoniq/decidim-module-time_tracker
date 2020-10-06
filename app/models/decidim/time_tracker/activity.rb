@@ -16,6 +16,9 @@ module Decidim
       has_many :time_events,
                class_name: "Decidim::TimeTracker::TimeEvent"
 
+      has_many :milestones,
+               class_name: "Decidim::TimeTracker::Milestone"
+
       scope :active, -> { where(active: true) }
 
       # total number of seconds spent by the user

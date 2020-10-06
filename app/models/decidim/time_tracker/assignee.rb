@@ -48,6 +48,10 @@ module Decidim
       def time_dedicated_to(activity)
         time_events.where(activity: activity).sum(&:total_seconds)
       end
+
+      def milestones
+        @milestones ||= Milestone.where(user: user)
+      end
     end
   end
 end

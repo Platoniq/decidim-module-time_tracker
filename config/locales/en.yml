@@ -113,10 +113,10 @@ en:
             export_to_accountability: Export to Accountability
             new: New task
           create:
-            error: The task has not been created.
-            success: The task has been created
+            error: Error creating the task
+            success: Task created successfully
           destroy:
-            success: The task has been deleted.
+            success: Task deleted successfully
           edit:
             title: Edit task
             update: Update
@@ -126,21 +126,20 @@ en:
             create: Create task
             title: New task
           update:
-            error: The task has not been updated.
-            success: The task has been updated.
+            error: Error updating the task
+            success: Task updated successfully
         time_tracker_exports:
           create:
-            error: Error importing the Time Tracker data to an Accountability component
-            success: Success exportint the Time Tracker data to an Accountability
-              component
+            error: Error importing the Time Tracker data to accountability
+            success: Time Tracker data exported to accountability successfully
       assignee:
         assignees_activity: "%{user_name}'s activity"
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
         time_spent: Time spent
       assignees:
         request:
-          error: Error requesting to be an assignee
-          success: Success requesting to be an assignee
+          error: Activity assignation request failed!
+          success: Activity assignation request succeded!
         show:
           assignees_activity: "%{user_name}'s activity"
           milestones_list: List of milestones
