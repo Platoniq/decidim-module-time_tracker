@@ -83,7 +83,8 @@ Decidim.register_component(:time_tracker) do |component|
         Decidim::TimeTracker::Task,
         admin_user,
         name: Decidim::Faker::Localized.sentence(2),
-        component: component
+        component: component,
+        questionnaire: Decidim::Forms::Questionnaire.new
       )
 
       # Create activites for these tasks
@@ -97,7 +98,8 @@ Decidim.register_component(:time_tracker) do |component|
           end_date: 1.week.from_now + (index * 1.week),
           max_minutes_per_day: [15, 30, 45, 60].sample,
           requests_start_at: 1.week.ago + (index * 3.days),
-          task: task
+          task: task,
+          questionnaire: Decidim::Forms::Questionnaire.new
         )
 
         # Add assignees

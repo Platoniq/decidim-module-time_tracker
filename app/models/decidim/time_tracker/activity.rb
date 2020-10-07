@@ -5,6 +5,8 @@ module Decidim
     # The data store for a Activity in the Decidim::TimeTracker component. It
     # stores a description and other useful information related to an activity.
     class Activity < ApplicationRecord
+      include Decidim::Forms::HasQuestionnaire
+
       self.table_name = :decidim_time_tracker_activities
 
       belongs_to :task,
@@ -74,6 +76,10 @@ module Decidim
 
       def assignee_rejected?(user)
         assignees.rejected.where(user: user).count.positive?
+      end
+
+      def has_questions?
+        activity.questionnaire.questions.any?
       end
 
       # Returns a identificative (I18n) string about the current status of activity

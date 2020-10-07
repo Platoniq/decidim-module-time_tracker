@@ -35,6 +35,10 @@
                 <% end %>
 
                 <% if allowed_to? :update, :task, task: task %>
+                  <%= icon_link_to "people", edit_task_form_path(task), t("actions.questionnaire", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
+                <% end %>
+
+                <% if allowed_to? :update, :task, task: task %>
                   <%= icon_link_to "pencil", edit_task_path(task), t("actions.edit", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
                 <% end %>
 

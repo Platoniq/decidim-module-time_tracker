@@ -5,6 +5,7 @@ module Decidim
     # The data store for a Task in the Decidim::TimeTracker component.
     class Task < ApplicationRecord
       include Decidim::HasComponent
+      include Decidim::Forms::HasQuestionnaire
 
       component_manifest_name "time_tracker"
 

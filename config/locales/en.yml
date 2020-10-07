@@ -58,6 +58,7 @@ en:
         destroy: Destroy
         edit: Edit
         new: New
+        questionnaire: Questionnaire
         title: Actions
       admin:
         activities:
