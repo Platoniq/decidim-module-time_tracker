@@ -79,7 +79,7 @@ module Decidim
       end
 
       def has_questions?
-        activity.questionnaire.questions.any?
+        questionnaire.questions.any?
       end
 
       # Returns a identificative (I18n) string about the current status of activity

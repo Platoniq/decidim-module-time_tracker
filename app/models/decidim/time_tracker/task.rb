@@ -14,6 +14,10 @@ module Decidim
       has_many :activities,
                class_name: "Decidim::TimeTracker::Activity",
                dependent: :destroy
+
+      def has_questions?
+        questionnaire.questions.any?
+      end
     end
   end
 end

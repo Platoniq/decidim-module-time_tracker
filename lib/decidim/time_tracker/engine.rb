@@ -16,6 +16,11 @@ module Decidim
           resources :activities do
             post :start, controller: "time_events"
             post :stop, controller: "time_events"
+            
+            resource :join, controller: "activities_questionnaire"
+              collection do
+                post :answer
+              end
           end
         end
         resources :milestones
