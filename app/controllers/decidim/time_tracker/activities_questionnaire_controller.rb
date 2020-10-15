@@ -5,15 +5,12 @@ module Decidim
     class ActivitiesQuestionnaireController < ApplicationController
       include Decidim::Forms::Concerns::HasQuestionnaire
 
-      def answer
-        byebug
-      end
-  
+      def answer; end
+
       def questionnaire_for
         activity if activity.has_questions?
-        task  
+        task
       end
-
 
       def allow_answers?
         activity.current_status === :open
