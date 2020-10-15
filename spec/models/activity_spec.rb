@@ -69,6 +69,20 @@ module Decidim
           expect(subject.current_status).to eq(:open)
         end
       end
+
+      context "when the activity has questions" do
+        let!(:question) { create(:questionnaire_question, questionnaire: subject.questionnaire, position: 0) }
+
+        it "activity has questions" do
+          expect(subject.has_questions?).to be true
+        end
+      end
+
+      context "when the activity has no questions" do
+        it "activity has no questions" do
+          expect(subject.has_questions?).to be false
+        end
+      end
     end
   end
 end

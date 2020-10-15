@@ -33,6 +33,20 @@ module Decidim
           expect(task.activities.reload.last.id).to eq(new_activity.id)
         end
       end
+
+      context "when the task has questions" do
+        let!(:question) { create(:questionnaire_question, questionnaire: subject.questionnaire, position: 0) }
+
+        it "task has questions" do
+          expect(subject.has_questions?).to be true
+        end
+      end
+
+      context "when the task has no questions" do
+        it "task has no questions" do
+          expect(subject.has_questions?).to be false
+        end
+      end
     end
   end
 end

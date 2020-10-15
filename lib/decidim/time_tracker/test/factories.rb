@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "decidim/core/test/factories"
+require "decidim/forms/test/factories"
 
 FactoryBot.define do
   factory :time_tracker_component, parent: :component do
@@ -17,6 +18,7 @@ FactoryBot.define do
     end_date { 1.month.from_now }
     max_minutes_per_day { 60 }
     requests_start_at { Time.zone.today }
+    questionnaire { create(:questionnaire) }
   end
 
   factory :assignee, class: "Decidim::TimeTracker::Assignee" do
@@ -55,6 +57,7 @@ FactoryBot.define do
   factory :task, class: "Decidim::TimeTracker::Task" do
     component { create(:time_tracker_component) }
     name { Decidim::Faker::Localized.word }
+    questionnaire { create(:questionnaire) }
   end
 
   factory :time_event, class: "Decidim::TimeTracker::TimeEvent" do
