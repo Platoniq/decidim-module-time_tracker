@@ -13,7 +13,7 @@ module Decidim
       end
 
       def allow_answers?
-        activity.current_status === :open
+        activity.current_status == :open
       end
 
       def update_url
