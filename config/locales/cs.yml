@@ -2,17 +2,17 @@ cs:
   activemodel:
     attributes:
       milestone:
-        title: What have you done?
+        title: Co jste udělal?
     errors:
       models:
         milestone:
           attributes:
             attachment:
-              needs_to_be_reattached: Needs to be reattached
+              needs_to_be_reattached: Vyžaduje být znovu připojen
         time_event:
           attributes:
             activity:
-              finished: Activity has finished already
+              finished: Aktivita již byla ukončena
               inactive: Activity is not active
               no_time_available: User has reached the maximum amount of time available for the day
               not_started: Activity has not started yet
