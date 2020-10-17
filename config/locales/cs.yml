@@ -13,16 +13,16 @@ cs:
           attributes:
             activity:
               finished: Aktivita již byla ukončena
-              inactive: Activity is not active
-              no_time_available: User has reached the maximum amount of time available for the day
-              not_started: Activity has not started yet
+              inactive: Aktivita není aktivní
+              no_time_available: Uživatel dosáhl maximálního množství času dostupného pro den
+              not_started: Aktivita zatím nezačala
             assignee:
-              unassigned: User is not assigneed to the task
+              unassigned: Uživatel není přiřazen k úkolu
             start:
-              date_format: Start time is not a date
+              date_format: Čas začátku není datum
             stop:
-              date_format: Stop time is not a date
-              stop_before_start: Stop is before start
+              date_format: Čas ukončení není datum
+              stop_before_start: Ukončení je před začátkem
   decidim:
     components:
       time_tracker:
@@ -35,7 +35,7 @@ cs:
             max_number_of_assignees: Maximální počet přiřazených osob
             milestones_label: Název pro "Milníky"
             tasks_label: Název pro "Úkoly"
-            time_events_label: Name for "Time Entries"
+            time_events_label: Název pro "Časové záznamy"
             tos: Podmínky používání
           step:
             announcement: Oznámení
@@ -61,10 +61,10 @@ cs:
           actions:
             new: Nová aktivita
           create:
-            error: Error creating the activity
-            success: Activity created successfully
+            error: Chyba vytváření aktivity
+            success: Aktivita byla úspěšně vytvořena
           destroy:
-            success: Activity deleted successfully
+            success: Aktivita úspěšně smazána
           edit:
             title: Upravit aktivitu
             update: Aktualizovat
@@ -74,17 +74,17 @@ cs:
             create: Vytvořit aktivitu
             title: Nová
           update:
-            error: Error updating activity
-            success: Activity updated successfully
+            error: Chyba při aktualizaci aktivity
+            success: Akce byla úspěšně aktualizována
         assignees:
           actions:
             new: Nový přiřazený
           create:
-            error: Error creating assignee
-            success: Assignee created successfully
+            error: Chyba při vytváření přiřazené osoby
+            success: Přiřazená osoba úspěšně vytvořena
           destroy:
-            error: Error removing assignee
-            succcess: Assignee removed successfully
+            error: Chyba při vytváření přiřazené osoby
+            succcess: Přiřazená osoba úspěšně odstraněna
           form:
             existing_user: Stávající účastník
             non_user: Není účastníkem
@@ -96,8 +96,8 @@ cs:
             create: Vytvořit přiřazeného
             title: Nový přiřazený k této aktivitě
           update:
-            error: Error updating assignee
-            success: Assigne updated successfully
+            error: Chyba při aktualizaci přiřazené osoby
+            success: Přiřazená osoba úspěšně aktualizována
         models:
           activity:
             name: Aktivita
@@ -110,10 +110,10 @@ cs:
             export_to_accountability: Export do odpovědnosti
             new: Nová úloha
           create:
-            error: Error creating the task
-            success: Task created successfully
+            error: Chyba při vytváření úlohy
+            success: Úloha úspěšně vytvořena
           destroy:
-            success: Task deleted successfully
+            success: Úloha úspěšně smazána
           edit:
             title: Upravit úlohu
             update: Aktualizovat
@@ -123,20 +123,20 @@ cs:
             create: Vytvořit úlohu
             title: Nová úloha
           update:
-            error: Error updating the task
-            success: Task updated successfully
+            error: Chyba při aktualizaci úlohy
+            success: Úloha úspěšně aktualizována
         time_tracker_exports:
           create:
-            error: Error importing the Time Tracker data to accountability
-            success: Time Tracker data exported to accountability successfully
+            error: Chyba při importu dat o sledování času do odpovědnosti
+            success: Data sledování času byla úspěšně exportována do odpovědnosti
       assignee:
         assignees_activity: "Aktivita %{user_name}"
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
         time_spent: Strávený čas
       assignees:
         request:
-          error: Activity assignation request failed!
-          success: Activity assignation request succeded!
+          error: Požadavek na přiřazení aktivity se nezdařil!
+          success: Požadavek na přiřazení aktivity byl úspěšný!
         show:
           assignees_activity: "Aktivita %{user_name}"
           milestones_list: Seznam milníků
@@ -155,8 +155,8 @@ cs:
         title: Zanechte svou značku!
       milestones:
         create:
-          error: Error creating the milestone
-          success: Milestone created successfully
+          error: Chyba při vytváření milníku
+          success: Milník byl úspěšně vytvořen
       models:
         activity:
           fields:
@@ -184,20 +184,20 @@ cs:
           name: Úloha
       time_events:
         start:
-          already_started: Counter already started
-          error: Error starting counter
-          success: Counter started succesfully
+          already_started: Počítadlo je již spuštěno
+          error: Chyba při spuštění počítadla
+          success: Počítadlo úspěšně spuštěno
         stop:
-          already_stopped: Counter already stopped
-          error: Error stopping counter
-          success: Counter stopped succesfully
+          already_stopped: Počítadlo již zastaveno
+          error: Chyba při zastavování počítadla
+          success: Počítadlo úspěšně zastaveno
       time_tracker:
         activity:
-          counter_stopped: Counter has been stopped automatically
-          finished: Ended on %{end_date}
-          inactive: Inactive
-          not_started: Will start on %{start_date}
-          open: Open
+          counter_stopped: Počítadlo bylo automaticky zastaveno
+          finished: Ukončeno %{end_date}
+          inactive: Neaktivní
+          not_started: Začíná %{start_date}
+          open: Otevřeno
         index:
           assignees_list: Aktivity přiřazeného
         request_activity:
