@@ -3,7 +3,7 @@
 module Decidim
   module TimeTracker
     module Admin
-      class TasksQuestionnaireController < ApplicationController
+      class TasksQuestionnaireController < Admin::ApplicationController
         include Decidim::Forms::Admin::Concerns::HasQuestionnaire
 
         def questionnaire_for

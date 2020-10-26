@@ -3,7 +3,7 @@
 module Decidim
   module TimeTracker
     module Admin
-      class AssigneesController < ApplicationController
+      class AssigneesController < Admin::ApplicationController
         include Decidim::TimeTracker::ApplicationHelper
         helper_method :assignees, :current_task, :current_activity, :current_assignee, :assignees_label
 
