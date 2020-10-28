@@ -22,6 +22,27 @@
               <%= translated_attribute current_activity.description %>
             </li>
           <% end %>
+        <% elsif controller_name == "assignees" %>
+          <li>
+            <%= link_to translated_attribute(current_task.name), edit_task_path(current_task) %>
+          </li>
+
+          <li>
+            <%= link_to translated_attribute(current_activity.description), edit_task_activity_path(current_task, current_activity) %>
+          </li>
+          
+          <% if action_name == "new" %>
+            <li>
+              <%= link_to t("actions.assignees", scope: "decidim.time_tracker"), task_activity_assignees_path(current_task, current_activity) %>
+            </li>
+            <li>
+              <%= t("actions.new", scope: "decidim.time_tracker") %>
+            </li>
+          <% else %>
+            <li>
+              <%= t("actions.assignees", scope: "decidim.time_tracker") %>
+            </li>
+          <% end %>
         <% end %>
       </ul>
     </nav>

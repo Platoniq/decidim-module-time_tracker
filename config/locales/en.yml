@@ -51,13 +51,14 @@ en:
             request: Request to join activity
     time_tracker:
       actions:
-        activate: Activate
+        accept: Accept
         activities: Activities
         assignees: Assignees
         confirm_destroy: Are you sure you want to delete this?
         destroy: Destroy
         edit: Edit
         new: New
+        reject: Reject
         title: Actions
       admin:
         activities:
@@ -103,6 +104,7 @@ en:
             success: Assigne updated successfully
         breadcrumbs:
           global: All tasks
+          assignees: Assignees
         models:
           activity:
             name: Activity
@@ -166,22 +168,26 @@ en:
       models:
         activity:
           fields:
+            assignees_accepted: Accepted assignees
+            assignees_pending: Pending assignees
             description: Description
             end_date: End date
-            id: Id
-            max_minutes_per_day: Maximum minutes per day
+            max_minutes_per_day: Max. minutes per day
             requests_start_at: Requests start at
             start_date: Start date
           name: Activity
         assignee:
           fields:
             email: Email
-            id: Id
             invited_at: Invited at
-            invited_by_user: Invited by user
+            invited_by: Invited by
             name: Name
             status: Status
-            tos_accepted_at: Terms Of Service accepted at
+            statuses:
+              accepted: Accepted
+              pending: Pending
+              rejected: Rejected
+            tos_accepted_at: Joined at
           name: Assignee
         task:
           fields:

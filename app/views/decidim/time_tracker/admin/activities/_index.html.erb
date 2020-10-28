@@ -13,21 +13,19 @@
       <table class="table-list">
         <thead>
           <tr>
-            <th><%= t("models.activity.fields.id", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.description", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.start_date", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.end_date", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.max_minutes_per_day", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.requests_start_at", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.assignees_accepted", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.assignees_pending", scope: "decidim.time_tracker") %></th>
             <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker") %></th>
           </tr>
         </thead>
         <tbody>
           <% activities.each do |activity| %>
             <tr data-id="<%= activity.id %>">
-              <td>
-                <%= activity.id %><br>
-              </td>
               <td>
                 <%= translated_attribute activity.description %><br>
               </td>
@@ -43,13 +41,19 @@
               <td>
                 <%= l activity.requests_start_at, format: :decidim_short %><br>
               </td>
+              <td>
+                <%= activity.assignees.accepted.count %><br>
+              </td>
+              <td>
+                <%= activity.assignees.pending.count %><br>
+              </td>
               <td class="table-list__actions">
                 <% if allowed_to? :update, :activity, activity: activity %>
-                  <%= icon_link_to "pencil", edit_task_activity_path(@current_task, activity), t("actions.edit", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
+                  <%= icon_link_to "people", task_activity_assignees_path(@current_task, activity), t("actions.assignees", scope: "decidim.time_tracker"), class: "action-icon-registrations" %>
                 <% end %>
 
                 <% if allowed_to? :update, :activity, activity: activity %>
-                  <%= icon_link_to "people", task_activity_assignees_path(@current_task, activity), t("actions.assignees", scope: "decidim.time_tracker"), class: "action-icon-registrations" %>
+                  <%= icon_link_to "pencil", edit_task_activity_path(@current_task, activity), t("actions.edit", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
                 <% end %>
 
                 <% if allowed_to? :destroy, :activity, activity: activity %>

@@ -1,3 +1,5 @@
+<%= render partial: "decidim/time_tracker/admin/breadcrumbs" %>
+
 <div class="card">
   <div class="card-divider">
     <h2 class="card-title">
@@ -13,12 +15,11 @@
       <table class="table-list">
         <thead>
           <tr>
-            <th><%= t("models.assignee.fields.id", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.name", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.email", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.status", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignee.fields.invited_by", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.invited_at", scope: "decidim.time_tracker") %></th>
-            <th><%= t("models.assignee.fields.invited_by_user", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.tos_accepted_at", scope: "decidim.time_tracker") %></th>
             <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker") %></th>
           </tr>
@@ -27,30 +28,28 @@
           <% assignees.each do |assignee| %>
             <tr data-id="<%= assignee.id %>">
               <td>
-                <%= assignee.id %><br>
-              </td>
-              <td>
                 <%= assignee.user.name %><br>
               </td>
               <td>
                 <%= assignee.user.email %><br>
               </td>
               <td>
-                <%= assignee.status %><br>
-              </td>
-              <td>
-                <%= assignee.invited_at %><br>
+                <%= t("models.assignee.fields.statuses.#{assignee.status}", scope: "decidim.time_tracker") %><br>
               </td>
               <td>
                 <%= assignee.invited_by_user&.name %><br>
               </td>
               <td>
-                <%= assignee.tos_accepted_at %><br>
+                <%= l(assignee.invited_at, format: :decidim_short) if assignee.invited_at.present? %><br>
+              </td>
+              <td>
+                <%= l(assignee.tos_accepted_at, format: :decidim_short) if assignee.tos_accepted_at.present? %><br>
               </td>
               <td class="table-list__actions">
-                <% if allowed_to? :update, :assignee, assignee: assignee && assignee.status == :pending %>
-                  <%= icon_link_to "check", task_activity_assignee_path(current_task, current_activity, assignee), t("actions.activate", scope: "decidim.time_tracker"), method: :patch, class: "action-icon--activate" %>
+                <% if allowed_to? :update, :assignee, assignee: assignee %>
+                  <%= change_assignee_status_button assignee %>
                 <% end %>
+
                 <% if allowed_to? :destroy, :assignee, assignee: assignee %>
                   <%= icon_link_to "circle-x", task_activity_assignee_path(current_task, current_activity, assignee), t("actions.destroy", scope: "decidim.time_tracker"), method: :delete, class: "action-icon--remove", data: { confirm: t("actions.confirm_destroy", scope: "decidim.time_tracker") } %>
                 <% end %>
@@ -59,13 +58,6 @@
           <% end %>
         </tbody>
       </table>
-      <%
-=begin
-      %>
- <%= paginate activities, theme: "decidim" %>
-<%
-=end
-%>
     </div>
   </div>
 </div>
