@@ -72,7 +72,7 @@ en:
             title: Edit activity
             update: Update
           index:
-            title: Activities
+            title: Task activities
           new:
             create: Create activity
             title: New
@@ -119,11 +119,13 @@ en:
             success: Task deleted successfully
           edit:
             title: Edit task
-            update: Update
+          form:
+            submit:
+              edit: Update
+              new: Create
           index:
             title: Tasks
           new:
-            create: Create task
             title: New task
           update:
             error: Error updating the task
