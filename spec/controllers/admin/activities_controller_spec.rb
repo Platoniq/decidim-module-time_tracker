@@ -66,7 +66,7 @@ module Decidim
 
             it "creates the new activity" do
               post :create, params: params
-              expect(Decidim::TimeTracker::Activity.first.description).to eq(form[:description])
+              expect(Decidim::TimeTracker::Activity.first.description).to eq(activity_params[:description])
             end
           end
 
@@ -92,7 +92,7 @@ module Decidim
 
         describe "PATCH #update" do
           let!(:activity) { create :activity, task: task }
-          let(:form) do
+          let(:activity_params) do
             {
               description: Decidim::Faker::Localized.sentence(3),
               active: false,
@@ -108,7 +108,7 @@ module Decidim
             {
               task_id: task.id,
               id: activity.id,
-              activity: form
+              activity: activity_params
             }
           end
 
@@ -121,7 +121,26 @@ module Decidim
 
             it "updates the activity" do
               patch :update, params: params
-              expect(Decidim::TimeTracker::Activity.first.description).to eq(form[:description])
+              expect(Decidim::TimeTracker::Activity.first.description).to eq(activity_params[:description])
+            end
+          end
+
+          context "when params are invalid" do
+            let!(:activity_params) do
+              {
+                description: {}
+              }
+            end
+
+            it "returns invalid" do
+              post :update, params: params
+              expect(flash.now[:alert]).not_to be_blank
+              expect(response).to have_http_status(:ok)
+            end
+
+            it "does not create the new activity" do
+              post :update, params: params
+              expect(Decidim::TimeTracker::Activity.first.description).to eq(activity[:description])
             end
           end
         end
