@@ -13,11 +13,11 @@ module Decidim
       has_many :activities,
                class_name: "Decidim::TimeTracker::Activity",
                dependent: :destroy
-      
+
       def starts_at
         activities.order(start_date: :asc).first&.start_date
       end
-      
+
       def ends_at
         activities.order(end_date: :desc).first&.end_date
       end
