@@ -103,8 +103,8 @@ en:
             error: Error updating assignee
             success: Assigne updated successfully
         breadcrumbs:
-          global: All tasks
           assignees: Assignees
+          global: All tasks
         models:
           activity:
             name: Activity

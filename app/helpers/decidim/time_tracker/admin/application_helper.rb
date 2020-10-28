@@ -13,13 +13,13 @@ module Decidim
           label_accept = t("actions.accept", scope: "decidim.time_tracker")
 
           icons = [
-            (assignee.pending? || assignee.accepted?) ? icon_link_to("x", path_reject, label_reject, method: :patch, class: "action-icon--status") : empty_icon,
-            (assignee.pending? || assignee.rejected?) ? icon_link_to("check", path_accept, label_accept, method: :patch, class: "action-icon--status") : empty_icon,
+            assignee.pending? || assignee.accepted? ? icon_link_to("x", path_reject, label_reject, method: :patch, class: "action-icon--status") : empty_icon,
+            assignee.pending? || assignee.rejected? ? icon_link_to("check", path_accept, label_accept, method: :patch, class: "action-icon--status") : empty_icon
           ]
-          
+
           safe_join(icons)
         end
-        
+
         def empty_icon
           content_tag :a, class: "action-icon" do
             content_tag :span do
