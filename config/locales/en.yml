@@ -69,13 +69,13 @@ en:
           destroy:
             success: Activity deleted successfully
           edit:
-            title: Edit activity
             submit: Update activity
-          new:
-            title: New activity
-            submit: Create activity
+            title: Edit activity
           index:
             title: Task activities
+          new:
+            submit: Create activity
+            title: New activity
           update:
             error: Error updating activity
             success: Activity updated successfully
@@ -120,13 +120,13 @@ en:
           destroy:
             success: Task deleted successfully
           edit:
-            title: Update task
             submit: Update
-          new:
-            title: Create task
-            submit: Create
+            title: Update task
           index:
             title: Tasks
+          new:
+            submit: Create
+            title: Create task
           update:
             error: Error updating the task
             success: Task updated successfully
