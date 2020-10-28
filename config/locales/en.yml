@@ -190,7 +190,6 @@ en:
             activities_start_at: First activity starts at
             assignees_accepted: Accepted assignees
             assignees_pending: Pending assignees
-            id: Id
             name: Name
           name: Task
       time_events:
