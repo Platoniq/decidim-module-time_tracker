@@ -1,9 +1,5 @@
 <%= render partial: 'decidim/time_tracker/admin/breadcrumbs' %>
 
 <%= decidim_form_for(@form, url: task_activity_path, html: { class: "form edit_task_activity" }) do |f| %>
-  <%= render partial: "form", object: f, locals: { title: t(".title") } %>
-
-  <div class="button--double form-general-submit">
-      <%= f.submit t(".update") %>
-  </div>
+  <%= render partial: "form", object: f, locals: { title: t(".title"), submit: t(".submit") } %>
 <% end %>

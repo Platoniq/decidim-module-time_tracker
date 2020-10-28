@@ -1,6 +1,7 @@
 <%= render partial: "decidim/time_tracker/admin/breadcrumbs" %>
+
 <%= decidim_form_for(@form, html: { class: "form new_task" }) do |f| %>
-  <%= render partial: "form", object: f, locals: { title: t(".title") } %>
+  <%= render partial: "form", object: f, locals: { title: t(".title"), submit: t(".submit") } %>
 <% end %>
 
 <%= render partial: 'decidim/time_tracker/admin/activities/index', locals: { activities: current_task.activities } %>
