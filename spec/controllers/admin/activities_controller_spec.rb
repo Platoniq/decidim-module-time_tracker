@@ -33,22 +33,6 @@ module Decidim
           sign_in user
         end
 
-        describe "GET #index" do
-          let(:params) do
-            {
-              component_id: component.id,
-              participatory_process_slug: component.participatory_space.slug,
-              task_id: task.id
-            }
-          end
-
-          it "renders the index listing" do
-            get :index, params: params
-            expect(response).to have_http_status(:ok)
-            expect(subject).to render_template(:index)
-          end
-        end
-
         describe "GET #new" do
           let(:params) do
             {

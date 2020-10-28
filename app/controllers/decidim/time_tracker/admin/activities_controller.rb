@@ -7,10 +7,6 @@ module Decidim
         include Decidim::TimeTracker::ApplicationHelper
         helper_method :activities, :current_task, :current_activity, :activities_label
 
-        def index
-          activities
-        end
-
         def new
           enforce_permission_to :create, :activities
 
