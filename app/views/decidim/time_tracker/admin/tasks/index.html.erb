@@ -16,6 +16,11 @@
           <tr>
             <th><%= t("models.task.fields.id", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.task.fields.name", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.task.fields.activities_count", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.task.fields.activities_start_at", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.task.fields.activities_end_at", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.task.fields.assignees_accepted", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.task.fields.assignees_pending", scope: "decidim.time_tracker") %></th>
             <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker") %></th>
           </tr>
         </thead>
@@ -28,12 +33,22 @@
               <td>
                 <%= translated_attribute(task.name) %><br>
               </td>
+              <td>
+                <%= task.activities.count %><br>
+              </td>
+              <td>
+                <%= l task.starts_at, format: :decidim_short if task.starts_at.present? %><br>
+              </td>
+              <td>
+                <%= l task.ends_at, format: :decidim_short if task.ends_at.present? %><br>
+              </td>
+              <td>
+                <%= task.assignees_count(filter: :accepted) %><br>
+              </td>
+              <td>
+                <%= task.assignees_count(filter: :pending) %><br>
+              </td>
               <td class="table-list__actions">
-
-                <% if allowed_to? :update, :task, task: task %>
-                    <%= icon_link_to "folder", task_activities_path(task), t("actions.activities", scope: "decidim.time_tracker"), class: "action-icon--attachment_collections" %>
-                <% end %>
-
                 <% if allowed_to? :update, :task, task: task %>
                   <%= icon_link_to "pencil", edit_task_path(task), t("actions.edit", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
                 <% end %>

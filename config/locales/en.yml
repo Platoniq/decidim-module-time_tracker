@@ -185,6 +185,11 @@ en:
           name: Assignee
         task:
           fields:
+            activities_count: Number of activites
+            activities_end_at: Last activity ends at
+            activities_start_at: First activity starts at
+            assignees_accepted: Accepted assignees
+            assignees_pending: Pending assignees
             id: Id
             name: Name
           name: Task
