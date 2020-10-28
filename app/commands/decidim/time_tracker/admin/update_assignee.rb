@@ -7,10 +7,11 @@ module Decidim
       class UpdateAssignee < Rectify::Command
         # Public: Initializes the command.
         #
-        # form - A form object with the params.
-        def initialize(assignee, user)
+        # assignee_status - A symbol representing the assignee status.
+        def initialize(assignee, user, assignee_status)
           @assignee = assignee
           @user = user
+          @assignee_status = assignee_status
         end
 
         # Executes the command. Broadcasts these events:
@@ -20,6 +21,8 @@ module Decidim
         #
         # Returns nothing.
         def call
+          return broadcast(:invalid) unless [:accepted, :rejected].include? @assignee_status
+
           update_assignee!
           broadcast(:ok)
         end
@@ -30,8 +33,7 @@ module Decidim
           Decidim.traceability.update!(
             @assignee,
             @user,
-            status: :accepted,
-            invited_by_user: @user
+            status: @assignee_status
           )
         end
       end
