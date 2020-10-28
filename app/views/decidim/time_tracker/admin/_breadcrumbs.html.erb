@@ -5,7 +5,7 @@
         <li class="<%= "active" if current_page? tasks_path %>">
           <%= link_to t(".global"), tasks_path %>
         </li>
-        
+
         <% if controller_name == "tasks" %>
           <% if action_name == "edit" || action_name == "new" %>
             <li class="<%= "active" if current_page? edit_task_path(current_task) %>">
@@ -16,7 +16,7 @@
           <li>
             <%= link_to translated_attribute(current_task.name), edit_task_path(current_task) %>
           </li>
-          
+
           <% if !current_page?(new_task_activity_path) %>
             <li class="<%= "active" if current_page? edit_task_activity_path(current_activity) %>">
               <%= translated_attribute current_activity.description %>
@@ -27,4 +27,3 @@
     </nav>
   </div>
 </div>
-
