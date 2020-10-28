@@ -23,8 +23,7 @@ module Decidim
       end
 
       def assignees_count(filter: :accepted)
-        assignees = Assignee.where(activity: activities)
-        assignees = assignees.send(filter) if [:pending, :accepted, :rejected].include? filter
+        assignees = Assignee.where(activity: activities).send(filter)
         assignees.count
       end
     end

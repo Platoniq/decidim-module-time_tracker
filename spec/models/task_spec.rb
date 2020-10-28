@@ -8,7 +8,10 @@ module Decidim
       subject { task }
 
       let(:component) { create(:time_tracker_component) }
-      let(:activities) { create_list(:activity, 3) }
+      let(:first_activity) { create(:activity, :with_assignees, start_date: Time.now, end_date: 1.day.from_now)}
+      let(:middle_activity) { create(:activity, :with_assignees, start_date: Time.now, end_date: 2.days.from_now)}
+      let(:last_activity) { create(:activity, :with_assignees, start_date: 1.day.from_now, end_date: 2.days.from_now)}
+      let(:activities) { [first_activity, middle_activity, last_activity] }
       let(:task) { create(:task, component: component, activities: activities) }
 
       it { is_expected.to be_valid }
@@ -31,6 +34,52 @@ module Decidim
         it "updates the activities" do
           expect(task.activities.count).to eq 4
           expect(task.activities.reload.last.id).to eq(new_activity.id)
+        end
+      end
+
+      describe "#starts_at" do
+        it "returns the start_date of the activity that starts the earliest" do
+          expect(subject.starts_at).to eq(first_activity.start_date)
+        end
+      end
+      
+      describe "#ends_at" do
+        it "returns the end_date of the activity that ends the latest" do
+          expect(subject.ends_at).to eq(last_activity.end_date)
+        end
+      end
+      
+      describe "#assignees_count" do
+        context "by default" do
+          it "returns the accepted assignees count" do
+            expect(subject.assignees_count).to eq(subject.assignees_count(filter: :accepted))
+          end
+        end
+
+        context "when the filter parameter is provided" do
+          context "when its value is :pending" do
+            it "returns the sum of all the activities's pending assignees count" do
+              expect(subject.assignees_count(filter: :pending)).to eq(activities.map {|a| a.assignees.pending.count }.sum)
+            end
+          end
+          
+          context "when its value is :accepted" do
+            it "returns the sum of all the activities's accepted assignees count" do
+              expect(subject.assignees_count(filter: :accepted)).to eq(activities.map {|a| a.assignees.accepted.count }.sum)
+            end
+          end
+          
+          context "when its value is :rejected" do
+            it "returns the sum of all the activities's rejected assignees count" do
+              expect(subject.assignees_count(filter: :rejected)).to eq(activities.map {|a| a.assignees.rejected.count }.sum)
+            end
+          end
+
+          context "when its value is not one of [:pending, :accepted, :rejected]" do
+            it "raises an error" do
+              expect { subject.assignees_count(filter: :other) }.to raise_error(NoMethodError)
+            end
+          end
         end
       end
     end
