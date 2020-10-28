@@ -33,6 +33,7 @@ module Decidim
           Decidim.traceability.update!(
             @assignee,
             @user,
+            invited_by_user: @user, # TODO: Why?
             status: @assignee_status
           )
         end
