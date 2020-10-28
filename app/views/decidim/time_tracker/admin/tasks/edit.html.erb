@@ -1,3 +1,4 @@
+<%= render partial: "decidim/time_tracker/admin/breadcrumbs" %>
 <%= decidim_form_for(@form, html: { class: "form new_task" }) do |f| %>
   <%= render partial: "form", object: f, locals: { title: t(".title") } %>
 <% end %>
