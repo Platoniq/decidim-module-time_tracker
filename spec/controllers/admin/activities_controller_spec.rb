@@ -14,7 +14,7 @@ module Decidim
         let(:component) { create :time_tracker_component, participatory_space: participatory_space }
         let!(:task) { create :task, component: component }
 
-        let(:form) do
+        let(:activity_params) do
           {
             description: Decidim::Faker::Localized.sentence(3),
             active: false,
@@ -22,7 +22,7 @@ module Decidim
             end_date: 1.month.from_now,
             max_minutes_per_day: 60,
             requests_start_at: Time.zone.today,
-            task: task
+            task_id: task.id
           }
         end
 
@@ -53,7 +53,7 @@ module Decidim
           let(:params) do
             {
               task_id: task.id,
-              activity: form
+              activity: activity_params
             }
           end
 
@@ -67,6 +67,25 @@ module Decidim
             it "creates the new activity" do
               post :create, params: params
               expect(Decidim::TimeTracker::Activity.first.description).to eq(form[:description])
+            end
+          end
+
+          context "when params are invalid" do
+            let!(:activity_params) do
+              {
+                description: {}
+              }
+            end
+
+            it "returns invalid" do
+              post :create, params: params
+              expect(flash.now[:alert]).not_to be_blank
+              expect(response).to have_http_status(:ok)
+            end
+
+            it "does not create the new activity" do
+              post :create, params: params
+              expect(Decidim::TimeTracker::Activity.first).to be_blank
             end
           end
         end
