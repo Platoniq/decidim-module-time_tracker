@@ -14,6 +14,7 @@
         <thead>
           <tr>
             <th><%= t("models.activity.fields.description", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.status", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.start_date", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.end_date", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.max_minutes_per_day", scope: "decidim.time_tracker") %></th>
@@ -27,25 +28,28 @@
           <% activities.each do |activity| %>
             <tr data-id="<%= activity.id %>" class="<%= "activity--inactive" unless activity.active? %>">
               <td>
-                <%= translated_attribute activity.description %><br>
+                <%= translated_attribute activity.description %>
               </td>
               <td>
-                <%= l activity.start_date, format: :decidim_short %><br>
+                <%= t("models.activity.fields.statuses.#{activity.current_status}", scope: "decidim.time_tracker") %>
               </td>
               <td>
-                <%= l activity.end_date, format: :decidim_short %><br>
+                <%= l activity.start_date, format: :decidim_short %>
               </td>
               <td>
-                <%= activity.max_minutes_per_day %><br>
+                <%= l activity.end_date, format: :decidim_short %>
               </td>
               <td>
-                <%= l activity.requests_start_at, format: :decidim_short %><br>
+                <%= activity.max_minutes_per_day %>
               </td>
               <td>
-                <%= activity.assignees.accepted.count %><br>
+                <%= l activity.requests_start_at, format: :decidim_short %>
               </td>
               <td>
-                <%= activity.assignees.pending.count %><br>
+                <%= activity.assignees.accepted.count %>
+              </td>
+              <td>
+                <%= activity.assignees.pending.count %>
               </td>
               <td class="table-list__actions">
                 <% if allowed_to? :update, :activity, activity: activity %>

@@ -175,6 +175,12 @@ en:
             max_minutes_per_day: Max. minutes per day
             requests_start_at: Requests start at
             start_date: Start date
+            status: Status
+            statuses:
+              finished: Finished
+              inactive: Inactive
+              not_started: Not started
+              open: Open
           name: Activity
         assignee:
           fields:
