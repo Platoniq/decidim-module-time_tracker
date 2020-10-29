@@ -15,32 +15,30 @@ module Decidim
         end
 
         def allowed_task_action?
-          return unless permission_action.subject == :task
+          return unless permission_action.subject.in? [:task, :tasks]
 
           case permission_action.action
-          when :create, :update, :destroy
+          when :index, :create, :update, :destroy
             permission_action.allow!
           end
         end
 
         def allowed_activity_action?
-          return unless permission_action.subject == :activity
+          return unless permission_action.subject.in? [:activity, :activities]
 
           case permission_action.action
-          when :create, :update, :destroy
+          when :index, :create, :update, :destroy
             permission_action.allow!
           end
         end
 
         def allowed_assignee_action?
-          return unless permission_action.subject == :assignee
-
-          if permission_action.action == :update
-            return permission_action.allow! if assignee.can_change_status?
-          end
+          return unless permission_action.subject.in? [:assignee, :assignees]
 
           case permission_action.action
-          when :read, :create, :destroy
+          when :update
+            permission_action.allow! if assignee.can_change_status?
+          when :index, :create, :destroy
             permission_action.allow!
           end
         end
