@@ -20,9 +20,9 @@ module Decidim::TimeTracker
     let(:description) do
       Decidim::Faker::Localized.sentence(3)
     end
-    let(:start_date) { 2.days.from_now.strftime "%d/%m/%Y" }
-    let(:end_date) { (2.days.from_now + 1.day).strftime "%d/%m/%Y" }
-    let(:requests_start_at) { 3.days.from_now }
+    let(:start_date) { 2.days.from_now }
+    let(:end_date) { (2.days.from_now + 1.day) }
+    let(:requests_start_at) { 1.days.from_now }
 
     let(:attributes) do
       {
@@ -37,6 +37,34 @@ module Decidim::TimeTracker
 
     it { is_expected.to be_valid }
 
-    # TODO: validate end_date after start_date if not empty
+    context "when start date is missing" do
+      let(:start_date) { nil }
+
+      it { is_expected.not_to be_valid }
+    end
+
+    context "when end date is missing" do
+      let(:end_date) { nil }
+
+      it { is_expected.not_to be_valid }
+    end
+
+    context "when end date is before start date" do
+      let(:end_date) { start_date - 1.day }
+
+      it { is_expected.not_to be_valid }
+    end
+
+    context "when requests start at is missing" do
+      let(:requests_start_at) { nil }
+
+      it { is_expected.not_to be_valid }
+    end
+
+    context "when requests start at is after start date" do
+      let(:requests_start_at) { start_date + 1.day }
+
+      it { is_expected.not_to be_valid }
+    end
   end
 end
