@@ -61,7 +61,7 @@ module Decidim
         def assignees
           @assignees = Assignee.where(activity: current_activity.id)
           pending = @assignees.pending
-          accepted = @assignees.accepted
+          accepted = @assignees.accepted.sort_by(&:time_dedicated).reverse
           rejected = @assignees.rejected
           @assignees = pending + accepted + rejected
         end

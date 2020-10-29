@@ -8,6 +8,7 @@ module Decidim
           return permission_action if permission_action.scope != :admin
 
           allowed_task_action?
+          allowed_activity_action?
           allowed_assignee_action?
 
           permission_action
@@ -15,6 +16,15 @@ module Decidim
 
         def allowed_task_action?
           return unless permission_action.subject == :task
+
+          case permission_action.action
+          when :create, :update, :destroy
+            permission_action.allow!
+          end
+        end
+
+        def allowed_activity_action?
+          return unless permission_action.subject == :activity
 
           case permission_action.action
           when :create, :update, :destroy
@@ -30,7 +40,7 @@ module Decidim
           end
 
           case permission_action.action
-          when :create, :destroy
+          when :read, :create, :destroy
             permission_action.allow!
           end
         end

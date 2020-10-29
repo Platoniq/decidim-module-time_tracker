@@ -52,7 +52,7 @@
                 <%= activity.assignees.pending.count %>
               </td>
               <td class="table-list__actions">
-                <% if allowed_to? :update, :activity, activity: activity %>
+                <% if allowed_to? :read, :assignee %>
                   <%= icon_link_to "people", task_activity_assignees_path(@current_task, activity), t("actions.assignees", scope: "decidim.time_tracker"), class: "action-icon--assignees" %>
                 <% end %>
 
