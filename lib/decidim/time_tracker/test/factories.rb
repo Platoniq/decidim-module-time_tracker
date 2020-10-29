@@ -17,6 +17,14 @@ FactoryBot.define do
     end_date { 1.month.from_now }
     max_minutes_per_day { 60 }
     requests_start_at { Time.zone.today }
+
+    trait :with_assignees do
+      after(:create) do |activity, _evaluator|
+        create_list(:assignee, 2, activity: activity, status: :pending)
+        create_list(:assignee, 3, activity: activity, status: :accepted)
+        create_list(:assignee, 1, activity: activity, status: :rejected)
+      end
+    end
   end
 
   factory :assignee, class: "Decidim::TimeTracker::Assignee" do
@@ -30,6 +38,14 @@ FactoryBot.define do
 
     trait :pending do
       status { :pending }
+    end
+
+    trait :accepted do
+      status { :accepted }
+    end
+
+    trait :rejected do
+      status { :rejected }
     end
 
     trait :active do

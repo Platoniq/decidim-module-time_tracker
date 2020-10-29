@@ -51,13 +51,14 @@ en:
             request: Request to join activity
     time_tracker:
       actions:
-        activate: Activate
+        accept: Accept
         activities: Activities
         assignees: Assignees
         confirm_destroy: Are you sure you want to delete this?
         destroy: Destroy
         edit: Edit
         new: New
+        reject: Reject
         title: Actions
       admin:
         activities:
@@ -69,13 +70,13 @@ en:
           destroy:
             success: Activity deleted successfully
           edit:
+            submit: Update activity
             title: Edit activity
-            update: Update
           index:
-            title: Activities
+            title: Task activities
           new:
-            create: Create activity
-            title: New
+            submit: Create activity
+            title: New activity
           update:
             error: Error updating activity
             success: Activity updated successfully
@@ -101,6 +102,9 @@ en:
           update:
             error: Error updating assignee
             success: Assigne updated successfully
+        breadcrumbs:
+          assignees: Assignees
+          global: All tasks
         models:
           activity:
             name: Activity
@@ -118,13 +122,13 @@ en:
           destroy:
             success: Task deleted successfully
           edit:
-            title: Edit task
-            update: Update
+            submit: Update
+            title: Update task
           index:
             title: Tasks
           new:
-            create: Create task
-            title: New task
+            submit: Create
+            title: Create task
           update:
             error: Error updating the task
             success: Task updated successfully
@@ -164,26 +168,40 @@ en:
       models:
         activity:
           fields:
+            assignees_accepted: Accepted assignees
+            assignees_pending: Pending assignees
             description: Description
             end_date: End date
-            id: Id
-            max_minutes_per_day: Maximum minutes per day
+            max_minutes_per_day: Max. minutes per day
             requests_start_at: Requests start at
             start_date: Start date
+            status: Status
+            statuses:
+              finished: Finished
+              inactive: Inactive
+              not_started: Not started
+              open: Open
           name: Activity
         assignee:
           fields:
             email: Email
-            id: Id
             invited_at: Invited at
-            invited_by_user: Invited by user
+            invited_by: Invited by
             name: Name
             status: Status
-            tos_accepted_at: Terms Of Service accepted at
+            statuses:
+              accepted: Accepted
+              pending: Pending
+              rejected: Rejected
+            tos_accepted_at: Joined at
           name: Assignee
         task:
           fields:
-            id: Id
+            activities_count: Number of activites
+            activities_end_at: Last activity ends at
+            activities_start_at: First activity starts at
+            assignees_accepted: Accepted assignees
+            assignees_pending: Pending assignees
             name: Name
           name: Task
       time_events:

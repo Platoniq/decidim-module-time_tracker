@@ -4,8 +4,9 @@ module Decidim
   module TimeTracker
     module Admin
       class AssigneesController < ApplicationController
-        include Decidim::TimeTracker::ApplicationHelper
-        helper_method :assignees, :current_task, :current_activity, :current_assignee, :assignees_label
+        helper Decidim::TimeTracker::ApplicationHelper
+        helper Decidim::TimeTracker::Admin::ApplicationHelper
+        helper_method :assignees, :current_task, :current_activity, :current_assignee
 
         def index
           @assignees = assignees
@@ -49,7 +50,7 @@ module Decidim
         def update
           enforce_permission_to :update, :assignee, assignee: current_assignee
 
-          UpdateAssignee.call(current_assignee, current_user) do
+          UpdateAssignee.call(current_assignee, current_user, params[:assignee_status].to_sym) do
             on(:ok) do
               flash[:notice] = I18n.t("assignees.update.success", scope: "decidim.time_tracker.admin")
               redirect_to EngineRouter.admin_proxy(current_component).task_activity_assignees_path(current_task, current_activity)
@@ -59,6 +60,10 @@ module Decidim
 
         def assignees
           @assignees = Assignee.where(activity: current_activity.id)
+          pending = @assignees.pending
+          accepted = @assignees.accepted
+          rejected = @assignees.rejected
+          @assignees = pending + accepted + rejected
         end
 
         def current_task

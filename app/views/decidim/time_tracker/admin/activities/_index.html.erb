@@ -3,7 +3,7 @@
     <h2 class="card-title">
       <%= t(".title") %>
       <div class="button--title">
-         <%= link_to t("activities.actions.new", scope: "decidim.time_tracker.admin", name: activities_label), new_task_activity_path, class: "button tiny button--simple" %>
+         <%= link_to t("activities.actions.new", scope: "decidim.time_tracker.admin", name: activities_label), new_task_activity_path(task_id: current_task.id), class: "button tiny button--simple" %>
       </div>
     </h2>
   </div>
@@ -13,43 +13,51 @@
       <table class="table-list">
         <thead>
           <tr>
-            <th><%= t("models.activity.fields.id", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.description", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.status", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.start_date", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.end_date", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.max_minutes_per_day", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.requests_start_at", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.assignees_accepted", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.assignees_pending", scope: "decidim.time_tracker") %></th>
             <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker") %></th>
           </tr>
         </thead>
         <tbody>
           <% activities.each do |activity| %>
-            <tr data-id="<%= activity.id %>">
+            <tr data-id="<%= activity.id %>" class="<%= "activity--inactive" unless activity.active? %>">
               <td>
-                <%= activity.id %><br>
+                <%= translated_attribute activity.description %>
               </td>
               <td>
-                <%= translated_attribute activity.description %><br>
+                <%= t("models.activity.fields.statuses.#{activity.current_status}", scope: "decidim.time_tracker") %>
               </td>
               <td>
-                <%= activity.start_date %><br>
+                <%= l activity.start_date, format: :decidim_short %>
               </td>
               <td>
-                <%= activity.end_date %><br>
+                <%= l activity.end_date, format: :decidim_short %>
               </td>
               <td>
-                <%= activity.max_minutes_per_day %><br>
+                <%= activity.max_minutes_per_day %>
               </td>
               <td>
-                <%= activity.requests_start_at %><br>
+                <%= l activity.requests_start_at, format: :decidim_short %>
+              </td>
+              <td>
+                <%= activity.assignees.accepted.count %>
+              </td>
+              <td>
+                <%= activity.assignees.pending.count %>
               </td>
               <td class="table-list__actions">
                 <% if allowed_to? :update, :activity, activity: activity %>
-                  <%= icon_link_to "pencil", edit_task_activity_path(@current_task, activity), t("actions.edit", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
+                  <%= icon_link_to "people", task_activity_assignees_path(@current_task, activity), t("actions.assignees", scope: "decidim.time_tracker"), class: "action-icon--assignees" %>
                 <% end %>
 
                 <% if allowed_to? :update, :activity, activity: activity %>
-                  <%= icon_link_to "people", task_activity_assignees_path(@current_task, activity), t("actions.assignees", scope: "decidim.time_tracker"), class: "action-icon-registrations" %>
+                  <%= icon_link_to "pencil", edit_task_activity_path(@current_task, activity), t("actions.edit", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
                 <% end %>
 
                 <% if allowed_to? :destroy, :activity, activity: activity %>
