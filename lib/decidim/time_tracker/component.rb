@@ -5,6 +5,7 @@ require_dependency "decidim/components/namer"
 Decidim.register_component(:time_tracker) do |component|
   component.engine = Decidim::TimeTracker::Engine
   component.admin_engine = Decidim::TimeTracker::AdminEngine
+  component.admin_stylesheet = "decidim/time_tracker/admin/time_tracker" # Not working
   component.icon = "decidim/time_tracker/icon.svg"
   component.permissions_class_name = "Decidim::TimeTracker::Permissions"
 
