@@ -29,7 +29,7 @@ FactoryBot.define do
   end
 
   factory :assignee, class: "Decidim::TimeTracker::Assignee" do
-    user
+    user { create(:user) }
     activity { create(:activity) }
     status { :accepted }
     invited_at { 1.month.ago }
@@ -70,5 +70,14 @@ FactoryBot.define do
     stop { nil }
     total_seconds { stop.present? ? (stop - start) : 0 }
     user { assignee.user }
+
+    trait :running do
+      start { Time.current - 1.minute }
+    end
+
+    trait :stopped do
+      start { Time.current - 2.minutes }
+      stop { Time.current - 1.minute }
+    end
   end
 end

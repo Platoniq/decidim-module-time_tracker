@@ -33,7 +33,7 @@ module Decidim
         time_events.started_between(date.beginning_of_day, date.end_of_day).where(user: user).sum(&:total_seconds).to_i
       end
 
-      # Total number of secons spent by the user
+      # Total number of seconds spent by the user
       # and counting any possible running counters
       def user_seconds_elapsed(user)
         total = user_total_seconds(user)
