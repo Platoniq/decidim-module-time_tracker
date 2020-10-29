@@ -26,7 +26,7 @@ module Decidim
           CreateActivity.call(@form, current_task) do
             on(:ok) do
               flash[:notice] = I18n.t("activities.create.success", scope: "decidim.time_tracker.admin")
-              redirect_to EngineRouter.admin_proxy(current_component).task_activities_path(current_task)
+              redirect_to EngineRouter.admin_proxy(current_component).edit_task_path(current_task)
             end
 
             on(:invalid) do
@@ -42,7 +42,7 @@ module Decidim
           UpdateActivity.call(current_activity, form, current_user) do
             on(:ok) do
               flash[:notice] = I18n.t("activities.update.success", scope: "decidim.time_tracker.admin")
-              redirect_to EngineRouter.admin_proxy(current_component).task_activities_path(current_task)
+              redirect_to EngineRouter.admin_proxy(current_component).edit_task_path(current_task)
             end
 
             on(:invalid) do
@@ -58,7 +58,7 @@ module Decidim
           DestroyActivity.call(current_activity, current_user) do
             on(:ok) do
               flash[:notice] = I18n.t("activities.destroy.success", scope: "decidim.time_tracker.admin")
-              redirect_to EngineRouter.admin_proxy(current_component).task_activities_path(current_task)
+              redirect_to EngineRouter.admin_proxy(current_component).edit_task_path(current_task)
             end
           end
         end

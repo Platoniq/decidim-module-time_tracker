@@ -48,7 +48,7 @@ module Decidim
           UpdateTask.call(current_task, form, current_user) do
             on(:ok) do
               flash[:notice] = I18n.t("tasks.update.success", scope: "decidim.time_tracker.admin")
-              redirect_to EngineRouter.admin_proxy(current_component).tasks_path
+              redirect_to EngineRouter.admin_proxy(current_component).edit_task_path(current_task)
             end
 
             on(:invalid) do
