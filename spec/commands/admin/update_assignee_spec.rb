@@ -21,7 +21,6 @@ module Decidim::TimeTracker::Admin
 
       it "updates the invited by user field and the status" do
         expect(assignee.status.to_sym).to eq(status)
-        expect(assignee.invited_by_user).to eq(user)
       end
 
       it "traces the action", versioning: true do
