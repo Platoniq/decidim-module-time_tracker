@@ -5,6 +5,7 @@ require_dependency "decidim/components/namer"
 Decidim.register_component(:time_tracker) do |component|
   component.engine = Decidim::TimeTracker::Engine
   component.admin_engine = Decidim::TimeTracker::AdminEngine
+  component.admin_stylesheet = "decidim/time_tracker/admin/time_tracker"
   component.icon = "decidim/time_tracker/icon.svg"
   component.permissions_class_name = "Decidim::TimeTracker::Permissions"
 
@@ -98,8 +99,7 @@ Decidim.register_component(:time_tracker) do |component|
           end_date: 1.week.from_now + (index * 1.week),
           max_minutes_per_day: [15, 30, 45, 60].sample,
           requests_start_at: 1.week.ago + (index * 3.days),
-          task: task,
-          questionnaire: Decidim::Forms::Questionnaire.new
+          task: task
         )
 
         # Add assignees

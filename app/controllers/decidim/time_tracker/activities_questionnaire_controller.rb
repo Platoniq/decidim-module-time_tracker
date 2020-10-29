@@ -8,7 +8,6 @@ module Decidim
       def answer; end
 
       def questionnaire_for
-        activity if activity.has_questions?
         task
       end
 

@@ -5,8 +5,6 @@ module Decidim
     # The data store for a Activity in the Decidim::TimeTracker component. It
     # stores a description and other useful information related to an activity.
     class Activity < ApplicationRecord
-      include Decidim::Forms::HasQuestionnaire
-
       self.table_name = :decidim_time_tracker_activities
 
       belongs_to :task,
@@ -22,6 +20,8 @@ module Decidim
                class_name: "Decidim::TimeTracker::Milestone"
 
       scope :active, -> { where(active: true) }
+
+      delegate :questionnaire, to: :task
 
       # total number of seconds spent by the user
       # not counting current counters

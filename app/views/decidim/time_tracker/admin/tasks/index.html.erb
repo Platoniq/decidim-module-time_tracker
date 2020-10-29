@@ -35,7 +35,7 @@
                 <% end %>
 
                 <% if allowed_to? :update, :task, task: task %>
-                  <%= icon_link_to "people", edit_task_form_path(task), t("actions.questionnaire", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
+                  <%= icon_link_to "document", edit_task_form_path(task), t("actions.questionnaire", scope: "decidim.time_tracker"), class: "action-icon--edit#{' action-icon-success' if task.has_questions?}" %>
                 <% end %>
 
                 <% if allowed_to? :update, :task, task: task %>
@@ -50,13 +50,6 @@
           <% end %>
         </tbody>
       </table>
-      <%
-=begin
-      %>
- <%= paginate tasks, theme: "decidim" %>
-<%
-=end
-%>
     </div>
   </div>
 </div>

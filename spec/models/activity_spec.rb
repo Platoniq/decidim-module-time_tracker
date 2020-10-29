@@ -70,7 +70,7 @@ module Decidim
         end
       end
 
-      context "when the activity has questions" do
+      context "when the task has questions" do
         let!(:question) { create(:questionnaire_question, questionnaire: subject.questionnaire, position: 0) }
 
         it "activity has questions" do

@@ -49,10 +49,6 @@
                 <% end %>
 
                 <% if allowed_to? :update, :activity, activity: activity %>
-                  <%= icon_link_to "people", edit_task_activity_form_path(@current_task, activity), t("actions.questionnaire", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
-                <% end %>
-
-                <% if allowed_to? :update, :activity, activity: activity %>
                   <%= icon_link_to "people", task_activity_assignees_path(@current_task, activity), t("actions.assignees", scope: "decidim.time_tracker"), class: "action-icon-registrations" %>
                 <% end %>
 

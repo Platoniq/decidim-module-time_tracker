@@ -18,7 +18,6 @@ FactoryBot.define do
     end_date { 1.month.from_now }
     max_minutes_per_day { 60 }
     requests_start_at { Time.zone.today }
-    questionnaire { create(:questionnaire) }
   end
 
   factory :assignee, class: "Decidim::TimeTracker::Assignee" do

@@ -11,14 +11,5 @@ class AddQuestionnaireToExistingTasksActivities < ActiveRecord::Migration[5.2]
         end
       end
     end
-    Decidim::TimeTracker::Activity.transaction do
-      Decidim::TimeTracker::Activity.find_each do |activity|
-        if activity.questionnaire.blank?
-          activity.update!(
-            questionnaire: Decidim::Forms::Questionnaire.new
-          )
-        end
-      end
-    end
   end
 end

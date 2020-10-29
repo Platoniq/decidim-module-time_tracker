@@ -15,8 +15,6 @@ module Decidim
           resource :form, only: [:edit, :update], controller: "tasks_questionnaire"
 
           resources :activities do
-            resource :form, only: [:edit, :update], controller: "activities_questionnaire"
-
             resources :assignees
           end
         end

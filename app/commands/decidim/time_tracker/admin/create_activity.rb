@@ -30,8 +30,7 @@ module Decidim
             end_date: @form.end_date,
             max_minutes_per_day: @form.max_minutes_per_day,
             requests_start_at: @form.requests_start_at,
-            task: @task,
-            questionnaire: Decidim::Forms::Questionnaire.new
+            task: @task
           )
         end
       end
