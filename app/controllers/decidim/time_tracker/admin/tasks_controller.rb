@@ -5,7 +5,7 @@ module Decidim
     module Admin
       class TasksController < Admin::ApplicationController
         include Decidim::TimeTracker::ApplicationHelper
-        helper_method :tasks, :current_task, :tasks_label
+        helper_method :tasks, :current_task, :tasks_label, :activities_label
 
         def index
           @tasks
@@ -48,7 +48,7 @@ module Decidim
           UpdateTask.call(current_task, form, current_user) do
             on(:ok) do
               flash[:notice] = I18n.t("tasks.update.success", scope: "decidim.time_tracker.admin")
-              redirect_to EngineRouter.admin_proxy(current_component).tasks_path
+              redirect_to EngineRouter.admin_proxy(current_component).edit_task_path(current_task)
             end
 
             on(:invalid) do

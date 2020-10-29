@@ -87,11 +87,7 @@ module Decidim::TimeTracker::Admin
     end
 
     describe "PATCH #update" do
-      let(:form) do
-        {
-          status: "accepted"
-        }
-      end
+      let(:status) { "accepted" } 
       let(:params) do
         {
           component_id: component.id,
@@ -99,7 +95,7 @@ module Decidim::TimeTracker::Admin
           task_id: task.id,
           activity_id: activity.id,
           id: assignee.id,
-          assignee: form
+          assignee_status: status
         }
       end
 
@@ -111,7 +107,7 @@ module Decidim::TimeTracker::Admin
 
         it "updates the new assignee" do
           post :update, params: params
-          expect(Decidim::TimeTracker::Assignee.first.status).to eq(form[:status])
+          expect(Decidim::TimeTracker::Assignee.first.status).to eq(status)
         end
       end
     end

@@ -5,3 +5,38 @@
     }
   }
 }
+
+.breadcrumbs{
+  margin-bottom: 0;
+
+  li{
+    font-size: 1em;
+  }
+}
+
+.activity--inactive{
+  opacity: .5;
+}
+
+.assignee-{
+  &-pending{
+    .assignee--status{
+      background-color: $warning;
+    }
+    td{
+      background-color: transparentize($warning, 0.9);
+    }
+  }
+  &-accepted{
+    .assignee--status{
+      background-color: $success;
+    }
+    td{
+      background-color: transparentize($success, 0.9);
+    }
+  }
+
+  &-rejected td{
+    opacity: .5;
+  }
+}
