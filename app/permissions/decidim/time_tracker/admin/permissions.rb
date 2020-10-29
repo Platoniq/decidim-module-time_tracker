@@ -34,7 +34,7 @@ module Decidim
 
         def allowed_assignee_action?
           return unless permission_action.subject == :assignee
-          
+
           if permission_action.action == :update
             return permission_action.allow! if assignee.can_change_status?
           end
