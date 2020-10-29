@@ -18,10 +18,10 @@ module Decidim
           {
             description: Decidim::Faker::Localized.sentence(3),
             active: false,
-            start_date: 1.day.ago,
-            end_date: 1.month.from_now,
+            start_date: 1.day.from_now.strftime("%d/%m/%Y"),
+            end_date: 1.month.from_now.strftime("%d/%m/%Y"),
             max_minutes_per_day: 60,
-            requests_start_at: Time.zone.today,
+            requests_start_at: Time.now.strftime("%d/%m/%Y %H:%M"),
             task_id: task.id
           }
         end
@@ -60,10 +60,10 @@ module Decidim
           context "when there is permission" do
             it "returns ok" do
               post :create, params: params
-              expect(flash[:notice]).not_to be_empty
+              expect(flash[:notice]).to be_present
               expect(response).to have_http_status(:found)
             end
-
+            
             it "creates the new activity" do
               post :create, params: params
               expect(Decidim::TimeTracker::Activity.first.description).to eq(activity_params[:description])
@@ -96,10 +96,10 @@ module Decidim
             {
               description: Decidim::Faker::Localized.sentence(3),
               active: false,
-              start_date: 1.day.ago,
-              end_date: 1.month.from_now,
+              start_date: 1.month.ago.strftime("%d/%m/%Y"),
+              end_date: 1.month.from_now.strftime("%d/%m/%Y"),
               max_minutes_per_day: 60,
-              requests_start_at: Time.zone.today,
+              requests_start_at: 2.months.ago.strftime("%d/%m/%Y %H:%M"),
               task: task
             }
           end
@@ -115,7 +115,7 @@ module Decidim
           context "when there is permission" do
             it "returns ok" do
               patch :update, params: params
-              expect(flash[:notice]).not_to be_empty
+              expect(flash[:notice]).to be_present
               expect(response).to have_http_status(:found)
             end
 
@@ -160,7 +160,7 @@ module Decidim
           context "when there is permission" do
             it "returns ok" do
               delete :destroy, params: params
-              expect(flash[:notice]).not_to be_empty
+              expect(flash[:notice]).to be_present
               expect(response).to have_http_status(:found)
             end
 

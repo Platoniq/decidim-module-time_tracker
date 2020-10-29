@@ -23,7 +23,7 @@ module Decidim
 
           @form = form(ActivityForm).from_params(params)
 
-          CreateActivity.call(@form, current_task) do
+          CreateActivity.call(@form, current_task) do |activity|
             on(:ok) do
               flash[:notice] = I18n.t("activities.create.success", scope: "decidim.time_tracker.admin")
               redirect_to EngineRouter.admin_proxy(current_component).edit_task_path(current_task)
@@ -38,8 +38,8 @@ module Decidim
 
         def update
           enforce_permission_to :update, :activity, activity: current_activity
-          form = form(ActivityForm).from_params(params, task: current_task, activity: current_activity)
-          UpdateActivity.call(current_activity, form, current_user) do
+          @form = form(ActivityForm).from_params(params, task: current_task, activity: current_activity)
+          UpdateActivity.call(current_activity, @form, current_user) do
             on(:ok) do
               flash[:notice] = I18n.t("activities.update.success", scope: "decidim.time_tracker.admin")
               redirect_to EngineRouter.admin_proxy(current_component).edit_task_path(current_task)
