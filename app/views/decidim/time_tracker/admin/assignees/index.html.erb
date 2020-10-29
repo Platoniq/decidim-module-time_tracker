@@ -17,24 +17,21 @@
           <tr>
             <th><%= t("models.assignee.fields.name", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.email", scope: "decidim.time_tracker") %></th>
-            <th><%= t("models.assignee.fields.status", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.invited_by", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.invited_at", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.tos_accepted_at", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignee.fields.status", scope: "decidim.time_tracker") %></th>
             <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker") %></th>
           </tr>
         </thead>
         <tbody>
           <% assignees.each do |assignee| %>
-            <tr data-id="<%= assignee.id %>">
+            <tr data-id="<%= assignee.id %>" class="assignee--<%= assignee.status %>">
               <td>
                 <%= assignee.user.name %><br>
               </td>
               <td>
                 <%= assignee.user.email %><br>
-              </td>
-              <td>
-                <%= t("models.assignee.fields.statuses.#{assignee.status}", scope: "decidim.time_tracker") %><br>
               </td>
               <td>
                 <%= assignee.invited_by_user&.name %><br>
@@ -44,6 +41,9 @@
               </td>
               <td>
                 <%= l(assignee.tos_accepted_at, format: :decidim_short) if assignee.tos_accepted_at.present? %><br>
+              </td>
+              <td class="assignee--status">
+                <%= t("models.assignee.fields.statuses.#{assignee.status}", scope: "decidim.time_tracker") %><br>
               </td>
               <td class="table-list__actions">
                 <% if allowed_to? :update, :assignee, assignee: assignee %>
@@ -61,3 +61,5 @@
     </div>
   </div>
 </div>
+
+<%= stylesheet_link_tag "decidim/time_tracker/admin/time_tracker" %>
