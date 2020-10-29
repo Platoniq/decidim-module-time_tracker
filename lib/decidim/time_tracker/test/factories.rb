@@ -33,16 +33,12 @@ FactoryBot.define do
       status { :pending }
     end
 
-    trait :active do
-      status { :active }
+    trait :accepted do
+      status { :accepted }
     end
 
-    trait :completed do
-      status { :completed }
-    end
-
-    trait :suspended do
-      status { :suspended }
+    trait :rejected do
+      status { :rejected }
     end
   end
 

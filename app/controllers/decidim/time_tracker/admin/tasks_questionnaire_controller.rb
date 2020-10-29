@@ -11,11 +11,11 @@ module Decidim
         end
 
         def update_url
-          task_form_path(task_id: task.id)
+          EngineRouter.admin_proxy(current_component).task_form_path(task_id: task.id)
         end
 
         def after_update_url
-          edit_task_form_path(task_id: task.id)
+          EngineRouter.admin_proxy(current_component).edit_task_path(id: task.id)
         end
 
         private
