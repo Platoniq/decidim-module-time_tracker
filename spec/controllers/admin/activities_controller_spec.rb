@@ -21,7 +21,7 @@ module Decidim
             start_date: 1.day.from_now.strftime("%d/%m/%Y"),
             end_date: 1.month.from_now.strftime("%d/%m/%Y"),
             max_minutes_per_day: 60,
-            requests_start_at: Time.now.strftime("%d/%m/%Y %H:%M"),
+            requests_start_at: Time.zone.now.strftime("%d/%m/%Y %H:%M"),
             task_id: task.id
           }
         end
@@ -63,7 +63,7 @@ module Decidim
               expect(flash[:notice]).to be_present
               expect(response).to have_http_status(:found)
             end
-            
+
             it "creates the new activity" do
               post :create, params: params
               expect(Decidim::TimeTracker::Activity.first.description).to eq(activity_params[:description])

@@ -23,7 +23,7 @@ module Decidim
 
           @form = form(ActivityForm).from_params(params)
 
-          CreateActivity.call(@form, current_task) do |activity|
+          CreateActivity.call(@form, current_task) do |_activity|
             on(:ok) do
               flash[:notice] = I18n.t("activities.create.success", scope: "decidim.time_tracker.admin")
               redirect_to EngineRouter.admin_proxy(current_component).edit_task_path(current_task)

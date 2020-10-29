@@ -16,8 +16,8 @@ module Decidim
         attribute :requests_start_at, Decidim::Attributes::TimeWithZone
 
         validates :start_date, presence: true
-        validates :end_date, presence: true, date: { after: :start_date}
-        validates :requests_start_at, presence: true, date: { before: :start_date}
+        validates :end_date, presence: true, date: { after: :start_date }
+        validates :requests_start_at, presence: true, date: { before: :start_date }
 
         validates :max_minutes_per_day, presence: true
         validates :description, translatable_presence: true

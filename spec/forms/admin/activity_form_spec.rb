@@ -22,7 +22,7 @@ module Decidim::TimeTracker
     end
     let(:start_date) { 2.days.from_now }
     let(:end_date) { (2.days.from_now + 1.day) }
-    let(:requests_start_at) { 1.days.from_now }
+    let(:requests_start_at) { 1.day.from_now }
 
     let(:attributes) do
       {
