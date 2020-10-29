@@ -2,9 +2,11 @@
   <div class="card-divider">
     <h2 class="card-title">
       <%= title %>
-      <div class="button--title">
-        <%= link_to t("actions.assignees", scope: "decidim.time_tracker"), task_activity_assignees_path(current_task, current_activity), class: "button tiny button--simple" %>
-      </div>
+      <% if action_name == "edit" %>
+        <div class="button--title">
+          <%= link_to t("actions.assignees", scope: "decidim.time_tracker"), task_activity_assignees_path(current_task, current_activity), class: "button tiny button--simple" %>
+        </div>
+      <% end %>
     </h2>
   </div>
   <div class="card-section">
