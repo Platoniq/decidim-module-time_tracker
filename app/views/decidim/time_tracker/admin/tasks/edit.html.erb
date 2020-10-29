@@ -1,7 +1,19 @@
 <%= render partial: "decidim/time_tracker/admin/breadcrumbs" %>
 
-<%= decidim_form_for(@form, html: { class: "form new_task" }) do |f| %>
-  <%= render partial: "form", object: f, locals: { title: t(".title"), submit: t(".submit") } %>
-<% end %>
+<div class="card">
+  <div class="card-divider">
+    <h2 class="card-title">
+      <%= t(".title") %>
+      <div class="button--title">
+        <%= link_to t("tasks.actions.questionnaire", scope: "decidim.time_tracker.admin"), edit_task_form_path(current_task), class: "button tiny button--simple" %>
+      </div>
+    </h2>
+  </div>
+  <div class="card-section">
+    <%= decidim_form_for(@form, html: { class: "form new_task" }) do |f| %>
+      <%= render partial: "form", object: f, locals: { submit: t(".submit") } %>
+  <% end %>
+  </div>
+</div>
 
 <%= render partial: "decidim/time_tracker/admin/activities/index", locals: { activities: current_task.activities } %>

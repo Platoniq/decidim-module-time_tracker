@@ -17,9 +17,10 @@ module Decidim
             post :start, controller: "time_events"
             post :stop, controller: "time_events"
 
-            resource :join, controller: "activities_questionnaire"
-            collection do
-              post :answer
+            resources :form, controller: "activities_questionnaire", only: [:show] do
+              member do
+                post :answer
+              end
             end
           end
         end

@@ -5,30 +5,24 @@ module Decidim
     class ActivitiesQuestionnaireController < ApplicationController
       include Decidim::Forms::Concerns::HasQuestionnaire
 
-      def answer; end
-
       def questionnaire_for
         task
       end
 
       def allow_answers?
-        activity.current_status == :open
+        activity.current_status != :inactive
       end
 
       def update_url
-        answer_task_activities_path(task_id: task.id, activity_id: activity.id)
-      end
-
-      def after_update_url
-        edit_task_form_path(task_id: task.id)
+        answer_task_activity_form_path(task_id: task.id, activity_id: activity.id, id: activity.questionnaire)
       end
 
       def form_path
-        answer_task_activities_path(task_id: task.id)
+        task_activity_form_path(task_id: task.id, activity_id: activity.id, id: activity.questionnaire)
       end
 
       def after_answer_path
-        Decidim::EngineRouter.main_proxy(current_component).assignees_path(activity_id: activity.id)
+        Decidim::EngineRouter.main_proxy(current_component).root_path
       end
 
       private

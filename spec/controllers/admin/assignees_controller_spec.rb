@@ -87,7 +87,7 @@ module Decidim::TimeTracker::Admin
     end
 
     describe "PATCH #update" do
-      let(:status) { "accepted" } 
+      let(:status) { "accepted" }
       let(:params) do
         {
           component_id: component.id,

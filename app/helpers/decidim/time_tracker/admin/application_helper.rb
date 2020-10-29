@@ -9,8 +9,8 @@ module Decidim
         def change_assignee_status_button(assignee)
           path_reject = task_activity_assignee_path(current_task, current_activity, assignee, assignee_status: :rejected)
           path_accept = task_activity_assignee_path(current_task, current_activity, assignee, assignee_status: :accepted)
-          label_reject = t("actions.reject", scope: "decidim.time_tracker")
-          label_accept = t("actions.accept", scope: "decidim.time_tracker")
+          label_reject = t("assignees.actions.reject", scope: "decidim.time_tracker.admin")
+          label_accept = t("assignees.actions.accept", scope: "decidim.time_tracker.admin")
 
           icons = [
             assignee.pending? || assignee.accepted? ? icon_link_to("x", path_reject, label_reject, method: :patch, class: "action-icon--status") : empty_icon,
