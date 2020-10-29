@@ -25,7 +25,7 @@
         </thead>
         <tbody>
           <% activities.each do |activity| %>
-            <tr data-id="<%= activity.id %>">
+            <tr data-id="<%= activity.id %>" class="<%= "activity--inactive" unless activity.active? %>">
               <td>
                 <%= translated_attribute activity.description %><br>
               </td>
@@ -49,7 +49,7 @@
               </td>
               <td class="table-list__actions">
                 <% if allowed_to? :update, :activity, activity: activity %>
-                  <%= icon_link_to "people", task_activity_assignees_path(@current_task, activity), t("actions.assignees", scope: "decidim.time_tracker"), class: "action-icon-registrations" %>
+                  <%= icon_link_to "people", task_activity_assignees_path(@current_task, activity), t("actions.assignees", scope: "decidim.time_tracker"), class: "action-icon--assignees" %>
                 <% end %>
 
                 <% if allowed_to? :update, :activity, activity: activity %>
@@ -74,3 +74,5 @@
     </div>
   </div>
 </div>
+
+<%= stylesheet_link_tag "decidim/time_tracker/admin/time_tracker" %>
