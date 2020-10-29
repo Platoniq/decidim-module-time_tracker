@@ -1,4 +1,4 @@
-<% if activity.questionnaire.answered_by? current_user %>
+<% if activity.answered_by? current_user %>
   <%= t("questionnaire.answered", scope: "decidim.time_tracker.time_tracker.activity") %>
 <% else %>
   <%= link_to task_activity_form_path(task_id: activity.task, activity_id: activity, id: activity.questionnaire) do %>

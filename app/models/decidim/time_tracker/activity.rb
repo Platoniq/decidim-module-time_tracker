@@ -82,6 +82,15 @@ module Decidim
         questionnaire.questions.any?
       end
 
+      def answered_by?(user)
+        questionnaire.answered_by? session_token(user)
+      end
+
+      # used as a unique idenfier when answering the task associated questionnaire
+      def session_token(user)
+        "#{user.id}-#{id}"
+      end
+
       # Returns a identificative (I18n) string about the current status of activity
       # Returns:
       # :open if user can track time

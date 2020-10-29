@@ -25,7 +25,22 @@ module Decidim
         Decidim::EngineRouter.main_proxy(current_component).root_path
       end
 
+      # Override so can answer only if is an assignee
+      def visitor_can_answer?
+        activity.assignee_accepted? current_user
+      end
+
+      # Override to allow respond users once per-activity
+      def visitor_already_answered?
+        questionnaire.answered_by?(session_token)
+      end
+
       private
+
+      # Override to enable response once for each activity
+      def session_token
+        activity.session_token(current_user)
+      end
 
       def activity
         @activity ||= Activity.find(params[:activity_id])
