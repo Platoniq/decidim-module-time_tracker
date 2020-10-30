@@ -34,16 +34,16 @@
                 <%= t("models.activity.fields.statuses.#{activity.current_status}", scope: "decidim.time_tracker") %>
               </td>
               <td>
-                <%= l activity.start_date, format: :decidim_short %>
+                <%= l(activity.start_date, format: :decidim_short) if activity.start_date.present? %>
               </td>
               <td>
-                <%= l activity.end_date, format: :decidim_short %>
+                <%= l(activity.end_date, format: :decidim_short) if activity.end_date.present? %>
               </td>
               <td>
                 <%= activity.max_minutes_per_day %>
               </td>
               <td>
-                <%= l activity.requests_start_at, format: :decidim_short %>
+                <%= l(activity.requests_start_at, format: :decidim_short) if activity.requests_start_at.present? %>
               </td>
               <td>
                 <%= activity.assignees.accepted.count %>
@@ -52,7 +52,7 @@
                 <%= activity.assignees.pending.count %>
               </td>
               <td class="table-list__actions">
-                <% if allowed_to? :update, :activity, activity: activity %>
+               <% if allowed_to? :index, :assignees %>
                   <%= icon_link_to "people", task_activity_assignees_path(@current_task, activity), t("activities.actions.assignees", scope: "decidim.time_tracker.admin"), class: "action-icon--assignees" %>
                 <% end %>
 

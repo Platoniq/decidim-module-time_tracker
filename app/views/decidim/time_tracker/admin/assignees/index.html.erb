@@ -20,6 +20,7 @@
             <th><%= t("models.assignee.fields.invited_by", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.invited_at", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.tos_accepted_at", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignee.fields.time_dedicated", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.status", scope: "decidim.time_tracker") %></th>
             <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker.admin") %></th>
           </tr>
@@ -28,22 +29,25 @@
           <% assignees.each do |assignee| %>
             <tr data-id="<%= assignee.id %>" class="assignee--<%= assignee.status %>">
               <td>
-                <%= assignee.user.name %><br>
+                <%= assignee.user.name %>
               </td>
               <td>
-                <%= assignee.user.email %><br>
+                <%= assignee.user.email %>
               </td>
               <td>
-                <%= assignee.invited_by_user&.name %><br>
+                <%= assignee.invited_by_user&.name %>
               </td>
               <td>
-                <%= l(assignee.invited_at, format: :decidim_short) if assignee.invited_at.present? %><br>
+                <%= l(assignee.invited_at, format: :decidim_short) if assignee.invited_at.present? %>
               </td>
               <td>
-                <%= l(assignee.tos_accepted_at, format: :decidim_short) if assignee.tos_accepted_at.present? %><br>
+                <%= l(assignee.tos_accepted_at, format: :decidim_short) if assignee.tos_accepted_at.present? %>
+              </td>
+              <td>
+                <%= clockify_seconds(assignee.time_dedicated) if assignee.time_dedicated > 0 %>
               </td>
               <td class="assignee--status">
-                <%= t("models.assignee.fields.statuses.#{assignee.status}", scope: "decidim.time_tracker") %><br>
+                <%= t("models.assignee.fields.statuses.#{assignee.status}", scope: "decidim.time_tracker") %>
               </td>
               <td class="table-list__actions">
                 <% if allowed_to? :update, :assignee, assignee: assignee %>

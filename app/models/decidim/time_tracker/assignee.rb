@@ -52,6 +52,10 @@ module Decidim
       def milestones
         @milestones ||= Milestone.where(user: user)
       end
+
+      def can_change_status?
+        time_events.empty?
+      end
     end
   end
 end
