@@ -1,15 +1,16 @@
-name: Build
+name: Test
 
 on:
   push:
-    - master
+    branches:
+      - master
   pull_request:
 
 env:
   RUBY_VERSION: 2.6.6
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     services:
       postgres:
