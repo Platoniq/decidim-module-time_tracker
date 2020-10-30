@@ -45,7 +45,7 @@
                 <%= task.assignees_count(filter: :pending) %><br>
               </td>
               <td class="table-list__actions">
-                <% if allowed_to? :update, :task, task: task %>
+                <% if allowed_to? :update, :questionnaire, questionnaire: task.questionnaire %>
                   <%= icon_link_to "document", edit_task_form_path(task), t("tasks.actions.questionnaire", scope: "decidim.time_tracker.admin"), class: "action-icon--edit#{' action-icon-success' if task.has_questions?}" %>
                 <% end %>
 
