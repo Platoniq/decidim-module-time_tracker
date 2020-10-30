@@ -189,6 +189,7 @@ es:
               accepted: Accepted
               pending: Pending
               rejected: Rejected
+            time_dedicated: Time dedicated
             tos_accepted_at: Joined at
           name: Assignee
         task:
