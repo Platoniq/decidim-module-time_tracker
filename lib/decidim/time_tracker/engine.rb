@@ -16,6 +16,12 @@ module Decidim
           resources :activities do
             post :start, controller: "time_events"
             post :stop, controller: "time_events"
+
+            resources :form, controller: "activities_questionnaire", only: [:show] do
+              member do
+                post :answer
+              end
+            end
           end
         end
         resources :milestones

@@ -1,0 +1,7 @@
+<% if activity.answered_by? current_user %>
+  <%= t("questionnaire.answered", scope: "decidim.time_tracker.time_tracker.activity") %>
+<% else %>
+  <%= link_to task_activity_form_path(task_id: activity.task, activity_id: activity, id: activity.questionnaire) do %>
+    <%= icon "comment-square" %> <%= t("questionnaire.respond", scope: "decidim.time_tracker.time_tracker.activity") %>
+  <% end %>
+<% end %>

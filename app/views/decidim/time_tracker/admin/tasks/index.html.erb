@@ -20,7 +20,7 @@
             <th><%= t("models.task.fields.activities_end_at", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.task.fields.assignees_accepted", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.task.fields.assignees_pending", scope: "decidim.time_tracker") %></th>
-            <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker") %></th>
+            <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker.admin") %></th>
           </tr>
         </thead>
         <tbody>
@@ -45,25 +45,22 @@
                 <%= task.assignees_count(filter: :pending) %><br>
               </td>
               <td class="table-list__actions">
+                <% if allowed_to? :update, :questionnaire, questionnaire: task.questionnaire %>
+                  <%= icon_link_to "document", edit_task_form_path(task), t("tasks.actions.questionnaire", scope: "decidim.time_tracker.admin"), class: "action-icon--edit#{' action-icon-success' if task.has_questions?}" %>
+                <% end %>
+
                 <% if allowed_to? :update, :task, task: task %>
-                  <%= icon_link_to "pencil", edit_task_path(task), t("actions.edit", scope: "decidim.time_tracker"), class: "action-icon--edit" %>
+                  <%= icon_link_to "pencil", edit_task_path(task), t("tasks.actions.edit", scope: "decidim.time_tracker.admin"), class: "action-icon--edit" %>
                 <% end %>
 
                 <% if allowed_to? :destroy, :task, task: task %>
-                  <%= icon_link_to "circle-x", task_path(task), t("actions.destroy", scope: "decidim.time_tracker"), method: :delete, class: "action-icon--remove", data: { confirm: t("actions.confirm_destroy", scope: "decidim.time_tracker") } %>
+                  <%= icon_link_to "circle-x", task_path(task), t("tasks.actions.destroy", scope: "decidim.time_tracker.admin"), method: :delete, class: "action-icon--remove", data: { confirm: t("tasks.actions.confirm_destroy", scope: "decidim.time_tracker.admin") } %>
                 <% end %>
               </td>
             </tr>
           <% end %>
         </tbody>
       </table>
-      <%
-=begin
-      %>
- <%= paginate tasks, theme: "decidim" %>
-<%
-=end
-%>
     </div>
   </div>
 </div>

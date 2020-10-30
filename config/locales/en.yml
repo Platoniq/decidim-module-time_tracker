@@ -50,19 +50,15 @@ en:
               or <a href="%{sign_up_url}">sign up</a> to participate in this activity.
             request: Request to join activity
     time_tracker:
-      actions:
-        accept: Accept
-        activities: Activities
-        assignees: Assignees
-        confirm_destroy: Are you sure you want to delete this?
-        destroy: Destroy
-        edit: Edit
-        new: New
-        reject: Reject
-        title: Actions
       admin:
+        actions:
+          title: Actions
         activities:
           actions:
+            assignees: Manage assignees
+            confirm_destroy: Are you sure you want to delete this activity?
+            destroy: Delete activity
+            edit: Edit activity
             new: New activity
           create:
             error: Error creating the activity
@@ -82,7 +78,11 @@ en:
             success: Activity updated successfully
         assignees:
           actions:
+            accept: Accept
+            confirm_destroy: Are you sure you want to delete this assignee?
+            destroy: Delete assignee
             new: New assignee
+            reject: Reject
           create:
             error: Error creating assignee
             success: Assignee created successfully
@@ -114,8 +114,12 @@ en:
             name: Task
         tasks:
           actions:
+            confirm_destroy: Are you sure you want to delete this task?
+            destroy: Delete task
+            edit: Edit task
             export_to_accountability: Export to Accountability
             new: New task
+            questionnaire: Edit questionnaire
           create:
             error: Error creating the task
             success: Task created successfully
@@ -221,6 +225,9 @@ en:
           inactive: Inactive
           not_started: Will start on %{start_date}
           open: Open
+          questionnaire:
+            answered: Thanks for answering the questionnaire!
+            respond: What do you think about this task?
         index:
           assignees_list: Assignee's activities
         request_activity:

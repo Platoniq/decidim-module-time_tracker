@@ -21,6 +21,8 @@ module Decidim
 
       scope :active, -> { where(active: true) }
 
+      delegate :questionnaire, to: :task
+
       # total number of seconds spent by the user
       # not counting current counters
       def user_total_seconds(user)
@@ -31,7 +33,7 @@ module Decidim
         time_events.started_between(date.beginning_of_day, date.end_of_day).where(user: user).sum(&:total_seconds).to_i
       end
 
-      # Total number of secons spent by the user
+      # Total number of seconds spent by the user
       # and counting any possible running counters
       def user_seconds_elapsed(user)
         total = user_total_seconds(user)
@@ -74,6 +76,19 @@ module Decidim
 
       def assignee_rejected?(user)
         assignees.rejected.where(user: user).count.positive?
+      end
+
+      def has_questions?
+        questionnaire.questions.any?
+      end
+
+      def answered_by?(user)
+        questionnaire.answered_by? session_token(user)
+      end
+
+      # used as a unique idenfier when answering the task associated questionnaire
+      def session_token(user)
+        "#{user.id}-#{id}"
       end
 
       # Returns a identificative (I18n) string about the current status of activity

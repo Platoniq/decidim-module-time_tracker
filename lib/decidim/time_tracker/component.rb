@@ -84,7 +84,8 @@ Decidim.register_component(:time_tracker) do |component|
         Decidim::TimeTracker::Task,
         admin_user,
         name: Decidim::Faker::Localized.sentence(2),
-        component: component
+        component: component,
+        questionnaire: Decidim::Forms::Questionnaire.new
       )
 
       # Create activites for these tasks

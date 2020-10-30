@@ -1,4 +1,10 @@
-@import "decidim/variables";
+.action-icon {
+  &-success {
+    .icon {
+      color: $success;
+    }
+  }
+}
 
 .breadcrumbs{
   margin-bottom: 0;

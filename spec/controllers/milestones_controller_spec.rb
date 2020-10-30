@@ -3,15 +3,14 @@
 require "spec_helper"
 
 module Decidim::TimeTracker
-  describe AssigneesController, type: :controller do
+  describe MilestonesController, type: :controller do
     routes { Decidim::TimeTracker::Engine.routes }
 
     let(:organization) { create :organization }
     let(:user) { create(:user, :confirmed, :admin, organization: organization) }
     let(:participatory_space) { create(:participatory_process, organization: organization) }
-    let(:component) { create :time_tracker_component, participatory_space: participatory_space }
-    let(:task) { create :task, component: component }
-    let(:activity) { create :activity, task: task }
+    let(:component) { milestone.activity.task.component }
+    let(:milestone) { create :milestone, user: user }
 
     before do
       request.env["decidim.current_organization"] = organization
@@ -22,26 +21,36 @@ module Decidim::TimeTracker
     describe "post #create" do
       let(:params) do
         {
-          activity_id: activity.id
+          activity_id: activity_id,
+          milestone: {
+            title: title,
+            attachment: {
+              title: ""
+            }
+          }
         }
       end
+      let(:activity_id) { milestone.activity.id }
+      let(:title) { "a new milestone" }
 
       context "when user is signed in" do
         before do
           sign_in user
         end
 
-        it "creates a new assignee" do
+        it "creates a new milestone" do
           post :create, params: params
-          expect(response).to have_http_status(:ok)
+          expect(flash[:notice]).not_to be_empty
+          expect(response).to have_http_status(:redirect)
         end
 
-        context "when activity is not active" do
-          let(:activity) { create :activity, task: task, active: false }
+        context "when there's an error in the form" do
+          let(:title) { "" }
 
-          it "do not create a new assignee" do
+          it "do not create a new milestone" do
             post :create, params: params
-            expect(response).to have_http_status(:unprocessable_entity)
+            expect(flash[:alert]).not_to be_empty
+            expect(response).to have_http_status(:redirect)
           end
         end
       end
@@ -51,21 +60,6 @@ module Decidim::TimeTracker
           post :create, params: params
           expect(response).to redirect_to("/")
         end
-      end
-    end
-
-    describe "get #show" do
-      let(:assignee) { create(:assignee, activity: activity, user: user) }
-      let(:params) do
-        {
-          id: assignee.id
-        }
-      end
-
-      it "returns the show view" do
-        get :show, params: params
-        expect(response).to have_http_status(:ok)
-        expect(subject).to render_template(:show)
       end
     end
   end

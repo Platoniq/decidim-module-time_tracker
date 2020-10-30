@@ -1,16 +1,22 @@
-<div class="row time-tracker-request" data-activity-id="<%= activity.id %>">
-  <div class="columns large-8">
-    <h2><%= translated_attribute activity.description %></h2>
-  </div>
-  <div class="columns large-3">
-    <% if user_signed_in? %>
-      <% if activity.assignee_pending? current_user %>
-        <div class="callout warning"><%= t ".assignee_pending" %></div>
-      <% else %>
-        <%= button_to requests_path(activity), method: :create, remote: true, data: { activity_id: activity.id }, class: "button large" do %>
+<div class="time-tracker-request" data-activity-id="<%= activity.id %>">
+  <div class="content">
+    <div class="left">
+      <h2><%= translated_attribute activity.description %></h2>
+    </div>
+    <div class="right">
+      <% if user_signed_in? %>
+        <% if activity.assignee_pending? current_user %>
+          <div class="callout warning"><%= t ".assignee_pending" %></div>
+        <% elsif activity.assignee_accepted?(current_user) && activity.has_questions? %>
+          <%= button_to questionnaire_path(activity), method: :get, data: { activitiy_id: activity.id }, class:"button large" do %>
             <%= t("index.request", scope: "decidim.components.time_tracker.views") %>
+          <% end %>
+        <% else %>
+          <%= button_to requests_path(activity), method: :create, remote: true, data: { activity_id: activity.id }, class: "button large" do %>
+              <%= t("index.request", scope: "decidim.components.time_tracker.views") %>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
+    </div>
   </div>
 </div>

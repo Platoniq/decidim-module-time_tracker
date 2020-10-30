@@ -24,7 +24,8 @@ module Decidim
             Decidim::TimeTracker::Task,
             @form.current_user,
             name: @form.name,
-            component: @form.current_component
+            component: @form.current_component,
+            questionnaire: Decidim::Forms::Questionnaire.new
           )
         end
       end

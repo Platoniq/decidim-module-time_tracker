@@ -6,29 +6,36 @@
   data-elapsed-time="<%= activity.user_seconds_elapsed(current_user) %>"
   data-counter-active="<%= activity.counter_active_for?(current_user) %>"
   data-remaining-time="<%= activity.user_remaining_for_today(current_user) %>">
-  <div class="row">
-    <div class="columns large-8 medium-9">
+  <div class="content">
+    <div class="left">
       <h2><%= translated_attribute activity.description %></h2>
       <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
       <div class="elapsed-time"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div class="elapsed-time-clock"><%= clockify_seconds(activity.user_seconds_elapsed(current_user)) %></div></div>
     </div>
-    <% if activity.current_status != :open %>
-      <div class="callout warning columns medium-3">
-        <%= t ".#{activity.current_status}", end_date: l(activity.end_date, format: :short), start_date: l(activity.start_date, format: :short) %>
+    <div class="right">
+      <div class="top">
+        <% if activity.current_status != :open %>
+          <div class="callout warning">
+            <%= t ".#{activity.current_status}", end_date: l(activity.end_date, format: :short), start_date: l(activity.start_date, format: :short) %>
+          </div>
+        <% else %>
+          <div class="tracker-buttons">
+            <button class="danger  button time-tracker-activity-stop hide">
+              <%= icon("media-stop", class: "icon icon--large", aria_label: "stop", role: "img") %>
+            </button>
+            <button class="secondary button time-tracker-activity-pause hide">
+              <%= icon("media-pause", class: "icon icon--large", aria_label: "pause", role: "img") %>
+            </button>
+            <button class="success button time-tracker-activity-start">
+              <%= icon("media-play", class: "icon icon--large", aria_label: "play", role: "img") %>
+            </button>
+          </div>
+        <% end %>
       </div>
-    <% else %>
-      <div class="columns large-4 medium-3">
-        <button class="danger float-right button time-tracker-activity-stop hide">
-          <%= icon("media-stop", class: "icon icon--large", aria_label: "stop", role: "img") %>
-        </button>
-        <button class="secondary float-right button time-tracker-activity-pause hide">
-          <%= icon("media-pause", class: "icon icon--large", aria_label: "pause", role: "img") %>
-        </button>
-        <button class="success float-right button time-tracker-activity-start">
-          <%= icon("media-play", class: "icon icon--large", aria_label: "play", role: "img") %>
-        </button>
+      <div class="bottom">
+        <%= render partial: "answer_questionnaire", locals: { activity: activity } %>
       </div>
-  <% end %>
+    </div>
   </div>
   <div class="callout alert hide"></div>
 

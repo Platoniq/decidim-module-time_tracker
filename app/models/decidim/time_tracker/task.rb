@@ -5,6 +5,7 @@ module Decidim
     # The data store for a Task in the Decidim::TimeTracker component.
     class Task < ApplicationRecord
       include Decidim::HasComponent
+      include Decidim::Forms::HasQuestionnaire
 
       component_manifest_name "time_tracker"
 
@@ -20,6 +21,10 @@ module Decidim
 
       def ends_at
         activities.order(end_date: :desc).first&.end_date
+      end
+
+      def has_questions?
+        questionnaire.questions.any?
       end
 
       def assignees_count(filter: :accepted)

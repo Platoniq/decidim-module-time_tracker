@@ -3,7 +3,7 @@
 module Decidim
   module TimeTracker
     module Admin
-      class AssigneesController < ApplicationController
+      class AssigneesController < Admin::ApplicationController
         helper Decidim::TimeTracker::ApplicationHelper
         helper Decidim::TimeTracker::Admin::ApplicationHelper
         helper_method :assignees, :current_task, :current_activity, :current_assignee
@@ -68,15 +68,15 @@ module Decidim
         end
 
         def current_task
-          @task = Task.find(params[:task_id])
+          @current_task ||= Task.find(params[:task_id])
         end
 
         def current_activity
-          @activity = Activity.find(params[:activity_id])
+          @current_activity ||= Activity.find(params[:activity_id])
         end
 
         def current_assignee
-          @assignee = Assignee.find(params[:id])
+          @current_assignee ||= Assignee.find(params[:id])
         end
       end
     end

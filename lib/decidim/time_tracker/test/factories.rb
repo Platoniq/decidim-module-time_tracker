@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "decidim/core/test/factories"
+require "decidim/forms/test/factories"
 
 FactoryBot.define do
   factory :time_tracker_component, parent: :component do
@@ -28,7 +29,7 @@ FactoryBot.define do
   end
 
   factory :assignee, class: "Decidim::TimeTracker::Assignee" do
-    user
+    user { create(:user) }
     activity { create(:activity) }
     status { :accepted }
     invited_at { 1.month.ago }
@@ -47,18 +48,6 @@ FactoryBot.define do
     trait :rejected do
       status { :rejected }
     end
-
-    trait :active do
-      status { :active }
-    end
-
-    trait :completed do
-      status { :completed }
-    end
-
-    trait :suspended do
-      status { :suspended }
-    end
   end
 
   factory :milestone, class: "Decidim::TimeTracker::Milestone" do
@@ -71,6 +60,7 @@ FactoryBot.define do
   factory :task, class: "Decidim::TimeTracker::Task" do
     component { create(:time_tracker_component) }
     name { Decidim::Faker::Localized.word }
+    questionnaire { create(:questionnaire) }
   end
 
   factory :time_event, class: "Decidim::TimeTracker::TimeEvent" do
@@ -80,5 +70,14 @@ FactoryBot.define do
     stop { nil }
     total_seconds { stop.present? ? (stop - start) : 0 }
     user { assignee.user }
+
+    trait :running do
+      start { Time.current - 1.minute }
+    end
+
+    trait :stopped do
+      start { Time.current - 2.minutes }
+      stop { Time.current - 1.minute }
+    end
   end
 end

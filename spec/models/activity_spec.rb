@@ -69,6 +69,75 @@ module Decidim
           expect(subject.current_status).to eq(:open)
         end
       end
+
+      context "when the task has questions" do
+        let!(:question) { create(:questionnaire_question, questionnaire: subject.questionnaire, position: 0) }
+
+        it "activity has questions" do
+          expect(subject.has_questions?).to be true
+        end
+      end
+
+      context "when the activity has no questions" do
+        it "activity has no questions" do
+          expect(subject.has_questions?).to be false
+        end
+      end
+
+      context "when the activity has assignees with different statuses" do
+        let!(:accepted) { create :assignee, :accepted, activity: activity }
+        let!(:rejected) { create :assignee, :rejected, activity: activity }
+        let!(:pending) { create :assignee, :pending, activity: activity }
+
+        it "detects accepted assignees" do
+          expect(subject.assignee_accepted?(accepted.user)).to eq(true)
+          expect(subject.assignee_rejected?(accepted.user)).to eq(false)
+          expect(subject.assignee_pending?(accepted.user)).to eq(false)
+        end
+
+        it "detects rejected assignees" do
+          expect(subject.assignee_accepted?(rejected.user)).to eq(false)
+          expect(subject.assignee_rejected?(rejected.user)).to eq(true)
+          expect(subject.assignee_pending?(rejected.user)).to eq(false)
+        end
+
+        it "detects pending assignees" do
+          expect(subject.assignee_accepted?(pending.user)).to eq(false)
+          expect(subject.assignee_rejected?(pending.user)).to eq(false)
+          expect(subject.assignee_pending?(pending.user)).to eq(true)
+        end
+      end
+
+      context "when assignee is tracking" do
+        let!(:assignee) { create :assignee, :accepted, activity: activity }
+
+        context "and there are no time events" do
+          it "detects counter as not active" do
+            expect(subject.counter_active_for?(assignee.user)).to eq(false)
+          end
+        end
+
+        context "and counter is not running" do
+          let!(:event) { create :time_event, :stopped, activity: activity, assignee: assignee }
+
+          it "detects counter as not active" do
+            expect(subject.counter_active_for?(assignee.user)).to eq(false)
+          end
+        end
+
+        context "and counter is running" do
+          let!(:event1) { create :time_event, :stopped, activity: activity, assignee: assignee }
+          let!(:event2) { create :time_event, :running, activity: activity, assignee: assignee }
+
+          it "detects counter as active" do
+            expect(subject.counter_active_for?(assignee.user)).to eq(true)
+          end
+
+          it "detects the number of elapsed seconds" do
+            expect(subject.user_seconds_elapsed(assignee.user)).to eq(2.minutes)
+          end
+        end
+      end
     end
   end
 end

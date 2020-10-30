@@ -22,7 +22,7 @@
             <th><%= t("models.assignee.fields.tos_accepted_at", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.time_dedicated", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignee.fields.status", scope: "decidim.time_tracker") %></th>
-            <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker") %></th>
+            <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker.admin") %></th>
           </tr>
         </thead>
         <tbody>
@@ -55,7 +55,7 @@
                 <% end %>
 
                 <% if allowed_to? :destroy, :assignee, assignee: assignee %>
-                  <%= icon_link_to "circle-x", task_activity_assignee_path(current_task, current_activity, assignee), t("actions.destroy", scope: "decidim.time_tracker"), method: :delete, class: "action-icon--remove", data: { confirm: t("actions.confirm_destroy", scope: "decidim.time_tracker") } %>
+                  <%= icon_link_to "circle-x", task_activity_assignee_path(current_task, current_activity, assignee), t("assignees.actions.destroy", scope: "decidim.time_tracker.admin"), method: :delete, class: "action-icon--remove", data: { confirm: t("assignees.actions.confirm_destroy", scope: "decidim.time_tracker.admin") } %>
                 <% end %>
               </td>
             </tr>
