@@ -24,7 +24,7 @@ module Decidim::TimeTracker::Admin
         task_id: task.id
       }
     end
-    
+
     before do
       request.env["decidim.current_organization"] = organization
       request.env["decidim.current_participatory_process"] = participatory_space
