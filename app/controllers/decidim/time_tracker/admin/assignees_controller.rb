@@ -58,6 +58,7 @@ module Decidim
           end
         end
 
+        # obtaining the users separately to have them ordered in a nice way
         def assignees
           @assignees = Assignee.where(activity: current_activity.id)
           pending = @assignees.pending
