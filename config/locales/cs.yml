@@ -47,19 +47,15 @@ cs:
             account_message: <a href="%{sign_in_url}">Přihlaste se pomocí svého účtu</a> nebo se <a href="%{sign_up_url}">zaregistrujte</a> pro účast na této aktivitě.
             request: Žádost o připojení k aktivitě
     time_tracker:
-      actions:
-        accept: Accept
-        activities: Aktivity
-        assignees: Přiřazení
-        confirm_destroy: Opravdu to chcete odstranit?
-        destroy: Smazat
-        edit: Upravit
-        new: Nový
-        reject: Reject
-        title: Akce
       admin:
+        actions:
+          title: Actions
         activities:
           actions:
+            assignees: Manage assignees
+            confirm_destroy: Are you sure you want to delete this activity?
+            destroy: Delete activity
+            edit: Edit activity
             new: Nová aktivita
           create:
             error: Chyba vytváření aktivity
@@ -79,7 +75,11 @@ cs:
             success: Akce byla úspěšně aktualizována
         assignees:
           actions:
+            accept: Accept
+            confirm_destroy: Are you sure you want to delete this assignee?
+            destroy: Delete assignee
             new: Nový přiřazený
+            reject: Reject
           create:
             error: Chyba při vytváření přiřazené osoby
             success: Přiřazená osoba úspěšně vytvořena
@@ -111,8 +111,12 @@ cs:
             name: Úloha
         tasks:
           actions:
+            confirm_destroy: Are you sure you want to delete this task?
+            destroy: Delete task
+            edit: Edit task
             export_to_accountability: Export do odpovědnosti
             new: Nová úloha
+            questionnaire: Edit questionnaire
           create:
             error: Chyba při vytváření úlohy
             success: Úloha úspěšně vytvořena
@@ -217,6 +221,9 @@ cs:
           inactive: Neaktivní
           not_started: Začíná %{start_date}
           open: Otevřeno
+          questionnaire:
+            answered: Thanks for answering the questionnaire!
+            respond: What do you think about this task?
         index:
           assignees_list: Aktivity přiřazeného
         request_activity:
