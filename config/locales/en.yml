@@ -226,7 +226,7 @@ en:
           not_started: Will start on %{start_date}
           open: Open
           questionnaire:
-            answered: Thanks for anwering the questionnaire!
+            answered: Thanks for answering the questionnaire!
             respond: What do you think about this task?
         index:
           assignees_list: Assignee's activities
