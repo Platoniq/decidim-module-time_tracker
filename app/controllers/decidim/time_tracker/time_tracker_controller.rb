@@ -45,7 +45,7 @@ module Decidim
       end
 
       def questionnaire_path(activity)
-        Decidim::EngineRouter.main_proxy(current_component).task_activity_join_path(activity.task, activity.id)
+        Decidim::EngineRouter.main_proxy(current_component).new_assignee_path(task_id: activity.task, activity_id: activity.id, id: activity.questionnaire.id)
       end
     end
   end
