@@ -217,17 +217,19 @@ es:
       time_tracker:
         activity:
           counter_stopped: Counter has been stopped automatically
-          finished: Ended on %{end_date}
-          inactive: Inactive
-          not_started: Will start on %{start_date}
-          open: Open
           questionnaire:
             answered: Thanks for answering the questionnaire!
             respond: What do you think about this task?
+        callout_status:
+          finished: Ended on %{end_date}
+          inactive: Inactive
+          not_started: Will start on %{start_date}
+          open: Open, started on %{start_date}
         index:
           assignees_list: Assignee's activities
         request_activity:
           assignee_pending: Already applied! Soon an admin will review your application.
+          assignee_rejected: Sorry, you're application has been rejected.
   layouts:
     decidim:
       user_profile:
