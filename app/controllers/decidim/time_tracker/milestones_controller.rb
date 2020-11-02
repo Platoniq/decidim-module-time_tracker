@@ -29,7 +29,7 @@ module Decidim
       # copies the title to the attachment
       def milestone_params
         unsafe = params.to_unsafe_h
-        unsafe["milestone"]["attachment"]["title"] = { I18n.locale => params[:milestone][:title] }
+        unsafe["milestone"]["attachment"]["title"] = { I18n.locale => params[:milestone][:title] } if unsafe["milestone"]["attachment"].present?
         unsafe
       end
 
@@ -38,7 +38,7 @@ module Decidim
       end
 
       def activity
-        @activity ||= Activity.active.find_by(id: params[:activity_id])
+        @activity ||= Activity.active.find_by(id: params[:milestone][:activity_id])
       end
     end
   end
