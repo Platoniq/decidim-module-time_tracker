@@ -217,17 +217,19 @@ cs:
       time_tracker:
         activity:
           counter_stopped: Počítadlo bylo automaticky zastaveno
-          finished: Ukončeno %{end_date}
-          inactive: Neaktivní
-          not_started: Začíná %{start_date}
-          open: Otevřeno
           questionnaire:
             answered: Thanks for answering the questionnaire!
             respond: What do you think about this task?
+        callout_status:
+          finished: Ended on %{end_date}
+          inactive: Inactive
+          not_started: Will start on %{start_date}
+          open: Open, started on %{start_date}
         index:
           assignees_list: Aktivity přiřazeného
         request_activity:
           assignee_pending: Již aplikováno! Brzy správce zkontroluje vaši žádost.
+          assignee_rejected: Sorry, you're application has been rejected.
   layouts:
     decidim:
       user_profile:
