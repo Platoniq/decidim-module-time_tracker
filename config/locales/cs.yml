@@ -35,7 +35,7 @@ cs:
             max_number_of_assignees: Maximální počet přiřazených osob
             milestones_label: Název pro "Milníky"
             tasks_label: Název pro "Úkoly"
-            time_events_label: Název pro "Časové záznamy"
+            time_entries_label: Name for "Time Entries"
             tos: Podmínky používání
           step:
             announcement: Oznámení
@@ -225,6 +225,9 @@ cs:
           inactive: Inactive
           not_started: Will start on %{start_date}
           open: Open, started on %{start_date}
+        idle_activity:
+          assignee_pending: Already applied! Soon an admin will review your application.
+          assignee_rejected: Sorry, you're application has been rejected.
         index:
           assignees_list: Aktivity přiřazeného
         request_activity:
