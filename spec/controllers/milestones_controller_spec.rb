@@ -22,8 +22,8 @@ module Decidim::TimeTracker
     describe "post #create" do
       let(:params) do
         {
-          activity_id: activity_id,
           milestone: {
+            activity_id: activity_id,
             title: title,
             attachment: {
               title: ""
@@ -41,16 +41,16 @@ module Decidim::TimeTracker
 
         it "creates a new milestone" do
           post :create, params: params
-          expect(flash[:notice]).not_to be_empty
+          expect(flash[:notice]).not_to be_blank
           expect(response).to have_http_status(:redirect)
         end
 
         context "when there's an error in the form" do
           let(:title) { "" }
 
-          it "do not create a new milestone" do
+          it "does not create a new milestone" do
             post :create, params: params
-            expect(flash[:alert]).not_to be_empty
+            expect(flash[:alert]).not_to be_blank
             expect(response).to have_http_status(:redirect)
           end
         end
