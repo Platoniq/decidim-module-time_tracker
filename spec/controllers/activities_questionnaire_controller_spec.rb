@@ -7,9 +7,9 @@ module Decidim::TimeTracker
   describe ActivitiesQuestionnaireController, type: :controller do
     routes { Decidim::TimeTracker::Engine.routes }
 
-    let(:organization) { create :organization }
-    let(:user) { create(:user, :confirmed, :admin, organization: organization) }
-    let(:participatory_space) { create(:participatory_process, organization: organization) }
+    let!(:user) { create(:user, :confirmed, organization: organization) }
+    let(:organization) { participatory_space.organization }
+    let(:participatory_space) { activity.task.component.participatory_space }
     let(:component) { activity.task.component }
     let(:questionnaire) { create :questionnaire }
     let(:task) { create :task, questionnaire: questionnaire }
@@ -59,7 +59,7 @@ module Decidim::TimeTracker
         {
           task_id: activity.task.id,
           activity_id: activity.id,
-          id: activity.questionnaire.id
+          id: questionnaire.id
         }
       end
 
@@ -88,6 +88,56 @@ module Decidim::TimeTracker
 
             it_behaves_like "renders the form"
           end
+        end
+      end
+    end
+
+    describe "POST #answer" do
+      let!(:question) { create :questionnaire_question, question_type: :short_answer, body: "name", questionnaire: questionnaire }
+      let(:tos_agreement) { "0" }
+      let(:form) do
+        {
+          tos_agreement: tos_agreement,
+          responses: {
+            "0" => {
+              body: "Tom",
+              question_id: question.id
+            }
+          }
+        }
+      end
+      let(:params) do
+        {
+          task_id: task.id,
+          activity_id: activity.id,
+          id: questionnaire.id,
+          questionnaire: form
+        }
+      end
+
+      before do
+        sign_in user
+      end
+
+      context "and questionnaire is not valid" do
+        it "do not update the form" do
+          post :answer, params: params
+
+          expect(flash[:alert]).to be_present
+          expect(questionnaire).not_to be_answered_by(user)
+          expect(response).to render_template(:show)
+        end
+      end
+
+      context "and questionnaire is valid" do
+        let(:tos_agreement) { "1" }
+
+        it "updates the form" do
+          post :answer, params: params
+
+          expect(flash[:notice]).to be_present
+          expect(questionnaire).to be_answered_by(user)
+          expect(response).to have_http_status(:redirect)
         end
       end
     end
