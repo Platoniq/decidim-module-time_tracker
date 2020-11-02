@@ -2,7 +2,7 @@
 
 module Decidim
   module TimeTracker
-    class ActivitiesQuestionnaireController < ApplicationController
+    class ActivitiesQuestionnaireController < Decidim::TimeTracker::ApplicationController
       include Decidim::Forms::Concerns::HasQuestionnaire
 
       def questionnaire_for
@@ -10,7 +10,7 @@ module Decidim
       end
 
       def allow_answers?
-        activity.current_status != :inactive
+        activity.allow_answers_for? current_user
       end
 
       def update_url
@@ -32,7 +32,7 @@ module Decidim
 
       # Override to allow respond users once per-activity
       def visitor_already_answered?
-        questionnaire.answered_by?(session_token)
+        activity.questionnaire.answered_by?(session_token)
       end
 
       private

@@ -11,8 +11,10 @@
           <% task.activities.active.each do |activity| %>
             <% if activity.assignee_accepted? current_user %>
               <%= render partial: "activity", locals: { activity: activity } %>
-            <% else %>
+            <% elsif allowed_to? :create, :assignee, activity: activity %>
               <%= render partial: "request_activity", locals: { activity: activity } %>
+            <% else %>
+              <%= render partial: "idle_activity", locals: { activity: activity } %>
             <% end %>
           <% end %>
       </div>

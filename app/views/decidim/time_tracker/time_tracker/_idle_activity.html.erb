@@ -1,0 +1,27 @@
+<div class="time-tracker-request" data-activity-id="<%= activity.id %>">
+  <div class="content">
+    <div class="left">
+      <h2><%= translated_attribute activity.description %></h2>
+    </div>
+    <div class="right">
+      <% if user_signed_in? %>
+        <div class="top">
+          <% if activity.current_status != :open %>
+            <%= render partial: "callout_status", locals: { activity: activity } %>
+          <% else %>
+            <% if activity.assignee_pending? current_user %>
+              <div class="callout warning"><%= t ".assignee_pending" %></div>
+            <% elsif activity.assignee_rejected? current_user %>
+              <div class="callout alert"><%= t ".assignee_rejected" %></div>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="bottom">
+          <% if activity.allow_answers_for?(current_user) %>
+            <%= render partial: "answer_questionnaire", locals: { activity: activity } %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

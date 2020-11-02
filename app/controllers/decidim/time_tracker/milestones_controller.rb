@@ -7,7 +7,7 @@ module Decidim
 
       # creates a milestone
       def create
-        enforce_permission_to :create, :milestone
+        enforce_permission_to :create, :milestone, activity: activity
 
         @form = form(MilestoneForm).from_params(milestone_params)
 
@@ -35,6 +35,10 @@ module Decidim
 
       def root_path
         Decidim::EngineRouter.main_proxy(current_component).root_path
+      end
+
+      def activity
+        @activity ||= Activity.active.find_by(id: params[:activity_id])
       end
     end
   end
