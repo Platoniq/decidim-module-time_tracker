@@ -37,7 +37,7 @@ en:
             max_number_of_assignees: Maximum number of assignees
             milestones_label: Name for "Milestones"
             tasks_label: Name for "Tasks"
-            time_events_label: Name for "Time Entries"
+            time_entries_label: Name for "Time Entries"
             tos: Terms and conditions
           step:
             announcement: Announcement
@@ -231,6 +231,9 @@ en:
           open: Open, started on %{start_date}
         index:
           assignees_list: Assignee's activities
+        idle_activity:
+          assignee_pending: Already applied! Soon an admin will review your application.
+          assignee_rejected: Sorry, you're application has been rejected.
         request_activity:
           assignee_pending: Already applied! Soon an admin will review your application.
           assignee_rejected: Sorry, you're application has been rejected.
