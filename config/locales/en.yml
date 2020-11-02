@@ -229,11 +229,11 @@ en:
           inactive: Inactive
           not_started: Will start on %{start_date}
           open: Open, started on %{start_date}
-        index:
-          assignees_list: Assignee's activities
         idle_activity:
           assignee_pending: Already applied! Soon an admin will review your application.
           assignee_rejected: Sorry, you're application has been rejected.
+        index:
+          assignees_list: Assignee's activities
         request_activity:
           assignee_pending: Already applied! Soon an admin will review your application.
           assignee_rejected: Sorry, you're application has been rejected.
