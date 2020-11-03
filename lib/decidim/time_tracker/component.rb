@@ -50,8 +50,8 @@ Decidim.register_component(:time_tracker) do |component|
   # end
 
   component.exports :task_questionnaire_answers do |exports|
-    exports.collection do |component|
-      tasks = Decidim::TimeTracker::Task.where(component: component)
+    exports.collection do |f|
+      tasks = Decidim::TimeTracker::Task.where(component: f)
 
       Decidim::Forms::Answer.joins(:questionnaire).where(
         decidim_forms_questionnaires: {

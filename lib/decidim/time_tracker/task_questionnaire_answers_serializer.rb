@@ -63,7 +63,7 @@ module Decidim
       end
 
       def task_for(answer)
-        @ŧask_for ||= answer.questionnaire.questionnaire_for
+        @task_for ||= answer.questionnaire.questionnaire_for
       end
 
       def activity_for(answer)
