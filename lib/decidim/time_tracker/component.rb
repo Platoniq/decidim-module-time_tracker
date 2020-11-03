@@ -49,6 +49,23 @@ Decidim.register_component(:time_tracker) do |component|
   #   # Register some stat number to the application
   # end
 
+  component.exports :task_questionnaire_answers do |exports|
+    exports.collection do |component|
+      tasks = Decidim::TimeTracker::Task.where(component: component)
+
+      Decidim::Forms::Answer.joins(:questionnaire).where(
+        decidim_forms_questionnaires: {
+          questionnaire_for_type: "Decidim::TimeTracker::Task",
+          questionnaire_for_id: tasks.pluck(:id)
+        }
+      ).group_by do |answer|
+        answer.session_token.split("-").last
+      end.values
+    end
+
+    exports.serializer Decidim::TimeTracker::TaskQuestionnaireAnswersSerializer
+  end
+
   component.seeds do |participatory_space|
     # Add some seeds for this component
     admin_user = Decidim::User.find_by(

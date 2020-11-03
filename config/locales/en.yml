@@ -105,6 +105,8 @@ en:
         breadcrumbs:
           assignees: Assignees
           global: All tasks
+        exports:
+          task_questionnaire_answers: Answers
         models:
           activity:
             name: Activity
@@ -209,6 +211,9 @@ en:
             assignees_pending: Pending assignees
             name: Name
           name: Task
+      task_questionnaire_answers_serializer:
+        activity: Activity
+        task: Task
       time_events:
         start:
           already_started: Counter already started

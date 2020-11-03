@@ -6,11 +6,11 @@ require "decidim/time_tracker/admin_engine"
 require "decidim/time_tracker/directory"
 require "decidim/time_tracker/directory_engine"
 require "decidim/time_tracker/component"
-
 module Decidim
   # This namespace holds the logic of the `TimeTracker` component. This component
   # allows users to create time_tracker in a participatory space.
   module TimeTracker
+    autoload :TaskQuestionnaireAnswersSerializer, "decidim/time_tracker/task_questionnaire_answers_serializer"
   end
 end
 
