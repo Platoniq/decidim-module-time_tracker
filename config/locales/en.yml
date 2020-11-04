@@ -208,7 +208,7 @@ en:
             name: Name
           name: Task
       reports:
-        user_report:
+        user:
           index:
             accepted: Accepted
             dedicated_time: "Time dedicated so far: %{time}"
@@ -244,4 +244,4 @@ en:
   layouts:
     decidim:
       user_profile:
-        user_report: My voluntary work
+        time_tracker: My voluntary work

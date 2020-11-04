@@ -2,9 +2,9 @@
 
 require "spec_helper"
 
-module Decidim::TimeTracker
-  describe TimeTrackerController, type: :controller do
-    routes { Decidim::TimeTracker::Engine.routes }
+module Decidim::TimeTracker::Reports
+  describe UserController, type: :controller do
+    routes { Decidim::TimeTracker::ReportsEngine.routes }
 
     let(:organization) { create :organization }
     let(:user) { create(:user, :confirmed, :admin, organization: organization) }

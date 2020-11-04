@@ -13,13 +13,13 @@ module Decidim
 
       routes do
         authenticate(:user) do
-          root to: "user_report#index"
+          root to: "user#index"
         end
       end
 
       initializer "decidim.user_menu" do
         Decidim.menu :user_menu do |menu|
-          menu.item t("user_report", scope: "layouts.decidim.user_profile"),
+          menu.item t("time_tracker", scope: "layouts.decidim.user_profile"),
                     decidim_time_tracker.root_path,
                     position: 5.0,
                     active: :exact

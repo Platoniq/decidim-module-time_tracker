@@ -4,7 +4,7 @@ module Decidim
   module TimeTracker
     module Reports
       # The controller to handle the user's time_tracker report page.
-      class UserReportController < Decidim::ApplicationController
+      class UserController < Decidim::ApplicationController
         include Decidim::ComponentPathHelper
         include Decidim::UserProfile
 
