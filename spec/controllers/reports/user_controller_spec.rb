@@ -7,13 +7,12 @@ module Decidim::TimeTracker::Reports
     routes { Decidim::TimeTracker::ReportsEngine.routes }
 
     let(:organization) { create :organization }
-    let(:user) { create(:user, :confirmed, :admin, organization: organization) }
+    let(:user) { create(:user, :confirmed, organization: organization) }
     let(:participatory_space) { create(:participatory_process, organization: organization) }
     let(:component) { create :time_tracker_component, participatory_space: participatory_space }
-    let!(:milestone) { create :milestone, activity: activity, user: assignees.first.user }
     let!(:activity) { create :activity, task: task }
     let!(:task) { create :task, component: component }
-    let!(:assignees) { create_list :assignee, 3, :accepted, activity: activity }
+    let!(:assignee) { create :assignee, activity: activity, user: user }
 
     before do
       request.env["decidim.current_organization"] = organization
@@ -26,10 +25,7 @@ module Decidim::TimeTracker::Reports
       it "renders the index listing" do
         get :index
         expect(response).to have_http_status(:ok)
-        expect(controller.helpers.tasks.count).to eq(1)
-        all = controller.helpers.assignees_with_milestones
-        expect(all).to include(assignees.first)
-        expect(all).not_to include(assignees.second)
+        expect(controller.helpers.assignations.count).to eq(1)
         expect(subject).to render_template(:index)
       end
     end
