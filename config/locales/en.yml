@@ -151,6 +151,10 @@ en:
         show:
           assignees_activity: "%{user_name}'s activity"
           milestones_list: List of milestones
+      clock:
+        hours: "%{n}h"
+        minutes: "%{n}m"
+        seconds: "%{n}s"
       milestone:
         button_no: No thanks
         button_submit: Send milestone
@@ -207,7 +211,7 @@ en:
         user_report:
           index:
             accepted: Accepted
-            dedicated_time: Time dedicated so far %{hours}h %{minutes}m %{seconds}s.
+            dedicated_time: "Time dedicated so far: <span class='time'>%{time}</span>"
             pending: Pending
       time_events:
         start:

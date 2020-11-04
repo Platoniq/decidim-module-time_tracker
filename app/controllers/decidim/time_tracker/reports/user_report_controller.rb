@@ -6,6 +6,7 @@ module Decidim
       # The controller to handle the user's time_tracker report page.
       class UserReportController < Decidim::ApplicationController
         include Decidim::UserProfile
+        helper Decidim::TimeTracker::ApplicationHelper
         helper_method :activities, :assignees
         # layout "layouts/decidim/application"
 
