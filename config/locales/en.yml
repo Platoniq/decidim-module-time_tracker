@@ -211,7 +211,7 @@ en:
         user_report:
           index:
             accepted: Accepted
-            dedicated_time: "Time dedicated so far: <span class='time'>%{time}</span>"
+            dedicated_time: "Time dedicated so far: %{time}"
             pending: Pending
       time_events:
         start:

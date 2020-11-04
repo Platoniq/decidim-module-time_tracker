@@ -1,32 +1,36 @@
-<div class="row column voluntary-work-list">
+<div class="row column time-tracker--report">
   <section class="section">
     <div class="card__extra card--list__data">
       <div class="card--list__data__number">
-        <%== t(".dedicated_time", time: clockify_seconds(assignees.map(&:time_dedicated).sum)) %>
+        <%== t(".dedicated_time", time: clockify_seconds(total_time)) %>
       </div>
     </div>
     <div class="card card--list">
-      <% assignees.each do |assignee| %>
-        <div class="card--list__item">
-          <div class="card--list__text">
-            <div>
-              <h5 class="card--list__heading">
-                <%= translated_attribute assignee.activity.description %>
-              </h5>
-              <span class="text-small">
-                <% if assignee.accepted? %>
-                  <%= l((assignee.invited_at || assignee.requested_at), format: :long) if assignee.invited_at.present? %> <span class="success label"><%= t(".accepted") %></span>
-                <% else assignee.pending? %>
-                  <%= l(assignee.requested_at, format: :long) if assignee.requested_at.present? %> <span class="warning label"><%= t(".pending") %></span>
-                <% end %>
-              </span>
+      <% assignations.each do |assignation| %>
+        <%= link_to activity_path(assignation), class: "time-tracker--activity", target: :blank do %>
+          <div class="card--list__item">
+            <div class="card--list__text">
+              <div>
+                <h5 class="card--list__heading">
+                  <%= translated_attribute(assignation.activity.description) %>
+                </h5>
+                <span class="text-small">
+                  <% if assignation.accepted? %>
+                    <%= l((assignation.invited_at || assignation.requested_at), format: :long) if assignation.invited_at.present? %> <span class="success label"><%= t(".accepted") %></span>
+                  <% else assignation.pending? %>
+                    <%= l(assignation.requested_at, format: :long) if assignation.requested_at.present? %> <span class="warning label"><%= t(".pending") %></span>
+                  <% end %>
+                </span>
+              </div>
+            </div>
+            <div class="card--list__annotation">
+              <%= clockify_seconds assignation.time_dedicated, padded: true %>
             </div>
           </div>
-          <div class="card--list__annotation">
-            <%= clockify_seconds assignee.time_dedicated, padded: true %>
-          </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
   </section>
 </div>
+
+<%= stylesheet_link_tag "decidim/time_tracker/time_tracker" %>

@@ -5,9 +5,11 @@ module Decidim
     module Reports
       # The controller to handle the user's time_tracker report page.
       class UserReportController < Decidim::ApplicationController
+        include Decidim::ComponentPathHelper
         include Decidim::UserProfile
+
         helper Decidim::TimeTracker::ApplicationHelper
-        helper_method :activities, :assignees
+        helper_method :activities, :assignations, :total_time, :activity_path
         # layout "layouts/decidim/application"
 
         def index
@@ -16,12 +18,20 @@ module Decidim
 
         private
 
-        def assignees
+        def activities
+          Decidim::TimeTracker::Activity.joins(:assignees).where("decidim_time_tracker_assignees.decidim_user_id": current_user.id).group_by(&:id)
+        end
+
+        def assignations
           Assignee.where(user: current_user)
         end
 
-        def activities
-          Decidim::TimeTracker:: Activity.joins(:assignees).where("decidim_time_tracker_assignees.decidim_user_id": current_user.id).group_by(&:id)
+        def activity_path(assignation)
+          EngineRouter.main_proxy(assignation.task.component).root_path(locale: params[:locale], activity: assignation.activity)
+        end
+
+        def total_time
+          assignations.map(&:time_dedicated).sum
         end
       end
     end

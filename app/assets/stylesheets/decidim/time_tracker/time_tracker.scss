@@ -3,7 +3,6 @@
 @import "decidim/utils/mixins";
 @import "decidim/time_tracker/variables";
 
-
 .time-tracker {
   &-activity, &-request {
     background-color: white;
@@ -64,16 +63,33 @@
       border-top: 1px solid #eee;
     }
   }
+
+  &--report{
+    .card--list__annotation{
+      margin-right: 1rem;
+    }
+  
+    .card--list__heading{
+      margin-bottom: .5rem;
+    }
+  }
+
+  &--clock{
+    span:not(:last-child)::after {
+      content: ' ';
+    }
+
+    .text-muted {
+      opacity: .5;
+    }
+  }
+
+  &--activity{
+    &:hover {
+      .card--list__item{
+        transition: background-color 200ms;
+        background-color: #fbfbfb;
+      }
+    }
+  }
 }
-
-  // div.milestone {
-//   background-color: white;
-//   border: 1px solid #eee;
-//   padding: 1rem;
-//   margin-bottom: 1rem;
-
-//   h3 {
-//     color: var(--secondary);
-//   }
-
-// }
