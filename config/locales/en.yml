@@ -151,12 +151,6 @@ en:
         show:
           assignees_activity: "%{user_name}'s activity"
           milestones_list: List of milestones
-      directory:
-        voluntary_work:
-          index:
-            accepted: Accepted
-            dedicated_time: Time dedicated so far %{hours}h %{minutes}m %{seconds}s.
-            pending: Pending
       milestone:
         button_no: No thanks
         button_submit: Send milestone
@@ -209,6 +203,12 @@ en:
             assignees_pending: Pending assignees
             name: Name
           name: Task
+      reports:
+        user_report:
+          index:
+            accepted: Accepted
+            dedicated_time: Time dedicated so far %{hours}h %{minutes}m %{seconds}s.
+            pending: Pending
       time_events:
         start:
           already_started: Counter already started
@@ -240,4 +240,4 @@ en:
   layouts:
     decidim:
       user_profile:
-        voluntary_work: My voluntary work
+        user_report: My voluntary work

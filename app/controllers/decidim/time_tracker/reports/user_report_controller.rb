@@ -2,9 +2,9 @@
 
 module Decidim
   module TimeTracker
-    module Directory
-      # The controller to handle the user's voluntary work page.
-      class VoluntaryWorkController < Decidim::ApplicationController
+    module Reports
+      # The controller to handle the user's time_tracker report page.
+      class UserReportController < Decidim::ApplicationController
         include Decidim::UserProfile
         helper_method :activities, :assignees
         # layout "layouts/decidim/application"

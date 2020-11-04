@@ -26,9 +26,9 @@
               </h5>
               <span class="text-small">
                 <% if assignee.accepted? %>
-                  <%= l(assignee.invited_at || assignee.requested_at, format: :long) %> <span class="success label"><%= t(".accepted") %></span>
+                  <%= l((assignee.invited_at || assignee.requested_at), format: :long) if assignee.invited_at.present? %> <span class="success label"><%= t(".accepted") %></span>
                 <% else assignee.pending? %>
-                  <%= l(assignee.requested_at, format: :long) %> <span class="warning label"><%= t(".pending") %></span>
+                  <%= l(assignee.requested_at, format: :long) if assignee.requested_at.present? %> <span class="warning label"><%= t(".pending") %></span>
                 <% end %>
               </span>
             </div>
