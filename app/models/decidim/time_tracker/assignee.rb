@@ -62,6 +62,7 @@ module Decidim
         time_events.empty?
       end
 
+      # rubocop:disable Lint/UselessAssignment
       def self.sorted_by_status(*statuses)
         accepted = self.accepted.sort_by(&:time_dedicated).reverse
         pending = self.pending
@@ -69,6 +70,7 @@ module Decidim
 
         statuses.map { |status| send(status) }.sum
       end
+      # rubocop:enable Lint/UselessAssignment
     end
   end
 end

@@ -50,9 +50,9 @@ module Decidim
       def assignation_status_label(status)
         klass = case status
                 when "accepted" then "success"
-                when "pending"  then "warning"
+                when "pending" then "warning"
                 when "rejected" then "danger"
-        end
+                end
 
         content_tag :span, class: "#{klass} label" do
           t("models.assignee.fields.statuses.#{status}", scope: "decidim.time_tracker")

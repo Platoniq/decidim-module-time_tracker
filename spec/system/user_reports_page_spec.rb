@@ -40,7 +40,7 @@ describe "User reports page", type: :system do
       let!(:assignee) { create :assignee, :accepted, activity: activity, user: user }
       let!(:assignee_pending) { create :assignee, :pending, activity: activity, user: user }
       let!(:assignee_rejected) { create :assignee, :rejected, activity: activity, user: user }
-      
+
       it "shows the list of assignations and the time dedicated" do
         visit decidim_time_tracker.root_path
         expect(page).to have_content "Time dedicated so far"
