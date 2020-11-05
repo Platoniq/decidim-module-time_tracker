@@ -16,11 +16,8 @@
                     <%= translated_attribute(assignation.activity.description) %>
                   </h5>
                   <span class="text-small">
-                    <% if assignation.accepted? %>
-                      <%= l((assignation.invited_at || assignation.requested_at), format: :long) if assignation.invited_at.present? %> <span class="success label"><%= t(".accepted") %></span>
-                    <% else assignation.pending? %>
-                      <%= l(assignation.requested_at, format: :long) if assignation.requested_at.present? %> <span class="warning label"><%= t(".pending") %></span>
-                    <% end %>
+                    <%= assignation_status_label assignation.status %>
+                    <span class="assignation--date"><%= assignation_date(assignation) %></span>
                   </span>
                 </div>
               </div>

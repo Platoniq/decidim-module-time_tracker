@@ -23,7 +23,7 @@ module Decidim
         end
 
         def assignations
-          Assignee.where(user: current_user)
+          Assignee.where(user: current_user).sorted_by_status(:accepted, :pending, :rejected)
         end
 
         def activity_path(assignation)

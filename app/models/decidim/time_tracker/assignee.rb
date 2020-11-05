@@ -61,6 +61,14 @@ module Decidim
       def can_change_status?
         time_events.empty?
       end
+
+      def self.sorted_by_status(*statuses)
+        accepted = self.accepted.sort_by(&:time_dedicated).reverse
+        pending = self.pending
+        rejected = self.rejected
+
+        statuses.map { |status| send(status) }.sum
+      end
     end
   end
 end

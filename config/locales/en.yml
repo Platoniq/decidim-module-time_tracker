@@ -187,9 +187,10 @@ en:
         assignee:
           fields:
             email: Email
-            invited_at: Invited at
+            invited_at: Invited at %{time}
             invited_by: Invited by
             name: Name
+            requested_at: Requested at %{time}
             status: Status
             statuses:
               accepted: Accepted

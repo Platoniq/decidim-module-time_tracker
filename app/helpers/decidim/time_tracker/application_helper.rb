@@ -46,6 +46,26 @@ module Decidim
           )
         end
       end
+
+      def assignation_status_label(status)
+        klass = case status
+                when "accepted" then "success"
+                when "pending"  then "warning"
+                when "rejected" then "danger"
+        end
+
+        content_tag :span, class: "#{klass} label" do
+          t("models.assignee.fields.statuses.#{status}", scope: "decidim.time_tracker")
+        end
+      end
+
+      def assignation_date(assignation)
+        if assignation.invited_at.present?
+          t("models.assignee.fields.invited_at", time: l(assignation.invited_at, format: :long), scope: "decidim.time_tracker")
+        elsif assignation.requested_at.present?
+          t("models.assignee.fields.requested_at", time: l(assignation.requested_at, format: :long), scope: "decidim.time_tracker")
+        end
+      end
     end
   end
 end
