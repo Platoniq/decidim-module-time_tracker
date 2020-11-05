@@ -212,6 +212,7 @@ en:
           index:
             accepted: Accepted
             dedicated_time: 'Time dedicated so far: %{time}'
+            empty: You don't have any activity assignations
             pending: Pending
       time_events:
         start:
