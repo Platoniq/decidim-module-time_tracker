@@ -45,18 +45,18 @@ describe "User reports page", type: :system do
         visit decidim_time_tracker.root_path
         expect(page).to have_content "Time dedicated so far"
 
-        within ".card--list__item:nth-child(1)" do
-          expect(page).to have_link activity.description
+        within ".time-tracker--activity:nth-child(1) .card--list__item" do
+          expect(page).to have_i18n_content activity.description
           expect(page).to have_content "Accepted"
         end
 
-        within ".card--list__item:nth-child(2)" do
-          expect(page).to have_link activity.description
+        within ".time-tracker--activity:nth-child(2) .card--list__item" do
+          expect(page).to have_i18n_content activity.description
           expect(page).to have_content "Pending"
         end
 
-        within ".card--list__item:nth-child(3)" do
-          expect(page).to have_link activity.description
+        within ".time-tracker--activity:nth-child(3) .card--list__item" do
+          expect(page).to have_i18n_content activity.description
           expect(page).to have_content "Rejected"
         end
       end
