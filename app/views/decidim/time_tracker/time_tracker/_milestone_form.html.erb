@@ -12,6 +12,8 @@
 
     <%= decidim_form_for(@form, url: milestones_path) do |form| %>
       <%= form.text_field :title %>
+      <%= form.text_area :description %>
+
       <%= form.hidden_field :activity_id, value: activity.id %>
 
       <%= form.fields_for :attachment, @form.attachment do |nested_form| %>
