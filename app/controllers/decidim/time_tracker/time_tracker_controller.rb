@@ -20,7 +20,7 @@ module Decidim
       end
 
       def milestones
-        @milestones ||= Milestone.joins(:activity).where(decidim_time_tracker_activities: { task_id: tasks.pluck(:id) })
+        @milestones ||= Milestone.joins(:task).where(decidim_time_tracker_tasks: { id: tasks.pluck(:id) })
       end
 
       def assignees_with_milestones

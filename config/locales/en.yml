@@ -150,7 +150,7 @@ en:
           success: Activity assignation request succeded!
         show:
           assignees_activity: "%{user_name}'s activity"
-          milestones_list: List of milestones
+          milestones_list: Milestones
       directory:
         voluntary_work:
           index:
@@ -233,7 +233,9 @@ en:
           assignee_pending: Already applied! Soon an admin will review your application.
           assignee_rejected: Sorry, you're application has been rejected.
         index:
-          assignees_list: Assignee's activities
+          assignees_list: People working in these tasks
+        milestone:
+          time_spent: Time spent
         request_activity:
           assignee_pending: Already applied! Soon an admin will review your application.
           assignee_rejected: Sorry, you're application has been rejected.

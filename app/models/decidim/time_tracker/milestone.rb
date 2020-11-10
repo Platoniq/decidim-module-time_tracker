@@ -14,6 +14,10 @@ module Decidim
 
       belongs_to :activity,
                  class_name: "Decidim::TimeTracker::Activity"
+
+      has_one :task,
+                 through: :activity,
+                 class_name: "Decidim::TimeTracker::Task"
     end
   end
 end

@@ -6,17 +6,17 @@
       <%= render partial: "sign_in" %>
     <% end %>
     <% tasks.each do |task| %>
-      <h2> <%= translated_attribute task.name %> </h2>
-        <div id="activities">
-          <% task.activities.active.each do |activity| %>
-            <% if activity.assignee_accepted? current_user %>
-              <%= render partial: "activity", locals: { activity: activity } %>
-            <% elsif allowed_to? :create, :assignee, activity: activity %>
-              <%= render partial: "request_activity", locals: { activity: activity } %>
-            <% else %>
-              <%= render partial: "idle_activity", locals: { activity: activity } %>
-            <% end %>
+      <h2 class="section-heading"><%= translated_attribute task.name %></h2>
+      <div id="activities">
+        <% task.activities.active.each do |activity| %>
+          <% if activity.assignee_accepted? current_user %>
+            <%= render partial: "activity", locals: { activity: activity } %>
+          <% elsif allowed_to? :create, :assignee, activity: activity %>
+            <%= render partial: "request_activity", locals: { activity: activity } %>
+          <% else %>
+            <%= render partial: "idle_activity", locals: { activity: activity } %>
           <% end %>
+        <% end %>
       </div>
     <% end %>
   </div>
@@ -26,13 +26,13 @@
   <div class="row columns large-12">
     <h4 class="section-heading"><%= t(".assignees_list") %></h4>
   </div>
-<% end %>
 
-<div class="row small-up-1 medium-up-2 large-up-4 card-grid">
-  <% assignees_with_milestones.each do |element| %>
-    <%= card_for element %>
-  <% end %>
-</div>
+  <div class="row small-up-1 medium-up-2 large-up-4 card-grid">
+    <% assignees_with_milestones.each do |assignee| %>
+      <%= card_for assignee %>
+    <% end %>
+  </div>
+<% end %>
 
 <%= stylesheet_link_tag "decidim/time_tracker/time_tracker" %>
 <%= javascript_include_tag "decidim/time_tracker/time_tracker" %>

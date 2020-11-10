@@ -1,8 +1,6 @@
-<div id="a" class="column">
-  <article class="card card--process">
-    <% if last_milestone&.attachments.present? %>
-      <img class="card__image" src="<%= last_milestone.attachments&.first&.url %>">
-    <% end %>
+<div class="column">
+  <article class="card card--assignee">
+    <%= image %>
     <div class="card__content">
       <div class="card__header">
         <a href="<%= assignee_path %>">
@@ -37,12 +35,12 @@
       </div>
 
     </div>
-    <div class="card__footer card__footer--spaces">
+    <div class="card__footer">
       <div class="card__support">
+        <div class="text"> <%= t(".time_spent") %></div>
         <div class="text-ellipsis">
           <strong><%= clockify_seconds(seconds_elapsed) %></strong>
         </div>
-        <div class="text-uppercase"> <%= t(".time_spent") %></div>
       </div>
     </div>
   </article>

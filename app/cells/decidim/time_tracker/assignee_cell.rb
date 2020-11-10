@@ -13,6 +13,18 @@ module Decidim
         render
       end
 
+      def image
+        image_url = last_milestone&.attachments&.first&.url
+
+        if image_url.present?
+          link_to image_url, target: :blank do
+            image_tag image_url, class: "card__image"
+          end
+        else
+          image_tag asset_url("decidim/time_tracker/milestone_placeholder.jpeg"), class: "card__image empty"
+        end
+      end
+
       def seconds_elapsed
         @seconds_elapsed ||= last_milestone.activity.user_seconds_elapsed(model.user)
       end
