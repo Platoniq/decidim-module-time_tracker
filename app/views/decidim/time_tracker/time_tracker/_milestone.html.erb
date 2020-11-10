@@ -2,7 +2,7 @@
   <article class="card card--milestone">
     <% if milestone.attachments.present? %>
       <%= link_to milestone.attachments.first.url, target: :blank do %>
-        <%= image_tag milestone.attachments.first.url, class: "card__image"  %>
+        <%= image_tag milestone.attachments.first.url, class: "card__image" %>
       <% end %>
     <% else %>
       <div class="card__image">

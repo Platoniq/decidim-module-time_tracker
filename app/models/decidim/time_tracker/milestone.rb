@@ -16,8 +16,8 @@ module Decidim
                  class_name: "Decidim::TimeTracker::Activity"
 
       has_one :task,
-                 through: :activity,
-                 class_name: "Decidim::TimeTracker::Task"
+              through: :activity,
+              class_name: "Decidim::TimeTracker::Task"
     end
   end
 end
