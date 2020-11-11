@@ -148,9 +148,6 @@ en:
         request:
           error: Activity assignation request failed!
           success: Activity assignation request succeded!
-        show:
-          assignees_activity: "%{user_name}'s activity"
-          milestones_list: Milestones
       directory:
         voluntary_work:
           index:
@@ -169,6 +166,10 @@ en:
         create:
           error: Error creating the milestone
           success: Milestone created successfully
+        index:
+          assignees_activity: "%{user_name}'s activity"
+        milestone:
+          time_spent: Time spent
       models:
         activity:
           fields:
@@ -234,8 +235,6 @@ en:
           assignee_rejected: Sorry, you're application has been rejected.
         index:
           assignees_list: People working in these tasks
-        milestone:
-          time_spent: Time spent
         request_activity:
           assignee_pending: Already applied! Soon an admin will review your application.
           assignee_rejected: Sorry, you're application has been rejected.

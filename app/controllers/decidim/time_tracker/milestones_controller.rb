@@ -5,6 +5,12 @@ module Decidim
     class MilestonesController < Decidim::TimeTracker::ApplicationController
       include Decidim::FormFactory
 
+      helper_method :assignee, :activities
+
+      def index
+        enforce_permission_to :index, :milestones, assignee: assignee
+      end
+
       # creates a milestone
       def create
         enforce_permission_to :create, :milestone, activity: activity
@@ -15,7 +21,7 @@ module Decidim
           on(:ok) do |_milestone|
             flash[:notice] = I18n.t("milestones.create.success", scope: "decidim.time_tracker")
             # TODO: redirect to milestone user page
-            redirect_to root_path
+            redirect_to milestones_path(assignee)
           end
           on(:invalid) do |_message|
             flash[:alert] = I18n.t("milestones.create.error", scope: "decidim.time_tracker")
@@ -39,6 +45,15 @@ module Decidim
 
       def activity
         @activity ||= Activity.active.find_by(id: params[:milestone][:activity_id])
+      end
+
+      def activities
+        @activities ||= Activity.select("DISTINCT ON (id) *")
+                                .where(id: assignee.milestones.pluck(:activity_id))
+      end
+
+      def assignee
+        @assignee ||= Assignee.accepted.find_by(id: params[:assignee_id])
       end
     end
   end

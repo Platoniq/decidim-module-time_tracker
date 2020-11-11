@@ -29,8 +29,8 @@ module Decidim
         @seconds_elapsed ||= last_milestone.activity.user_seconds_elapsed(model.user)
       end
 
-      def assignee_path
-        Decidim::EngineRouter.main_proxy(model.activity.task.component).assignee_path(model)
+      def milestones_path
+        Decidim::EngineRouter.main_proxy(model.activity.task.component).milestones_path(assignee_id: model)
       end
 
       private
