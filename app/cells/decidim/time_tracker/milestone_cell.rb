@@ -30,7 +30,7 @@ module Decidim
       end
 
       def milestones_path
-        Decidim::EngineRouter.main_proxy(model.activity.task.component).milestones_path(assignee_id: model)
+        Decidim::EngineRouter.main_proxy(model.activity.task.component).milestones_path(nickname: model.user.nickname)
       end
     end
   end

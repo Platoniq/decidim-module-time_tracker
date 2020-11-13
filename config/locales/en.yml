@@ -140,10 +140,6 @@ en:
           create:
             error: Error importing the Time Tracker data to accountability
             success: Time Tracker data exported to accountability successfully
-      assignee:
-        assignees_activity: "%{user_name}'s activity"
-        dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
-        time_spent: Time spent
       assignees:
         request:
           error: Activity assignation request failed!
@@ -155,6 +151,10 @@ en:
             dedicated_time: Time dedicated so far %{hours}h %{minutes}m %{seconds}s.
             pending: Pending
       milestone:
+        dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
+        time_spent: Time spent
+        title: "%{user_name}'s activity"
+      milestone_form:
         button_no: No thanks
         button_submit: Send milestone
         description: Leave a proof of your work by uploading a picture and a simple

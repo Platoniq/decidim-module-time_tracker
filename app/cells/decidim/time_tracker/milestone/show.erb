@@ -1,10 +1,10 @@
 <div class="column">
-  <article class="card card--assignee">
+  <article class="card card--milestone">
     <%= image %>
     <div class="card__content">
       <div class="card__header">
         <a href="<%= milestones_path %>">
-          <h5 class="card__title"> <%= t(".assignees_activity", user_name: model.user.name) %> </h5>
+          <h4 class="card__title"> <%= t(".title", user_name: model.user.name) %> </h4>
         </a>
         <div class="author--inline">
           <div class="collapsible-list ">
@@ -28,9 +28,12 @@
 
       <div class="card__text">
         <div class="card__text--paragraph">
-          <p>
-            <%= model&.title %>
-          </p>
+          <h5>
+            <%= model.title %>
+          </h5>
+          <div class="text-ellipsis">
+            <%= model.description %>
+          </div>
         </div>
       </div>
 

@@ -25,7 +25,7 @@ module Decidim
           end
         end
         resources :milestones, only: [:create] do
-          get :index, on: :collection, path: "(:assignee_id)"
+          get :index, on: :collection, path: "(:nickname)"
         end
 
         resources :assignees, only: [:create]
