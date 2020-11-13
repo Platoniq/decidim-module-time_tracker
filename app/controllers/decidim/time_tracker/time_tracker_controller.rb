@@ -19,10 +19,6 @@ module Decidim
         @tasks ||= Task.where(component: current_component)
       end
 
-      def milestones
-        @milestones ||= Milestone.joins(:task).where(decidim_time_tracker_tasks: { id: tasks.pluck(:id) })
-      end
-
       def assignee_milestones(activity)
         Milestone.where(activity: activity).order(created_at: :desc).select("DISTINCT ON (decidim_user_id, created_at) *")
       end
