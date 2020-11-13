@@ -4,7 +4,6 @@ module Decidim
   module TimeTracker
     # The data store for an assigne in the Decidim::TimeTracker component.
     class Assignee < ApplicationRecord
-      include Decidim::Resourceable
       self.table_name = :decidim_time_tracker_assignees
 
       belongs_to :activity,
