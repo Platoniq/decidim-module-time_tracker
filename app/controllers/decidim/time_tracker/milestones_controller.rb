@@ -4,6 +4,7 @@ module Decidim
   module TimeTracker
     class MilestonesController < Decidim::TimeTracker::ApplicationController
       include Decidim::FormFactory
+      include Decidim::TimeTracker::ApplicationHelper
 
       helper_method :user, :activities
 

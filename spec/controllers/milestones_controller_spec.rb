@@ -25,6 +25,7 @@ module Decidim::TimeTracker
           milestone: {
             activity_id: activity_id,
             title: title,
+            description: description,
             attachment: {
               title: ""
             }
@@ -33,6 +34,7 @@ module Decidim::TimeTracker
       end
       let(:activity_id) { milestone.activity.id }
       let(:title) { "a new milestone" }
+      let(:description) { "description" }
 
       context "when user is signed in" do
         before do

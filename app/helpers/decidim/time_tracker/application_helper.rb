@@ -7,6 +7,10 @@ module Decidim
     module ApplicationHelper
       include Decidim::TranslatableAttributes
 
+      def milestones_path(params)
+        Decidim::EngineRouter.main_proxy(current_component).milestones_path(params)
+      end
+
       def tasks_label
         translated_attribute(component_settings.tasks_label).presence || t("models.task.name", scope: "decidim.time_tracker")
       end
