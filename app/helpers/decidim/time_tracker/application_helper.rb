@@ -40,7 +40,7 @@ module Decidim
       def user_total_time_dedicated(user)
         Assignee.where(user: user).sum(&:time_dedicated)
       end
-      
+
       def user_joined_at(user)
         Assignee.where(user: user).order(tos_accepted_at: :desc).first.tos_accepted_at
       end

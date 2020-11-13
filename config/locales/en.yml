@@ -169,9 +169,9 @@ en:
         index:
           assignees_activity: "%{user_name}'s activity"
           back_to_list: Back to list
-          total_time: Total time dedicated
           joined_on: Joined on
           last_worked_on: Last worked on
+          total_time: Total time dedicated
         milestone:
           time_dedicated: Time dedicated
       models:
