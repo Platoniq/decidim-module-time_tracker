@@ -21,9 +21,9 @@
     <h4 class="section-heading"><%= translated_attribute(activity.description) %></h4>
   </div>
 
-  <div class="row columns">
-    <div class="small-up-1 medium-up-2 large-up-4 card-grid">
-      <%= render activity.milestones.where(user: user) %>
-    </div>
+  <div class="row small-up-1 medium-up-2 large-up-4 card-grid">
+    <% activity.milestones.where(user: user).each do |milestone| %>
+      <%= card_for milestone %>
+    <% end %>
   </div>
 <% end %>

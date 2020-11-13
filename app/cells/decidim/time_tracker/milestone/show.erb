@@ -3,48 +3,53 @@
     <%= image %>
     <div class="card__content">
       <div class="card__header">
-        <a href="<%= milestones_path %>">
-          <h4 class="card__title"> <%= t(".title", user_name: model.user.name) %> </h4>
-        </a>
-        <div class="author--inline">
-          <div class="collapsible-list ">
-            <div class="author-data">
-              <div class="author-data__main">
-                <div class="author author--inline">
-                  <%= link_to decidim.profile_path(model.user.nickname) do %>
-                    <span class="author__avatar">
-                      <%= image_tag model.user.avatar_url %>
-                    </span>
-                    <span class="author__name">
-                      <%= model.user.name %>
-                    </span>
-                  <% end %>
+        <%= title %>
+
+        <% if list? %>
+          <div class="author--inline">
+            <div class="collapsible-list ">
+              <div class="author-data">
+                <div class="author-data__main">
+                  <div class="author author--inline">
+                    <%= link_to decidim.profile_path(model.user.nickname) do %>
+                      <span class="author__avatar">
+                        <%= image_tag model.user.avatar_url %>
+                      </span>
+                      <span class="author__name">
+                        <%= model.user.name %>
+                      </span>
+                    <% end %>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+      <% end %>
+    </div>
 
       <div class="card__text">
         <div class="card__text--paragraph">
-          <h5>
-            <%= model.title %>
-          </h5>
+          <% if list? %>
+            <h5>
+              <%= model.title %>
+            </h5>
+          <% end %>
           <div class="text-ellipsis">
             <%= model.description %>
           </div>
         </div>
       </div>
-
     </div>
-    <div class="card__footer">
-      <div class="card__support">
-        <div class="text"> <%= t(".time_spent") %></div>
-        <div class="text-ellipsis">
-          <strong><%= clockify_seconds(seconds_elapsed) %></strong>
+
+    <% if list? %>
+      <div class="card__footer">
+        <div class="card__support">
+          <div class="text"> <%= t(".time_spent") %></div>
+          <div class="text-ellipsis">
+            <strong><%= clockify_seconds(seconds_elapsed) %></strong>
+          </div>
         </div>
       </div>
-    </div>
+    <% end %>
   </article>
 </div>
