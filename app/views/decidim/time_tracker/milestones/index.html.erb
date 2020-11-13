@@ -1,29 +1,59 @@
-<div class="row column view-header">
-  <h2 class="heading2"> <%= t(".assignees_activity", user_name: user.name) %> </h2>
-  <div class="author-data author-data--small">
-    <div class="author-data__main">
-      <div class="author author--inline">
-        <%= link_to decidim.profile_path(user.nickname) do %>
-          <span class="author__avatar">
-            <%= image_tag user.avatar_url %>
-          </span>
-          <span class="author__name">
-            <%= user.name %>
-          </span>
-        <% end %>
+<div class="row column">
+  <div class="row section columns">
+    <%= link_to root_path, class: "small hollow" do %>
+      <%= icon "chevron-left", class: "icon--small", role: "img", "aria-hidden": true %>
+      <%= t(".back_to_list") %>
+    <% end %>
+    <h2 class="heading2"> <%= t(".assignees_activity", user_name: user.name) %> </h2>
+    <div class="author-data author-data--small">
+      <div class="author-data__main">
+        <div class="author author--inline">
+          <%= link_to decidim.profile_path(user.nickname) do %>
+            <span class="author__avatar">
+              <%= image_tag user.avatar_url %>
+            </span>
+            <span class="author__name">
+              <%= user.name %>
+            </span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="columns medium-7 mediumlarge-8">
+      <% activities.each do |activity| %>
+        <div class="row columns large-12">
+          <h4 class="section-heading"><%= translated_attribute(activity.description) %></h4>
+        </div>
+
+        <div class="row small-up-1 medium-up-2 large-up-3 card-grid">
+          <% activity.milestones.where(user: user).each do |milestone| %>
+            <%= card_for milestone %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="section columns medium-5 mediumlarge-4 large-3">
+      <div class="card extra definition-data">
+        <div class="definition-data__item local_area">
+          <span class="definition-data__title"><%= t(".total_time") %></span>
+          <%= clockify_seconds user_total_time_dedicated(user) %>
+        </div>
+
+
+        <div class="definition-data__item start-date">
+          <span class="definition-data__title"><%= t(".joined_on") %></span>
+          <%= user_joined_at(user).strftime("%d %b %Y") %>
+        </div>
+
+        <div class="definition-data__item end-date">
+          <span class="definition-data__title"><%= t(".last_worked_on") %></span>
+          <%= user_last_milestone(user).created_at.strftime("%d %b %Y") %>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-<% activities.each do |activity| %>
-  <div class="row columns large-12">
-    <h4 class="section-heading"><%= translated_attribute(activity.description) %></h4>
-  </div>
-
-  <div class="row small-up-1 medium-up-2 large-up-4 card-grid">
-    <% activity.milestones.where(user: user).each do |milestone| %>
-      <%= card_for milestone %>
-    <% end %>
-  </div>
-<% end %>

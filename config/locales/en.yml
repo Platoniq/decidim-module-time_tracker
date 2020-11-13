@@ -152,7 +152,7 @@ en:
             pending: Pending
       milestone:
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
-        time_spent: Time spent
+        time_dedicated: Time dedicated
         title: "%{user_name}'s activity"
       milestone_form:
         button_no: No thanks
@@ -168,8 +168,12 @@ en:
           success: Milestone created successfully
         index:
           assignees_activity: "%{user_name}'s activity"
+          back_to_list: Back to list
+          total_time: Total time dedicated
+          joined_on: Joined on
+          last_worked_on: Last worked on
         milestone:
-          time_spent: Time spent
+          time_dedicated: Time dedicated
       models:
         activity:
           fields:

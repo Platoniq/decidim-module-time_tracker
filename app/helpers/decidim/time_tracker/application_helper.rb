@@ -36,6 +36,18 @@ module Decidim
 
         "#{hours}h #{minutes}m #{seconds}s"
       end
+
+      def user_total_time_dedicated(user)
+        Assignee.where(user: user).sum(&:time_dedicated)
+      end
+      
+      def user_joined_at(user)
+        Assignee.where(user: user).order(tos_accepted_at: :desc).first.tos_accepted_at
+      end
+
+      def user_last_milestone(user)
+        Milestone.where(user: user).order(created_at: :desc).first
+      end
     end
   end
 end

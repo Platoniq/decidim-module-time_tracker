@@ -4,28 +4,7 @@
     <div class="card__content">
       <div class="card__header">
         <%= title %>
-
-        <% if list? %>
-          <div class="author--inline">
-            <div class="collapsible-list ">
-              <div class="author-data">
-                <div class="author-data__main">
-                  <div class="author author--inline">
-                    <%= link_to decidim.profile_path(model.user.nickname) do %>
-                      <span class="author__avatar">
-                        <%= image_tag model.user.avatar_url %>
-                      </span>
-                      <span class="author__name">
-                        <%= model.user.name %>
-                      </span>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-      <% end %>
-    </div>
+      </div>
 
       <div class="card__text">
         <div class="card__text--paragraph">
@@ -34,6 +13,7 @@
               <%= model.title %>
             </h5>
           <% end %>
+
           <div class="text-ellipsis">
             <%= model.description %>
           </div>
@@ -41,15 +21,22 @@
       </div>
     </div>
 
-    <% if list? %>
-      <div class="card__footer">
-        <div class="card__support">
-          <div class="text"> <%= t(".time_spent") %></div>
-          <div class="text-ellipsis">
+    <div class="card__footer">
+      <div class="card__support">
+        <% if list? %>
+          <div class="text"> <%= t(".time_dedicated") %></div>
+          <div class="text">
             <strong><%= clockify_seconds(seconds_elapsed) %></strong>
           </div>
-        </div>
+        <% else %>
+          <div class="text">
+            <%= model.created_at.strftime("%d %b %Y") %>
+          </div>
+          <div class="text">
+            <%= model.created_at.strftime("%H:%M") %>
+          </div>
+        <% end %>
       </div>
-    <% end %>
+    </div>
   </article>
 </div>
