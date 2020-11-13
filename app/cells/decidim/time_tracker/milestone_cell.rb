@@ -2,19 +2,19 @@
 
 module Decidim
   module TimeTracker
-    class AssigneeCell < Decidim::ViewModel
+    class MilestoneCell < Decidim::ViewModel
       include Decidim::SanitizeHelper
       include Decidim::CardHelper
       include Decidim::TimeTracker::ApplicationHelper
 
-      view_paths << "#{Decidim::TimeTracker::Engine.root}/app/cells/decidim/time_tracker/assignee"
+      view_paths << "#{Decidim::TimeTracker::Engine.root}/app/cells/decidim/time_tracker/milestone"
 
       def show
         render
       end
 
       def image
-        image_url = last_milestone&.attachments&.first&.url
+        image_url = model&.attachments&.first&.url
 
         if image_url.present?
           link_to image_url, target: :blank do
@@ -26,17 +26,11 @@ module Decidim
       end
 
       def seconds_elapsed
-        @seconds_elapsed ||= last_milestone.activity.user_seconds_elapsed(model.user)
+        @seconds_elapsed ||= model.activity.user_seconds_elapsed(model.user)
       end
 
       def milestones_path
         Decidim::EngineRouter.main_proxy(model.activity.task.component).milestones_path(assignee_id: model)
-      end
-
-      private
-
-      def last_milestone
-        @last_milestone ||= Milestone.where(user: model.user).last
       end
     end
   end
