@@ -238,7 +238,7 @@ en:
           assignee_pending: Already applied! Soon an admin will review your application.
           assignee_rejected: Sorry, you're application has been rejected.
         index:
-          assignees_list: People working in these tasks
+          milestones_list: People working in this activity
         request_activity:
           assignee_pending: Already applied! Soon an admin will review your application.
           assignee_rejected: Sorry, you're application has been rejected.

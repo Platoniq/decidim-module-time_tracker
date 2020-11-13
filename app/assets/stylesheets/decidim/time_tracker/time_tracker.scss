@@ -78,3 +78,10 @@
     }
   }
 }
+
+.show-milestones {
+  color: $secondary;
+  &:hover {
+    text-decoration: underline;
+  }
+}
