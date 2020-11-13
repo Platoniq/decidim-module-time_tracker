@@ -5,6 +5,7 @@ module Decidim
     class MilestoneCell < Decidim::ViewModel
       include Decidim::SanitizeHelper
       include Decidim::CardHelper
+      include Decidim::IconHelper
       include Decidim::TimeTracker::ApplicationHelper
 
       view_paths << "#{Decidim::TimeTracker::Engine.root}/app/cells/decidim/time_tracker/milestone"
@@ -25,7 +26,7 @@ module Decidim
             end
           end
         else
-          content_tag :h4, model.title
+          content_tag :strong, model.title
         end
       end
 
@@ -37,7 +38,9 @@ module Decidim
             image_tag image_url, class: "card__image"
           end
         else
-          image_tag asset_url("decidim/time_tracker/milestone_placeholder.jpeg"), class: "card__image empty"
+          content_tag :div, class: "card__image empty" do
+            icon "timer"
+          end
         end
       end
 

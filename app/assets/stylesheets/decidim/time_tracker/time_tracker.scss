@@ -66,14 +66,15 @@
   }
 }
 
-  // div.milestone {
-//   background-color: white;
-//   border: 1px solid #eee;
-//   padding: 1rem;
-//   margin-bottom: 1rem;
-
-//   h3 {
-//     color: var(--secondary);
-//   }
-
-// }
+.card--milestone {
+  .card__image.empty {
+    background: $light-gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & > svg {
+      fill: $medium-gray;
+      font-size: 2rem;
+    }
+  }
+}
