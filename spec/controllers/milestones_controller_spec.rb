@@ -56,6 +56,12 @@ module Decidim::TimeTracker
             expect(response).to have_http_status(:redirect)
           end
         end
+
+        it "renders index" do
+          get :index, params: { user_id: user.id }
+          expect(response).to have_http_status(:ok)
+          expect(subject).to render_template(:index)
+        end
       end
 
       context "when user is not logged in" do

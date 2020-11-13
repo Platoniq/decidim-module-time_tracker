@@ -48,10 +48,6 @@ module Decidim
         time_events.where(activity: activity).sum(&:total_seconds)
       end
 
-      def milestones
-        @milestones ||= Milestone.where(user: user)
-      end
-
       def can_change_status?
         time_events.empty?
       end
