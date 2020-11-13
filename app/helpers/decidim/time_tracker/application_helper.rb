@@ -7,7 +7,7 @@ module Decidim
     module ApplicationHelper
       include Decidim::TranslatableAttributes
 
-      def milestones_path(params)
+      def milestones_path(params = {})
         Decidim::EngineRouter.main_proxy(current_component).milestones_path(params)
       end
 

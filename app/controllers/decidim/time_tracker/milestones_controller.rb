@@ -9,6 +9,8 @@ module Decidim
       helper_method :user, :activities
 
       def index
+        return redirect_to root_path if user.blank?
+
         enforce_permission_to :index, :milestones, user: user
       end
 

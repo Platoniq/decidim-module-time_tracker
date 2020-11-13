@@ -72,16 +72,25 @@ module Decidim::TimeTracker
           sign_in user
         end
 
-        it "renders index" do
-          get :index, params: { user_id: user.id }
-          expect(response).to have_http_status(:ok)
-          expect(subject).to render_template(:index)
+        context "when the nickname param is provided" do
+          it "renders index" do
+            get :index, params: { nickname: user.nickname }
+            expect(response).to have_http_status(:ok)
+            expect(subject).to render_template(:index)
+          end
+        end
+
+        context "when the nickname param is missing" do
+          it "redirects" do
+            get :index
+            expect(response).to redirect_to(root_path)
+          end
         end
       end
 
       context "when user is not signed in" do
         it "redirects" do
-          get :index, params: { user_id: user.id }
+          get :index, params: { nickname: user.nickname }
           expect(response).to redirect_to("/")
         end
       end
