@@ -58,7 +58,7 @@ module Decidim::TimeTracker
         end
       end
 
-      context "when user is not logged in" do
+      context "when user is not signed in" do
         it "redirects" do
           post :create, params: params
           expect(response).to redirect_to("/")
@@ -67,10 +67,23 @@ module Decidim::TimeTracker
     end
 
     describe "get #index" do
-      it "renders index" do
-        get :index, params: { user_id: user.id }
-        expect(response).to have_http_status(:ok)
-        expect(subject).to render_template(:index)
+      context "when user is signed in" do
+        before do
+          sign_in user
+        end
+
+        it "renders index" do
+          get :index, params: { user_id: user.id }
+          expect(response).to have_http_status(:ok)
+          expect(subject).to render_template(:index)
+        end
+      end
+
+      context "when user is not signed in" do
+        it "redirects" do
+          get :index, params: { user_id: user.id }
+          expect(response).to redirect_to("/")
+        end
       end
     end
   end
