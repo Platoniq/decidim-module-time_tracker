@@ -27,9 +27,8 @@ module Decidim::TimeTracker
         get :index
         expect(response).to have_http_status(:ok)
         expect(controller.helpers.tasks.count).to eq(1)
-        all = controller.helpers.assignees_with_milestones
-        expect(all).to include(assignees.first)
-        expect(all).not_to include(assignees.second)
+        all = controller.helpers.assignee_milestones(activity)
+        expect(all).to include(milestone)
         expect(subject).to render_template(:index)
       end
     end
