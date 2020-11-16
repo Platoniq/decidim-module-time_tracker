@@ -6,7 +6,7 @@
       <%= t(".title") %>
       <div class="button--title">
         <% if allowed_to? :update, :questionnaire, questionnaire: current_task.questionnaire %>
-          <%= link_to t("tasks.actions.questionnaire", scope: "decidim.time_tracker.admin"), edit_task_form_path(current_task), class: "button tiny button--simple" %>
+          <%= link_to t("tasks.actions.questionnaire", scope: "decidim.time_tracker.admin"), edit_questionnaire_path, class: "button tiny button--simple" %>
         <% end %>
       </div>
     </h2>

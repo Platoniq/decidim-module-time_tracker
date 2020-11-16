@@ -132,6 +132,9 @@ en:
             title: Update task
           index:
             title: Tasks
+            assignee_questionnaire: Assignee data questionnaire
+            questionnaire: Questionnaire
+            questionnaires: Questionnaires
           new:
             submit: Create
             title: Create task
@@ -209,6 +212,10 @@ en:
             time_dedicated: Time dedicated
             tos_accepted_at: Joined at
           name: Assignee
+        questionnaire:
+          fields:
+            name: Name
+            title: Title
         task:
           fields:
             activities_count: Number of activites

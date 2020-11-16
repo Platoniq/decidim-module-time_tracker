@@ -3,7 +3,7 @@
 require "spec_helper"
 
 module Decidim::TimeTracker::Admin
-  describe QuestionnaireController, type: :controller do
+  describe QuestionnairesController, type: :controller do
     routes { Decidim::TimeTracker::AdminEngine.routes }
 
     let(:organization) { create :organization }
