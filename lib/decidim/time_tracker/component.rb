@@ -8,10 +8,32 @@ Decidim.register_component(:time_tracker) do |component|
   component.admin_stylesheet = "decidim/time_tracker/admin/time_tracker"
   component.icon = "decidim/time_tracker/icon.svg"
   component.permissions_class_name = "Decidim::TimeTracker::Permissions"
+  
+  component.data_portable_entities = ["Decidim::TimeTracker::Milestone"]
+
+  component.newsletter_participant_entities = ["Decidim::TimeTracker::Milestone"]
+
+  component.on(:copy) do |context|
+    Decidim::TimeTracker::CreateTimeTracker.call(context[:new_component]) do
+      on(:invalid) { raise "Can't create Time Tracker" }
+    end
+  end
+
+  component.on(:create) do |instance|
+    Decidim::TimeTracker::CreateTimeTracker.call(instance) do
+      on(:invalid) { raise "Can't create Time Tracker" }
+    end
+  end
 
   component.on(:before_destroy) do |instance|
     # Code executed before removing the component
-    raise StandardError, "Can't remove this component, there are tasks associated" if Decidim::TimeTracker::Task.where(component: instance).any?
+    time_tracker = Decidim::TimeTracker::TimeTracker.find_by(decidim_component_id: instance.id)
+
+    answers = Decidim::Forms::Answer.where(questionnaire: time_tracker.questionnaire)
+    assignee_answers = Decidim::Forms::Answer.where(questionnaire: time_tracker.assignee_questionnaire)
+    tasks = Decidim::TimeTracker::Task.where(time_tracker: time_tracker)
+  
+    raise StandardError, "Can't remove this component, there are resources associated" if [answers, assignee_answers, tasks].any?(&:any?)
   end
 
   # These actions permissions can be configured in the admin panel

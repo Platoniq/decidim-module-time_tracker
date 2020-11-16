@@ -10,6 +10,7 @@ class CreateDecidimTimeTrackerAssignees < ActiveRecord::Migration[5.2]
       t.references :invited_by_user, foreign_key: { to_table: :decidim_users }
       t.datetime :requested_at
       t.datetime :tos_accepted_at
+      t.timestamps
     end
   end
 end

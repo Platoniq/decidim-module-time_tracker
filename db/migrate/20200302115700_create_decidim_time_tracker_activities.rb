@@ -9,10 +9,11 @@ class CreateDecidimTimeTrackerActivities < ActiveRecord::Migration[5.2]
                    null: false
       t.jsonb :description
       t.boolean :active
-      t.date :start_date
-      t.date :end_date
-      t.integer :max_minutes_per_day
       t.datetime :requests_start_at
+      t.datetime :start_date
+      t.datetime :end_date
+      t.integer :max_minutes_per_day
+      t.timestamps
     end
   end
 end
