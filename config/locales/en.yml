@@ -79,6 +79,7 @@ en:
         assignees:
           actions:
             accept: Accept
+            assignees: Manage assignees
             confirm_destroy: Are you sure you want to delete this assignee?
             destroy: Delete assignee
             new: New assignee
