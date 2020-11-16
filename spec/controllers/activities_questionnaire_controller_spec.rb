@@ -12,8 +12,8 @@ module Decidim::TimeTracker
     let(:participatory_space) { create(:participatory_process, organization: organization) }
     let(:component) { create(:time_tracker_component, participatory_space: participatory_space) }
     let(:time_tracker) { create(:time_tracker, component: component) }
-    let(:questionnaire) { create :questionnaire, questionnaire_for: time_tracker }
-    let(:task) { create :task }
+    let!(:questionnaire) { create :questionnaire, :with_questions, questionnaire_for: time_tracker }
+    let(:task) { create :task, time_tracker: time_tracker }
     let!(:activity) { create :activity, task: task }
 
     let(:form) do
@@ -34,7 +34,7 @@ module Decidim::TimeTracker
         get :show, params: params
 
         expect(response).to have_http_status(:ok)
-        expect(controller.helpers.questionnaire_for).to eq(activity.task)
+        expect(controller.helpers.questionnaire_for).to eq(activity.task.time_tracker)
         expect(controller.helpers.allow_answers?).to eq(false)
         expect(controller.helpers.visitor_can_answer?).to eq(can_answer)
         expect(controller.helpers.visitor_already_answered?).not_to eq(true)
@@ -47,7 +47,7 @@ module Decidim::TimeTracker
         get :show, params: params
 
         expect(response).to have_http_status(:ok)
-        expect(controller.helpers.questionnaire_for).to eq(activity.task)
+        expect(controller.helpers.questionnaire_for).to eq(activity.task.time_tracker)
         expect(controller.helpers.allow_answers?).to eq(true)
         expect(controller.helpers.visitor_can_answer?).to eq(true)
         expect(controller.helpers.visitor_already_answered?).to eq(false)

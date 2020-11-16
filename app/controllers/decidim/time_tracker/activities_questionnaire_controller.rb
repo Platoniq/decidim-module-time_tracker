@@ -6,7 +6,7 @@ module Decidim
       include Decidim::Forms::Concerns::HasQuestionnaire
 
       def questionnaire_for
-        task
+        time_tracker
       end
 
       def allow_answers?
@@ -46,8 +46,8 @@ module Decidim
         @activity ||= Activity.find(params[:activity_id])
       end
 
-      def task
-        @task ||= Task.where(component: current_component).find(params[:task_id])
+      def time_tracker
+        @time_tracker ||= TimeTracker.find_by(component: current_component)
       end
     end
   end

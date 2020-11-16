@@ -26,7 +26,7 @@ module Decidim
         end
 
         def activity_path(assignation)
-          EngineRouter.main_proxy(assignation.task.component).root_path(locale: params[:locale], activity: assignation.activity)
+          EngineRouter.main_proxy(assignation.task.time_tracker.component).root_path(locale: params[:locale], activity: assignation.activity)
         end
 
         def total_time

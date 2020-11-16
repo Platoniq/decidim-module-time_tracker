@@ -3,7 +3,7 @@
 require "spec_helper"
 
 module Decidim::TimeTracker::Admin
-  describe TasksQuestionnaireController, type: :controller do
+  describe QuestionnaireController, type: :controller do
     routes { Decidim::TimeTracker::AdminEngine.routes }
 
     let(:organization) { create :organization }
@@ -30,8 +30,7 @@ module Decidim::TimeTracker::Admin
       let(:params) do
         {
           component_id: component.id,
-          participatory_process_slug: participatory_space.slug,
-          task_id: task.id
+          participatory_process_slug: participatory_space.slug
         }
       end
 
@@ -54,7 +53,6 @@ module Decidim::TimeTracker::Admin
         {
           component_id: component.id,
           participatory_process_slug: participatory_space.slug,
-          task_id: task.id,
           questionnaire: form
         }
       end
