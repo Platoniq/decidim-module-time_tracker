@@ -16,8 +16,8 @@ module Decidim
             resources :assignees
           end
         end
-        
-        %i[questionnaire assignee_questionnaire].each do |questionnaire_resource|
+
+        [:questionnaire, :assignee_questionnaire].each do |questionnaire_resource|
           resource questionnaire_resource, only: [:edit, :update] do
             get "/answer_options", to: "#{questionnaire_resource}#answer_options", as: :answer_options
           end

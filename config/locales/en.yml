@@ -131,10 +131,10 @@ en:
             submit: Update
             title: Update task
           index:
-            title: Tasks
             assignee_questionnaire: Assignee data questionnaire
             questionnaire: Questionnaire
             questionnaires: Questionnaires
+            title: Tasks
           new:
             submit: Create
             title: Create task
@@ -225,9 +225,6 @@ en:
             assignees_pending: Pending assignees
             name: Name
           name: Task
-      task_questionnaire_answers_serializer:
-        activity: Activity
-        task: Task
       reports:
         user:
           index:
@@ -235,6 +232,9 @@ en:
             dedicated_time: 'Time dedicated so far: %{time}'
             empty: You don't have any activity assignations
             pending: Pending
+      task_questionnaire_answers_serializer:
+        activity: Activity
+        task: Task
       time_events:
         start:
           already_started: Counter already started

@@ -8,7 +8,7 @@ Decidim.register_component(:time_tracker) do |component|
   component.admin_stylesheet = "decidim/time_tracker/admin/time_tracker"
   component.icon = "decidim/time_tracker/icon.svg"
   component.permissions_class_name = "Decidim::TimeTracker::Permissions"
-  
+
   component.data_portable_entities = ["Decidim::TimeTracker::Milestone"]
 
   component.newsletter_participant_entities = ["Decidim::TimeTracker::Milestone"]
@@ -32,7 +32,7 @@ Decidim.register_component(:time_tracker) do |component|
     answers = Decidim::Forms::Answer.where(questionnaire: time_tracker.questionnaire)
     assignee_answers = Decidim::Forms::Answer.where(questionnaire: time_tracker.assignee_questionnaire)
     tasks = Decidim::TimeTracker::Task.where(time_tracker: time_tracker)
-  
+
     raise StandardError, "Can't remove this component, there are resources associated" if [answers, assignee_answers, tasks].any?(&:any?)
   end
 

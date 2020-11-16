@@ -6,10 +6,10 @@ module Decidim
       include Decidim::Forms::HasQuestionnaire
 
       self.table_name = :decidim_time_tracker_assignee_questionnaires
-      
+
       belongs_to :time_tracker,
-               class_name: "Decidim::TimeTracker::TimeTracker",
-               inverse_of: :assignee_questionnaire
+                 class_name: "Decidim::TimeTracker::TimeTracker",
+                 inverse_of: :assignee_questionnaire
 
       after_create :create_questionnaire
 

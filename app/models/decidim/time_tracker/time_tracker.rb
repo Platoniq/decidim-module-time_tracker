@@ -7,24 +7,24 @@ module Decidim
       include Decidim::Forms::HasQuestionnaire
 
       self.table_name = :decidim_time_trackers
-      
+
       component_manifest_name "time_tracker"
 
       has_many :tasks,
                class_name: "Decidim::TimeTracker::Task",
                dependent: :destroy
-      
+
       has_many :activities,
                class_name: "Decidim::TimeTracker::Activity",
                through: :tasks
-      
+
       has_many :assignees,
                class_name: "Decidim::TimeTracker::Assignee",
                through: :activities
-      
+
       has_one :assignee_questionnaire,
-               class_name: "Decidim::TimeTracker::AssigneeQuestionnaire",
-               inverse_of: :time_tracker
+              class_name: "Decidim::TimeTracker::AssigneeQuestionnaire",
+              inverse_of: :time_tracker
 
       after_create :create_questionnaire, :create_assignee_questionnaire
 

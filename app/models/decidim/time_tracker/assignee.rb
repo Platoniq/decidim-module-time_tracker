@@ -29,7 +29,7 @@ module Decidim
                  class_name: "Decidim::User",
                  optional: true
 
-      enum status: %i[pending accepted rejected]
+      enum status: [:pending, :accepted, :rejected]
 
       def time_dedicated
         time_events.sum(&:total_seconds)

@@ -7,7 +7,7 @@ module Decidim
       self.table_name = :decidim_time_tracker_tasks
 
       belongs_to :time_tracker,
-               class_name: "Decidim::TimeTracker::TimeTracker"
+                 class_name: "Decidim::TimeTracker::TimeTracker"
 
       has_many :activities,
                class_name: "Decidim::TimeTracker::Activity",
