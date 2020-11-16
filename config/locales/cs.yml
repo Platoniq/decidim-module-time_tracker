@@ -137,10 +137,6 @@ cs:
           create:
             error: Chyba při importu dat o sledování času do odpovědnosti
             success: Data sledování času byla úspěšně exportována do odpovědnosti
-      assignee:
-        assignees_activity: "Aktivita %{user_name}"
-        dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
-        time_spent: Strávený čas
       assignees:
         request:
           error: Požadavek na přiřazení aktivity se nezdařil!
@@ -153,16 +149,28 @@ cs:
         minutes: "%{n}m"
         seconds: "%{n}s"
       milestone:
-        button_no: Ne, děkuji
-        button_submit: Odeslat milník
-        description: Zanechte důkaz o své práci nahráním obrázku a jednoduchou frázi
-        input_file: Soubor
-        input_title: Název
-        title: Zanechte svou značku!
+        dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
+        time_dedicated: Time dedicated
+        title: "%{user_name}'s activity"
+      milestone_form:
+        button_no: No thanks
+        button_submit: Send milestone
+        description: Leave a proof of your work by uploading a picture and a simple phrase
+        input_file: File
+        input_title: Title
+        title: Leave your mark!
       milestones:
         create:
           error: Chyba při vytváření milníku
           success: Milník byl úspěšně vytvořen
+        index:
+          assignees_activity: "%{user_name}'s activity"
+          back_to_list: Back to list
+          joined_on: Joined on
+          last_worked_on: Last worked on
+          total_time: Total time dedicated
+        milestone:
+          time_dedicated: Time dedicated
       models:
         activity:
           fields:
@@ -235,7 +243,7 @@ cs:
           assignee_pending: Already applied! Soon an admin will review your application.
           assignee_rejected: Sorry, you're application has been rejected.
         index:
-          assignees_list: Aktivity přiřazeného
+          milestones_list: People working in this activity
         request_activity:
           assignee_pending: Již aplikováno! Brzy správce zkontroluje vaši žádost.
           assignee_rejected: Sorry, you're application has been rejected.
