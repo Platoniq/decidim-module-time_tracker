@@ -7,7 +7,8 @@ module Decidim::TimeTracker::Admin
     let(:subject) { described_class.new(task, form, user) }
     let(:organization) { create :organization }
     let(:component) { create :time_tracker_component }
-    let(:task) { create :task, component: component }
+    let(:time_tracker) { create(:time_tracker, component: component) }
+    let(:task) { create(:task, time_tracker: time_tracker) }
     let(:user) { create(:user, :confirmed, :admin, organization: organization) }
     let(:form) do
       double(

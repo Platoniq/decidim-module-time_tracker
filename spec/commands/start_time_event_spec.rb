@@ -70,7 +70,7 @@ module Decidim::TimeTracker
     end
 
     context "when user is not accepted to the activity" do
-      let(:status) { "any_non_accepted_status" }
+      let(:status) { "rejected" }
 
       it_behaves_like "returns error", :assignee
     end
