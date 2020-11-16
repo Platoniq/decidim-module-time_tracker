@@ -41,6 +41,59 @@ module Decidim
         Cell::ViewModel.view_paths << File.expand_path("#{Decidim::TimeTracker::Engine.root}/app/cells")
         Cell::ViewModel.view_paths << File.expand_path("#{Decidim::TimeTracker::Engine.root}/app/views") # for partials
       end
+
+      initializer "decidim_time_tracker.questionnaire_seeds" do |app|
+        seeds = YAML.safe_load <<~YAML
+          title:
+            en: How do you perceive this task?
+          description:
+            en:
+          tos:
+            en: These are the Terms and Conditions. By submitting this questionnaire, you agree to them.
+          questions:
+            - question_type: single_option
+              position: 1
+              body:
+                en: How important do you think this task is?
+              description:
+                en: From 1 to 5, do you perceive this task as most important (5), not important at all (1) or something in between?
+              answer_options:
+                - body:
+                    en: 1 (Not important at all)
+                - body:
+                    en: 2 (Somewhat important)
+                - body:
+                    en: 3 (Quite important)
+                - body:
+                    en: 4 (Very important)
+                - body:
+                    en: 5 (Most important)
+            - question_type: separator
+              position: 2
+              body:
+                en:
+              description:
+                en:
+            - question_type: single_option
+              position: 3
+              body:
+                en: Who do you think usually perform this task?
+              description:
+                en: Do you think this task is mostly performed by people who identify with a certain gender?
+              answer_options:
+                - body:
+                    en: Mostly women
+                - body:
+                    en: Mostly men
+                - body:
+                    en: I don't see differences by gender
+                - body:
+                    en: Other
+                  free_text: true
+        YAML
+
+        app.config.time_tracker_questionnaire_seeds = seeds.deep_symbolize_keys
+      end
     end
   end
 end
