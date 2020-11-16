@@ -6,7 +6,7 @@
 
 
 
-A tool for Decidim that allows to track Time dedicated by volunteers doing any arbitrary task.
+A tool for Decidim that allows to track time dedicated by volunteers doing any arbitrary task.
 
 ## Usage
 
