@@ -11,7 +11,8 @@ module Decidim
                  class_name: "Decidim::TimeTracker::Task"
 
       has_many :assignees,
-               class_name: "Decidim::TimeTracker::Assignee"
+               class_name: "Decidim::TimeTracker::Assignee",
+               dependent: :destroy
 
       has_many :time_events,
                class_name: "Decidim::TimeTracker::TimeEvent"
