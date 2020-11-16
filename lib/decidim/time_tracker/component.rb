@@ -117,14 +117,15 @@ Decidim.register_component(:time_tracker) do |component|
       Decidim::Component.create!(params)
     end
 
+    time_tracker = Decidim::TimeTracker::TimeTracker.create(component: component)
+
     # Create some tasks
     3.times do
       task = Decidim.traceability.create!(
         Decidim::TimeTracker::Task,
         admin_user,
         name: Decidim::Faker::Localized.sentence(2),
-        component: component,
-        questionnaire: Decidim::Forms::Questionnaire.new
+        time_tracker: time_tracker
       )
 
       # Create activites for these tasks
