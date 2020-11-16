@@ -113,6 +113,8 @@ module Decidim::TimeTracker
         expect(subject.questionnaire.questions.first.body["en"]).to eq "Question 1"
         expect(subject.questionnaire.questions.second.answer_options.first.body["en"]).to eq "Answer Option 1"
         expect(subject.questionnaire.questions.second.answer_options.first.free_text).to eq true
+
+        Rails.application.config.time_tracker_questionnaire_seeds = nil
       end
     end
   end
