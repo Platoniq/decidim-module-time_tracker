@@ -6,7 +6,7 @@
     <div class="right">
       <% if user_signed_in? %>
         <div class="top">
-          <% if activity.current_status != :open %>
+          <% if activity.status != :open %>
             <%= render partial: "callout_status", locals: { activity: activity } %>
           <% else %>
             <% if activity.assignee_pending? current_user %>

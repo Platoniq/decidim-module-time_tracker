@@ -87,7 +87,7 @@ module Decidim
       end
 
       def allow_answers_for?(user)
-        return false if current_status == :inactive
+        return false if status == :inactive
 
         return false unless has_questions?
 
