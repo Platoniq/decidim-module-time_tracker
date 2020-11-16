@@ -41,23 +41,25 @@ module Decidim
       private
 
       def populate_questionnaire
-        seeds = Rails.application.config.time_tracker_questionnaire_seeds
+        @questionnaire_seeds ||= Rails.application.config.time_tracker_questionnaire_seeds
 
-        return if seeds.blank?
+        return if @questionnaire_seeds.blank?
 
-        questions = seeds[:questions].map do |question|
-          if question.has_key?(:answer_options)
-            answer_options = question.delete(:answer_options)
-            answer_options.map! { |answer_option| Decidim::Forms::AnswerOption.new(answer_option) }
-            question[:answer_options] = answer_options
+        if @questionnaire_seeds[:questions]&.first.is_a?(Hash)
+          questions = @questionnaire_seeds[:questions].map do |question|
+            if question.has_key?(:answer_options)
+              answer_options = question.delete(:answer_options)
+              answer_options.map! { |answer_option| Decidim::Forms::AnswerOption.new(answer_option) }
+              question[:answer_options] = answer_options
+            end
+
+            Decidim::Forms::Question.create(question.merge(questionnaire: questionnaire, created_at: Time.now))
           end
 
-          Decidim::Forms::Question.new(question)
+          @questionnaire_seeds[:questions] = questions
         end
 
-        seeds[:questions] = questions
-
-        questionnaire.update!(seeds)
+        questionnaire.update!(@questionnaire_seeds)
       end
     end
   end
