@@ -6,12 +6,12 @@ module Decidim::TimeTracker
   describe Task do
     subject { task }
 
-    let(:component) { create(:time_tracker_component) }
+    let(:component) { task.time_tracker.component }
     let(:first_activity) { create(:activity, :with_assignees, start_date: Time.zone.now, end_date: 1.day.from_now) }
     let(:middle_activity) { create(:activity, :with_assignees, start_date: Time.zone.now, end_date: 2.days.from_now) }
     let(:last_activity) { create(:activity, :with_assignees, start_date: 1.day.from_now, end_date: 2.days.from_now) }
     let(:activities) { [first_activity, middle_activity, last_activity] }
-    let(:task) { create(:task, component: component, activities: activities) }
+    let(:task) { create(:task, activities: activities) }
 
     it { is_expected.to be_valid }
 

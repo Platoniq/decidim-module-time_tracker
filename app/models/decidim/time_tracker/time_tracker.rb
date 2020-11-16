@@ -28,8 +28,17 @@ module Decidim
                 inverse_of: :questionnaire_for,
                 as: :questionnaire_for
 
+      after_create :create_questionnaires
+
       def has_questions?
         questionnaire.questions.any?
+      end
+
+      private
+
+      def create_questionnaires
+        questionnaire ||= Decidim::Forms::Questionnaire.create!(questionnaire_for: self)
+        assignee_questionnaire ||= Decidim::Forms::Questionnaire.create!(questionnaire_for: self)
       end
     end
   end

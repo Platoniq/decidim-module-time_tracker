@@ -35,7 +35,8 @@ describe "User reports page", type: :system do
     end
 
     context "when user has assignations" do
-      let!(:task) { create :task, component: component }
+      let(:time_tracker) { create :time_tracker, component: component }
+      let!(:task) { create :task, time_tracker: time_tracker }
       let!(:activity) { create :activity, task: task }
       let!(:assignee) { create :assignee, :accepted, activity: activity, user: user }
       let!(:assignee_pending) { create :assignee, :pending, activity: activity, user: user }

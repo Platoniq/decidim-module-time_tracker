@@ -8,11 +8,12 @@ module Decidim::TimeTracker
     routes { Decidim::TimeTracker::Engine.routes }
 
     let!(:user) { create(:user, :confirmed, organization: organization) }
-    let(:organization) { participatory_space.organization }
-    let(:participatory_space) { activity.task.component.participatory_space }
-    let(:component) { activity.task.component }
-    let(:questionnaire) { create :questionnaire }
-    let(:task) { create :task, questionnaire: questionnaire }
+    let(:organization) { create(:organization) }
+    let(:participatory_space) { create(:participatory_process, organization: organization) }
+    let(:component) { create(:time_tracker_component, participatory_space: participatory_space) }
+    let(:time_tracker) { create(:time_tracker, component: component) }
+    let(:questionnaire) { create :questionnaire, questionnaire_for: time_tracker }
+    let(:task) { create :task }
     let!(:activity) { create :activity, task: task }
 
     let(:form) do

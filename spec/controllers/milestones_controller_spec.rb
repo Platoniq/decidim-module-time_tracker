@@ -9,9 +9,12 @@ module Decidim::TimeTracker
     let(:organization) { create :organization }
     let(:user) { create(:user, :confirmed, :admin, organization: organization) }
     let(:participatory_space) { create(:participatory_process, organization: organization) }
-    let(:component) { milestone.activity.task.component }
-    let!(:assigne) { create :assignee, user: user, activity: milestone.activity }
+    let(:component) { create(:time_tracker_component, participatory_space: participatory_space) }
+    let(:time_tracker) { create(:time_tracker, component: component) }
+    let(:task) { create :task, time_tracker: time_tracker }
+    let(:activity) { create :activity, task: task }
     let(:milestone) { create :milestone, user: user }
+    let!(:assigne) { create :assignee, user: user, activity: milestone.activity }
 
     before do
       request.env["decidim.current_organization"] = organization

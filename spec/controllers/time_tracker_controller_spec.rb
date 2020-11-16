@@ -10,9 +10,10 @@ module Decidim::TimeTracker
     let(:user) { create(:user, :confirmed, :admin, organization: organization) }
     let(:participatory_space) { create(:participatory_process, organization: organization) }
     let(:component) { create :time_tracker_component, participatory_space: participatory_space }
+    let(:time_tracker) { create :time_tracker, component: component }
     let!(:milestone) { create :milestone, activity: activity, user: assignees.first.user }
     let!(:activity) { create :activity, task: task }
-    let!(:task) { create :task, component: component }
+    let!(:task) { create :task, time_tracker: time_tracker }
     let!(:assignees) { create_list :assignee, 3, :accepted, activity: activity }
 
     before do

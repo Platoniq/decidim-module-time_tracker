@@ -7,6 +7,8 @@ module Decidim
       class TaskForm < Decidim::Form
         include TranslatableAttributes
 
+        mimic :task
+
         translatable_attribute :name, String
 
         validates :name, translatable_presence: true
