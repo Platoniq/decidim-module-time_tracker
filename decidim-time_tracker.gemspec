@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.name = "decidim-time_tracker"
   s.summary = "A decidim time_tracker module"
-  s.description = "A tool for Decidim that allows to track Time dedicated by volunteers doing any arbitrary task."
+  s.description = "A tool for Decidim that allows to track time dedicated by volunteers doing any arbitrary task."
 
   s.files = Dir["{app,config,lib}/**/*", "LICENSE-AGPLv3.txt", "Rakefile", "README.md"]
 
