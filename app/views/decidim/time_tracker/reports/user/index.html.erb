@@ -1,0 +1,41 @@
+<div class="row column time-tracker--report">
+  <section class="section">
+    <% if assignations.any? %>
+      <div class="card__extra card--list__data">
+        <div class="card--list__data__number">
+          <%== t(".dedicated_time", time: clockify_seconds(total_time)) %>
+        </div>
+      </div>
+      <div class="card card--list">
+        <% assignations.each do |assignation| %>
+          <%= link_to activity_path(assignation), class: "time-tracker--activity", target: :blank do %>
+            <div class="card--list__item">
+              <div class="card--list__text">
+                <div>
+                  <h5 class="card--list__heading">
+                    <%= translated_attribute(assignation.activity.description) %>
+                  </h5>
+                  <span class="text-small">
+                    <%= assignation_status_label assignation.status %>
+                    <span class="assignation--date"><%= assignation_date(assignation) %></span>
+                  </span>
+                </div>
+              </div>
+              <div class="card--list__annotation">
+                <%= clockify_seconds assignation.time_dedicated, padded: true %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="card--list__item">
+        <div class="card--list__text">
+          <%= t(".empty") %>
+        </div>
+      </div>
+    <% end %>
+  </section>
+</div>
+
+<%= stylesheet_link_tag "decidim/time_tracker/time_tracker" %>

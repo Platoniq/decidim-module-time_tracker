@@ -9,6 +9,10 @@ module Decidim
       belongs_to :activity,
                  class_name: "Decidim::TimeTracker::Activity"
 
+      has_one :task,
+              class_name: "Decidim::TimeTracker::Task",
+              through: :activity
+
       has_many :time_events,
                class_name: "Decidim::TimeTracker::TimeEvent",
                dependent: :nullify
@@ -51,6 +55,16 @@ module Decidim
       def can_change_status?
         time_events.empty?
       end
+
+      # rubocop:disable Lint/UselessAssignment
+      def self.sorted_by_status(*statuses)
+        accepted = self.accepted.sort_by(&:time_dedicated).reverse
+        pending = self.pending
+        rejected = self.rejected
+
+        statuses.map { |status| send(status) }.sum
+      end
+      # rubocop:enable Lint/UselessAssignment
     end
   end
 end

@@ -1,5 +1,6 @@
 //= require decidim/time_tracker/timer_api
 //= require decidim/time_tracker/activity_ui
+//= require decidim/time_tracker/reports/reports
 //= require jsrender.min
 //= require_self
 
@@ -65,5 +66,6 @@ $(() => {
         .fail(activity.showError.bind(activity));
     });
   });
+
 });
 
