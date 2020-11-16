@@ -37,7 +37,7 @@ en:
             max_number_of_assignees: Maximum number of assignees
             milestones_label: Name for "Milestones"
             tasks_label: Name for "Tasks"
-            time_events_label: Name for "Time Entries"
+            time_events_label: Name for "Time Events"
             tos: Terms and conditions
           step:
             announcement: Announcement

@@ -19,8 +19,8 @@ module Decidim
         translated_attribute(component_settings.assignees_label).presence || t("models.assignee.name", scope: "decidim.time_tracker")
       end
 
-      def time_entries_label
-        translated_attribute(component_settings.time_entries_label).presence || t("models.time_entry.name", scope: "decidim.time_tracker")
+      def time_events_label
+        translated_attribute(component_settings.time_events_label).presence || t("models.time_entry.name", scope: "decidim.time_tracker")
       end
 
       def milestones_label

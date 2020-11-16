@@ -50,7 +50,7 @@ module Decidim::TimeTracker
       end
     end
 
-    context "when there are several entries on the same day" do
+    context "when there are several events on the same day" do
       let!(:time_event1) { create :time_event, assignee: assignee, activity: activity, start: (start_time.to_i - 2.hours.to_i), stop: (start_time.to_i - 2.hours.to_i + 15.minutes.to_i) }
 
       context "and there's still time" do

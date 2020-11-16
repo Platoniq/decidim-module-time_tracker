@@ -26,7 +26,7 @@ Decidim.register_component(:time_tracker) do |component|
     settings.attribute :tasks_label, type: :string, translated: true, editor: true
     settings.attribute :activities_label, type: :string, translated: true, editor: true
     settings.attribute :assignees_label, type: :string, translated: true, editor: true
-    settings.attribute :time_entries_label, type: :string, translated: true, editor: true
+    settings.attribute :time_events_label, type: :string, translated: true, editor: true
     settings.attribute :milestones_label, type: :string, translated: true, editor: true
   end
 
