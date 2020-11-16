@@ -31,7 +31,7 @@
                 <%= translated_attribute activity.description %>
               </td>
               <td>
-                <%= t("models.activity.fields.statuses.#{activity.current_status}", scope: "decidim.time_tracker") %>
+                <%= t("models.activity.fields.statuses.#{activity.status}", scope: "decidim.time_tracker") %>
               </td>
               <td>
                 <%= l(activity.start_date, format: :decidim_short) if activity.start_date.present? %>

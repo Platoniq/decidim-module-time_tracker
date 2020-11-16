@@ -10,7 +10,7 @@ module Decidim
       end
 
       def allow_answers?
-        activity.current_status != :inactive
+        activity.status != :inactive
       end
 
       def update_url

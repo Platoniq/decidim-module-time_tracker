@@ -14,9 +14,9 @@
     </div>
     <div class="right">
       <div class="top">
-        <% if activity.current_status != :open %>
+        <% if activity.status != :open %>
           <div class="callout warning">
-            <%= t ".#{activity.current_status}", end_date: l(activity.end_date, format: :short), start_date: l(activity.start_date, format: :short) %>
+            <%= t ".#{activity.status}", end_date: l(activity.end_date, format: :short), start_date: l(activity.start_date, format: :short) %>
           </div>
         <% else %>
           <div class="tracker-buttons">

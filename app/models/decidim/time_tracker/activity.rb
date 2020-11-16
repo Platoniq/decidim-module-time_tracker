@@ -97,7 +97,7 @@ module Decidim
       # :finished if current date is passed end date
       # :not_started if current date has not reach start date
       # :inactive if current status is inactive
-      def current_status
+      def status
         return :inactive unless active?
         return :not_started if start_date > Time.current.beginning_of_day
         return :finished if end_date < Time.current.beginning_of_day
