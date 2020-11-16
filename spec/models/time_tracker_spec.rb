@@ -16,7 +16,7 @@ module Decidim::TimeTracker
 
       it "creates a questionnaire and a assignee_questionnaire" do
         expect(subject.questionnaire).to be_a Decidim::Forms::Questionnaire
-        expect(subject.assignee_questionnaire).to be_a Decidim::Forms::Questionnaire
+        expect(subject.assignee_questionnaire.questionnaire).to be_a Decidim::Forms::Questionnaire
       end
     end
 

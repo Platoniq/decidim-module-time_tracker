@@ -21,14 +21,12 @@ module Decidim
       has_many :assignees,
                class_name: "Decidim::TimeTracker::Assignee",
                through: :activities
-
+      
       has_one :assignee_questionnaire,
-                class_name: "Decidim::Forms::Questionnaire",
-                dependent: :destroy,
-                inverse_of: :questionnaire_for,
-                as: :questionnaire_for
+               class_name: "Decidim::TimeTracker::AssigneeQuestionnaire",
+               inverse_of: :time_tracker
 
-      after_create :create_questionnaires
+      after_create :create_questionnaire, :create_assignee_questionnaire
 
       def has_questions?
         questionnaire.questions.any?
@@ -36,9 +34,12 @@ module Decidim
 
       private
 
-      def create_questionnaires
+      def create_questionnaire
         questionnaire ||= Decidim::Forms::Questionnaire.create!(questionnaire_for: self)
-        assignee_questionnaire ||= Decidim::Forms::Questionnaire.create!(questionnaire_for: self)
+      end
+
+      def create_assignee_questionnaire
+        assignee_questionnaire ||= Decidim::TimeTracker::AssigneeQuestionnaire.create!(time_tracker: self)
       end
     end
   end
