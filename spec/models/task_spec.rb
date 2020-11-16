@@ -103,13 +103,16 @@ module Decidim::TimeTracker
           title: { en: "Questionnaire" },
           description: { en: "This is a questionnaire" },
           questions: [
-            { question_type: "short_answer", body: { en: "Question?" } }
+            { question_type: "short_answer", body: { en: "Question 1" } },
+            { question_type: "single_option", body: { en: "Question 2" }, answer_options: [{ body: { en: "Answer Option 1" }, free_text: true }] }
           ]
         }
 
         expect(subject.has_questions?).to be true
         expect(subject.questionnaire.title["en"]).to eq "Questionnaire"
-        expect(subject.questionnaire.questions.first.body["en"]).to eq "Question?"
+        expect(subject.questionnaire.questions.first.body["en"]).to eq "Question 1"
+        expect(subject.questionnaire.questions.second.answer_options.first.body["en"]).to eq "Answer Option 1"
+        expect(subject.questionnaire.questions.second.answer_options.first.free_text).to eq true
       end
     end
   end
