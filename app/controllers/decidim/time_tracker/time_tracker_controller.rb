@@ -15,10 +15,6 @@ module Decidim
 
       private
 
-      def time_tracker
-        @time_tracker ||= TimeTracker.find_by(component: current_component)
-      end
-
       def tasks
         time_tracker.tasks
       end

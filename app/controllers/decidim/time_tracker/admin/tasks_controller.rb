@@ -80,10 +80,6 @@ module Decidim
         def current_task
           @current_task ||= Task.find(params[:id])
         end
-
-        def time_tracker
-          @time_tracker ||= Decidim::TimeTracker::TimeTracker.find_by(component: current_component)
-        end
       end
     end
   end

@@ -45,10 +45,6 @@ module Decidim
       def activity
         @activity ||= Activity.find(params[:activity_id])
       end
-
-      def time_tracker
-        @time_tracker ||= TimeTracker.find_by(component: current_component)
-      end
     end
   end
 end
