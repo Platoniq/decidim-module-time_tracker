@@ -15,6 +15,8 @@ module Decidim
                class_name: "Decidim::TimeTracker::Activity",
                dependent: :destroy
 
+      after_create :populate_questionnaire
+
       def starts_at
         activities.order(start_date: :asc).first&.start_date
       end
@@ -34,6 +36,28 @@ module Decidim
 
       def user_is_assignee?(user, filter: :accepted)
         Assignee.where(user: user, activity: activities).send(filter).any?
+      end
+
+      private
+
+      def populate_questionnaire
+        seeds = Rails.application.config.time_tracker_questionnaire_seeds
+
+        return if seeds.blank?
+
+        questions = seeds[:questions].map do |question|
+          if question.has_key?(:answer_options)
+            answer_options = question.delete(:answer_options)
+            answer_options.map! { |answer_option| Decidim::Forms::AnswerOption.new(answer_option) }
+            question[:answer_options] = answer_options
+          end
+
+          Decidim::Forms::Question.new(question)
+        end
+
+        seeds[:questions] = questions
+
+        questionnaire.update!(seeds)
       end
     end
   end
