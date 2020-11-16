@@ -55,7 +55,7 @@ module Decidim
               question[:answer_options] = answer_options
             end
 
-            Decidim::Forms::Question.create(question.merge(questionnaire: questionnaire, created_at: Time.now))
+            Decidim::Forms::Question.create(question.merge(questionnaire: questionnaire))
           end
 
           @questionnaire_seeds[:questions] = questions

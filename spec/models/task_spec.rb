@@ -95,5 +95,22 @@ module Decidim::TimeTracker
         expect(subject.has_questions?).to be false
       end
     end
+
+    context "when time_tracker_questionnaire_seeds config is defined" do
+      it "has questions" do
+        Rails.application.config.time_tracker_questionnaire_seeds = {
+          tos: { en: "TOS" },
+          title: { en: "Questionnaire" },
+          description: { en: "This is a questionnaire" },
+          questions: [
+            { question_type: "short_answer", body: { en: "Question?" } }
+          ]
+        }
+
+        expect(subject.has_questions?).to be true
+        expect(subject.questionnaire.title["en"]).to eq "Questionnaire"
+        expect(subject.questionnaire.questions.first.body["en"]).to eq "Question?"
+      end
+    end
   end
 end
