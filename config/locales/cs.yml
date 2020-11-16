@@ -148,12 +148,10 @@ cs:
         show:
           assignees_activity: "Aktivita %{user_name}"
           milestones_list: Seznam milníků
-      directory:
-        voluntary_work:
-          index:
-            accepted: Přijato
-            dedicated_time: Dosud vyhrazený čas %{hours}h %{minutes}m %{seconds}s.
-            pending: Čekající
+      clock:
+        hours: "%{n}h"
+        minutes: "%{n}m"
+        seconds: "%{n}s"
       milestone:
         button_no: Ne, děkuji
         button_submit: Odeslat milník
@@ -185,9 +183,10 @@ cs:
         assignee:
           fields:
             email: E-mail
-            invited_at: Pozván/a
+            invited_at: Invited at %{time}
             invited_by: Invited by
             name: Jméno
+            requested_at: Requested at %{time}
             status: Stav
             statuses:
               accepted: Accepted
@@ -205,6 +204,13 @@ cs:
             assignees_pending: Pending assignees
             name: Jméno
           name: Úloha
+      reports:
+        user:
+          index:
+            accepted: Accepted
+            dedicated_time: 'Time dedicated so far: %{time}'
+            empty: You don't have any activity assignations
+            pending: Pending
       time_events:
         start:
           already_started: Počítadlo je již spuštěno
@@ -236,4 +242,4 @@ cs:
   layouts:
     decidim:
       user_profile:
-        voluntary_work: Moje dobrovolnická práce
+        time_tracker: My voluntary work
