@@ -137,10 +137,6 @@ ca:
           create:
             error: Error importing the Time Tracker data to accountability
             success: Time Tracker data exported to accountability successfully
-      assignee:
-        assignees_activity: "%{user_name}'s activity"
-        dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
-        time_spent: Time spent
       assignees:
         request:
           error: Activity assignation request failed!
@@ -153,6 +149,10 @@ ca:
         minutes: "%{n}m"
         seconds: "%{n}s"
       milestone:
+        dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
+        time_dedicated: Time dedicated
+        title: "%{user_name}'s activity"
+      milestone_form:
         button_no: No thanks
         button_submit: Send milestone
         description: Leave a proof of your work by uploading a picture and a simple phrase
@@ -163,6 +163,14 @@ ca:
         create:
           error: Error creating the milestone
           success: Milestone created successfully
+        index:
+          assignees_activity: "%{user_name}'s activity"
+          back_to_list: Back to list
+          joined_on: Joined on
+          last_worked_on: Last worked on
+          total_time: Total time dedicated
+        milestone:
+          time_dedicated: Time dedicated
       models:
         activity:
           fields:
@@ -235,7 +243,7 @@ ca:
           assignee_pending: Already applied! Soon an admin will review your application.
           assignee_rejected: Sorry, you're application has been rejected.
         index:
-          assignees_list: Assignee's activities
+          milestones_list: People working in this activity
         request_activity:
           assignee_pending: Already applied! Soon an admin will review your application.
           assignee_rejected: Sorry, you're application has been rejected.
