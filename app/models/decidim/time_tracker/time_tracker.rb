@@ -35,11 +35,11 @@ module Decidim
       private
 
       def create_questionnaire
-        questionnaire ||= Decidim::Forms::Questionnaire.create!(questionnaire_for: self)
+        Decidim::Forms::Questionnaire.create!(questionnaire_for: self) if questionnaire.blank?
       end
 
       def create_assignee_questionnaire
-        assignee_questionnaire ||= Decidim::TimeTracker::AssigneeQuestionnaire.create!(time_tracker: self)
+        Decidim::TimeTracker::AssigneeQuestionnaire.create!(time_tracker: self) if assignee_questionnaire.blank?
       end
     end
   end

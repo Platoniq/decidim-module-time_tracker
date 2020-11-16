@@ -20,7 +20,7 @@ module Decidim
       private
 
       def create_questionnaire
-        questionnaire ||= Decidim::Forms::Questionnaire.create!(questionnaire_for: self)
+        Decidim::Forms::Questionnaire.create!(questionnaire_for: self) if questionnaire.blank?
       end
     end
   end
