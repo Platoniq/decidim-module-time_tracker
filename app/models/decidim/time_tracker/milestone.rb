@@ -5,6 +5,7 @@ module Decidim
     # The data store for a Milestone in the Decidim::TimeTracker component.
     class Milestone < ApplicationRecord
       include Decidim::HasAttachments
+      include Decidim::Resourceable
 
       self.table_name = :decidim_time_tracker_milestones
 
@@ -14,6 +15,10 @@ module Decidim
 
       belongs_to :activity,
                  class_name: "Decidim::TimeTracker::Activity"
+
+      has_one :task,
+              through: :activity,
+              class_name: "Decidim::TimeTracker::Task"
     end
   end
 end

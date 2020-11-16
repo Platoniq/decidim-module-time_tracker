@@ -8,11 +8,13 @@ module Decidim::TimeTracker
 
     let(:activity) { create :activity }
     let(:title) { "My milestone" }
+    let(:description) { "Description" }
     let(:attachment_params) { nil }
     let(:attributes) do
       {
         activity_id: activity.id,
         title: title,
+        description: description,
         attachment: attachment_params
       }
     end
@@ -23,6 +25,12 @@ module Decidim::TimeTracker
       let(:title) { nil }
 
       it { is_expected.not_to be_valid }
+    end
+
+    describe "when description is missing" do
+      let(:description) { nil }
+
+      it { is_expected.to be_valid }
     end
 
     context "when the attachment is present" do

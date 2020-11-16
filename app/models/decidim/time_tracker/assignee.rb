@@ -4,8 +4,6 @@ module Decidim
   module TimeTracker
     # The data store for an assigne in the Decidim::TimeTracker component.
     class Assignee < ApplicationRecord
-      include Decidim::Resourceable
-
       self.table_name = :decidim_time_tracker_assignees
 
       belongs_to :activity,
@@ -52,10 +50,6 @@ module Decidim
 
       def time_dedicated_to(activity)
         time_events.where(activity: activity).sum(&:total_seconds)
-      end
-
-      def milestones
-        @milestones ||= Milestone.where(user: user)
       end
 
       def can_change_status?

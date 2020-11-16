@@ -5,11 +5,6 @@ module Decidim
     class AssigneesController < Decidim::TimeTracker::ApplicationController
       helper_method :assignee
 
-      # show the list of milestones for an assignee
-      def show
-        enforce_permission_to :show, :milestone, assignee: assignee
-      end
-
       def create
         enforce_permission_to :create, :assignee, activity: activity
 

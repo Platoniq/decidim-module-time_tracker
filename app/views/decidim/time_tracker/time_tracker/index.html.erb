@@ -6,9 +6,10 @@
       <%= render partial: "sign_in" %>
     <% end %>
     <% tasks.each do |task| %>
-      <h2> <%= translated_attribute task.name %> </h2>
-        <div id="activities">
-          <% task.activities.active.each do |activity| %>
+      <h2 class="section-heading task-title"><%= translated_attribute task.name %></h2>
+      <div id="activities">
+        <% task.activities.active.each do |activity| %>
+          <div class="section">
             <% if activity.assignee_accepted? current_user %>
               <%= render partial: "activity", locals: { activity: activity } %>
             <% elsif allowed_to? :create, :assignee, activity: activity %>
@@ -16,22 +17,29 @@
             <% else %>
               <%= render partial: "idle_activity", locals: { activity: activity } %>
             <% end %>
+
+            <% milestones_for_activity = assignee_milestones(activity) %>
+            <% if milestones_for_activity.any? %>
+              <div class="section">
+                <div class="row columns large-12" data-toggle="milestones-collection-<%= activity.id %>">
+                  <%= icon "caret-right", class: "icon--small" %>
+                  <span class="show-milestones">
+                    <%= t(".milestones_list") %>
+                  <span>
+                </div>
+
+                <div id="milestones-collection-<%= activity.id %>" data-toggler=".hide" class="hide row small-up-1 medium-up-2 large-up-4 card-grid">
+                  <% milestones_for_activity.each do |milestone| %>
+                    <%= card_for milestone, type: :list %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
           <% end %>
+        </div>
       </div>
     <% end %>
   </div>
-</div>
-
-<% if assignees_with_milestones.any? %>
-  <div class="row columns large-12">
-    <h4 class="section-heading"><%= t(".assignees_list") %></h4>
-  </div>
-<% end %>
-
-<div class="row small-up-1 medium-up-2 large-up-4 card-grid">
-  <% assignees_with_milestones.each do |element| %>
-    <%= card_for element %>
-  <% end %>
 </div>
 
 <%= stylesheet_link_tag "decidim/time_tracker/time_tracker" %>

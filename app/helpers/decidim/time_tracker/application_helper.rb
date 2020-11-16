@@ -7,6 +7,10 @@ module Decidim
     module ApplicationHelper
       include Decidim::TranslatableAttributes
 
+      def milestones_path(params = {})
+        Decidim::EngineRouter.main_proxy(current_component).milestones_path(params)
+      end
+
       def tasks_label
         translated_attribute(component_settings.tasks_label).presence || t("models.task.name", scope: "decidim.time_tracker")
       end
@@ -65,6 +69,18 @@ module Decidim
         elsif assignation.requested_at.present?
           t("models.assignee.fields.requested_at", time: l(assignation.requested_at, format: :long), scope: "decidim.time_tracker")
         end
+      end
+
+      def user_total_time_dedicated(user)
+        Assignee.where(user: user).sum(&:time_dedicated)
+      end
+
+      def user_joined_at(user)
+        Assignee.where(user: user).order(tos_accepted_at: :desc).first.tos_accepted_at
+      end
+
+      def user_last_milestone(user)
+        Milestone.where(user: user).order(created_at: :desc).first
       end
     end
   end

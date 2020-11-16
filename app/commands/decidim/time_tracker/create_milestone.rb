@@ -42,7 +42,7 @@ module Decidim
       def create_milestone!
         @milestone = Decidim::TimeTracker::Milestone.create!(
           title: form.title,
-          # description: form.description,
+          description: form.description,
           user: current_user,
           activity: form.activity
         )

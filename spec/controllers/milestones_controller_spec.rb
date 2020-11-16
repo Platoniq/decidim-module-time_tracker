@@ -25,6 +25,7 @@ module Decidim::TimeTracker
           milestone: {
             activity_id: activity_id,
             title: title,
+            description: description,
             attachment: {
               title: ""
             }
@@ -33,6 +34,7 @@ module Decidim::TimeTracker
       end
       let(:activity_id) { milestone.activity.id }
       let(:title) { "a new milestone" }
+      let(:description) { "description" }
 
       context "when user is signed in" do
         before do
@@ -56,9 +58,39 @@ module Decidim::TimeTracker
         end
       end
 
-      context "when user is not logged in" do
+      context "when user is not signed in" do
         it "redirects" do
           post :create, params: params
+          expect(response).to redirect_to("/")
+        end
+      end
+    end
+
+    describe "get #index" do
+      context "when user is signed in" do
+        before do
+          sign_in user
+        end
+
+        context "when the nickname param is provided" do
+          it "renders index" do
+            get :index, params: { nickname: user.nickname }
+            expect(response).to have_http_status(:ok)
+            expect(subject).to render_template(:index)
+          end
+        end
+
+        context "when the nickname param is missing" do
+          it "redirects" do
+            get :index
+            expect(response).to redirect_to(root_path)
+          end
+        end
+      end
+
+      context "when user is not signed in" do
+        it "redirects" do
+          get :index, params: { nickname: user.nickname }
           expect(response).to redirect_to("/")
         end
       end

@@ -93,3 +93,24 @@
     }
   }
 }
+
+.card--milestone {
+  .card__image.empty {
+    background: $light-gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & > svg {
+      fill: $medium-gray;
+      font-size: 2rem;
+    }
+  }
+}
+
+.show-milestones {
+  color: $secondary;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
