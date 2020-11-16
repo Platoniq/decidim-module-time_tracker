@@ -7,8 +7,10 @@ module Decidim
         include Decidim::TimeTracker::ApplicationHelper
         helper_method :tasks, :current_task, :tasks_label, :activities_label
 
+        delegate :tasks, to: :time_tracker
+
         def index
-          @tasks
+          @tasks = tasks
         end
 
         def new
@@ -72,11 +74,15 @@ module Decidim
         private
 
         def tasks
-          @tasks = Decidim::TimeTracker::Task.where(component: current_component)
+          time_tracker.tasks
         end
 
         def current_task
           @current_task ||= Task.find(params[:id])
+        end
+
+        def time_tracker
+          @time_tracker ||= Decidim::TimeTracker::TimeTracker.find_by(component: current_component)
         end
       end
     end
