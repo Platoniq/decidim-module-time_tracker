@@ -6,18 +6,18 @@ module Decidim::TimeTracker
   describe Task do
     subject { task }
 
-    let(:component) { task.time_tracker.component }
+    let(:time_tracker) { create(:time_tracker) }
     let(:first_activity) { create(:activity, :with_assignees, start_date: Time.zone.now, end_date: 1.day.from_now) }
     let(:middle_activity) { create(:activity, :with_assignees, start_date: Time.zone.now, end_date: 2.days.from_now) }
     let(:last_activity) { create(:activity, :with_assignees, start_date: 1.day.from_now, end_date: 2.days.from_now) }
     let(:activities) { [first_activity, middle_activity, last_activity] }
-    let(:task) { create(:task, activities: activities) }
+    let(:task) { create(:task, activities: activities, time_tracker: time_tracker) }
 
     it { is_expected.to be_valid }
 
     context "when the task is correctly associated" do
-      it "is associated with a time tracker component" do
-        expect(subject.component).to eq(component)
+      it "is associated with a time tracker" do
+        expect(subject.time_tracker).to eq(time_tracker)
       end
 
       it "is associated with activities" do
@@ -38,13 +38,13 @@ module Decidim::TimeTracker
 
     describe "#starts_at" do
       it "returns the start_date of the activity that starts the earliest" do
-        expect(subject.starts_at).to eq(first_activity.start_date)
+        expect(subject.starts_at.to_i).to eq(first_activity.start_date.to_i)
       end
     end
 
     describe "#ends_at" do
       it "returns the end_date of the activity that ends the latest" do
-        expect(subject.ends_at).to eq(last_activity.end_date)
+        expect(subject.ends_at.to_i).to eq(last_activity.end_date.to_i)
       end
     end
 
