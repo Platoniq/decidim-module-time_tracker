@@ -10,6 +10,7 @@ module Decidim::TimeTracker
     let(:user) { create(:user, :confirmed, :admin, organization: organization) }
     let(:participatory_space) { create(:participatory_process, organization: organization) }
     let(:component) { milestone.activity.task.component }
+    let!(:assigne) { create :assignee, user: user, activity: milestone.activity }
     let(:milestone) { create :milestone, user: user }
 
     before do
@@ -21,9 +22,10 @@ module Decidim::TimeTracker
     describe "post #create" do
       let(:params) do
         {
-          activity_id: activity_id,
           milestone: {
+            activity_id: activity_id,
             title: title,
+            description: description,
             attachment: {
               title: ""
             }
@@ -32,6 +34,7 @@ module Decidim::TimeTracker
       end
       let(:activity_id) { milestone.activity.id }
       let(:title) { "a new milestone" }
+      let(:description) { "description" }
 
       context "when user is signed in" do
         before do
@@ -40,24 +43,54 @@ module Decidim::TimeTracker
 
         it "creates a new milestone" do
           post :create, params: params
-          expect(flash[:notice]).not_to be_empty
+          expect(flash[:notice]).not_to be_blank
           expect(response).to have_http_status(:redirect)
         end
 
         context "when there's an error in the form" do
           let(:title) { "" }
 
-          it "do not create a new milestone" do
+          it "does not create a new milestone" do
             post :create, params: params
-            expect(flash[:alert]).not_to be_empty
+            expect(flash[:alert]).not_to be_blank
             expect(response).to have_http_status(:redirect)
           end
         end
       end
 
-      context "when user is not logged in" do
+      context "when user is not signed in" do
         it "redirects" do
           post :create, params: params
+          expect(response).to redirect_to("/")
+        end
+      end
+    end
+
+    describe "get #index" do
+      context "when user is signed in" do
+        before do
+          sign_in user
+        end
+
+        context "when the nickname param is provided" do
+          it "renders index" do
+            get :index, params: { nickname: user.nickname }
+            expect(response).to have_http_status(:ok)
+            expect(subject).to render_template(:index)
+          end
+        end
+
+        context "when the nickname param is missing" do
+          it "redirects" do
+            get :index
+            expect(response).to redirect_to(root_path)
+          end
+        end
+      end
+
+      context "when user is not signed in" do
+        it "redirects" do
+          get :index, params: { nickname: user.nickname }
           expect(response).to redirect_to("/")
         end
       end

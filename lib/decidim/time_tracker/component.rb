@@ -57,13 +57,13 @@ Decidim.register_component(:time_tracker) do |component|
     settings.attribute :announcement, type: :text, translated: true, editor: true
   end
 
-  component.register_resource(:assignee) do |resource|
+  component.register_resource(:milestone) do |resource|
     # Register a optional resource that can be references from other resources.
-    resource.model_class_name = "Decidim::TimeTracker::Assignee"
+    resource.model_class_name = "Decidim::TimeTracker::Milestone"
     # TODO!:
     # resource.template = "decidim/time_tracker/time_tracker/linked_tasks"
-    resource.card = "decidim/time_tracker/assignee"
-    # resource.actions = %w(join)
+    resource.card = "decidim/time_tracker/milestone"
+    # resource.actions = %w(create)
     # resource.searchable = true
   end
 

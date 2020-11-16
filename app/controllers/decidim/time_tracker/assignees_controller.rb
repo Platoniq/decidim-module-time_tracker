@@ -5,13 +5,8 @@ module Decidim
     class AssigneesController < Decidim::TimeTracker::ApplicationController
       helper_method :assignee
 
-      def show
-        # TODO: establish permission on who can see this
-        # enforce_permission_to :show, :assignee, assignee: assignee
-      end
-
       def create
-        enforce_permission_to :create, :assignee
+        enforce_permission_to :create, :assignee, activity: activity
 
         CreateRequestAssignee.call(activity, current_user) do
           on(:ok) do |activity|

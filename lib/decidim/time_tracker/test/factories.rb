@@ -25,10 +25,20 @@ FactoryBot.define do
 
     trait :with_assignees do
       after(:create) do |activity, _evaluator|
-        create_list(:assignee, 2, activity: activity, status: :pending)
-        create_list(:assignee, 3, activity: activity, status: :accepted)
-        create_list(:assignee, 1, activity: activity, status: :rejected)
+        create_list(:assignee, 2, :pending, activity: activity)
+        create_list(:assignee, 3, :accepted, activity: activity)
+        create_list(:assignee, 1, :rejected, activity: activity)
       end
+    end
+
+    trait :inactive do
+      active { false }
+    end
+
+    trait :closed do
+      requests_start_at { 1.month.ago }
+      start_date { 1.month.ago }
+      end_date { 1.day.ago }
     end
   end
 

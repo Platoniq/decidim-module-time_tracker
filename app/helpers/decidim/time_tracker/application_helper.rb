@@ -7,6 +7,10 @@ module Decidim
     module ApplicationHelper
       include Decidim::TranslatableAttributes
 
+      def milestones_path(params = {})
+        Decidim::EngineRouter.main_proxy(current_component).milestones_path(params)
+      end
+
       def tasks_label
         translated_attribute(component_settings.tasks_label).presence || t("models.task.name", scope: "decidim.time_tracker")
       end
@@ -28,13 +32,55 @@ module Decidim
       end
 
       # turns a number of seconds to a string 0h 0m 0s
-      def clockify_seconds(total_seconds)
+      def clockify_seconds(total_seconds, padded: false)
         total_seconds = total_seconds.to_i
-        hours = total_seconds / (60 * 60)
-        minutes = (total_seconds / 60) % 60
-        seconds = total_seconds % 60
 
-        "#{hours}h #{minutes}m #{seconds}s"
+        clock = {
+          hours: total_seconds / (60 * 60),
+          minutes: (total_seconds / 60) % 60,
+          seconds: total_seconds % 60
+        }
+
+        content_tag :span, class: "time-tracker--clock" do
+          safe_join(
+            clock.map do |label, value|
+              string_value = padded ? value.to_s.rjust(2, "0") : value
+              content_tag(:span, t("decidim.time_tracker.clock.#{label}", n: string_value), class: ("text-muted" if value.zero?))
+            end
+          )
+        end
+      end
+
+      def assignation_status_label(status)
+        klass = case status
+                when "accepted" then "success"
+                when "pending" then "warning"
+                when "rejected" then "danger"
+                end
+
+        content_tag :span, class: "#{klass} label" do
+          t("models.assignee.fields.statuses.#{status}", scope: "decidim.time_tracker")
+        end
+      end
+
+      def assignation_date(assignation)
+        if assignation.invited_at.present?
+          t("models.assignee.fields.invited_at", time: l(assignation.invited_at, format: :long), scope: "decidim.time_tracker")
+        elsif assignation.requested_at.present?
+          t("models.assignee.fields.requested_at", time: l(assignation.requested_at, format: :long), scope: "decidim.time_tracker")
+        end
+      end
+
+      def user_total_time_dedicated(user)
+        Assignee.where(user: user).sum(&:time_dedicated)
+      end
+
+      def user_joined_at(user)
+        Assignee.where(user: user).order(tos_accepted_at: :desc).first.tos_accepted_at
+      end
+
+      def user_last_milestone(user)
+        Milestone.where(user: user).order(created_at: :desc).first
       end
     end
   end

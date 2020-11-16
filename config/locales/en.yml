@@ -142,10 +142,6 @@ en:
           create:
             error: Error importing the Time Tracker data to accountability
             success: Time Tracker data exported to accountability successfully
-      assignee:
-        assignees_activity: "%{user_name}'s activity"
-        dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
-        time_spent: Time spent
       assignees:
         request:
           error: Activity assignation request failed!
@@ -153,13 +149,15 @@ en:
         show:
           assignees_activity: "%{user_name}'s activity"
           milestones_list: List of milestones
-      directory:
-        voluntary_work:
-          index:
-            accepted: Accepted
-            dedicated_time: Time dedicated so far %{hours}h %{minutes}m %{seconds}s.
-            pending: Pending
+      clock:
+        hours: "%{n}h"
+        minutes: "%{n}m"
+        seconds: "%{n}s"
       milestone:
+        dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
+        time_dedicated: Time dedicated
+        title: "%{user_name}'s activity"
+      milestone_form:
         button_no: No thanks
         button_submit: Send milestone
         description: Leave a proof of your work by uploading a picture and a simple
@@ -171,6 +169,14 @@ en:
         create:
           error: Error creating the milestone
           success: Milestone created successfully
+        index:
+          assignees_activity: "%{user_name}'s activity"
+          back_to_list: Back to list
+          joined_on: Joined on
+          last_worked_on: Last worked on
+          total_time: Total time dedicated
+        milestone:
+          time_dedicated: Time dedicated
       models:
         activity:
           fields:
@@ -191,9 +197,10 @@ en:
         assignee:
           fields:
             email: Email
-            invited_at: Invited at
+            invited_at: Invited at %{time}
             invited_by: Invited by
             name: Name
+            requested_at: Requested at %{time}
             status: Status
             statuses:
               accepted: Accepted
@@ -214,6 +221,13 @@ en:
       task_questionnaire_answers_serializer:
         activity: Activity
         task: Task
+      reports:
+        user:
+          index:
+            accepted: Accepted
+            dedicated_time: 'Time dedicated so far: %{time}'
+            empty: You don't have any activity assignations
+            pending: Pending
       time_events:
         start:
           already_started: Counter already started
@@ -226,18 +240,23 @@ en:
       time_tracker:
         activity:
           counter_stopped: Counter has been stopped automatically
-          finished: Ended on %{end_date}
-          inactive: Inactive
-          not_started: Will start on %{start_date}
-          open: Open
           questionnaire:
             answered: Thanks for answering the questionnaire!
             respond: What do you think about this task?
+        callout_status:
+          finished: Ended on %{end_date}
+          inactive: Inactive
+          not_started: Will start on %{start_date}
+          open: Open, started on %{start_date}
+        idle_activity:
+          assignee_pending: Already applied! Soon an admin will review your application.
+          assignee_rejected: Sorry, you're application has been rejected.
         index:
-          assignees_list: Assignee's activities
+          milestones_list: People working in this activity
         request_activity:
           assignee_pending: Already applied! Soon an admin will review your application.
+          assignee_rejected: Sorry, you're application has been rejected.
   layouts:
     decidim:
       user_profile:
-        voluntary_work: My voluntary work
+        time_tracker: My voluntary work

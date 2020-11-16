@@ -78,8 +78,20 @@ module Decidim
         assignees.rejected.where(user: user).count.positive?
       end
 
+      def has_assignee?(user)
+        assignees.where(user: user).count.positive?
+      end
+
       def has_questions?
         questionnaire.questions.any?
+      end
+
+      def allow_answers_for?(user)
+        return false if current_status == :inactive
+
+        return false unless has_questions?
+
+        assignee_accepted?(user)
       end
 
       def answered_by?(user)

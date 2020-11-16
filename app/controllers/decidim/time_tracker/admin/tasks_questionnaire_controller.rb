@@ -18,6 +18,10 @@ module Decidim
           EngineRouter.admin_proxy(current_component).edit_task_path(id: task.id)
         end
 
+        def answer_options_url(params)
+          EngineRouter.admin_proxy(current_component).answer_options_task_form_path(task_id: task.id, format: :json, **params)
+        end
+
         private
 
         def task

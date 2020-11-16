@@ -15,9 +15,7 @@
     <div class="right">
       <div class="top">
         <% if activity.status != :open %>
-          <div class="callout warning">
-            <%= t ".#{activity.status}", end_date: l(activity.end_date, format: :short), start_date: l(activity.start_date, format: :short) %>
-          </div>
+          <%= render partial: "callout_status", locals: { activity: activity } %>
         <% else %>
           <div class="tracker-buttons">
             <button class="danger  button time-tracker-activity-stop hide">
@@ -33,7 +31,9 @@
         <% end %>
       </div>
       <div class="bottom">
-        <%= render partial: "answer_questionnaire", locals: { activity: activity } %>
+        <% if activity.allow_answers_for?(current_user) %>
+          <%= render partial: "answer_questionnaire", locals: { activity: activity } %>
+        <% end %>
       </div>
     </div>
   </div>

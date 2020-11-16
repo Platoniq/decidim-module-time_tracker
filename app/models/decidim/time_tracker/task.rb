@@ -27,6 +27,10 @@ module Decidim
         assignees = Assignee.where(activity: activities).send(filter)
         assignees.count
       end
+
+      def user_is_assignee?(user, filter: :accepted)
+        Assignee.where(user: user, activity: activities).send(filter).any?
+      end
     end
   end
 end

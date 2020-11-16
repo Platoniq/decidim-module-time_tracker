@@ -24,8 +24,11 @@ module Decidim
             end
           end
         end
-        resources :milestones
-        resources :assignees
+        resources :milestones, only: [:create] do
+          get :index, on: :collection, path: "(:nickname)"
+        end
+
+        resources :assignees, only: [:create]
 
         root to: "time_tracker#index"
       end
