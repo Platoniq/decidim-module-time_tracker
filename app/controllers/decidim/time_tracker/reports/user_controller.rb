@@ -10,7 +10,6 @@ module Decidim
 
         helper Decidim::TimeTracker::ApplicationHelper
         helper_method :activities, :assignations, :total_time, :activity_path
-        # layout "layouts/decidim/application"
 
         def index
           enforce_permission_to :read, :user, current_user: current_user
