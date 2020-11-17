@@ -184,7 +184,13 @@ Decidim.register_component(:time_tracker) do |component|
 
             answer.save!
 
-            Decidim::Forms::AnswerChoice.create(answer: answer, answer_option: question.answer_options.sample, body: question.body["en"]) if question.question_type == "single_option"
+            next unless question.question_type == "single_option"
+
+            Decidim::Forms::AnswerChoice.create(
+              answer: answer,
+              answer_option: question.answer_options.sample,
+              body: question.body["en"]
+            )
           end
         end
       end

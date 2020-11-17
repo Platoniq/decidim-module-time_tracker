@@ -262,16 +262,16 @@ en:
           assignee_pending: Already applied! Soon an admin will review your application.
           assignee_rejected: Sorry, you're application has been rejected.
       time_tracker_questionnaire_answers_serializer:
-        id: Answer ID
-        created_at: Answered on
-        ip_hash: Ip Hash
-        registered: Registered
-        unregistered: Unregistered
-        user_status: User status
         activity_description: Activity
         activity_id: Activity ID
+        created_at: Answered on
+        id: Answer ID
+        ip_hash: Ip Hash
+        registered: Registered
         task_id: Task ID
         task_name: Task
+        unregistered: Unregistered
+        user_status: User status
   layouts:
     decidim:
       user_profile:
