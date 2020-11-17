@@ -14,11 +14,11 @@ module Decidim
       end
 
       def update_url
-        answer_task_activity_form_path(task_id: task.id, activity_id: activity.id, id: activity.questionnaire)
+        answer_task_activity_form_path(activity_id: activity.id, id: activity.questionnaire)
       end
 
       def form_path
-        task_activity_form_path(task_id: task.id, activity_id: activity.id, id: activity.questionnaire)
+        task_activity_form_path(activity_id: activity.id, id: activity.questionnaire)
       end
 
       def after_answer_path
