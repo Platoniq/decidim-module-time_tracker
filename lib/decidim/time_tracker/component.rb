@@ -77,7 +77,7 @@ Decidim.register_component(:time_tracker) do |component|
 
       Decidim::Forms::Answer.joins(:questionnaire).where(questionnaire: time_tracker.questionnaire)
                             .group_by do |answer|
-        answer.session_token.split("-").last # TODO
+        answer.session_token.split("-").first # TODO
       end.values
     end
 
@@ -184,7 +184,7 @@ Decidim.register_component(:time_tracker) do |component|
 
             answer.save!
 
-            Decidim::Forms::AnswerChoice.create(answer: answer, answer_option: question.answer_options.sample) if question.question_type == "single_option"
+            Decidim::Forms::AnswerChoice.create(answer: answer, answer_option: question.answer_options.sample, body: question.body["en"]) if question.question_type == "single_option"
           end
         end
       end
