@@ -12,6 +12,7 @@ FactoryBot.define do
 
   factory :time_tracker, class: "Decidim::TimeTracker::TimeTracker" do
     component factory: :time_tracker_component
+    questionnaire
   end
 
   factory :activity, class: "Decidim::TimeTracker::Activity" do

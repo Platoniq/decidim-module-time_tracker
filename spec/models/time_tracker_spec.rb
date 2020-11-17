@@ -16,6 +16,7 @@ module Decidim::TimeTracker
       it "is associated with a component" do
         expect(subject.component).to eq(component)
       end
+
       it "is associated with a questionnaire" do
         expect(subject.questionnaire).to eq(questionnaire)
       end

@@ -37,7 +37,7 @@ module Decidim
       private
 
       def populate_questionnaire
-        return unless questionnaire.present?
+        return if questionnaire.blank?
         return unless Rails.application.config.respond_to?(:time_tracker_questionnaire_seeds)
 
         @questionnaire_seeds ||= Rails.application.config.time_tracker_questionnaire_seeds
