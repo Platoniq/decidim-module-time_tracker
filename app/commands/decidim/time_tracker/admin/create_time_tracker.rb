@@ -4,13 +4,13 @@ module Decidim
   module TimeTracker
     module Admin
       # A command with all the business logic when creating a task
-      class CreateTask < Rectify::Command
+      class CreateTimeTracker < Rectify::Command
         def initialize(component)
           @component = component
         end
 
         def call
-          @time_tracker = TimeTracker.new(component: @component, questionnaire: Decidim::Forms::Questionnaire.new)
+          @time_tracker = Decidim::TimeTracker::TimeTracker.new(component: @component, questionnaire: Decidim::Forms::Questionnaire.new)
 
           @time_tracker.save ? broadcast(:ok) : broadcast(:invalid)
         end
