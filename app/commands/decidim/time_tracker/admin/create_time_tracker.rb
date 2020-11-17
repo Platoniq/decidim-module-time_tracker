@@ -10,7 +10,7 @@ module Decidim
         end
 
         def call
-          @time_tracker = TimeTracker.new(component: @component)
+          @time_tracker = TimeTracker.new(component: @component, questionnaire: Decidim::Forms::Questionnaire.new)
 
           @time_tracker.save ? broadcast(:ok) : broadcast(:invalid)
         end

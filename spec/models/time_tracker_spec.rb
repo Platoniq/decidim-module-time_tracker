@@ -7,22 +7,17 @@ module Decidim::TimeTracker
     subject { time_tracker }
 
     let(:component) { create(:time_tracker_component) }
-    let(:time_tracker) { create(:time_tracker, component: component) }
+    let(:time_tracker) { create(:time_tracker, component: component, questionnaire: questionnaire) }
+    let(:questionnaire) { create(:questionnaire) }
 
     it { is_expected.to be_valid }
-
-    context "when it is persisted" do
-      let!(:time_tracker) { create(:time_tracker) }
-
-      it "creates a questionnaire and a assignee_questionnaire" do
-        expect(subject.questionnaire).to be_a Decidim::Forms::Questionnaire
-        expect(subject.assignee_questionnaire.questionnaire).to be_a Decidim::Forms::Questionnaire
-      end
-    end
 
     context "when it is correctly associated" do
       it "is associated with a component" do
         expect(subject.component).to eq(component)
+      end
+      it "is associated with a questionnaire" do
+        expect(subject.questionnaire).to eq(questionnaire)
       end
     end
 

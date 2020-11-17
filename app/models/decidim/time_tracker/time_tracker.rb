@@ -6,6 +6,8 @@ module Decidim
       include Decidim::HasComponent
       include Decidim::Forms::HasQuestionnaire
 
+      validates :questionnaire, presence: true
+
       self.table_name = :decidim_time_trackers
 
       component_manifest_name "time_tracker"
@@ -26,7 +28,7 @@ module Decidim
               class_name: "Decidim::TimeTracker::AssigneeQuestionnaire",
               inverse_of: :time_tracker
 
-      after_create :create_questionnaire, :create_assignee_questionnaire, :populate_questionnaire
+      after_create :populate_questionnaire
 
       def has_questions?
         questionnaire.questions.any?
@@ -34,15 +36,8 @@ module Decidim
 
       private
 
-      def create_questionnaire
-        Decidim::Forms::Questionnaire.create!(questionnaire_for: self) if questionnaire.blank?
-      end
-
-      def create_assignee_questionnaire
-        Decidim::TimeTracker::AssigneeQuestionnaire.create!(time_tracker: self) if assignee_questionnaire.blank?
-      end
-
       def populate_questionnaire
+        return unless questionnaire.present?
         return unless Rails.application.config.respond_to?(:time_tracker_questionnaire_seeds)
 
         @questionnaire_seeds ||= Rails.application.config.time_tracker_questionnaire_seeds
