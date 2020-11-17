@@ -26,7 +26,7 @@ module Decidim
               class_name: "Decidim::TimeTracker::AssigneeQuestionnaire",
               inverse_of: :time_tracker
 
-      after_create :create_questionnaire, :create_assignee_questionnaire
+      after_create :create_questionnaire, :create_assignee_questionnaire, :populate_questionnaire
 
       def has_questions?
         questionnaire.questions.any?
@@ -40,6 +40,30 @@ module Decidim
 
       def create_assignee_questionnaire
         Decidim::TimeTracker::AssigneeQuestionnaire.create!(time_tracker: self) if assignee_questionnaire.blank?
+      end
+
+      def populate_questionnaire
+        return unless Rails.application.config.respond_to?(:time_tracker_questionnaire_seeds)
+
+        @questionnaire_seeds ||= Rails.application.config.time_tracker_questionnaire_seeds
+
+        return if @questionnaire_seeds.blank?
+
+        if @questionnaire_seeds[:questions]&.first.is_a?(Hash)
+          questions = @questionnaire_seeds[:questions].map do |question|
+            if question.has_key?(:answer_options)
+              answer_options = question.delete(:answer_options)
+              answer_options.map! { |answer_option| Decidim::Forms::AnswerOption.new(answer_option) }
+              question[:answer_options] = answer_options
+            end
+
+            Decidim::Forms::Question.create(question.merge(questionnaire: questionnaire))
+          end
+
+          @questionnaire_seeds[:questions] = questions
+        end
+
+        questionnaire.update!(@questionnaire_seeds)
       end
     end
   end

@@ -113,7 +113,14 @@ Decidim.register_component(:time_tracker) do |component|
       Decidim::Component.create!(params)
     end
 
-    time_tracker = Decidim::TimeTracker::TimeTracker.create(component: component)
+    time_tracker = Decidim::TimeTracker::TimeTracker.create(
+      component: component,
+      questionnaire: Decidim::Forms::Questionnaire.new(
+        tos: Decidim::Faker::Localized.sentence(10),
+        title: Decidim::Faker::Localized.sentence(4),
+        description: Decidim::Faker::Localized.sentence(10)
+      )
+    )
 
     # Create some tasks
     3.times do
@@ -123,6 +130,22 @@ Decidim.register_component(:time_tracker) do |component|
         name: Decidim::Faker::Localized.sentence(2),
         time_tracker: time_tracker
       )
+
+      Decidim::Forms::Question.create!([
+                                         {
+                                           questionnaire: task.questionnaire,
+                                           question_type: "short_answer",
+                                           body: Decidim::Faker::Localized.sentence(5),
+                                           position: 1
+                                         },
+                                         {
+                                           questionnaire: task.questionnaire,
+                                           question_type: "single_option",
+                                           body: Decidim::Faker::Localized.sentence(5),
+                                           position: 2,
+                                           answer_options: 3.times.to_a.map { Decidim::Forms::AnswerOption.new(body: Decidim::Faker::Localized.sentence(5)) }
+                                         }
+                                       ])
 
       # Create activites for these tasks
       5.times do |index|
@@ -150,6 +173,19 @@ Decidim.register_component(:time_tracker) do |component|
             invited_by_user: admin_user,
             tos_accepted_at: [nil, Time.zone.now].sample
           )
+          task.questionnaire.questions.each do |question|
+            answer = Decidim::Forms::Answer.new(
+              questionnaire: task.questionnaire,
+              question: question,
+              session_token: activity.session_token(user)
+            )
+
+            answer.body = "My name is #{user.nickname}" if question.question_type == "short_answer"
+
+            answer.save!
+
+            Decidim::Forms::AnswerChoice.create(answer: answer, answer_option: question.answer_options.sample) if question.question_type == "single_option"
+          end
         end
       end
     end
