@@ -4,7 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/9372a7def91c50d04e8c/maintainability)](https://codeclimate.com/github/Platoniq/decidim-module-time_tracker/maintainability)
 [![codecov](https://codecov.io/gh/Platoniq/decidim-module-time_tracker/branch/master/graph/badge.svg)](https://codecov.io/gh/Platoniq/decidim-module-time_tracker)
 
-
+> **WARNING** This is not ready for production usage yet (though soon will be), a major breaking change is comming (migrations will be rewritten).
 
 A tool for Decidim that allows to track time dedicated by volunteers doing any arbitrary task.
 
