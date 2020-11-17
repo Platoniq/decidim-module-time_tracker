@@ -68,6 +68,7 @@
       <div class="button--title">
         <% if allowed_to? :update, :questionnaire, questionnaire: time_tracker.questionnaire %>
           <%= link_to t("tasks.actions.questionnaire", scope: "decidim.time_tracker.admin"), edit_questionnaire_path, class: "button tiny button--simple" %>
+          <%= export_dropdown %>
         <% end %>
       </div>
     </h2>

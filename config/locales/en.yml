@@ -107,7 +107,7 @@ en:
           assignees: Assignees
           global: All tasks
         exports:
-          task_questionnaire_answers: Answers
+          time_tracker_questionnaire_answers: Answers
         models:
           activity:
             name: Activity
@@ -233,9 +233,6 @@ en:
             dedicated_time: 'Time dedicated so far: %{time}'
             empty: You don't have any activity assignations
             pending: Pending
-      task_questionnaire_answers_serializer:
-        activity: Activity
-        task: Task
       time_events:
         start:
           already_started: Counter already started
@@ -264,6 +261,11 @@ en:
         request_activity:
           assignee_pending: Already applied! Soon an admin will review your application.
           assignee_rejected: Sorry, you're application has been rejected.
+      time_tracker_questionnaire_answers_serializer:
+        activity_description: Activity
+        activity_id: Activity ID
+        task_id: Task ID
+        task_name: Task
   layouts:
     decidim:
       user_profile:

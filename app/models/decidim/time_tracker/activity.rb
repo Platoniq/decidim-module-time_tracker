@@ -101,7 +101,7 @@ module Decidim
 
       # used as a unique idenfier when answering the task associated questionnaire
       def session_token(user)
-        "#{user.id}-#{id}"
+        "#{Digest::SHA1.hexdigest(user.id)}-#{id}"
       end
 
       # Returns a identificative (I18n) string about the current status of activity

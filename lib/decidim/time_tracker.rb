@@ -10,7 +10,7 @@ module Decidim
   # This namespace holds the logic of the `TimeTracker` component. This component
   # allows users to create time_tracker in a participatory space.
   module TimeTracker
-    autoload :TaskQuestionnaireAnswersSerializer, "decidim/time_tracker/task_questionnaire_answers_serializer"
+    autoload :TimeTrackerQuestionnaireAnswersSerializer, "decidim/time_tracker/time_tracker_questionnaire_answers_serializer"
   end
 end
 
