@@ -6,8 +6,6 @@ module Decidim
       include Decidim::HasComponent
       include Decidim::Forms::HasQuestionnaire
 
-      validates :questionnaire, presence: true
-
       self.table_name = :decidim_time_trackers
 
       component_manifest_name "time_tracker"

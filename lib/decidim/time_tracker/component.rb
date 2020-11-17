@@ -14,13 +14,13 @@ Decidim.register_component(:time_tracker) do |component|
   component.newsletter_participant_entities = ["Decidim::TimeTracker::Milestone"]
 
   component.on(:copy) do |context|
-    Decidim::TimeTracker::CreateTimeTracker.call(context[:new_component]) do
+    Decidim::TimeTracker::Admin::CreateTimeTracker.call(context[:new_component]) do
       on(:invalid) { raise "Can't create Time Tracker" }
     end
   end
 
   component.on(:create) do |instance|
-    Decidim::TimeTracker::CreateTimeTracker.call(instance) do
+    Decidim::TimeTracker::Admin::CreateTimeTracker.call(instance) do
       on(:invalid) { raise "Can't create Time Tracker" }
     end
   end
