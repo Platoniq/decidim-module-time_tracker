@@ -5,10 +5,10 @@
     </div>
     <div class="right">
       <% if user_signed_in? %>
-        <% if activity.assignee_pending? current_user %>
-          <div class="callout warning"><%= t ".assignee_pending" %></div>
-        <% elsif activity.assignee_rejected? current_user %>
-          <div class="callout warning"><%= t ".assignee_rejected" %></div>
+        <% if activity.assignation_pending? current_user %>
+          <div class="callout warning"><%= t ".assignation_pending" %></div>
+        <% elsif activity.assignation_rejected? current_user %>
+          <div class="callout warning"><%= t ".assignation_rejected" %></div>
         <% else %>
           <%= button_to requests_path(activity), method: :create, remote: true, data: { activity_id: activity.id }, class: "button large" do %>
               <%= t("index.request", scope: "decidim.components.time_tracker.views") %>

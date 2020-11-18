@@ -4,12 +4,12 @@ module Decidim
   module TimeTracker
     module Admin
       # A command with all the business logic when updating an activity
-      class DestroyAssignee < Rectify::Command
+      class DestroyAssignation < Rectify::Command
         # Public: Initializes the command.
         #
         # form - A form object with the params.
-        def initialize(assignee, user)
-          @assignee = assignee
+        def initialize(assignation, user)
+          @assignation = assignation
           @user = user
         end
 
@@ -20,7 +20,7 @@ module Decidim
         #
         # Returns nothing.
         def call
-          destroy_assignee!
+          destroy_assignation!
           broadcast(:ok)
         end
 
@@ -28,13 +28,13 @@ module Decidim
 
         attr_reader :form
 
-        def destroy_assignee!
+        def destroy_assignation!
           Decidim.traceability.perform_action!(
             :delete,
-            @assignee,
+            @assignation,
             @user
           ) do
-            @assignee.destroy!
+            @assignation.destroy!
           end
         end
       end

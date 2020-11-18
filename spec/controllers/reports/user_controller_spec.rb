@@ -13,7 +13,7 @@ module Decidim::TimeTracker::Reports
     let(:time_tracker) { create :time_tracker, component: component }
     let!(:activity) { create :activity, task: task }
     let!(:task) { create :task, time_tracker: time_tracker }
-    let!(:assignee) { create :assignee, activity: activity, user: user }
+    let!(:assignation) { create :assignation, activity: activity, user: user }
 
     before do
       request.env["decidim.current_organization"] = organization

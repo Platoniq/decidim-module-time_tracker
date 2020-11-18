@@ -23,13 +23,13 @@ module Decidim
         activities.order(end_date: :desc).first&.end_date
       end
 
-      def assignees_count(filter: :accepted)
-        assignees = Assignee.where(activity: activities).send(filter)
-        assignees.count
+      def assignations_count(filter: :accepted)
+        assignations = Assignation.where(activity: activities).send(filter)
+        assignations.count
       end
 
-      def user_is_assignee?(user, filter: :accepted)
-        Assignee.where(user: user, activity: activities).send(filter).any?
+      def user_is_assignation?(user, filter: :accepted)
+        Assignation.where(user: user, activity: activities).send(filter).any?
       end
     end
   end

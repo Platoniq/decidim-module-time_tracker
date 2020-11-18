@@ -10,7 +10,7 @@ module Decidim
           allowed_task_action?
           allowed_questionnaire_action?
           allowed_activity_action?
-          allowed_assignee_action?
+          allowed_assignation_action?
 
           permission_action
         end
@@ -42,19 +42,19 @@ module Decidim
           end
         end
 
-        def allowed_assignee_action?
-          return unless permission_action.subject.in? [:assignee, :assignees]
+        def allowed_assignation_action?
+          return unless permission_action.subject.in? [:assignation, :assignations]
 
           case permission_action.action
           when :update
-            permission_action.allow! if assignee.can_change_status?
+            permission_action.allow! if assignation.can_change_status?
           when :index, :create, :destroy
             permission_action.allow!
           end
         end
 
-        def assignee
-          @assignee ||= context.fetch(:assignee, nil)
+        def assignation
+          @assignation ||= context.fetch(:assignation, nil)
         end
       end
     end

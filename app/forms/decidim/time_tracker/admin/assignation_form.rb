@@ -3,8 +3,8 @@
 module Decidim
   module TimeTracker
     module Admin
-      class AssigneeForm < Decidim::Form
-        mimic :assignee
+      class AssignationForm < Decidim::Form
+        mimic :assignation
 
         attribute :user_id, Integer
         attribute :existing_user, Boolean, default: false

@@ -14,7 +14,7 @@ module Decidim
         case permission_action.subject
         when :questionnaire
           allow! if permission_action.action == :answer
-        when :assignee
+        when :assignation
           allow_assignation?
         when :milestone
           allow_milestone?
@@ -29,7 +29,7 @@ module Decidim
         return allow! unless activity
 
         if permission_action.action == :create
-          return if activity.has_assignee? user
+          return if activity.has_assignation? user
 
           return unless activity.status.in? [:open, :not_started]
 
@@ -41,7 +41,7 @@ module Decidim
         return unless activity
 
         if permission_action.action == :create
-          return unless activity.assignee_accepted? user
+          return unless activity.assignation_accepted? user
 
           return if activity.status.in? [:inactive]
 

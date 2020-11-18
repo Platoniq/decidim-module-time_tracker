@@ -4,7 +4,7 @@
       <%= title %>
       <% if action_name == "edit" %>
         <div class="button--title">
-          <%= link_to t("activities.actions.assignees", scope: "decidim.time_tracker.admin"), task_activity_assignees_path(current_task, current_activity), class: "button tiny button--simple" %>
+          <%= link_to t("activities.actions.assignations", scope: "decidim.time_tracker.admin"), task_activity_assignations_path(current_task, current_activity), class: "button tiny button--simple" %>
         </div>
     <% end %>
     </h2>

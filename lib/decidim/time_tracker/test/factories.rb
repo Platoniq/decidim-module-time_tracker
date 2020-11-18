@@ -24,11 +24,11 @@ FactoryBot.define do
     max_minutes_per_day { 60 }
     requests_start_at { Time.zone.today }
 
-    trait :with_assignees do
+    trait :with_assignations do
       after(:create) do |activity, _evaluator|
-        create_list(:assignee, 2, :pending, activity: activity)
-        create_list(:assignee, 3, :accepted, activity: activity)
-        create_list(:assignee, 1, :rejected, activity: activity)
+        create_list(:assignation, 2, :pending, activity: activity)
+        create_list(:assignation, 3, :accepted, activity: activity)
+        create_list(:assignation, 1, :rejected, activity: activity)
       end
     end
 
@@ -43,7 +43,7 @@ FactoryBot.define do
     end
   end
 
-  factory :assignee, class: "Decidim::TimeTracker::Assignee" do
+  factory :assignation, class: "Decidim::TimeTracker::Assignation" do
     user { create(:user) }
     activity { create(:activity) }
     status { :accepted }
@@ -78,12 +78,12 @@ FactoryBot.define do
   end
 
   factory :time_event, class: "Decidim::TimeTracker::TimeEvent" do
-    assignee { create(:assignee) }
+    assignation { create(:assignation) }
     activity { create(:activity) }
     start { Time.current }
     stop { nil }
     total_seconds { stop.present? ? (stop - start) : 0 }
-    user { assignee.user }
+    user { assignation.user }
 
     trait :running do
       start { Time.current - 1.minute }

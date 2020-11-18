@@ -38,9 +38,9 @@ describe "User reports page", type: :system do
       let(:time_tracker) { create :time_tracker, component: component }
       let!(:task) { create :task, time_tracker: time_tracker }
       let!(:activity) { create :activity, task: task }
-      let!(:assignee) { create :assignee, :accepted, activity: activity, user: user }
-      let!(:assignee_pending) { create :assignee, :pending, activity: activity, user: user }
-      let!(:assignee_rejected) { create :assignee, :rejected, activity: activity, user: user }
+      let!(:assignation) { create :assignation, :accepted, activity: activity, user: user }
+      let!(:assignation_pending) { create :assignation, :pending, activity: activity, user: user }
+      let!(:assignation_rejected) { create :assignation, :rejected, activity: activity, user: user }
 
       it "shows the list of assignations and the time dedicated" do
         visit decidim_time_tracker.root_path

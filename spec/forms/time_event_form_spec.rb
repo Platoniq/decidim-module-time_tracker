@@ -7,7 +7,7 @@ module Decidim::TimeTracker
     subject(:form) { described_class.from_params(attributes) }
 
     let(:user) { create(:user) }
-    let(:assignee) { create(:assignee, activity: activity) }
+    let(:assignation) { create(:assignation, activity: activity) }
     let(:activity) { create(:activity) }
     let(:start) { Time.current }
     let(:stop) { nil }
@@ -16,7 +16,7 @@ module Decidim::TimeTracker
       {
         activity: activity,
         user_id: user.id,
-        assignee: assignee,
+        assignation: assignation,
         start: start,
         stop: stop
       }
@@ -25,7 +25,7 @@ module Decidim::TimeTracker
     it { is_expected.to be_valid }
 
     context "when user is not assgined to activity" do
-      let(:assignee) { create(:assignee) }
+      let(:assignation) { create(:assignation) }
 
       it { is_expected.to be_invalid }
     end
@@ -52,16 +52,16 @@ module Decidim::TimeTracker
       let(:attributes) do
         {
           activity: activity,
-          assignee: assignee,
+          assignation: assignation,
           start: start
         }
       end
 
       it { is_expected.to be_valid }
 
-      it "assignes user to assignee" do
+      it "assignes user to assignation" do
         expect(form.user).to be_a(Decidim::User)
-        expect(form.user).to eq(assignee.user)
+        expect(form.user).to eq(assignation.user)
       end
     end
   end

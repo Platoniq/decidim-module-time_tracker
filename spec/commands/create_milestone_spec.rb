@@ -7,7 +7,7 @@ module Decidim::TimeTracker
     let(:subject) { described_class.new(form, user) }
     let(:activity) { create :activity, max_minutes_per_day: 60 }
     let(:user) { create :user, :confirmed, organization: organization }
-    let(:assignee) { create :assignee, user: user, activity: activity, status: status }
+    let(:assignation) { create :assignation, user: user, activity: activity, status: status }
     let(:organization) { create :organization }
 
     let(:form) do

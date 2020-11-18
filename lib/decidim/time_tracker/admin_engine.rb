@@ -13,7 +13,7 @@ module Decidim
         # Add admin engine routes here
         resources :tasks do
           resources :activities do
-            resources :assignees
+            resources :assignations
           end
         end
 

@@ -3,30 +3,30 @@
 require "spec_helper"
 
 module Decidim::TimeTracker::Admin
-  describe UpdateAssignee do
-    let(:subject) { described_class.new(assignee, user, status) }
+  describe UpdateAssignation do
+    let(:subject) { described_class.new(assignation, user, status) }
     let(:organization) { create :organization }
     let(:task) { create :task }
     let(:activity) { create :activity, task: task }
     let(:user) { create(:user, :confirmed, :admin, organization: organization) }
     let(:user_2) { create :user, :confirmed, organization: organization }
-    let(:assignee) { create :assignee, activity: activity, user: user_2, status: :pending }
+    let(:assignation) { create :assignation, activity: activity, user: user_2, status: :pending }
     let(:status) { :accepted }
 
-    context "when the admin accepts the assignee" do
+    context "when the admin accepts the assignation" do
       before do
         subject.call
-        assignee.reload
+        assignation.reload
       end
 
       it "updates the invited by user field and the status" do
-        expect(assignee.status.to_sym).to eq(status)
+        expect(assignation.status.to_sym).to eq(status)
       end
 
       it "traces the action", versioning: true do
         expect(Decidim.traceability)
           .to receive(:update!)
-          .with(assignee, user, hash_including(status: :accepted))
+          .with(assignation, user, hash_including(status: :accepted))
           .and_call_original
 
         expect { subject.call }.to change(Decidim::ActionLog, :count)

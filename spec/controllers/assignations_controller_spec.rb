@@ -3,7 +3,7 @@
 require "spec_helper"
 
 module Decidim::TimeTracker
-  describe AssigneesController, type: :controller do
+  describe AssignationsController, type: :controller do
     routes { Decidim::TimeTracker::Engine.routes }
 
     let(:organization) { create :organization }
@@ -32,7 +32,7 @@ module Decidim::TimeTracker
           sign_in user
         end
 
-        it "creates a new assignee" do
+        it "creates a new assignation" do
           post :create, params: params
           expect(response).to have_http_status(:ok)
         end
@@ -40,7 +40,7 @@ module Decidim::TimeTracker
         context "when activity is not active" do
           let(:activity) { create :activity, task: task, active: false }
 
-          it "do not create a new assignee" do
+          it "do not create a new assignation" do
             post :create, params: params
             expect(response).to have_http_status(:unprocessable_entity)
           end

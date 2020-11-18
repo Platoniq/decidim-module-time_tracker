@@ -5,12 +5,12 @@ module Decidim
     class TimeEventsController < Decidim::TimeTracker::ApplicationController
       include Decidim::FormFactory
 
-      helper_method :activity, :task, :assignee
+      helper_method :activity, :task, :assignation
 
       def start
         enforce_permission_to :start, :time_events
 
-        form = form(TimeEventForm).from_params(activity: activity, assignee: assignee)
+        form = form(TimeEventForm).from_params(activity: activity, assignation: assignation)
         StartTimeEvent.call(form) do
           on(:ok) do |time_event|
             render json: { message: I18n.t("time_events.start.success", scope: "decidim.time_tracker"),
@@ -60,8 +60,8 @@ module Decidim
         Activity.find(params[:activity_id])
       end
 
-      def assignee
-        Assignee.find_by(user: current_user, activity: activity)
+      def assignation
+        Assignation.find_by(user: current_user, activity: activity)
       end
     end
   end

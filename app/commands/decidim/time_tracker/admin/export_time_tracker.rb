@@ -141,8 +141,8 @@ module Decidim
           Decidim::TimeTracker::Activity.where(task: task)
         end
 
-        def activities_assignees(activity)
-          Decidim::TimeTracker::Assignee.where(activity: activity)
+        def activities_assignations(activity)
+          Decidim::TimeTracker::Assignation.where(activity: activity)
         end
       end
     end

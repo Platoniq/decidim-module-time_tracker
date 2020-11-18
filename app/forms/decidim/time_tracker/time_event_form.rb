@@ -6,13 +6,13 @@ module Decidim
       mimic :time_event
 
       attribute :activity, Decidim::TimeTracker::Activity
-      attribute :assignee, Decidim::TimeTracker::Assignee
+      attribute :assignation, Decidim::TimeTracker::Assignation
       attribute :user_id, Integer
       attribute :start, Integer
       attribute :stop, Integer
 
       validates :activity, presence: true
-      validates :assignee, presence: true
+      validates :assignation, presence: true
 
       validate :assigned_to_activity?
       validate :activity_is_active
@@ -22,13 +22,13 @@ module Decidim
       def user
         return Decidim::User.find(user_id) if user_id.present?
 
-        assignee.user
+        assignation.user
       end
 
       private
 
       def assigned_to_activity?
-        errors.add(:assignee, :unassigned) unless activity.assignees.accepted.find_by(id: assignee&.id)
+        errors.add(:assignation, :unassigned) unless activity.assignations.accepted.find_by(id: assignation&.id)
       end
 
       def activity_is_active
