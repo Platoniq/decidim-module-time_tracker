@@ -11,8 +11,8 @@ module Decidim::TimeTracker
     let(:organization) { create(:organization) }
     let(:participatory_space) { create(:participatory_process, organization: organization) }
     let(:component) { create(:time_tracker_component, participatory_space: participatory_space) }
-    let(:time_tracker) { create(:time_tracker, component: component) }
-    let!(:questionnaire) { create :questionnaire, :with_questions, questionnaire_for: time_tracker }
+    let(:time_tracker) { create(:time_tracker, component: component, questionnaire: questionnaire) }
+    let!(:questionnaire) { create :questionnaire }
     let(:task) { create :task, time_tracker: time_tracker }
     let!(:activity) { create :activity, task: task }
 
@@ -85,7 +85,7 @@ module Decidim::TimeTracker
           end
 
           context "and questionnaire have questions" do
-            let(:questionnaire) { create :questionnaire, :with_questions }
+            let!(:question) { create :questionnaire_question, question_type: :short_answer, body: "name", questionnaire: questionnaire }
 
             it_behaves_like "renders the form"
           end
