@@ -121,6 +121,22 @@ Decidim.register_component(:time_tracker) do |component|
       )
     )
 
+    Decidim::Forms::Question.create!([
+      {
+        questionnaire: task.questionnaire,
+        question_type: "short_answer",
+        body: Decidim::Faker::Localized.sentence(5),
+        position: 1
+      },
+      {
+        questionnaire: task.questionnaire,
+        question_type: "single_option",
+        body: Decidim::Faker::Localized.sentence(5),
+        position: 2,
+        answer_options: 3.times.to_a.map { Decidim::Forms::AnswerOption.new(body: Decidim::Faker::Localized.sentence(5)) }
+      }
+    ])
+    
     # Create some tasks
     3.times do
       task = Decidim.traceability.create!(
@@ -129,22 +145,6 @@ Decidim.register_component(:time_tracker) do |component|
         name: Decidim::Faker::Localized.sentence(2),
         time_tracker: time_tracker
       )
-
-      Decidim::Forms::Question.create!([
-                                         {
-                                           questionnaire: task.questionnaire,
-                                           question_type: "short_answer",
-                                           body: Decidim::Faker::Localized.sentence(5),
-                                           position: 1
-                                         },
-                                         {
-                                           questionnaire: task.questionnaire,
-                                           question_type: "single_option",
-                                           body: Decidim::Faker::Localized.sentence(5),
-                                           position: 2,
-                                           answer_options: 3.times.to_a.map { Decidim::Forms::AnswerOption.new(body: Decidim::Faker::Localized.sentence(5)) }
-                                         }
-                                       ])
 
       # Create activites for these tasks
       5.times do |index|
