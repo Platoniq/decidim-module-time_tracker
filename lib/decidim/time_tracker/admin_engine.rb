@@ -12,13 +12,13 @@ module Decidim
       routes do
         # Add admin engine routes here
         resources :tasks do
-          resource :form, only: [:edit, :update], controller: "tasks_questionnaire" do
-            get "/answer_options", to: "tasks_questionnaire#answer_options", as: :answer_options
-          end
-
           resources :activities do
             resources :assignees
           end
+        end
+
+        resource :questionnaire, only: [:edit, :update] do
+          get "/answer_options", to: "questionnaire#answer_options", as: :answer_options
         end
 
         get :time_tracker_exports, to: "time_tracker_exports#export"

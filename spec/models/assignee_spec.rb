@@ -20,7 +20,7 @@ module Decidim
           expect(subject.activity.id).to eq(activity.id)
         end
 
-        it "is has time entries" do
+        it "is has time events" do
           expect(subject.time_events.count).to eq(time_events.count)
         end
 

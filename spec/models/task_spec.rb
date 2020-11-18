@@ -6,18 +6,18 @@ module Decidim::TimeTracker
   describe Task do
     subject { task }
 
-    let(:component) { create(:time_tracker_component) }
+    let(:time_tracker) { create(:time_tracker) }
     let(:first_activity) { create(:activity, :with_assignees, start_date: Time.zone.now, end_date: 1.day.from_now) }
     let(:middle_activity) { create(:activity, :with_assignees, start_date: Time.zone.now, end_date: 2.days.from_now) }
     let(:last_activity) { create(:activity, :with_assignees, start_date: 1.day.from_now, end_date: 2.days.from_now) }
     let(:activities) { [first_activity, middle_activity, last_activity] }
-    let(:task) { create(:task, component: component, activities: activities) }
+    let(:task) { create(:task, activities: activities, time_tracker: time_tracker) }
 
     it { is_expected.to be_valid }
 
     context "when the task is correctly associated" do
-      it "is associated with a time tracker component" do
-        expect(subject.component).to eq(component)
+      it "is associated with a time tracker" do
+        expect(subject.time_tracker).to eq(time_tracker)
       end
 
       it "is associated with activities" do
@@ -38,13 +38,13 @@ module Decidim::TimeTracker
 
     describe "#starts_at" do
       it "returns the start_date of the activity that starts the earliest" do
-        expect(subject.starts_at).to eq(first_activity.start_date)
+        expect(subject.starts_at.to_i).to eq(first_activity.start_date.to_i)
       end
     end
 
     describe "#ends_at" do
       it "returns the end_date of the activity that ends the latest" do
-        expect(subject.ends_at).to eq(last_activity.end_date)
+        expect(subject.ends_at.to_i).to eq(last_activity.end_date.to_i)
       end
     end
 
@@ -79,42 +79,6 @@ module Decidim::TimeTracker
         it "raises an error" do
           expect { subject.assignees_count(filter: :other) }.to raise_error(NoMethodError)
         end
-      end
-    end
-
-    context "when the task has questions" do
-      let!(:question) { create(:questionnaire_question, questionnaire: subject.questionnaire, position: 0) }
-
-      it "task has questions" do
-        expect(subject.has_questions?).to be true
-      end
-    end
-
-    context "when the task has no questions" do
-      it "task has no questions" do
-        expect(subject.has_questions?).to be false
-      end
-    end
-
-    context "when time_tracker_questionnaire_seeds config is defined" do
-      it "has questions" do
-        Rails.application.config.time_tracker_questionnaire_seeds = {
-          tos: { en: "TOS" },
-          title: { en: "Questionnaire" },
-          description: { en: "This is a questionnaire" },
-          questions: [
-            { question_type: "short_answer", body: { en: "Question 1" } },
-            { question_type: "single_option", body: { en: "Question 2" }, answer_options: [{ body: { en: "Answer Option 1" }, free_text: true }] }
-          ]
-        }
-
-        expect(subject.has_questions?).to be true
-        expect(subject.questionnaire.title["en"]).to eq "Questionnaire"
-        expect(subject.questionnaire.questions.first.body["en"]).to eq "Question 1"
-        expect(subject.questionnaire.questions.second.answer_options.first.body["en"]).to eq "Answer Option 1"
-        expect(subject.questionnaire.questions.second.answer_options.first.free_text).to eq true
-
-        Rails.application.config.time_tracker_questionnaire_seeds = nil
       end
     end
   end

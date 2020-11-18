@@ -1,4 +1,4 @@
-// Controlls time entries
+// Controlls time events
 
 class TimerApi { // eslint-disable-line no-unused-vars
   constructor(startEndpoint, stopEndpoint) {

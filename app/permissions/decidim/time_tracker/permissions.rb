@@ -31,7 +31,7 @@ module Decidim
         if permission_action.action == :create
           return if activity.has_assignee? user
 
-          return unless activity.current_status.in? [:open, :not_started]
+          return unless activity.status.in? [:open, :not_started]
 
           allow!
         end
@@ -43,7 +43,7 @@ module Decidim
         if permission_action.action == :create
           return unless activity.assignee_accepted? user
 
-          return if activity.current_status.in? [:inactive]
+          return if activity.status.in? [:inactive]
 
           allow!
         end

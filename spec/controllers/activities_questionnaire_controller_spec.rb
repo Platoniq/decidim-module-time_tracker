@@ -8,11 +8,12 @@ module Decidim::TimeTracker
     routes { Decidim::TimeTracker::Engine.routes }
 
     let!(:user) { create(:user, :confirmed, organization: organization) }
-    let(:organization) { participatory_space.organization }
-    let(:participatory_space) { activity.task.component.participatory_space }
-    let(:component) { activity.task.component }
-    let(:questionnaire) { create :questionnaire }
-    let(:task) { create :task, questionnaire: questionnaire }
+    let(:organization) { create(:organization) }
+    let(:participatory_space) { create(:participatory_process, organization: organization) }
+    let(:component) { create(:time_tracker_component, participatory_space: participatory_space) }
+    let(:time_tracker) { create(:time_tracker, component: component, questionnaire: questionnaire) }
+    let!(:questionnaire) { create :questionnaire }
+    let(:task) { create :task, time_tracker: time_tracker }
     let!(:activity) { create :activity, task: task }
 
     let(:form) do
@@ -25,6 +26,7 @@ module Decidim::TimeTracker
       request.env["decidim.current_organization"] = organization
       request.env["decidim.current_participatory_space"] = participatory_space
       request.env["decidim.current_component"] = component
+      time_tracker.reload
       sign_in user
     end
 
@@ -33,7 +35,7 @@ module Decidim::TimeTracker
         get :show, params: params
 
         expect(response).to have_http_status(:ok)
-        expect(controller.helpers.questionnaire_for).to eq(activity.task)
+        expect(controller.helpers.questionnaire_for).to eq(time_tracker)
         expect(controller.helpers.allow_answers?).to eq(false)
         expect(controller.helpers.visitor_can_answer?).to eq(can_answer)
         expect(controller.helpers.visitor_already_answered?).not_to eq(true)
@@ -46,7 +48,7 @@ module Decidim::TimeTracker
         get :show, params: params
 
         expect(response).to have_http_status(:ok)
-        expect(controller.helpers.questionnaire_for).to eq(activity.task)
+        expect(controller.helpers.questionnaire_for).to eq(time_tracker)
         expect(controller.helpers.allow_answers?).to eq(true)
         expect(controller.helpers.visitor_can_answer?).to eq(true)
         expect(controller.helpers.visitor_already_answered?).to eq(false)
@@ -79,12 +81,12 @@ module Decidim::TimeTracker
         context "and user is an assignee" do
           let!(:assignee) { create :assignee, activity: activity, user: user }
 
-          context "and questionnaire do not have questions" do
+          context "and questionnaire has no questions" do
             it_behaves_like "renders the form readonly", true
           end
 
           context "and questionnaire have questions" do
-            let(:questionnaire) { create :questionnaire, :with_questions }
+            let!(:question) { create :questionnaire_question, question_type: :short_answer, body: "name", questionnaire: questionnaire }
 
             it_behaves_like "renders the form"
           end

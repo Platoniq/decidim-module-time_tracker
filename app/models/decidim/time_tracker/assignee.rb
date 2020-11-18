@@ -17,6 +17,10 @@ module Decidim
                class_name: "Decidim::TimeTracker::TimeEvent",
                dependent: :nullify
 
+      has_many :milestones,
+               class_name: "Decidim::TimeTracker::Milestone",
+               through: :user
+
       belongs_to :user,
                  foreign_key: "decidim_user_id",
                  class_name: "Decidim::User"
@@ -25,24 +29,7 @@ module Decidim
                  class_name: "Decidim::User",
                  optional: true
 
-      scope :accepted, -> { where(status: :accepted) }
-      scope :rejected, -> { where(status: :rejected) }
-      scope :pending, -> { where(status: :pending) }
-
-      # Public: Checks if the assignee is verified.
-      def accepted?
-        status == "accepted"
-      end
-
-      # Public: Checks if the assignee is rejected.
-      def rejected?
-        status == "rejected"
-      end
-
-      # Public: Checks if the assignee is pending.
-      def pending?
-        status == "pending"
-      end
+      enum status: [:pending, :accepted, :rejected]
 
       def time_dedicated
         time_events.sum(&:total_seconds)

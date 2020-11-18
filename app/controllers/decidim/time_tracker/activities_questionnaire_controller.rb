@@ -6,7 +6,7 @@ module Decidim
       include Decidim::Forms::Concerns::HasQuestionnaire
 
       def questionnaire_for
-        task
+        time_tracker
       end
 
       def allow_answers?
@@ -14,11 +14,11 @@ module Decidim
       end
 
       def update_url
-        answer_task_activity_form_path(task_id: task.id, activity_id: activity.id, id: activity.questionnaire)
+        answer_task_activity_form_path(activity_id: activity.id, id: activity.questionnaire)
       end
 
       def form_path
-        task_activity_form_path(task_id: task.id, activity_id: activity.id, id: activity.questionnaire)
+        task_activity_form_path(activity_id: activity.id, id: activity.questionnaire)
       end
 
       def after_answer_path
@@ -44,10 +44,6 @@ module Decidim
 
       def activity
         @activity ||= Activity.find(params[:activity_id])
-      end
-
-      def task
-        @task ||= Task.where(component: current_component).find(params[:task_id])
       end
     end
   end

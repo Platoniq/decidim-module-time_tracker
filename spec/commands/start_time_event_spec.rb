@@ -70,7 +70,7 @@ module Decidim::TimeTracker
     end
 
     context "when user is not accepted to the activity" do
-      let(:status) { "any_non_accepted_status" }
+      let(:status) { "rejected" }
 
       it_behaves_like "returns error", :assignee
     end
@@ -121,7 +121,7 @@ module Decidim::TimeTracker
         it_behaves_like "returns ok"
       end
 
-      context "and there's previous stopped entries" do
+      context "and there's previous stopped events" do
         let!(:last_entry) { create(:time_event, start: start_time, stop: stop_time, assignee: last_assignee, activity: activity) }
 
         it_behaves_like "returns ok"

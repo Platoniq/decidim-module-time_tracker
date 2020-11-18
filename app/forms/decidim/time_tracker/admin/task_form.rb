@@ -7,9 +7,15 @@ module Decidim
       class TaskForm < Decidim::Form
         include TranslatableAttributes
 
+        mimic :task
+
         translatable_attribute :name, String
 
         validates :name, translatable_presence: true
+
+        def time_tracker
+          @time_tracker ||= Decidim::TimeTracker::TimeTracker.find_by(component: current_component)
+        end
       end
     end
   end

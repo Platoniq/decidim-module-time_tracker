@@ -91,7 +91,7 @@ module Decidim
             )
 
             status = @not_started
-            status = @work_in_progress unless task.activities.joins(:time_entries).empty?
+            status = @work_in_progress unless task.activities.joins(:time_events).empty?
             status = @completed if task.activities.where("decidim_time_tracker_activities.end_date > ?", Time.zone.today).empty?
 
             params_task = {
@@ -110,7 +110,7 @@ module Decidim
 
             task_activities(task).each do |activity|
               status = @not_started
-              status = @work_in_progress unless activity.time_entries.nil?
+              status = @work_in_progress unless activity.time_events.nil?
               status = @completed if activity.end_date < Time.zone.today
 
               params_activity = {

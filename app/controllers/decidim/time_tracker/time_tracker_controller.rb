@@ -16,7 +16,7 @@ module Decidim
       private
 
       def tasks
-        @tasks ||= Task.where(component: current_component)
+        time_tracker.tasks
       end
 
       def assignee_milestones(activity)

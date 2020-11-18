@@ -11,7 +11,8 @@ module Decidim
                  class_name: "Decidim::TimeTracker::Task"
 
       has_many :assignees,
-               class_name: "Decidim::TimeTracker::Assignee"
+               class_name: "Decidim::TimeTracker::Assignee",
+               dependent: :destroy
 
       has_many :time_events,
                class_name: "Decidim::TimeTracker::TimeEvent"
@@ -87,7 +88,7 @@ module Decidim
       end
 
       def allow_answers_for?(user)
-        return false if current_status == :inactive
+        return false if status == :inactive
 
         return false unless has_questions?
 
@@ -100,7 +101,7 @@ module Decidim
 
       # used as a unique idenfier when answering the task associated questionnaire
       def session_token(user)
-        "#{user.id}-#{id}"
+        "#{Digest::SHA1.hexdigest(user.id.to_s)}-#{id}"
       end
 
       # Returns a identificative (I18n) string about the current status of activity
@@ -109,7 +110,7 @@ module Decidim
       # :finished if current date is passed end date
       # :not_started if current date has not reach start date
       # :inactive if current status is inactive
-      def current_status
+      def status
         return :inactive unless active?
         return :not_started if start_date > Time.current.beginning_of_day
         return :finished if end_date < Time.current.beginning_of_day

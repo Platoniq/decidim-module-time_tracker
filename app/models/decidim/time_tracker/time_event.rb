@@ -4,7 +4,7 @@ module Decidim
   module TimeTracker
     # The data store for a time entry in the Decidim::TimeTracker component.
     class TimeEvent < ApplicationRecord
-      self.table_name = :decidim_time_tracker_events
+      self.table_name = :decidim_time_tracker_time_events
 
       belongs_to :assignee,
                  class_name: "Decidim::TimeTracker::Assignee"

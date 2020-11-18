@@ -7,7 +7,10 @@ module Decidim
     describe Activity do
       subject { activity }
 
-      let(:task) { create(:task) }
+      let(:component) { create(:time_tracker_component) }
+      let(:time_tracker) { create(:time_tracker, component: component, questionnaire: questionnaire) }
+      let(:questionnaire) { create(:questionnaire) }
+      let(:task) { create(:task, time_tracker: time_tracker) }
       let(:activity) { create(:activity, task: task) }
 
       it { is_expected.to be_valid }
@@ -44,7 +47,7 @@ module Decidim
         let(:activity) { create(:activity, active: false) }
 
         it "current status is :inactive" do
-          expect(subject.current_status).to eq(:inactive)
+          expect(subject.status).to eq(:inactive)
         end
       end
 
@@ -52,7 +55,7 @@ module Decidim
         let(:activity) { create(:activity, start_date: (Time.current.beginning_of_day + 1.day)) }
 
         it "current status is :not_started" do
-          expect(subject.current_status).to eq(:not_started)
+          expect(subject.status).to eq(:not_started)
         end
       end
 
@@ -60,13 +63,13 @@ module Decidim
         let(:activity) { create(:activity, end_date: (Time.current.beginning_of_day - 1.day)) }
 
         it "current status is :finished" do
-          expect(subject.current_status).to eq(:finished)
+          expect(subject.status).to eq(:finished)
         end
       end
 
       context "when activity is open for business" do
         it "current status is :open" do
-          expect(subject.current_status).to eq(:open)
+          expect(subject.status).to eq(:open)
         end
       end
 

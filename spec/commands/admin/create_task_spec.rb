@@ -11,7 +11,8 @@ module Decidim::TimeTracker::Admin
         name: Decidim::Faker::Localized.word,
         invalid?: invalid,
         current_user: user,
-        current_component: component
+        current_component: component,
+        time_tracker: time_tracker
       )
     end
 
@@ -19,6 +20,7 @@ module Decidim::TimeTracker::Admin
     let(:user) { create :user, :admin, :confirmed, organization: organization }
     let(:participatory_process) { create :participatory_process, organization: organization }
     let(:component) { create :time_tracker_component, participatory_space: participatory_process }
+    let(:time_tracker) { create :time_tracker, component: component }
 
     let(:invalid) { false }
 

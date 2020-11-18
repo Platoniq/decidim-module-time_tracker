@@ -14,7 +14,7 @@
     </div>
     <div class="right">
       <div class="top">
-        <% if activity.current_status != :open %>
+        <% if activity.status != :open %>
           <%= render partial: "callout_status", locals: { activity: activity } %>
         <% else %>
           <div class="tracker-buttons">
