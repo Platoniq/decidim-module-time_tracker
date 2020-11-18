@@ -38,7 +38,7 @@ module Decidim::TimeTracker
         expect(controller.helpers.questionnaire_for).to eq(time_tracker)
         expect(controller.helpers.allow_answers?).to eq(false)
         expect(controller.helpers.visitor_can_answer?).to eq(can_answer)
-        expect(controller.helpers.visitor_already_answered?).to eq(false)
+        expect(controller.helpers.visitor_already_answered?).not_to eq(true)
         expect(subject).to render_template(:show)
       end
     end
