@@ -2,32 +2,33 @@
 
 module Decidim
   module TimeTracker
-    # The data store for an assignation in the Decidim::TimeTracker component.
-    class Assignation < ApplicationRecord
-      self.table_name = :decidim_time_tracker_assignations
+    # The data store for an assignee in the Decidim::TimeTracker component.
+    class Assignee < ApplicationRecord
+      self.table_name = :decidim_time_tracker_assignees
 
-      belongs_to :activity,
-                 class_name: "Decidim::TimeTracker::Activity"
+      belongs_to :user,
+                 foreign_key: "decidim_user_id",
+                 class_name: "Decidim::User"
 
-      has_one :task,
+      has_many :assignations,
+                class_name: "Decidim::TimeTracker::Assignation",
+                dependent: :nullify # ?
+
+      has_many :activities,
+              class_name: "Decidim::TimeTracker::Activity",
+              through: :assignations
+
+      has_many :tasks,
               class_name: "Decidim::TimeTracker::Task",
-              through: :activity
-
-      has_many :time_events,
-               class_name: "Decidim::TimeTracker::TimeEvent",
-               dependent: :nullify
+              through: :activities
 
       has_many :milestones,
                class_name: "Decidim::TimeTracker::Milestone",
                through: :user
 
-      belongs_to :assignee,
-                 foreign_key: "decidim_time_tracker_assignee_id",
-                 class_name: "Decidim::TimeTracker::Assignee"
-
-      belongs_to :invited_by_user,
-                 class_name: "Decidim::User",
-                 optional: true
+      has_many :time_events,
+               class_name: "Decidim::TimeTracker::TimeEvent",
+               through: :assignations
 
       enum status: [:pending, :accepted, :rejected]
 
@@ -37,10 +38,6 @@ module Decidim
 
       def time_dedicated_to(activity)
         time_events.where(activity: activity).sum(&:total_seconds)
-      end
-
-      def can_change_status?
-        time_events.empty?
       end
 
       # rubocop:disable Lint/UselessAssignment
