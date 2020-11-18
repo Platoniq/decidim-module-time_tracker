@@ -123,13 +123,13 @@ Decidim.register_component(:time_tracker) do |component|
 
     Decidim::Forms::Question.create!([
                                        {
-                                         questionnaire: task.questionnaire,
+                                         questionnaire: time_tracker.questionnaire,
                                          question_type: "short_answer",
                                          body: Decidim::Faker::Localized.sentence(5),
                                          position: 1
                                        },
                                        {
-                                         questionnaire: task.questionnaire,
+                                         questionnaire: time_tracker.questionnaire,
                                          question_type: "single_option",
                                          body: Decidim::Faker::Localized.sentence(5),
                                          position: 2,
@@ -172,9 +172,9 @@ Decidim.register_component(:time_tracker) do |component|
             invited_by_user: admin_user,
             tos_accepted_at: [nil, Time.zone.now].sample
           )
-          task.questionnaire.questions.each do |question|
+          time_tracker.questionnaire.questions.each do |question|
             answer = Decidim::Forms::Answer.new(
-              questionnaire: task.questionnaire,
+              questionnaire: time_tracker.questionnaire,
               question: question,
               session_token: activity.session_token(user)
             )
