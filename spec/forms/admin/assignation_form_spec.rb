@@ -3,7 +3,7 @@
 require "spec_helper"
 
 module Decidim::TimeTracker
-  describe Admin::AssigneeForm do
+  describe Admin::AssignationForm do
     subject(:form) { described_class.from_params(attributes) }
 
     let(:name) { "Lord of the Foo" }
@@ -19,12 +19,12 @@ module Decidim::TimeTracker
     it { is_expected.to be_valid }
 
     context "when user exists" do
-      subject(:form) { described_class.from_model(assignee).with_context(context) }
+      subject(:form) { described_class.from_model(assignation).with_context(context) }
 
-      let(:assignee) { create :assignee }
+      let(:assignation) { create :assignation }
       let(:context) do
         {
-          current_organization: assignee.user.organization
+          current_organization: assignation.user.organization
         }
       end
 

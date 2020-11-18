@@ -5,7 +5,7 @@ module Decidim
     class TimeTrackerController < Decidim::TimeTracker::ApplicationController
       include Decidim::FormFactory
 
-      helper_method :tasks, :assignee_milestones, :start_endpoint, :stop_endpoint, :requests_path, :questionnaire_path
+      helper_method :tasks, :assignation_milestones, :start_endpoint, :stop_endpoint, :requests_path, :questionnaire_path
 
       def index
         @form = form(MilestoneForm).from_params(
@@ -19,7 +19,7 @@ module Decidim
         time_tracker.tasks
       end
 
-      def assignee_milestones(activity)
+      def assignation_milestones(activity)
         Milestone.where(activity: activity).order(created_at: :desc).select("DISTINCT ON (decidim_user_id, created_at) *")
       end
 
@@ -32,11 +32,11 @@ module Decidim
       end
 
       def requests_path(activity)
-        Decidim::EngineRouter.main_proxy(current_component).assignees_path(activity_id: activity.id)
+        Decidim::EngineRouter.main_proxy(current_component).assignations_path(activity_id: activity.id)
       end
 
       def questionnaire_path(activity)
-        Decidim::EngineRouter.main_proxy(current_component).new_assignee_path(task_id: activity.task, activity_id: activity.id, id: activity.questionnaire.id)
+        Decidim::EngineRouter.main_proxy(current_component).new_assignation_path(task_id: activity.task, activity_id: activity.id, id: activity.questionnaire.id)
       end
     end
   end

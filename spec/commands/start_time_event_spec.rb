@@ -7,7 +7,7 @@ module Decidim::TimeTracker
     let(:subject) { described_class.new(form) }
     let(:activity) { create :activity, max_minutes_per_day: 60 }
     let(:user) { create :user, :confirmed, organization: organization }
-    let(:assignee) { create :assignee, user: user, activity: activity, status: status }
+    let(:assignation) { create :assignation, user: user, activity: activity, status: status }
     let(:status) { :accepted }
     let(:organization) { create :organization }
     let(:start_time) { Date.current + 12.hours - 30.minutes }
@@ -20,7 +20,7 @@ module Decidim::TimeTracker
     let(:attributes) do
       {
         activity: activity,
-        assignee: assignee
+        assignation: assignation
       }
     end
 
@@ -62,17 +62,17 @@ module Decidim::TimeTracker
       let(:attributes) do
         {
           activity: create(:activity),
-          assignee: assignee
+          assignation: assignation
         }
       end
 
-      it_behaves_like "returns error", :assignee
+      it_behaves_like "returns error", :assignation
     end
 
     context "when user is not accepted to the activity" do
       let(:status) { "rejected" }
 
-      it_behaves_like "returns error", :assignee
+      it_behaves_like "returns error", :assignation
     end
 
     context "when activity is not active" do
@@ -94,7 +94,7 @@ module Decidim::TimeTracker
     end
 
     context "when user is tracking another activity" do
-      let!(:prev_entry) { create(:time_event, start: start_time, assignee: assignee) }
+      let!(:prev_entry) { create(:time_event, start: start_time, assignation: assignation) }
 
       it_behaves_like "returns ok"
 
@@ -112,17 +112,17 @@ module Decidim::TimeTracker
     end
 
     context "when last entry is still running" do
-      let(:last_assignee) { assignee }
-      let!(:last_entry) { create(:time_event, start: start_time, assignee: last_assignee, activity: activity) }
+      let(:last_assignation) { assignation }
+      let!(:last_entry) { create(:time_event, start: start_time, assignation: last_assignation, activity: activity) }
 
-      context "and last assignee is not the same user" do
-        let(:last_assignee) { create(:assignee) }
+      context "and last assignation is not the same user" do
+        let(:last_assignation) { create(:assignation) }
 
         it_behaves_like "returns ok"
       end
 
       context "and there's previous stopped events" do
-        let!(:last_entry) { create(:time_event, start: start_time, stop: stop_time, assignee: last_assignee, activity: activity) }
+        let!(:last_entry) { create(:time_event, start: start_time, stop: stop_time, assignation: last_assignation, activity: activity) }
 
         it_behaves_like "returns ok"
       end
@@ -140,14 +140,14 @@ module Decidim::TimeTracker
       context "and there are more time accumulated than the allowed" do
         let(:start) { Time.current - 2.hours }
         let(:stop) { Time.current - 59.minutes }
-        let!(:older_entry) { create(:time_event, start: start, stop: stop, total_seconds: stop - start, assignee: assignee, activity: activity) }
+        let!(:older_entry) { create(:time_event, start: start, stop: stop, total_seconds: stop - start, assignation: assignation, activity: activity) }
 
         it_behaves_like "returns error", :activity
       end
     end
 
     context "when start and stop are in different days" do
-      let!(:older_entry) { create(:time_event, start: start, stop: stop, total_seconds: stop - start, assignee: assignee, activity: activity) }
+      let!(:older_entry) { create(:time_event, start: start, stop: stop, total_seconds: stop - start, assignation: assignation, activity: activity) }
 
       context "and start is in the previous day" do
         let(:start) { Date.current - 30.minutes }

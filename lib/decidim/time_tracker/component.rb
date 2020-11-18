@@ -32,7 +32,7 @@ Decidim.register_component(:time_tracker) do |component|
     answers = Decidim::Forms::Answer.where(questionnaire: time_tracker.questionnaire)
     tasks = Decidim::TimeTracker::Task.where(time_tracker: time_tracker)
 
-    raise StandardError, "Can't remove this component, there are resources associated" if [answers, assignee_answers, tasks].any?(&:any?)
+    raise StandardError, "Can't remove this component, there are resources associated" if [answers, assignation_answers, tasks].any?(&:any?)
   end
 
   # These actions permissions can be configured in the admin panel
@@ -42,11 +42,11 @@ Decidim.register_component(:time_tracker) do |component|
     # Add your global settings
     # Available types: :integer, :boolean
     settings.attribute :announcement, type: :text, translated: true, editor: true
-    settings.attribute :max_number_of_assignees, type: :integer
+    settings.attribute :max_number_of_assignations, type: :integer
     settings.attribute :tos, type: :text, translated: true, editor: true
     settings.attribute :tasks_label, type: :string, translated: true, editor: true
     settings.attribute :activities_label, type: :string, translated: true, editor: true
-    settings.attribute :assignees_label, type: :string, translated: true, editor: true
+    settings.attribute :assignations_label, type: :string, translated: true, editor: true
     settings.attribute :time_events_label, type: :string, translated: true, editor: true
     settings.attribute :milestones_label, type: :string, translated: true, editor: true
   end
@@ -96,7 +96,7 @@ Decidim.register_component(:time_tracker) do |component|
       published_at: Time.current,
       participatory_space: participatory_space,
       settings: {
-        max_number_of_assignees: 10,
+        max_number_of_assignations: 10,
         tos: Decidim::Faker::Localized.wrapped("<p>", "</p>") do
           Decidim::Faker::Localized.paragraph(3)
         end
@@ -160,10 +160,10 @@ Decidim.register_component(:time_tracker) do |component|
           task: task
         )
 
-        # Add assignees
+        # Add assignations
         Decidim::User.confirmed.not_deleted.not_managed.where(admin: false).sample(10).each do |user|
           Decidim.traceability.create!(
-            Decidim::TimeTracker::Assignee,
+            Decidim::TimeTracker::Assignation,
             admin_user,
             activity: activity,
             user: user,

@@ -19,8 +19,8 @@
             <th><%= t("models.activity.fields.end_date", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.max_minutes_per_day", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.activity.fields.requests_start_at", scope: "decidim.time_tracker") %></th>
-            <th><%= t("models.activity.fields.assignees_accepted", scope: "decidim.time_tracker") %></th>
-            <th><%= t("models.activity.fields.assignees_pending", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.assignations_accepted", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.activity.fields.assignations_pending", scope: "decidim.time_tracker") %></th>
             <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker.admin") %></th>
           </tr>
         </thead>
@@ -46,14 +46,14 @@
                 <%= l(activity.requests_start_at, format: :decidim_short) if activity.requests_start_at.present? %>
               </td>
               <td>
-                <%= activity.assignees.accepted.count %>
+                <%= activity.assignations.accepted.count %>
               </td>
               <td>
-                <%= activity.assignees.pending.count %>
+                <%= activity.assignations.pending.count %>
               </td>
               <td class="table-list__actions">
-               <% if allowed_to? :index, :assignees %>
-                  <%= icon_link_to "people", task_activity_assignees_path(@current_task, activity), t("activities.actions.assignees", scope: "decidim.time_tracker.admin"), class: "action-icon--assignees" %>
+               <% if allowed_to? :index, :assignations %>
+                  <%= icon_link_to "people", task_activity_assignations_path(@current_task, activity), t("activities.actions.assignations", scope: "decidim.time_tracker.admin"), class: "action-icon--assignations" %>
                 <% end %>
 
                 <% if allowed_to? :update, :activity, activity: activity %>

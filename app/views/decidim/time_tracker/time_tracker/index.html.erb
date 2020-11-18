@@ -10,15 +10,15 @@
       <div id="activities">
         <% task.activities.active.each do |activity| %>
           <div class="section">
-            <% if activity.assignee_accepted? current_user %>
+            <% if activity.assignation_accepted? current_user %>
               <%= render partial: "activity", locals: { activity: activity } %>
-            <% elsif allowed_to? :create, :assignee, activity: activity %>
+            <% elsif allowed_to? :create, :assignation, activity: activity %>
               <%= render partial: "request_activity", locals: { activity: activity } %>
             <% else %>
               <%= render partial: "idle_activity", locals: { activity: activity } %>
             <% end %>
 
-            <% milestones_for_activity = assignee_milestones(activity) %>
+            <% milestones_for_activity = assignation_milestones(activity) %>
             <% if milestones_for_activity.any? %>
               <div class="section">
                 <div class="row columns large-12" data-toggle="milestones-collection-<%= activity.id %>">

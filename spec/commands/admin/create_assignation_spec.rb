@@ -3,11 +3,11 @@
 require "spec_helper"
 
 module Decidim::TimeTracker::Admin
-  describe CreateAssignee do
+  describe CreateAssignation do
     let(:subject) { described_class.new(form, activity) }
     let(:form) do
       double(
-        # AssigneeForm,
+        # AssignationForm,
         name: Faker::Name.name,
         email: "user@example.org",
         existing_user: existing_user,
@@ -36,14 +36,14 @@ module Decidim::TimeTracker::Admin
         expect { subject.call }.to broadcast(:ok)
       end
 
-      it "creates a new assignee for the activity" do
-        expect { subject.call }.to change { Decidim::TimeTracker::Assignee.count }.by(1)
+      it "creates a new assignation for the activity" do
+        expect { subject.call }.to change { Decidim::TimeTracker::Assignation.count }.by(1)
       end
 
       it "traces the action", versioning: true do
         expect(Decidim.traceability)
           .to receive(:create!)
-          .with(Decidim::TimeTracker::Assignee, user, hash_including(:user, :activity, :status, :invited_at, :invited_by_user))
+          .with(Decidim::TimeTracker::Assignation, user, hash_including(:user, :activity, :status, :invited_at, :invited_by_user))
           .and_call_original
 
         expect { subject.call }.to change(Decidim::ActionLog, :count)
@@ -58,7 +58,7 @@ module Decidim::TimeTracker::Admin
 
       let(:form) do
         double(
-          # AssigneeForm,
+          # AssignationForm,
           name: user.name,
           email: user.email,
           existing_user: existing_user,
@@ -72,14 +72,14 @@ module Decidim::TimeTracker::Admin
         expect { subject.call }.to broadcast(:ok)
       end
 
-      it "creates a new assignee for the activity" do
-        expect { subject.call }.to change { Decidim::TimeTracker::Assignee.count }.by(1)
+      it "creates a new assignation for the activity" do
+        expect { subject.call }.to change { Decidim::TimeTracker::Assignation.count }.by(1)
       end
 
       it "traces the action", versioning: true do
         expect(Decidim.traceability)
           .to receive(:create!)
-          .with(Decidim::TimeTracker::Assignee, user, hash_including(:user, :activity, :status, :invited_at, :invited_by_user))
+          .with(Decidim::TimeTracker::Assignation, user, hash_including(:user, :activity, :status, :invited_at, :invited_by_user))
           .and_call_original
 
         expect { subject.call }.to change(Decidim::ActionLog, :count)

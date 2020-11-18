@@ -14,7 +14,7 @@ module Decidim::TimeTracker
     let(:task) { create :task, time_tracker: time_tracker }
     let(:activity) { create :activity, task: task }
     let(:milestone) { create :milestone, user: user }
-    let!(:assigne) { create :assignee, user: user, activity: milestone.activity }
+    let!(:assigne) { create :assignation, user: user, activity: milestone.activity }
 
     before do
       request.env["decidim.current_organization"] = organization

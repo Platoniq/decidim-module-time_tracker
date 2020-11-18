@@ -28,7 +28,7 @@ module Decidim
           get :index, on: :collection, path: "(:nickname)"
         end
 
-        resources :assignees, only: [:create]
+        resources :assignations, only: [:create]
 
         root to: "time_tracker#index"
       end

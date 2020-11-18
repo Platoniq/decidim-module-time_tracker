@@ -25,9 +25,9 @@ module Decidim
         Decidim::EngineRouter.main_proxy(current_component).root_path
       end
 
-      # Override so can answer only if is an assignee
+      # Override so can answer only if is an assignation
       def visitor_can_answer?
-        activity.assignee_accepted? current_user
+        activity.assignation_accepted? current_user
       end
 
       # Override to allow respond users once per-activity

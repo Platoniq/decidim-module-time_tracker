@@ -18,8 +18,8 @@ module Decidim
                class_name: "Decidim::TimeTracker::Activity",
                through: :tasks
 
-      has_many :assignees,
-               class_name: "Decidim::TimeTracker::Assignee",
+      has_many :assignations,
+               class_name: "Decidim::TimeTracker::Assignation",
                through: :activities
 
       after_create :populate_questionnaire

@@ -23,7 +23,7 @@ module Decidim::TimeTracker::Admin
       it_behaves_like "permission is not set"
     end
 
-    context "when subject is not an assignee, an activity, or a task" do
+    context "when subject is not an assignation, an activity, or a task" do
       let(:action) do
         { scope: :admin, action: :read, subject: :foo }
       end
@@ -83,33 +83,33 @@ module Decidim::TimeTracker::Admin
       end
     end
 
-    context "when subject is an assignee" do
+    context "when subject is an assignation" do
       context "when indexing" do
-        it_behaves_like "action is allowed", :admin, :index, :assignees
+        it_behaves_like "action is allowed", :admin, :index, :assignations
       end
 
       context "when creating" do
-        it_behaves_like "action is allowed", :admin, :create, :assignee
+        it_behaves_like "action is allowed", :admin, :create, :assignation
       end
 
       context "when destroying" do
-        it_behaves_like "action is allowed", :admin, :destroy, :assignee
+        it_behaves_like "action is allowed", :admin, :destroy, :assignation
       end
 
       context "when updating" do
-        let(:assignee) { create(:assignee) }
+        let(:assignation) { create(:assignation) }
         let(:context) do
-          { assignee: assignee }
+          { assignation: assignation }
         end
 
-        context "when the assignee has no time events" do
-          it_behaves_like "action is allowed", :admin, :update, :assignee
+        context "when the assignation has no time events" do
+          it_behaves_like "action is allowed", :admin, :update, :assignation
         end
 
-        context "when the assignee has time events" do
-          let!(:time_event) { create(:time_event, assignee: assignee, total_seconds: 30) }
+        context "when the assignation has time events" do
+          let!(:time_event) { create(:time_event, assignation: assignation, total_seconds: 30) }
           let(:action) do
-            { scope: :admin, action: :update, subject: :assignee }
+            { scope: :admin, action: :update, subject: :assignation }
           end
 
           it_behaves_like "permission is not set"

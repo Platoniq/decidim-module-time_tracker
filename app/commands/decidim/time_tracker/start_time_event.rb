@@ -59,7 +59,7 @@ module Decidim
       def create_time_event!
         @time_entry = Decidim::TimeTracker::TimeEvent.create!(
           user: form.user,
-          assignee: form.assignee,
+          assignation: form.assignation,
           activity: form.activity,
           start: start_time.to_i
         )

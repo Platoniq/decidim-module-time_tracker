@@ -74,12 +74,12 @@ module Decidim::TimeTracker
           sign_in user
         end
 
-        context "and user is not an assignee" do
+        context "and user is not an assignation" do
           it_behaves_like "renders the form readonly", false
         end
 
-        context "and user is an assignee" do
-          let!(:assignee) { create :assignee, activity: activity, user: user }
+        context "and user is an assignation" do
+          let!(:assignation) { create :assignation, activity: activity, user: user }
 
           context "and questionnaire has no questions" do
             it_behaves_like "renders the form readonly", true

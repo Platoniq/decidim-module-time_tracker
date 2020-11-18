@@ -3,8 +3,8 @@
 module Decidim
   module TimeTracker
     module Admin
-      # A command with all the business logic when creating a assignee
-      class CreateAssignee < Rectify::Command
+      # A command with all the business logic when creating a assignation
+      class CreateAssignation < Rectify::Command
         def initialize(form, activity)
           @form = form
           @activity = activity
@@ -18,15 +18,15 @@ module Decidim
 
           ActiveRecord::Base.transaction do
             @user ||= existing_user || new_user
-            create_assignee
+            create_assignation
           end
 
           broadcast(:ok)
         end
 
-        def create_assignee
+        def create_assignation
           Decidim.traceability.create!(
-            Decidim::TimeTracker::Assignee,
+            Decidim::TimeTracker::Assignation,
             @form.current_user,
             activity: @activity,
             user: @user,

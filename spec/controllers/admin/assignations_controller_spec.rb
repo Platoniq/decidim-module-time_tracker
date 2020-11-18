@@ -3,7 +3,7 @@
 require "spec_helper"
 
 module Decidim::TimeTracker::Admin
-  describe AssigneesController, type: :controller do
+  describe AssignationsController, type: :controller do
     routes { Decidim::TimeTracker::AdminEngine.routes }
 
     let(:organization) { create :organization }
@@ -13,7 +13,7 @@ module Decidim::TimeTracker::Admin
     let(:time_tracker) { create :time_tracker, component: component }
     let!(:task) { create :task, time_tracker: time_tracker }
     let!(:activity) { create :activity, task: task }
-    let!(:assignee) { create :assignee, :pending, activity: activity }
+    let!(:assignation) { create :assignation, :pending, activity: activity }
 
     let(:form) do
       {
@@ -68,7 +68,7 @@ module Decidim::TimeTracker::Admin
         {
           task_id: task.id,
           activity_id: activity.id,
-          assignee: form
+          assignation: form
         }
       end
 
@@ -79,10 +79,10 @@ module Decidim::TimeTracker::Admin
           expect(response).to have_http_status(:found)
         end
 
-        it "creates the new assignee" do
+        it "creates the new assignation" do
           post :create, params: params
-          expect(Decidim::TimeTracker::Assignee.last.user.name).to eq(form[:name])
-          expect(Decidim::TimeTracker::Assignee.last.status).to eq("accepted")
+          expect(Decidim::TimeTracker::Assignation.last.user.name).to eq(form[:name])
+          expect(Decidim::TimeTracker::Assignation.last.status).to eq("accepted")
         end
       end
     end
@@ -95,8 +95,8 @@ module Decidim::TimeTracker::Admin
           participatory_process_slug: participatory_space.slug,
           task_id: task.id,
           activity_id: activity.id,
-          id: assignee.id,
-          assignee_status: status
+          id: assignation.id,
+          assignation_status: status
         }
       end
 
@@ -106,9 +106,9 @@ module Decidim::TimeTracker::Admin
           expect(response).to have_http_status(:redirect)
         end
 
-        it "updates the new assignee" do
+        it "updates the new assignation" do
           post :update, params: params
-          expect(Decidim::TimeTracker::Assignee.first.status).to eq(status)
+          expect(Decidim::TimeTracker::Assignation.first.status).to eq(status)
         end
       end
     end
@@ -120,7 +120,7 @@ module Decidim::TimeTracker::Admin
           participatory_process_slug: participatory_space.slug,
           task_id: task.id,
           activity_id: activity.id,
-          id: assignee.id
+          id: assignation.id
         }
       end
 
@@ -131,9 +131,9 @@ module Decidim::TimeTracker::Admin
           expect(response).to have_http_status(:found)
         end
 
-        it "removes the assignee" do
+        it "removes the assignation" do
           delete :destroy, params: params
-          expect { assignee.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          expect { assignation.reload }.to raise_error(ActiveRecord::RecordNotFound)
         end
       end
     end

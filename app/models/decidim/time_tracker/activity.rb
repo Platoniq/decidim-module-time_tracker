@@ -10,8 +10,8 @@ module Decidim
       belongs_to :task,
                  class_name: "Decidim::TimeTracker::Task"
 
-      has_many :assignees,
-               class_name: "Decidim::TimeTracker::Assignee",
+      has_many :assignations,
+               class_name: "Decidim::TimeTracker::Assignation",
                dependent: :destroy
 
       has_many :time_events,
@@ -67,20 +67,20 @@ module Decidim
         user_remaining_for_date(user, Date.current)
       end
 
-      def assignee_pending?(user)
-        assignees.pending.where(user: user).count.positive?
+      def assignation_pending?(user)
+        assignations.pending.where(user: user).count.positive?
       end
 
-      def assignee_accepted?(user)
-        assignees.accepted.where(user: user).count.positive?
+      def assignation_accepted?(user)
+        assignations.accepted.where(user: user).count.positive?
       end
 
-      def assignee_rejected?(user)
-        assignees.rejected.where(user: user).count.positive?
+      def assignation_rejected?(user)
+        assignations.rejected.where(user: user).count.positive?
       end
 
-      def has_assignee?(user)
-        assignees.where(user: user).count.positive?
+      def has_assignation?(user)
+        assignations.where(user: user).count.positive?
       end
 
       def has_questions?
@@ -92,7 +92,7 @@ module Decidim
 
         return false unless has_questions?
 
-        assignee_accepted?(user)
+        assignation_accepted?(user)
       end
 
       def answered_by?(user)

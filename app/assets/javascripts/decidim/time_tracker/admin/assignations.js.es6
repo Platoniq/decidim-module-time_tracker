@@ -1,10 +1,10 @@
 ((exports) => {
   const { createFieldDependentInputs } = exports.DecidimAdmin;
 
-  const $assigneeType = $("#assignee_existing_user");
+  const $assignationType = $("#assignation_existing_user");
 
   createFieldDependentInputs({
-    controllerField: $assigneeType,
+    controllerField: $assignationType,
     wrapperSelector: ".user-fields",
     dependentFieldsSelector: ".user-fields--email",
     dependentInputSelector: "input",
@@ -14,7 +14,7 @@
   });
 
   createFieldDependentInputs({
-    controllerField: $assigneeType,
+    controllerField: $assignationType,
     wrapperSelector: ".user-fields",
     dependentFieldsSelector: ".user-fields--name",
     dependentInputSelector: "input",
@@ -24,7 +24,7 @@
   });
 
   createFieldDependentInputs({
-    controllerField: $assigneeType,
+    controllerField: $assignationType,
     wrapperSelector: ".user-fields",
     dependentFieldsSelector: ".user-fields--user-picker",
     dependentInputSelector: "input",

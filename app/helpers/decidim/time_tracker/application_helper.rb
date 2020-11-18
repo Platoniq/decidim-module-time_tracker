@@ -19,8 +19,8 @@ module Decidim
         translated_attribute(component_settings.activities_label).presence || t("models.activity.name", scope: "decidim.time_tracker")
       end
 
-      def assignees_label
-        translated_attribute(component_settings.assignees_label).presence || t("models.assignee.name", scope: "decidim.time_tracker")
+      def assignations_label
+        translated_attribute(component_settings.assignations_label).presence || t("models.assignation.name", scope: "decidim.time_tracker")
       end
 
       def time_events_label
@@ -59,24 +59,24 @@ module Decidim
                 end
 
         content_tag :span, class: "#{klass} label" do
-          t("models.assignee.fields.statuses.#{status}", scope: "decidim.time_tracker")
+          t("models.assignation.fields.statuses.#{status}", scope: "decidim.time_tracker")
         end
       end
 
       def assignation_date(assignation)
         if assignation.invited_at.present?
-          t("models.assignee.fields.invited_at", time: l(assignation.invited_at, format: :long), scope: "decidim.time_tracker")
+          t("models.assignation.fields.invited_at", time: l(assignation.invited_at, format: :long), scope: "decidim.time_tracker")
         elsif assignation.requested_at.present?
-          t("models.assignee.fields.requested_at", time: l(assignation.requested_at, format: :long), scope: "decidim.time_tracker")
+          t("models.assignation.fields.requested_at", time: l(assignation.requested_at, format: :long), scope: "decidim.time_tracker")
         end
       end
 
       def user_total_time_dedicated(user)
-        Assignee.where(user: user).sum(&:time_dedicated)
+        Assignation.where(user: user).sum(&:time_dedicated)
       end
 
       def user_joined_at(user)
-        Assignee.where(user: user).order(tos_accepted_at: :desc).first.tos_accepted_at
+        Assignation.where(user: user).order(tos_accepted_at: :desc).first.tos_accepted_at
       end
 
       def user_last_milestone(user)

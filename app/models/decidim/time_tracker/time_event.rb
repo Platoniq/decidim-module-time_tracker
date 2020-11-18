@@ -6,8 +6,8 @@ module Decidim
     class TimeEvent < ApplicationRecord
       self.table_name = :decidim_time_tracker_time_events
 
-      belongs_to :assignee,
-                 class_name: "Decidim::TimeTracker::Assignee"
+      belongs_to :assignation,
+                 class_name: "Decidim::TimeTracker::Assignation"
 
       belongs_to :activity,
                  class_name: "Decidim::TimeTracker::Activity"
@@ -21,15 +21,15 @@ module Decidim
       default_scope { order(start: :desc) }
       scope :started_between, ->(start_date, end_date) { where("start >= ? AND start <= ?", start_date.to_i, end_date.to_i) }
 
-      # rubocop:disable Metrics/FindBy
+      # rubocop:disable Rails/FindBy
       def self.last_for(user)
-        if user.is_a?(Assignee)
-          where(assignee: user).first
+        if user.is_a?(Assignation)
+          where(assignation: user).first
         else
           where(user: user).first
         end
       end
-      # rubocop:enable Metrics/FindBy
+      # rubocop:enable Rails/FindBy
 
       # number of seconds since the counting started
       # zero if activity is stopped

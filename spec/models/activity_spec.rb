@@ -16,7 +16,7 @@ module Decidim
       it { is_expected.to be_valid }
 
       context "when the activity is correctly associated" do
-        let!(:assignees) { create_list(:assignee, 2, activity: activity) }
+        let!(:assignations) { create_list(:assignation, 2, activity: activity) }
         let!(:time_events) do
           [
             create(:time_event, activity: activity, start: 1000),
@@ -36,10 +36,10 @@ module Decidim
           expect(subject.time_events.third.id).to eq(time_events.first.id)
         end
 
-        it "is associated with assignees" do
-          expect(subject.assignees.count).to eq assignees.count
-          expect(subject.assignees.first.id).to eq(assignees.first.id)
-          expect(subject.assignees.second.id).to eq(assignees.second.id)
+        it "is associated with assignations" do
+          expect(subject.assignations.count).to eq assignations.count
+          expect(subject.assignations.first.id).to eq(assignations.first.id)
+          expect(subject.assignations.second.id).to eq(assignations.second.id)
         end
       end
 
@@ -87,57 +87,57 @@ module Decidim
         end
       end
 
-      context "when the activity has assignees with different statuses" do
-        let!(:accepted) { create :assignee, :accepted, activity: activity }
-        let!(:rejected) { create :assignee, :rejected, activity: activity }
-        let!(:pending) { create :assignee, :pending, activity: activity }
+      context "when the activity has assignations with different statuses" do
+        let!(:accepted) { create :assignation, :accepted, activity: activity }
+        let!(:rejected) { create :assignation, :rejected, activity: activity }
+        let!(:pending) { create :assignation, :pending, activity: activity }
 
-        it "detects accepted assignees" do
-          expect(subject.assignee_accepted?(accepted.user)).to eq(true)
-          expect(subject.assignee_rejected?(accepted.user)).to eq(false)
-          expect(subject.assignee_pending?(accepted.user)).to eq(false)
+        it "detects accepted assignations" do
+          expect(subject.assignation_accepted?(accepted.user)).to eq(true)
+          expect(subject.assignation_rejected?(accepted.user)).to eq(false)
+          expect(subject.assignation_pending?(accepted.user)).to eq(false)
         end
 
-        it "detects rejected assignees" do
-          expect(subject.assignee_accepted?(rejected.user)).to eq(false)
-          expect(subject.assignee_rejected?(rejected.user)).to eq(true)
-          expect(subject.assignee_pending?(rejected.user)).to eq(false)
+        it "detects rejected assignations" do
+          expect(subject.assignation_accepted?(rejected.user)).to eq(false)
+          expect(subject.assignation_rejected?(rejected.user)).to eq(true)
+          expect(subject.assignation_pending?(rejected.user)).to eq(false)
         end
 
-        it "detects pending assignees" do
-          expect(subject.assignee_accepted?(pending.user)).to eq(false)
-          expect(subject.assignee_rejected?(pending.user)).to eq(false)
-          expect(subject.assignee_pending?(pending.user)).to eq(true)
+        it "detects pending assignations" do
+          expect(subject.assignation_accepted?(pending.user)).to eq(false)
+          expect(subject.assignation_rejected?(pending.user)).to eq(false)
+          expect(subject.assignation_pending?(pending.user)).to eq(true)
         end
       end
 
-      context "when assignee is tracking" do
-        let!(:assignee) { create :assignee, :accepted, activity: activity }
+      context "when assignation is tracking" do
+        let!(:assignation) { create :assignation, :accepted, activity: activity }
 
         context "and there are no time events" do
           it "detects counter as not active" do
-            expect(subject.counter_active_for?(assignee.user)).to eq(false)
+            expect(subject.counter_active_for?(assignation.user)).to eq(false)
           end
         end
 
         context "and counter is not running" do
-          let!(:event) { create :time_event, :stopped, activity: activity, assignee: assignee }
+          let!(:event) { create :time_event, :stopped, activity: activity, assignation: assignation }
 
           it "detects counter as not active" do
-            expect(subject.counter_active_for?(assignee.user)).to eq(false)
+            expect(subject.counter_active_for?(assignation.user)).to eq(false)
           end
         end
 
         context "and counter is running" do
-          let!(:event1) { create :time_event, :stopped, activity: activity, assignee: assignee }
-          let!(:event2) { create :time_event, :running, activity: activity, assignee: assignee }
+          let!(:event1) { create :time_event, :stopped, activity: activity, assignation: assignation }
+          let!(:event2) { create :time_event, :running, activity: activity, assignation: assignation }
 
           it "detects counter as active" do
-            expect(subject.counter_active_for?(assignee.user)).to eq(true)
+            expect(subject.counter_active_for?(assignation.user)).to eq(true)
           end
 
           it "detects the number of elapsed seconds" do
-            expect(subject.user_seconds_elapsed(assignee.user)).to eq(2.minutes)
+            expect(subject.user_seconds_elapsed(assignation.user)).to eq(2.minutes)
           end
         end
       end

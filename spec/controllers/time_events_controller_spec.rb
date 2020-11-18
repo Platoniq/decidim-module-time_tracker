@@ -13,7 +13,7 @@ module Decidim::TimeTracker
     let(:task) { create :task, time_tracker: time_tracker }
     let(:time_tracker) { create :time_tracker, component: component }
     let(:activity) { create :activity, task: task }
-    let!(:assignee) { create :assignee, activity: activity, user: user }
+    let!(:assignation) { create :assignation, activity: activity, user: user }
 
     let(:params) do
       {
@@ -49,7 +49,7 @@ module Decidim::TimeTracker
       end
 
       context "when a previous counter exists" do
-        let!(:time_event) { create(:time_event, start: (Time.current - 15.minutes), assignee: assignee, activity: activity) }
+        let!(:time_event) { create(:time_event, start: (Time.current - 15.minutes), assignation: assignation, activity: activity) }
 
         it "returns already active" do
           get :start, params: params
@@ -61,8 +61,8 @@ module Decidim::TimeTracker
         end
       end
 
-      context "when the assignee is not in the activity" do
-        let(:assignee) { create(:assignee, user: user) }
+      context "when the assignation is not in the activity" do
+        let(:assignation) { create(:assignation, user: user) }
 
         it "returns error" do
           get :start, params: params
@@ -71,8 +71,8 @@ module Decidim::TimeTracker
         end
       end
 
-      context "when the assignee is not accepted in the activity" do
-        let(:assignee) { create(:assignee, :pending, activity: activity, user: user) }
+      context "when the assignation is not accepted in the activity" do
+        let(:assignation) { create(:assignation, :pending, activity: activity, user: user) }
 
         it "returns error" do
           get :start, params: params
@@ -81,7 +81,7 @@ module Decidim::TimeTracker
         end
       end
 
-      context "when the assignee is not in the time window for the activity" do
+      context "when the assignation is not in the time window for the activity" do
         let(:activity) { create :activity, task: task, start_date: (Time.current + 1.day) }
 
         it "returns error" do
@@ -94,7 +94,7 @@ module Decidim::TimeTracker
     # rubocop:enable Rails/Date
 
     describe "post #stop" do
-      let!(:time_event) { create :time_event, start: (Time.current - 1.hour), activity: activity, assignee: assignee }
+      let!(:time_event) { create :time_event, start: (Time.current - 1.hour), activity: activity, assignation: assignation }
 
       context "when counter is active" do
         it "stops the time entry" do
@@ -111,7 +111,7 @@ module Decidim::TimeTracker
       end
 
       context "when counter is stopped" do
-        let!(:time_event) { create :time_event, start: (Time.current - 1.hour), stop: (Time.current - 15.minutes), activity: activity, assignee: assignee }
+        let!(:time_event) { create :time_event, start: (Time.current - 1.hour), stop: (Time.current - 15.minutes), activity: activity, assignation: assignation }
 
         it "returns already stopped" do
           get :stop, params: params

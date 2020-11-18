@@ -18,11 +18,11 @@ module Decidim
         private
 
         def activities
-          Decidim::TimeTracker::Activity.joins(:assignees).where("decidim_time_tracker_assignees.decidim_user_id": current_user.id).group_by(&:id)
+          Decidim::TimeTracker::Activity.joins(:assignations).where("decidim_time_tracker_assignations.decidim_user_id": current_user.id).group_by(&:id)
         end
 
         def assignations
-          Assignee.where(user: current_user).sorted_by_status(:accepted, :pending, :rejected)
+          Assignation.where(user: current_user).sorted_by_status(:accepted, :pending, :rejected)
         end
 
         def activity_path(assignation)

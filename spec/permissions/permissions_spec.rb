@@ -50,10 +50,10 @@ module Decidim::TimeTracker
       end
     end
 
-    context "when subject is assignee" do
+    context "when subject is assignation" do
       context "and there is no activity present" do
         let(:action) do
-          { scope: :public, action: :create, subject: :assignee }
+          { scope: :public, action: :create, subject: :assignation }
         end
 
         it { is_expected.to eq true }
@@ -68,12 +68,12 @@ module Decidim::TimeTracker
           }
         end
         let(:action) do
-          { scope: :public, action: :create, subject: :assignee }
+          { scope: :public, action: :create, subject: :assignation }
         end
 
         context "and action is not create" do
           let(:action) do
-            { scope: :public, action: :read, subject: :assignee }
+            { scope: :public, action: :read, subject: :assignation }
           end
 
           it_behaves_like "permission is not set"
@@ -81,13 +81,13 @@ module Decidim::TimeTracker
 
         context "and action is create" do
           context "and user is assigned" do
-            let!(:assignee) { create :assignee, activity: activity, user: user }
+            let!(:assignation) { create :assignation, activity: activity, user: user }
 
             it_behaves_like "permission is not set"
           end
 
           context "and user is not assigned" do
-            let!(:assignee) { create :assignee, user: user }
+            let!(:assignation) { create :assignation, user: user }
 
             it { is_expected.to eq true }
 
@@ -140,13 +140,13 @@ module Decidim::TimeTracker
 
         context "and action is create" do
           context "and user is assigned" do
-            let!(:assignee) { create :assignee, activity: activity, user: user }
+            let!(:assignation) { create :assignation, activity: activity, user: user }
 
             it { is_expected.to eq true }
           end
 
           context "and user is not assigned" do
-            let!(:assignee) { create :assignee, user: user }
+            let!(:assignation) { create :assignation, user: user }
 
             it_behaves_like "permission is not set"
 
