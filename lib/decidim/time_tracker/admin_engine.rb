@@ -17,10 +17,8 @@ module Decidim
           end
         end
 
-        [:questionnaire, :assignee_questionnaire].each do |questionnaire_resource|
-          resource questionnaire_resource, only: [:edit, :update] do
-            get "/answer_options", to: "#{questionnaire_resource}#answer_options", as: :answer_options
-          end
+        resource :questionnaire, only: [:edit, :update] do
+          get "/answer_options", to: "questionnaire#answer_options", as: :answer_options
         end
 
         get :time_tracker_exports, to: "time_tracker_exports#export"

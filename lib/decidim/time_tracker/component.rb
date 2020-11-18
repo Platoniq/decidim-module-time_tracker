@@ -30,7 +30,6 @@ Decidim.register_component(:time_tracker) do |component|
     time_tracker = Decidim::TimeTracker::TimeTracker.find_by(decidim_component_id: instance.id)
 
     answers = Decidim::Forms::Answer.where(questionnaire: time_tracker.questionnaire)
-    assignee_answers = Decidim::Forms::Answer.where(questionnaire: time_tracker.assignee_questionnaire)
     tasks = Decidim::TimeTracker::Task.where(time_tracker: time_tracker)
 
     raise StandardError, "Can't remove this component, there are resources associated" if [answers, assignee_answers, tasks].any?(&:any?)

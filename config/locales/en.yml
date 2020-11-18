@@ -132,9 +132,7 @@ en:
             submit: Update
             title: Update task
           index:
-            assignee_questionnaire: Assignee data questionnaire
             questionnaire: Questionnaire
-            questionnaires: Questionnaires
             title: Tasks
           new:
             submit: Create

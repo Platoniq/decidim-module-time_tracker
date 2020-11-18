@@ -22,10 +22,6 @@ module Decidim
                class_name: "Decidim::TimeTracker::Assignee",
                through: :activities
 
-      has_one :assignee_questionnaire,
-              class_name: "Decidim::TimeTracker::AssigneeQuestionnaire",
-              inverse_of: :time_tracker
-
       after_create :populate_questionnaire
 
       def has_questions?
