@@ -35,7 +35,7 @@ cs:
             max_number_of_assignees: Maximální počet přiřazených osob
             milestones_label: Název pro "Milníky"
             tasks_label: Název pro "Úkoly"
-            time_entries_label: Name for "Time Entries"
+            time_events_label: Name for "Time Events"
             tos: Podmínky používání
           step:
             announcement: Oznámení
@@ -76,6 +76,7 @@ cs:
         assignees:
           actions:
             accept: Accept
+            assignees: Manage assignees
             confirm_destroy: Are you sure you want to delete this assignee?
             destroy: Delete assignee
             new: Nový přiřazený
@@ -102,6 +103,8 @@ cs:
         breadcrumbs:
           assignees: Assignees
           global: All tasks
+        exports:
+          time_tracker_questionnaire_answers: Answers
         models:
           activity:
             name: Aktivita
@@ -126,6 +129,7 @@ cs:
             submit: Update
             title: Update task
           index:
+            questionnaire: Questionnaire
             title: Úlohy
           new:
             submit: Create
@@ -203,6 +207,10 @@ cs:
             time_dedicated: Time dedicated
             tos_accepted_at: Joined at
           name: Přiřazený
+        questionnaire:
+          fields:
+            name: Name
+            title: Title
         task:
           fields:
             activities_count: Number of activites
@@ -247,6 +255,17 @@ cs:
         request_activity:
           assignee_pending: Již aplikováno! Brzy správce zkontroluje vaši žádost.
           assignee_rejected: Sorry, you're application has been rejected.
+      time_tracker_questionnaire_answers_serializer:
+        activity_description: Activity
+        activity_id: Activity ID
+        created_at: Answered on
+        id: Answer ID
+        ip_hash: Ip Hash
+        registered: Registered
+        task_id: Task ID
+        task_name: Task
+        unregistered: Unregistered
+        user_status: User status
   layouts:
     decidim:
       user_profile:
