@@ -2,7 +2,7 @@
 
 module Decidim
   module TimeTracker
-    # The data store for an assigne in the Decidim::TimeTracker component.
+    # The data store for an assignation in the Decidim::TimeTracker component.
     class Assignation < ApplicationRecord
       self.table_name = :decidim_time_tracker_assignations
 
