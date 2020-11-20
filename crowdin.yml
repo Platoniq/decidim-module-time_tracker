@@ -47,8 +47,8 @@ files:
   - source: /**/gender_questionnaire/en.yml
     translation: /**/gender_questionnaire/%locale%.yml
     translatable_elements:
-        - title
-        - description
+        - en.title
+        - en.description
         - body
     languages_mapping:
       locale:
