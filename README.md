@@ -57,6 +57,8 @@ Decidim::TimeTracker.configure do |config|
 end
 ```
 
+> **NOTE:** If you customize your questionnaire, you can use ani I18n key to translate it. Just add it to your locales.
+> You can also just put a text with no translation, then it will be used for all languages
 
 ## Contributing
 

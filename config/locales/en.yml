@@ -50,6 +50,25 @@ en:
               or <a href="%{sign_up_url}">sign up</a> to participate in this activity.
             request: Request to join activity
     time_tracker:
+      default_questionnaire:
+        title: How do you perceive this task?
+        description: Thank you for filling this questionnaire! We are asking you this set of questions to help you understand whether your project (and its actions carried out on a voluntary basis) is balanced in terms of task distribution due to gender. Reflecting on these questions might also be a useful opportunity to analyse what are the types of tasks considered important and who usually performs these tasks.
+        tos: Data answered here is treated as confidential and used for statistical purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a> also apply. By submitting this questionnaire, you agree to them.
+        question_1:
+          body: How important do you think this task is?
+          description: From 1 to 5, do you perceive this task as the most important (5), not important at all (1) or something in between?
+          option_1: 1 (Not important at all)
+          option_2: 2 (Not very important)
+          option_3: 3 (Quite important)
+          option_4: 4 (Very important)
+          option_5: 5 (The most important)
+        question_2:
+          body: Who do you think usually perform this task?
+          description: Do you think this task is mostly performed by people who identify with a certain gender?
+          option_1: Mostly women
+          option_2: Mostly men
+          option_3: I don't see differences by gender
+          option_4: Other
       admin:
         actions:
           title: Actions

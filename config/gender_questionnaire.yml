@@ -1,46 +1,26 @@
-title:
-  en: How do you perceive this task?
-description:
-  en: Thank you for filling this questionnaire! We are asking you this set of questions to help you understand whether your project (and its actions carried out on a voluntary basis) is balanced in terms of task distribution due to gender. Reflecting on these questions might also be a useful opportunity to analyse what are the types of tasks considered important and who usually performs these tasks.
-tos:
-  en: Data answered here is treated as confidential and used for statistical purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a> also apply. By submitting this questionnaire, you agree to them.
+title: decidim.time_tracker.default_questionnaire.title
+description: decidim.time_tracker.default_questionnaire.description
+tos: decidim.time_tracker.default_questionnaire.tos
 questions:
   - question_type: single_option
     position: 1
-    body:
-      en: How important do you think this task is?
-    description:
-      en: From 1 to 5, do you perceive this task as the most important (5), not important at all (1) or something in between?
+    body: decidim.time_tracker.default_questionnaire.question_1.body
+    description: decidim.time_tracker.default_questionnaire.question_1.description
     answer_options:
-      - body:
-          en: 1 (Not important at all)
-      - body:
-          en: 2 (Not very important)
-      - body:
-          en: 3 (Quite important)
-      - body:
-          en: 4 (Very important)
-      - body:
-          en: 5 (The most important)
+      - body: decidim.time_tracker.default_questionnaire.question_1.option_1
+      - body: decidim.time_tracker.default_questionnaire.question_1.option_2
+      - body: decidim.time_tracker.default_questionnaire.question_1.option_3
+      - body: decidim.time_tracker.default_questionnaire.question_1.option_4
+      - body: decidim.time_tracker.default_questionnaire.question_1.option_5
   - question_type: separator
     position: 2
-    body:
-      en:
-    description:
-      en:
   - question_type: single_option
     position: 3
-    body:
-      en: Who do you think usually perform this task?
-    description:
-      en: Do you think this task is mostly performed by people who identify with a certain gender?
+    body: decidim.time_tracker.default_questionnaire.question_2.body
+    description: decidim.time_tracker.default_questionnaire.question_2.description
     answer_options:
-      - body:
-          en: Mostly women
-      - body:
-          en: Mostly men
-      - body:
-          en: I don't see differences by gender
-      - body:
-          en: Other
+      - body: decidim.time_tracker.default_questionnaire.question_2.option_1
+      - body: decidim.time_tracker.default_questionnaire.question_2.option_2
+      - body: decidim.time_tracker.default_questionnaire.question_2.option_3
+      - body: decidim.time_tracker.default_questionnaire.question_2.option_4
         free_text: true

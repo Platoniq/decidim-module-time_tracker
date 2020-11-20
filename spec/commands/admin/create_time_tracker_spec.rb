@@ -13,12 +13,12 @@ module Decidim::TimeTracker::Admin
 
     default_questionnaire_seeds = Decidim::TimeTracker.default_questionnaire_seeds
     custom_questionnaire_seeds = {
-      tos: { en: "TOS" },
-      title: { en: "A questionnaire" },
+      tos: "TOS",
+      title: "A questionnaire",
       description: { en: "This is a questionnaire" },
       questions: [
-        { question_type: "short_answer", body: { en: "Question 1" } },
-        { question_type: "single_option", body: { en: "Question 2" }, answer_options: [{ body: { en: "Answer Option 1" }, free_text: true }] }
+        { question_type: "short_answer", body: "Question 1" },
+        { question_type: "single_option", body: { en: "Question 2" }, answer_options: [{ body: "Answer Option 1", free_text: true }] }
       ]
     }
 
@@ -58,7 +58,7 @@ module Decidim::TimeTracker::Admin
         expect(subject.questionnaire.questions.first.body["en"]).to eq "How important do you think this task is?"
         expect(subject.questionnaire.questions.second.question_type).to eq "separator"
         expect(subject.questionnaire.questions.second.position).to eq 2
-        expect(subject.questionnaire.questions.second.body["en"]).to eq nil
+        expect(subject.questionnaire.questions.second.body).to eq nil
         expect(subject.questionnaire.questions.third.question_type).to eq "single_option"
         expect(subject.questionnaire.questions.third.position).to eq 3
         expect(subject.questionnaire.questions.third.body["en"]).to eq "Who do you think usually perform this task?"
@@ -84,9 +84,11 @@ module Decidim::TimeTracker::Admin
 
       it "has questions" do
         expect(subject.time_tracker.has_questions?).to be true
-        expect(subject.questionnaire.title["en"]).to eq "A questionnaire"
-        expect(subject.questionnaire.questions.first.body["en"]).to eq "Question 1"
-        expect(subject.questionnaire.questions.second.answer_options.first.body["en"]).to eq "Answer Option 1"
+        expect(subject.questionnaire.title["en"]).to eq(custom_questionnaire_seeds[:title])
+        expect(subject.questionnaire.tos["en"]).to eq(custom_questionnaire_seeds[:tos])
+        expect(subject.questionnaire.description["en"]).to eq(custom_questionnaire_seeds[:description][:en])
+        expect(subject.questionnaire.questions.first.body["en"]).to eq(custom_questionnaire_seeds[:questions][0][:body])
+        expect(subject.questionnaire.questions.second.answer_options.first.body["en"]).to eq(custom_questionnaire_seeds[:questions][1][:answer_options][0][:body])
         expect(subject.questionnaire.questions.second.answer_options.first.free_text).to eq true
       end
     end

@@ -24,22 +24,41 @@ module Decidim
         def populate_questionnaire
           @seeds = Decidim::TimeTracker.default_questionnaire
           return unless @seeds
+          return unless @seeds[:questions]
 
-          if @seeds[:questions]&.first.is_a?(Hash)
-            questions = @seeds[:questions].map do |question|
-              if question.has_key?(:answer_options)
-                answer_options = question.delete(:answer_options)
-                answer_options.map! { |answer_option| Decidim::Forms::AnswerOption.new(answer_option) }
-                question[:answer_options] = answer_options
-              end
-
-              Decidim::Forms::Question.create(question.merge(questionnaire: @questionnaire))
-            end
-
-            @seeds[:questions] = questions
+          questions = @seeds[:questions].map do |question|
+            Decidim::Forms::Question.create(prepare_question(question))
           end
 
+          @seeds[:title] = i18nize(@seeds[:title])
+          @seeds[:description] = i18nize(@seeds[:description])
+          @seeds[:tos] = i18nize(@seeds[:tos])
+          @seeds[:questions] = questions
+
           @questionnaire.attributes = @seeds
+        end
+
+        def prepare_question(question)
+          if question.has_key?(:answer_options)
+            question[:answer_options].map! do |answer_option|
+              answer_option[:body] = i18nize(answer_option[:body])
+              Decidim::Forms::AnswerOption.new(answer_option)
+            end
+          end
+
+          question.merge(
+            body: i18nize(question[:body]),
+            description: i18nize(question[:description]),
+            questionnaire: @questionnaire
+          )
+        end
+
+        def i18nize(key)
+          return key unless key.is_a? String
+
+          I18n.available_locales.each_with_object({}) do |locale, acc|
+            acc[locale] = I18n.with_locale(locale) { I18n.t(key, default: key) }
+          end
         end
       end
     end
