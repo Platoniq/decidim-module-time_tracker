@@ -39,27 +39,27 @@ initializer "decidim_time_tracker.questionnaire_seeds" do |app|
     title:
       en: How do you perceive this task?
     description:
-      en:
+      en: Thank you for filling this questionnaire! We are asking you this set of questions to help you understand whether your project (and its actions carried out on a voluntary basis) is balanced in terms of task distribution due to gender. Reflecting on these questions might also be a useful opportunity to analyse what are the types of tasks considered important and who usually performs these tasks.
     tos:
-      en: These are the Terms and Conditions. By submitting this questionnaire, you agree to them.
+      en: Data answered here is treated as confidential and used for statistical purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a> also apply. By submitting this questionnaire, you agree to them.
     questions:
       - question_type: single_option
         position: 1
         body:
           en: How important do you think this task is?
         description:
-          en: From 1 to 5, do you perceive this task as most important (5), not important at all (1) or something in between?
+          en: From 1 to 5, do you perceive this task as the most important (5), not important at all (1) or something in between?
         answer_options:
           - body:
               en: 1 (Not important at all)
           - body:
-              en: 2 (Somewhat important)
+              en: 2 (Not very important)
           - body:
               en: 3 (Quite important)
           - body:
               en: 4 (Very important)
           - body:
-              en: 5 (Most important)
+              en: 5 (The most important)
       - question_type: separator
         position: 2
         body:

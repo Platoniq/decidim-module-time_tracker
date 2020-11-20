@@ -6,7 +6,7 @@ require "decidim/time_tracker/version"
 
 Gem::Specification.new do |s|
   s.version = Decidim::TimeTracker::VERSION
-  s.authors = ["Ivan Vergés", "David Benabarre"]
+  s.authors = ["Ivan Vergés", "David Benabarre", "Vera Rojman"]
   s.email = ["ivan@platoniq.net"]
   s.license = "AGPL-3.0"
   s.homepage = "https://github.com/decidim/decidim-module-time_tracker"
@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.summary = "A decidim time_tracker module"
   s.description = "A tool for Decidim that allows to track time dedicated by volunteers doing any arbitrary task."
 
-  s.files = Dir["{app,config,lib}/**/*", "LICENSE-AGPLv3.txt", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,lib,vendor,db}/**/*", "LICENSE-AGPLv3.txt", "Rakefile", "README.md"]
 
   s.add_dependency "decidim-accountability", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
   s.add_dependency "decidim-admin", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
