@@ -32,5 +32,27 @@ module Decidim::TimeTracker::Admin
         expect { subject.call }.to change { Decidim::Forms::Questionnaire.count }.by(1)
       end
     end
+
+    context "when time_tracker_questionnaire_seeds config is defined" do
+      before do
+        Decidim::TimeTracker.default_questionnaire_seeds = {
+          tos: { en: "TOS" },
+          title: { en: "Questionnaire" },
+          description: { en: "This is a questionnaire" },
+          questions: [
+            { question_type: "short_answer", body: { en: "Question 1" } },
+            { question_type: "single_option", body: { en: "Question 2" }, answer_options: [{ body: { en: "Answer Option 1" }, free_text: true }] }
+          ]
+        }
+      end
+
+      it "has questions" do
+        expect(subject.time_tracker.has_questions?).to be true
+        expect(subject.questionnaire.title["en"]).to eq "Questionnaire"
+        expect(subject.questionnaire.questions.first.body["en"]).to eq "Question 1"
+        expect(subject.questionnaire.questions.second.answer_options.first.body["en"]).to eq "Answer Option 1"
+        expect(subject.questionnaire.questions.second.answer_options.first.free_text).to eq true
+      end
+    end
   end
 end

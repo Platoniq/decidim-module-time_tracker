@@ -10,7 +10,21 @@ module Decidim
   # This namespace holds the logic of the `TimeTracker` component. This component
   # allows users to create time_tracker in a participatory space.
   module TimeTracker
+    include ActiveSupport::Configurable
+
     autoload :TimeTrackerQuestionnaireAnswersSerializer, "decidim/time_tracker/time_tracker_questionnaire_answers_serializer"
+
+    # Returns a YAML
+    config_accessor :default_questionnaire_seeds do
+      # YAML.load_file File.join(Rails.root, 'config', 'gender_questionnaire.yml')
+      YAML.load_file File.join(::Decidim::TimeTracker::Engine.root, "config", "gender_questionnaire.yml")
+    end
+
+    def self.default_questionnaire
+      return unless config[:default_questionnaire_seeds]
+
+      config.default_questionnaire_seeds.deep_symbolize_keys
+    end
   end
 end
 
