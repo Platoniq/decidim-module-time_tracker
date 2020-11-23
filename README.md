@@ -4,7 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/9372a7def91c50d04e8c/maintainability)](https://codeclimate.com/github/Platoniq/decidim-module-time_tracker/maintainability)
 [![codecov](https://codecov.io/gh/Platoniq/decidim-module-time_tracker/branch/master/graph/badge.svg)](https://codecov.io/gh/Platoniq/decidim-module-time_tracker)
 
-> **WARNING** This is not ready for production usage yet (though soon will be), a major breaking change is comming (migrations will be rewritten).
+> **WARNING** This is not ready for production usage yet (though soon will be).
 
 A tool for Decidim that allows to track time dedicated by volunteers doing any arbitrary task.
 
@@ -29,64 +29,36 @@ bundle exec rails decidim_time_tracker:install:migrations
 bundle exec rails db:migrate
 ```
 
-## Create seeds for questionnaire
+## About Time tracker and attached questionnaires
 
-If you want the questionnaire for the tasks to be populated with default content, you can add this initializer code to `config/initializers/decidim.rb` and, whenever a new task is created, its questionnaire will be created with this content.
+By default, every activity created has an attached questionnaire for the volunteer to fill. This is is a very simple form with gender questions that can be useful to have a better understanding of the perception of task and its real gender assignation.
 
+As said, this questionnaire is enabled by default, but you can also disable or create your own. However take into account that administrators can always modify or create custom questionnaires.
+
+If you want to customize the default questionnaire or disable it, just create a new initializer in `config/initializers/time_tracker.rb` with the following content:
+
+**To use your own questionnaire** (use [config/default_questionnaire.yml](config/default_questionnaire.yml) as an example guide):
 ```ruby
-initializer "decidim_time_tracker.questionnaire_seeds" do |app|
-  seeds = YAML.safe_load <<~YAML
-    title:
-      en: How do you perceive this task?
-    description:
-      en:
-    tos:
-      en: These are the Terms and Conditions. By submitting this questionnaire, you agree to them.
-    questions:
-      - question_type: single_option
-        position: 1
-        body:
-          en: How important do you think this task is?
-        description:
-          en: From 1 to 5, do you perceive this task as most important (5), not important at all (1) or something in between?
-        answer_options:
-          - body:
-              en: 1 (Not important at all)
-          - body:
-              en: 2 (Somewhat important)
-          - body:
-              en: 3 (Quite important)
-          - body:
-              en: 4 (Very important)
-          - body:
-              en: 5 (Most important)
-      - question_type: separator
-        position: 2
-        body:
-          en:
-        description:
-          en:
-      - question_type: single_option
-        position: 3
-        body:
-          en: Who do you think usually perform this task?
-        description:
-          en: Do you think this task is mostly performed by people who identify with a certain gender?
-        answer_options:
-          - body:
-              en: Mostly women
-          - body:
-              en: Mostly men
-          - body:
-              en: I don't see differences by gender
-          - body:
-              en: Other
-            free_text: true
-  YAML
+# config/initializers/time_tracker.rb
 
-  app.config.time_tracker_questionnaire_seeds = seeds.deep_symbolize_keys
+# Initialize my custom questionnaire placed in config/my_questionnaire.yml
+Decidim::TimeTracker.configure do |config|
+  config.default_questionnaire_seeds = YAML.load_file File.join(Rails.root, 'config', 'my_questionnaire.yml')
 end
 ```
+
+**To completely disable the default questionnaire**:
+```ruby
+# config/initializers/time_tracker.rb
+
+# Disable the default questionnaire for time tracker
+Decidim::TimeTracker.configure do |config|
+  config.default_questionnaire_seeds = nil
+end
+```
+
+> **NOTE:** If you customize your questionnaire, you can use ani I18n key to translate it. Just add it to your locales.
+> You can also just put a text with no translation, then it will be used for all languages
 
 ## Contributing
 
