@@ -16,7 +16,6 @@ module Decidim
 
     # Returns a YAML
     config_accessor :default_questionnaire_seeds do
-      # YAML.load_file File.join(Rails.root, 'config', 'gender_questionnaire.yml')
       YAML.load_file File.join(::Decidim::TimeTracker::Engine.root, "config", "gender_questionnaire.yml")
     end
 
