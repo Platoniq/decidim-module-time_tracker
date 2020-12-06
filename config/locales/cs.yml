@@ -98,42 +98,42 @@ cs:
             create: Vytvořit přiřazení
             title: Nové přiřazení k této aktivitě
           update:
-            error: Error updating assignation
-            success: Assigne updated successfully
+            error: Chyba při aktualizaci přiřazení
+            success: Přiřazená osoba úspěšně aktualizována
         breadcrumbs:
-          assignations: Assignations
-          global: All tasks
+          assignations: Přiřazení
+          global: Všechny úkoly
         exports:
-          time_tracker_questionnaire_answers: Answers
+          time_tracker_questionnaire_answers: Odpovědi
         models:
           activity:
             name: Aktivita
           assignation:
-            name: Assignation
+            name: Přiřazení
           task:
             name: Úloha
         tasks:
           actions:
-            confirm_destroy: Are you sure you want to delete this task?
-            destroy: Delete task
-            edit: Edit task
+            confirm_destroy: Jste si jisti, že chcete odstranit tento úkol?
+            destroy: Smazat úkol
+            edit: Upravit úkol
             export_to_accountability: Export do odpovědnosti
             new: Nová úloha
-            questionnaire: Edit questionnaire
+            questionnaire: Upravit dotazník
           create:
             error: Chyba při vytváření úlohy
             success: Úloha úspěšně vytvořena
           destroy:
             success: Úloha úspěšně smazána
           edit:
-            submit: Update
-            title: Update task
+            submit: Aktualizovat
+            title: Aktualizovat úkol
           index:
-            questionnaire: Questionnaire
+            questionnaire: Dotazník
             title: Úlohy
           new:
-            submit: Create
-            title: Create task
+            submit: Vytvořit
+            title: Vytvořit úkol
           update:
             error: Chyba při aktualizaci úlohy
             success: Úloha úspěšně aktualizována
@@ -143,11 +143,11 @@ cs:
             success: Data sledování času byla úspěšně exportována do odpovědnosti
       assignations:
         request:
-          error: Activity assignation request failed!
-          success: Activity assignation request succeded!
+          error: Požadavek na přiřazení aktivity se nezdařil!
+          success: Požadavek na přiřazení aktivity byl úspěšný!
         show:
-          assignations_activity: "%{user_name}'s activity"
-          milestones_list: List of milestones
+          assignations_activity: "Aktivita %{user_name}"
+          milestones_list: Seznam milníků
       clock:
         hours: "%{n}h"
         minutes: "%{n}m"
@@ -262,27 +262,27 @@ cs:
             answered: Thanks for answering the questionnaire!
             respond: What do you think about this task?
         callout_status:
-          finished: Ended on %{end_date}
-          inactive: Inactive
-          not_started: Will start on %{start_date}
-          open: Open, started on %{start_date}
+          finished: Ukončeno %{end_date}
+          inactive: Neaktivní
+          not_started: Začíná %{start_date}
+          open: Otevřít, začalo %{start_date}
         idle_activity:
-          assignation_pending: Already applied! Soon an admin will review your application.
-          assignation_rejected: Sorry, you're application has been rejected.
+          assignation_pending: Již aplikováno! Brzy správce zkontroluje vaši žádost.
+          assignation_rejected: Omlouváme se, Vaše žádost byla zamítnuta.
         index:
-          milestones_list: People working in this activity
+          milestones_list: Lidé pracující v této aktivitě
         request_activity:
-          assignation_pending: Already applied! Soon an admin will review your application.
-          assignation_rejected: Sorry, you're application has been rejected.
+          assignation_pending: Již aplikováno! Brzy správce zkontroluje vaši žádost.
+          assignation_rejected: Omlouváme se, Vaše žádost byla zamítnuta.
       time_tracker_questionnaire_answers_serializer:
-        activity_description: Activity
-        activity_id: Activity ID
-        created_at: Answered on
-        id: Answer ID
+        activity_description: Aktivita
+        activity_id: ID aktivity
+        created_at: Zodpovězeno
+        id: ID odpovědi
         ip_hash: Ip Hash
-        registered: Registered
-        task_id: Task ID
-        task_name: Task
+        registered: Registrován
+        task_id: ID úkolu
+        task_name: Úkol
         unregistered: Unregistered
         user_status: User status
   layouts:
