@@ -17,7 +17,7 @@ cs:
               no_time_available: Uživatel dosáhl maximálního množství času dostupného pro den
               not_started: Aktivita zatím nezačala
             assignation:
-              unassigned: User is not assignationd to the task
+              unassigned: Uživatel není přiřazen k úkolu
             start:
               date_format: Čas začátku není datum
             stop:
@@ -31,11 +31,11 @@ cs:
           global:
             activities_label: Název pro "Aktivity"
             announcement: Oznámení
-            assignations_label: Name for "Assignations"
-            max_number_of_assignations: Maximum number of assignations
+            assignations_label: Jméno pro "Přiřazení"
+            max_number_of_assignations: Maximální počet přiřazených
             milestones_label: Název pro "Milníky"
             tasks_label: Název pro "Úkoly"
-            time_events_label: Name for "Time Events"
+            time_events_label: Název pro "Čas události"
             tos: Podmínky používání
           step:
             announcement: Oznámení
@@ -49,13 +49,13 @@ cs:
     time_tracker:
       admin:
         actions:
-          title: Actions
+          title: Akce
         activities:
           actions:
-            assignations: Manage assignations
-            confirm_destroy: Are you sure you want to delete this activity?
-            destroy: Delete activity
-            edit: Edit activity
+            assignations: Správa přiřazení
+            confirm_destroy: Opravdu chcete odstranit tuto aktivitu?
+            destroy: Odstranit aktivitu
+            edit: Upravit aktivitu
             new: Nová aktivita
           create:
             error: Chyba vytváření aktivity
@@ -63,40 +63,40 @@ cs:
           destroy:
             success: Aktivita úspěšně smazána
           edit:
-            submit: Update activity
+            submit: Změnit aktivitu
             title: Upravit aktivitu
           index:
-            title: Task activities
+            title: Úkolové aktivity
           new:
-            submit: Create activity
-            title: New activity
+            submit: Vytvořit aktivitu
+            title: Nová aktivita
           update:
             error: Chyba při aktualizaci aktivity
             success: Akce byla úspěšně aktualizována
         assignations:
           actions:
-            accept: Accept
-            assignations: Manage assignations
-            confirm_destroy: Are you sure you want to delete this assignation?
-            destroy: Delete assignation
-            new: New assignation
-            reject: Reject
+            accept: Přijmout
+            assignations: Správa přiřazení
+            confirm_destroy: Opravdu chcete odstranit toto přiřazení?
+            destroy: Odstranit přiřazení
+            new: Nové přiřazení
+            reject: Odmítnout
           create:
-            error: Error creating assignation
-            success: Assignation created successfully
+            error: Chyba při vytváření přiřazení
+            success: Přiřazení bylo úspěšně vytvořeno
           destroy:
-            error: Error removing assignation
-            succcess: Assignation removed successfully
+            error: Chyba při odstraňování přiřazení
+            succcess: Přiřazení bylo úspěšně odstraněno
           form:
-            existing_user: Existing participant
-            non_user: Non participant
-            select_user: Select a participant
-            user_type: Participant type
+            existing_user: Existující účastník
+            non_user: Není účastníkem
+            select_user: Vybrat účastníka
+            user_type: Typ účastníka
           index:
-            title: Assignations
+            title: Přiřazení
           new:
-            create: Create assignation
-            title: New assignation to this activity
+            create: Vytvořit přiřazení
+            title: Nové přiřazení k této aktivitě
           update:
             error: Error updating assignation
             success: Assigne updated successfully
