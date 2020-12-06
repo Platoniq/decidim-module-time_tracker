@@ -153,99 +153,99 @@ cs:
         minutes: "%{n}m"
         seconds: "%{n}s"
       default_questionnaire:
-        description: Thank you for filling this questionnaire! We are asking you this set of questions to help you understand whether your project (and its actions carried out on a voluntary basis) is balanced in terms of task distribution due to gender. Reflecting on these questions might also be a useful opportunity to analyse what are the types of tasks considered important and who usually performs these tasks.
+        description: Děkujeme, že jste vyplnili tento dotazník! Ptáme se na vás tento soubor otázek, který vám pomůže pochopit, zda je váš projekt (a jeho akce prováděné na dobrovolném základě) vyvážený, pokud jde o rozdělení úkolů kvůli pohlaví. Zohlednění těchto otázek může být také užitečnou příležitostí k analýze toho, co je považováno za důležité a kdo tyto úkoly obvykle plní.
         question_1:
-          body: How important do you think this task is?
-          description: From 1 to 5, do you perceive this task as the most important (5), not important at all (1) or something in between?
-          option_1: 1 (Not important at all)
-          option_2: 2 (Not very important)
-          option_3: 3 (Quite important)
-          option_4: 4 (Very important)
-          option_5: 5 (The most important)
+          body: Jak je podle vás tento úkol důležitý?
+          description: Od 1 do 5 považujete tento úkol za nejdůležitější (5), vůbec není důležitý (1) nebo něco mezi tím?
+          option_1: 1 (vůbec není důležitý)
+          option_2: 2 (nepříliš důležité)
+          option_3: 3 (Spíše důležité)
+          option_4: 4 (Velmi důležité)
+          option_5: 5 (Nejdůležitější)
         question_2:
-          body: Who do you think usually perform this task?
-          description: Do you think this task is mostly performed by people who identify with a certain gender?
-          option_1: Mostly women
-          option_2: Mostly men
-          option_3: I don't see differences by gender
-          option_4: Other
-        title: How do you perceive this task?
-        tos: Data answered here is treated as confidential and used for statistical purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a> also apply. By submitting this questionnaire, you agree to them.
+          body: Kdo si myslíte, že tento úkol obvykle plní?
+          description: Myslíte si, že tento úkol plní většinou lidé, kteří se ztotožňují s určitým pohlavím?
+          option_1: Většinou ženy
+          option_2: Většinou muži
+          option_3: Nevidím rozdíly podle pohlaví
+          option_4: Ostatní
+        title: Jak vnímáte tento úkol?
+        tos: Údaje, které zde byly zodpovězeny, se považují za důvěrné a používají se pouze pro statistické účely. Také platí všeobecné <a href="/pages/terms-and-conditions">Podmínky</a>. Odesláním tohoto dotazníku s nimi souhlasíte.
       milestone:
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
-        time_dedicated: Time dedicated
-        title: "%{user_name}'s activity"
+        time_dedicated: Vyhrazený čas
+        title: "Aktivita %{user_name}"
       milestone_form:
-        button_no: No thanks
-        button_submit: Send milestone
-        description: Leave a proof of your work by uploading a picture and a simple phrase
-        input_file: File
-        input_title: Title
-        title: Leave your mark!
+        button_no: Ne, děkuji
+        button_submit: Odeslat milník
+        description: Zanechte důkaz o své práci nahráním obrázku a jednoduchou frázi
+        input_file: Soubor
+        input_title: Název
+        title: Zanechte svou značku!
       milestones:
         create:
           error: Chyba při vytváření milníku
           success: Milník byl úspěšně vytvořen
         index:
-          assignations_activity: "%{user_name}'s activity"
-          back_to_list: Back to list
-          joined_on: Joined on
-          last_worked_on: Last worked on
-          total_time: Total time dedicated
+          assignations_activity: "Aktivita %{user_name}"
+          back_to_list: Zpět na seznam
+          joined_on: Přidal/a se dne
+          last_worked_on: Naposledy pracoval
+          total_time: Celkový čas vyhrazen
         milestone:
-          time_dedicated: Time dedicated
+          time_dedicated: Čas vyhrazen
       models:
         activity:
           fields:
-            assignations_accepted: Accepted assignations
-            assignations_pending: Pending assignations
+            assignations_accepted: Přijaté přiřazení
+            assignations_pending: Čekající přiřazení
             description: Popis
             end_date: Datum ukončení
-            max_minutes_per_day: Max. minutes per day
+            max_minutes_per_day: Max. minut denně
             requests_start_at: Požadavky začínají v
             start_date: Datum zahájení
-            status: Status
+            status: Stav
             statuses:
-              finished: Finished
-              inactive: Inactive
-              not_started: Not started
-              open: Open
+              finished: Dokončeno
+              inactive: Neaktivní
+              not_started: Nezahájeno
+              open: Otevřeno
           name: Aktivita
         assignation:
           fields:
-            email: Email
-            invited_at: Invited at %{time}
-            invited_by: Invited by
-            name: Name
-            requested_at: Requested at %{time}
-            status: Status
+            email: E-mail
+            invited_at: Pozván/a v %{time}
+            invited_by: Pozván od
+            name: Jméno
+            requested_at: Požadováno v %{time}
+            status: Stav
             statuses:
-              accepted: Accepted
-              pending: Pending
-              rejected: Rejected
-            time_dedicated: Time dedicated
-            tos_accepted_at: Joined at
-          name: Assignation
+              accepted: Přijato
+              pending: Čekající
+              rejected: Odmítnuto
+            time_dedicated: Vyhrazený čas
+            tos_accepted_at: Členem od
+          name: Přiřazení
         questionnaire:
           fields:
-            name: Name
-            title: Title
+            name: Jméno
+            title: Název
         task:
           fields:
-            activities_count: Number of activites
-            activities_end_at: Last activity ends at
-            activities_start_at: First activity starts at
-            assignations_accepted: Accepted assignations
-            assignations_pending: Pending assignations
+            activities_count: Počet aktivit
+            activities_end_at: Poslední aktivita končí v
+            activities_start_at: První aktivita začíná v
+            assignations_accepted: Přijaté přiřazení
+            assignations_pending: Čekající přiřazení
             name: Jméno
           name: Úloha
       reports:
         user:
           index:
-            accepted: Accepted
-            dedicated_time: 'Time dedicated so far: %{time}'
-            empty: You don't have any activity assignations
-            pending: Pending
+            accepted: Přijato
+            dedicated_time: 'Dosud vyhrazený čas: %{time}'
+            empty: Nemáte žádné přiřazení aktivit
+            pending: Čekající
       time_events:
         start:
           already_started: Počítadlo je již spuštěno
@@ -259,8 +259,8 @@ cs:
         activity:
           counter_stopped: Počítadlo bylo automaticky zastaveno
           questionnaire:
-            answered: Thanks for answering the questionnaire!
-            respond: What do you think about this task?
+            answered: Děkujeme za zodpovězení dotazníku!
+            respond: Co si myslíte o tomto úkolu?
         callout_status:
           finished: Ukončeno %{end_date}
           inactive: Neaktivní
@@ -283,9 +283,9 @@ cs:
         registered: Registrován
         task_id: ID úkolu
         task_name: Úkol
-        unregistered: Unregistered
-        user_status: User status
+        unregistered: Neregistrovaný
+        user_status: Stav uživatele
   layouts:
     decidim:
       user_profile:
-        time_tracker: My voluntary work
+        time_tracker: Moje dobrovolnická práce
