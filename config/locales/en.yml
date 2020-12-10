@@ -19,7 +19,7 @@ en:
                 for the day
               not_started: Activity has not started yet
             assignation:
-              unassigned: User is not assignationd to the task
+              unassigned: User is not assigned to the task
             start:
               date_format: Start time is not a date
             stop:
