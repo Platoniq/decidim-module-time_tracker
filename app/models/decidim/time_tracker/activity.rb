@@ -5,6 +5,9 @@ module Decidim
     # The data store for a Activity in the Decidim::TimeTracker component. It
     # stores a description and other useful information related to an activity.
     class Activity < ApplicationRecord
+      include Decidim::Traceable
+      include Decidim::Loggable
+
       self.table_name = :decidim_time_tracker_activities
 
       belongs_to :task,
@@ -116,6 +119,10 @@ module Decidim
         return :finished if end_date < Time.current.beginning_of_day
 
         :open
+      end
+
+      def self.log_presenter_class_for(_log)
+        Decidim::TimeTracker::AdminLog::ActivityPresenter
       end
 
       private

@@ -5,6 +5,7 @@ PATH
       decidim-accountability (>= 0.22)
       decidim-admin (>= 0.22)
       decidim-core (>= 0.22)
+      decidim-forms (>= 0.22)
 
 GEM
   remote: https://rubygems.org/

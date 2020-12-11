@@ -1,6 +1,6 @@
 # Decidim::TimeTracker
 
-[![Build Status](https://github.com/Platoniq/decidim-module-time_tracker/workflows/Build/badge.svg)](https://github.com/Platoniq/decidim-module-time_tracker/actions)
+[![Test](https://github.com/Platoniq/decidim-module-time_tracker/workflows/Test/badge.svg)](https://github.com/Platoniq/decidim-module-time_tracker/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9372a7def91c50d04e8c/maintainability)](https://codeclimate.com/github/Platoniq/decidim-module-time_tracker/maintainability)
 [![codecov](https://codecov.io/gh/Platoniq/decidim-module-time_tracker/branch/master/graph/badge.svg)](https://codecov.io/gh/Platoniq/decidim-module-time_tracker)
 
@@ -57,8 +57,8 @@ Decidim::TimeTracker.configure do |config|
 end
 ```
 
-> **NOTE:** If you customize your questionnaire, you can use ani I18n key to translate it. Just add it to your locales.
-> You can also just put a text with no translation, then it will be used for all languages
+> **NOTE:** If you customize your questionnaire, you can use any I18n key to translate it. Just add it to your locales.
+> You also can just put a direct text with no translations, then it will be used for all languages.
 
 ## Contributing
 
