@@ -3,7 +3,7 @@
 module Decidim
   module TimeTracker
     module Admin
-      class QuestionnairesController < Admin::ApplicationController
+      class ActivityQuestionnaireController < Admin::ApplicationController
         include Decidim::Forms::Admin::Concerns::HasQuestionnaire
 
         def questionnaire_for
@@ -11,7 +11,7 @@ module Decidim
         end
 
         def update_url
-          EngineRouter.admin_proxy(current_component).questionnaire_path
+          EngineRouter.admin_proxy(current_component).activity_questionnaire_path
         end
 
         def after_update_url
@@ -19,7 +19,7 @@ module Decidim
         end
 
         def answer_options_url(params)
-          EngineRouter.admin_proxy(current_component).answer_options_questionnaire_path(format: :json, **params)
+          EngineRouter.admin_proxy(current_component).answer_options_activity_questionnaire_path(format: :json, **params)
         end
       end
     end

@@ -125,11 +125,10 @@ en:
             edit: Edit task
             export_to_accountability: Export to Accountability
             new: New task
-            questionnaire: Edit questionnaire
-          assignees_questionnaire:
-            title: Assignees questionnaire
-          activities_questionnaire:
-            title: Activities questionnaire
+          assignee_questionnaire:
+            title: Assignee questionnaire
+          activity_questionnaire:
+            title: Activity questionnaire
           create:
             error: Error creating the task
             success: Task created successfully
@@ -151,6 +150,9 @@ en:
           create:
             error: Error importing the Time Tracker data to accountability
             success: Time Tracker data exported to accountability successfully
+        questionnaires:
+          questionnaire:
+            edit: Edit questionnaire
       assignations:
         request:
           error: Activity assignation request failed!

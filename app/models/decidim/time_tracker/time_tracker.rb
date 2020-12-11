@@ -25,7 +25,7 @@ module Decidim
       has_one :assignee_data,
                class_name: "Decidim::TimeTracker::AssigneeData"
 
-      has_one :assignees_questionnaire,
+      has_one :assignee_questionnaire,
                source: :questionnaire,
                through: :assignee_data,
                class_name: "Decidim::Forms::Questionnaire"
@@ -37,6 +37,8 @@ module Decidim
       def has_assignee_questions?
         assignee_data.questionnaire.questions.any?
       end
+
+      alias activity_questionnaire questionnaire
     end
   end
 end

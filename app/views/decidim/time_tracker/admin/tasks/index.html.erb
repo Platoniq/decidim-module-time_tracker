@@ -74,15 +74,15 @@
 
     <div class="card-section">
       <div class="container">
-        <%= render partial: "decidim/time_tracker/admin/tasks/questionnaire", locals: {
-          questionnaire: time_tracker.questionnaire,
-          edit_path: edit_questionnaire_path,
-          title: t("tasks.activities_questionnaire.title", scope: "decidim.time_tracker.admin")
+        <%= render partial: "decidim/time_tracker/admin/questionnaires/questionnaire", locals: {
+          questionnaire: time_tracker.activity_questionnaire,
+          edit_path: edit_activity_questionnaire_path,
+          title: t("tasks.activity_questionnaire.title", scope: "decidim.time_tracker.admin")
         } %>
-        <%= render partial: "decidim/time_tracker/admin/tasks/questionnaire", locals: {
-          questionnaire: time_tracker.assignees_questionnaire,
+        <%= render partial: "decidim/time_tracker/admin/questionnaires/questionnaire", locals: {
+          questionnaire: time_tracker.assignee_questionnaire,
           edit_path: edit_assignee_questionnaire_path,
-          title: t("tasks.assignees_questionnaire.title", scope: "decidim.time_tracker.admin")
+          title: t("tasks.assignee_questionnaire.title", scope: "decidim.time_tracker.admin")
         } %>
       </div>
     </div>
