@@ -278,6 +278,10 @@ en:
           error: Error stopping counter
           success: Counter stopped succesfully
       time_tracker:
+        assignee_data:
+          answer: Answer questions
+          description: In order to join, you must fill in this questionnaire
+          title: Fill in data
         activity:
           counter_stopped: Counter has been stopped automatically
           questionnaire:

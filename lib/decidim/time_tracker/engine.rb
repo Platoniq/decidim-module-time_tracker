@@ -22,8 +22,16 @@ module Decidim
                 post :answer
               end
             end
+            
           end
         end
+
+        resource :assignee_data, only: [:show] do
+          member do
+            post :answer
+          end
+        end
+
         resources :milestones, only: [:create] do
           get :index, on: :collection, path: "(:nickname)"
         end

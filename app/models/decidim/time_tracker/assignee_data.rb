@@ -12,6 +12,8 @@ module Decidim
                  class_name: "Decidim::TimeTracker::TimeTracker"
 
       delegate :questions, :answers, to: :questionnaire
+
+      delegate :organization, to: :time_tracker
     end
   end
 end
