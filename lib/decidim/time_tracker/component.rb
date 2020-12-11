@@ -70,17 +70,27 @@ Decidim.register_component(:time_tracker) do |component|
   #   # Register some stat number to the application
   # end
 
-  component.exports :time_tracker_questionnaire_answers do |exports|
+  component.exports :time_tracker_activity_questionnaire_answers do |exports|
     exports.collection do |f|
       time_tracker = Decidim::TimeTracker::TimeTracker.find_by(component: f)
 
-      Decidim::Forms::Answer.joins(:questionnaire).where(questionnaire: time_tracker.questionnaire)
+      Decidim::Forms::Answer.joins(:questionnaire).where(questionnaire: time_tracker.activity_questionnaire)
                             .group_by do |answer|
-        answer.session_token.split("-").first # TODO
+        answer.session_token.split("-").first
       end.values
     end
 
-    exports.serializer Decidim::TimeTracker::TimeTrackerQuestionnaireAnswersSerializer
+    exports.serializer Decidim::TimeTracker::TimeTrackerActivityQuestionnaireAnswersSerializer
+  end
+
+  component.exports :time_tracker_assignee_questionnaire_answers do |exports|
+    exports.collection do |f|
+      time_tracker = Decidim::TimeTracker::TimeTracker.find_by(component: f)
+      byebug
+      Decidim::Forms::QuestionnaireUserAnswers.for(time_tracker.assignee_questionnaire)
+    end
+
+    exports.serializer Decidim::Forms::UserAnswersSerializer
   end
 
   component.seeds do |participatory_space|

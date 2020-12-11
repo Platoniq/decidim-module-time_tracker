@@ -4,7 +4,7 @@ module Decidim
   module TimeTracker
     # This class serializes the answers given by a User for questionnaire so can be
     # exported to CSV, JSON or other formats.
-    class TimeTrackerQuestionnaireAnswersSerializer < Decidim::Exporters::Serializer
+    class TimeTrackerActivityQuestionnaireAnswersSerializer < Decidim::Exporters::Serializer
       include Decidim::TranslationsHelper
 
       # Public: Initializes the serializer with a collection of Answers.
@@ -59,7 +59,7 @@ module Decidim
       end
 
       def answer_translated_attribute_name(attribute)
-        I18n.t(attribute.to_sym, scope: "decidim.time_tracker.time_tracker_questionnaire_answers_serializer")
+        I18n.t(attribute.to_sym, scope: "decidim.time_tracker.time_tracker_activity_questionnaire_answers_serializer")
       end
 
       def task_for(answer)

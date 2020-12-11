@@ -11,7 +11,7 @@
           <div class="callout warning"><%= t ".assignation_rejected" %></div>
         <% else %>
           <%= button_to requests_path(activity), method: :create, remote: true, data: { activity_id: activity.id }, class: "button large" do %>
-              <%= t("index.request", scope: "decidim.components.time_tracker.views") %>
+            <%= t("index.request", scope: "decidim.components.time_tracker.views") %>
           <% end %>
         <% end %>
       <% end %>
