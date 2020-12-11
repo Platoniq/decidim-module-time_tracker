@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "decidim-accountability", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
   s.add_dependency "decidim-admin", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
   s.add_dependency "decidim-core", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
+  s.add_dependency "decidim-forms", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
 
   s.add_development_dependency "decidim-dev", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
 end
