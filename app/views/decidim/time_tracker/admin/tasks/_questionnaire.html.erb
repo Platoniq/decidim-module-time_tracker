@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-divider">
+    <h2 class="card-title">
+      <%= title %>
+      <div class="button--title">
+        <% if allowed_to? :update, :questionnaire, questionnaire: questionnaire %>
+          <%= link_to t("tasks.actions.questionnaire", scope: "decidim.time_tracker.admin"), edit_path, class: "button tiny button--simple" %>
+        <% end %>
+      </div>
+    </h2>
+  </div>
+
+  <div class="card-section">
+    <div class="container">
+      <h4><%= translated_attribute questionnaire.title %></h4>
+      <p class="text-small"><%= translated_attribute questionnaire.description %></p>
+      <%= cell("decidim/forms/question_readonly", collection: questionnaire.questions) %>
+    </div>
+  </div>
+</div>

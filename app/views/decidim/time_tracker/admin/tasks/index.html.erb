@@ -61,24 +61,30 @@
   </div>
 </div>
 
-<div class="card">
-  <div class="card-divider">
-    <h2 class="card-title">
-      <%= t(".questionnaire") %>
-      <div class="button--title">
-        <% if allowed_to? :update, :questionnaire, questionnaire: time_tracker.questionnaire %>
-          <%= link_to t("tasks.actions.questionnaire", scope: "decidim.time_tracker.admin"), edit_questionnaire_path, class: "button tiny button--simple" %>
+<div id="questionnaires">
+  <div class="card">
+    <div class="card-divider">
+      <h2 class="card-title">
+        <%= t(".questionnaires") %>
+        <div class="button--title">
           <%= export_dropdown %>
-        <% end %>
-      </div>
-    </h2>
-  </div>
+        </div>
+      </h2>
+    </div>
 
-  <div class="card-section">
-    <div class="container">
-      <h4><%= translated_attribute time_tracker.questionnaire.title %></h4>
-      <p class="text-small"><%= translated_attribute time_tracker.questionnaire.description %></p>
-      <%= cell("decidim/forms/question_readonly", collection: time_tracker.questionnaire.questions) %>
+    <div class="card-section">
+      <div class="container">
+        <%= render partial: "decidim/time_tracker/admin/tasks/questionnaire", locals: {
+          questionnaire: time_tracker.questionnaire,
+          edit_path: edit_questionnaire_path,
+          title: t("tasks.activities_questionnaire.title", scope: "decidim.time_tracker.admin")
+        } %>
+        <%= render partial: "decidim/time_tracker/admin/tasks/questionnaire", locals: {
+          questionnaire: time_tracker.assignees_questionnaire,
+          edit_path: edit_assignee_questionnaire_path,
+          title: t("tasks.assignees_questionnaire.title", scope: "decidim.time_tracker.admin")
+        } %>
+      </div>
     </div>
   </div>
 </div>

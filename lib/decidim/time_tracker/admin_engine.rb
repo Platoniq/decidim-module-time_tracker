@@ -21,6 +21,10 @@ module Decidim
           get "/answer_options", to: "questionnaire#answer_options", as: :answer_options
         end
 
+        resource :assignee_questionnaire, only: [:edit, :update] do
+          get "/answer_options", to: "assignee_data#answer_options", as: :answer_options
+        end
+
         get :time_tracker_exports, to: "time_tracker_exports#export"
         # resource :time_tracker_exports, shallow: false do
         #   collection do

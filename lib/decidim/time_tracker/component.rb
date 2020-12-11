@@ -112,7 +112,7 @@ Decidim.register_component(:time_tracker) do |component|
       Decidim::Component.create!(params)
     end
 
-    time_tracker = Decidim::TimeTracker::TimeTracker.create(
+    time_tracker = Decidim::TimeTracker::TimeTracker.create!(
       component: component,
       questionnaire: Decidim::Forms::Questionnaire.new(
         tos: Decidim::Faker::Localized.sentence(10),
@@ -121,21 +121,34 @@ Decidim.register_component(:time_tracker) do |component|
       )
     )
 
-    Decidim::Forms::Question.create!([
-                                       {
-                                         questionnaire: time_tracker.questionnaire,
-                                         question_type: "short_answer",
-                                         body: Decidim::Faker::Localized.sentence(5),
-                                         position: 1
-                                       },
-                                       {
-                                         questionnaire: time_tracker.questionnaire,
-                                         question_type: "single_option",
-                                         body: Decidim::Faker::Localized.sentence(5),
-                                         position: 2,
-                                         answer_options: 3.times.to_a.map { Decidim::Forms::AnswerOption.new(body: Decidim::Faker::Localized.sentence(5)) }
-                                       }
-                                     ])
+    assignee_data = Decidim::TimeTracker::AssigneeData.create!(
+      time_tracker: time_tracker,
+      questionnaire: Decidim::Forms::Questionnaire.new(
+        tos: Decidim::Faker::Localized.sentence(10),
+        title: Decidim::Faker::Localized.sentence(4),
+        description: Decidim::Faker::Localized.sentence(10)
+      )
+    )
+
+    questionnaire_parents = [time_tracker, assignee_data]
+    
+    questionnaire_parents.each do |resource|
+      Decidim::Forms::Question.create!([
+                                        {
+                                          questionnaire: resource.questionnaire,
+                                          question_type: "short_answer",
+                                          body: Decidim::Faker::Localized.sentence(5),
+                                          position: 1
+                                        },
+                                        {
+                                          questionnaire: resource.questionnaire,
+                                          question_type: "single_option",
+                                          body: Decidim::Faker::Localized.sentence(5),
+                                          position: 2,
+                                          answer_options: 3.times.to_a.map { Decidim::Forms::AnswerOption.new(body: Decidim::Faker::Localized.sentence(5)) }
+                                        }
+                                      ])
+    end
 
     # Create some tasks
     3.times do
@@ -172,24 +185,27 @@ Decidim.register_component(:time_tracker) do |component|
             invited_by_user: admin_user,
             tos_accepted_at: [nil, Time.zone.now].sample
           )
-          time_tracker.questionnaire.questions.each do |question|
-            answer = Decidim::Forms::Answer.new(
-              questionnaire: time_tracker.questionnaire,
-              question: question,
-              session_token: activity.session_token(user)
-            )
 
-            answer.body = "My name is #{user.nickname}" if question.question_type == "short_answer"
+          questionnaire_parents.each do |resource|
+            resource.questionnaire.questions.each do |question|
+              answer = Decidim::Forms::Answer.new(
+                questionnaire: resource.questionnaire,
+                question: question,
+                session_token: activity.session_token(user)
+              )
 
-            answer.save!
+              answer.body = "My name is #{user.nickname}" if question.question_type == "short_answer"
 
-            next unless question.question_type == "single_option"
+              answer.save!
 
-            Decidim::Forms::AnswerChoice.create(
-              answer: answer,
-              answer_option: question.answer_options.sample,
-              body: question.body["en"]
-            )
+              next unless question.question_type == "single_option"
+
+              Decidim::Forms::AnswerChoice.create(
+                answer: answer,
+                answer_option: question.answer_options.sample,
+                body: question.body["en"]
+              )
+            end
           end
         end
       end

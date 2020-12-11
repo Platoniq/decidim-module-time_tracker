@@ -48,6 +48,9 @@ en:
           index:
             account_message: <a href="%{sign_in_url}">Sign in with your account</a>
               or <a href="%{sign_up_url}">sign up</a> to participate in this activity.
+            data:
+              fill: Fill in data
+              submit: Submit
             request: Request to join activity
     time_tracker:
       admin:
@@ -123,6 +126,10 @@ en:
             export_to_accountability: Export to Accountability
             new: New task
             questionnaire: Edit questionnaire
+          assignees_questionnaire:
+            title: Assignees questionnaire
+          activities_questionnaire:
+            title: Activities questionnaire
           create:
             error: Error creating the task
             success: Task created successfully
@@ -132,8 +139,8 @@ en:
             submit: Update
             title: Update task
           index:
-            questionnaire: Questionnaire
             title: Tasks
+            questionnaires: Questionnaires
           new:
             submit: Create
             title: Create task

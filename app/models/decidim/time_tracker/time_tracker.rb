@@ -21,9 +21,21 @@ module Decidim
       has_many :assignations,
                class_name: "Decidim::TimeTracker::Assignation",
                through: :activities
+      
+      has_one :assignee_data,
+               class_name: "Decidim::TimeTracker::AssigneeData"
+
+      has_one :assignees_questionnaire,
+               source: :questionnaire,
+               through: :assignee_data,
+               class_name: "Decidim::Forms::Questionnaire"
 
       def has_questions?
         questionnaire.questions.any?
+      end
+
+      def has_assignee_questions?
+        assignee_data.questionnaire.questions.any?
       end
     end
   end
