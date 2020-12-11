@@ -17,6 +17,7 @@ module Decidim
                dependent: :destroy
 
       delegate :questionnaire, to: :time_tracker
+      delegate :component, to: :time_tracker
 
       def starts_at
         activities.order(start_date: :asc).first&.start_date
