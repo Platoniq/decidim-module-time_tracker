@@ -4,7 +4,7 @@ require "spec_helper"
 require "decidim/forms/test/factories"
 
 module Decidim::TimeTracker
-  describe ActivitiesQuestionnaireController, type: :controller do
+  describe ActivityQuestionnaireController, type: :controller do
     routes { Decidim::TimeTracker::Engine.routes }
 
     let!(:user) { create(:user, :confirmed, organization: organization) }
