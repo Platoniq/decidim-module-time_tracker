@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateDecidimTimeTrackerAssigneeData < ActiveRecord::Migration[5.2]
   def change
     create_table :decidim_time_tracker_assignee_data do |t|
