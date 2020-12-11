@@ -22,7 +22,6 @@ module Decidim
                 post :answer
               end
             end
-            
           end
         end
 
