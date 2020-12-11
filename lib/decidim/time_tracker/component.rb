@@ -86,7 +86,6 @@ Decidim.register_component(:time_tracker) do |component|
   component.exports :time_tracker_assignee_questionnaire_answers do |exports|
     exports.collection do |f|
       time_tracker = Decidim::TimeTracker::TimeTracker.find_by(component: f)
-      byebug
       Decidim::Forms::QuestionnaireUserAnswers.for(time_tracker.assignee_questionnaire)
     end
 
@@ -141,23 +140,23 @@ Decidim.register_component(:time_tracker) do |component|
     )
 
     questionnaire_parents = [time_tracker, assignee_data]
-    
+
     questionnaire_parents.each do |resource|
       Decidim::Forms::Question.create!([
-                                        {
-                                          questionnaire: resource.questionnaire,
-                                          question_type: "short_answer",
-                                          body: Decidim::Faker::Localized.sentence(5),
-                                          position: 1
-                                        },
-                                        {
-                                          questionnaire: resource.questionnaire,
-                                          question_type: "single_option",
-                                          body: Decidim::Faker::Localized.sentence(5),
-                                          position: 2,
-                                          answer_options: 3.times.to_a.map { Decidim::Forms::AnswerOption.new(body: Decidim::Faker::Localized.sentence(5)) }
-                                        }
-                                      ])
+                                         {
+                                           questionnaire: resource.questionnaire,
+                                           question_type: "short_answer",
+                                           body: Decidim::Faker::Localized.sentence(5),
+                                           position: 1
+                                         },
+                                         {
+                                           questionnaire: resource.questionnaire,
+                                           question_type: "single_option",
+                                           body: Decidim::Faker::Localized.sentence(5),
+                                           position: 2,
+                                           answer_options: 3.times.to_a.map { Decidim::Forms::AnswerOption.new(body: Decidim::Faker::Localized.sentence(5)) }
+                                         }
+                                       ])
     end
 
     # Create some tasks

@@ -119,6 +119,9 @@ en:
             name: Assignation
           task:
             name: Task
+        questionnaires:
+          questionnaire:
+            edit: Edit questionnaire
         tasks:
           actions:
             confirm_destroy: Are you sure you want to delete this task?
@@ -126,10 +129,10 @@ en:
             edit: Edit task
             export_to_accountability: Export to Accountability
             new: New task
-          assignee_questionnaire:
-            title: Assignee questionnaire
           activity_questionnaire:
             title: Activity questionnaire
+          assignee_questionnaire:
+            title: Assignee questionnaire
           create:
             error: Error creating the task
             success: Task created successfully
@@ -139,8 +142,8 @@ en:
             submit: Update
             title: Update task
           index:
-            title: Tasks
             questionnaires: Questionnaires
+            title: Tasks
           new:
             submit: Create
             title: Create task
@@ -151,9 +154,6 @@ en:
           create:
             error: Error importing the Time Tracker data to accountability
             success: Time Tracker data exported to accountability successfully
-        questionnaires:
-          questionnaire:
-            edit: Edit questionnaire
       assignations:
         request:
           error: Activity assignation request failed!
@@ -279,15 +279,15 @@ en:
           error: Error stopping counter
           success: Counter stopped succesfully
       time_tracker:
-        assignee_data:
-          answer: Answer questions
-          description: In order to join, you must fill in this questionnaire
-          title: Fill in data
         activity:
           counter_stopped: Counter has been stopped automatically
           questionnaire:
             answered: Thanks for answering the questionnaire!
             respond: What do you think about this task?
+        assignee_data:
+          answer: Answer questions
+          description: In order to join, you must fill in this questionnaire
+          title: Fill in data
         callout_status:
           finished: Ended on %{end_date}
           inactive: Inactive
