@@ -6,7 +6,7 @@
     <div class="right">
       <% if user_signed_in? %>
         <% if must_fill_in_data? %>
-          <div class="callout warning"><%== t ".must_fill_in_data", questionnaire_path: assignee_questionnaire_path %></div>
+          <div class="callout warning"><%== t ".assignee_questionnaire", path: assignee_questionnaire_path %></div>
         <% elsif activity.assignation_pending? current_user %>
           <div class="callout warning"><%= t ".assignation_pending" %></div>
         <% elsif activity.assignation_rejected? current_user %>
