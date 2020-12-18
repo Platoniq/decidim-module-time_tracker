@@ -13,7 +13,8 @@
   <div class="card-section">
     <div class="container">
       <h4 class="card-title"><%= translated_attribute questionnaire.title %></h4>
-      <em class="text-small"><%== translated_attribute questionnaire.description %></em>
+      <p class="text-small"><%== translated_attribute questionnaire.description %></p>
+      <em class="text-small"><%== translated_attribute questionnaire.tos %></em>
       <%= cell("decidim/forms/question_readonly", collection: questionnaire.questions) %>
     </div>
   </div>

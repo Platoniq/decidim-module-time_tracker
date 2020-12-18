@@ -132,7 +132,7 @@ en:
           activity_questionnaire:
             title: Activity questionnaire
           assignee_questionnaire:
-            title: Assignee questionnaire
+            title: Terms and conditions questionnaire
           create:
             error: Error creating the task
             success: Task created successfully
