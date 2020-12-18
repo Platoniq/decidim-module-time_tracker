@@ -286,8 +286,8 @@ en:
             respond: What do you think about this task?
         assignee_data:
           answer: Answer questions
-          description: In order to join, you must fill in this questionnaire
-          title: Fill in data
+          description: To better understand our participants and their relationship with these tasks, we ask you to fill a couple questions about your demographic profile. We also want to make sure you agree to the terms of use before signing up for any task. Thank you!
+          title: Terms of use and demographic data
         callout_status:
           finished: Ended on %{end_date}
           inactive: Inactive
