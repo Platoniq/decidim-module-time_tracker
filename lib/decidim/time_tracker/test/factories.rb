@@ -15,6 +15,11 @@ FactoryBot.define do
     questionnaire
   end
 
+  factory :assignee_data, class: "Decidim::TimeTracker::AssigneeData" do
+    time_tracker
+    questionnaire
+  end
+
   factory :activity, class: "Decidim::TimeTracker::Activity" do
     task { create(:task) }
     description { Decidim::Faker::Localized.sentence(3) }

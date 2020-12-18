@@ -10,7 +10,7 @@ module Decidim
       end
 
       def allow_answers?
-        current_component.published? || current_settings.allow_answers?
+        current_user.present? && current_component.published?
       end
 
       def update_url
