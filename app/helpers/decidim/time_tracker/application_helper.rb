@@ -82,6 +82,10 @@ module Decidim
       def user_last_milestone(user)
         Milestone.where(user: user).order(created_at: :desc).first
       end
+
+      def must_fill_in_data?
+        !current_assignee.has_data?(time_tracker.assignee_questionnaire)
+      end
     end
   end
 end

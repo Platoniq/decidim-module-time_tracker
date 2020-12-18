@@ -25,7 +25,7 @@ module Decidim
           end
         end
 
-        resource :assignee_data, only: [:show] do
+        resource :assignee_questionnaire, controller: "assignee_questionnaire", only: [:show] do
           member do
             post :answer
           end

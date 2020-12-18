@@ -5,7 +5,7 @@
     <% if !user_signed_in? %>
       <%= render partial: "sign_in" %>
     <% end %>
-    <% if !current_assignee.has_data?(time_tracker.assignee_questionnaire) %>
+    <% if must_fill_in_data? %>
       <%= render partial: "assignee_data" %>
     <% end %>
     <% tasks.each do |task| %>

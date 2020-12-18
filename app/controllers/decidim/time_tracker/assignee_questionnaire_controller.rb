@@ -2,7 +2,7 @@
 
 module Decidim
   module TimeTracker
-    class AssigneeDataController < Decidim::TimeTracker::ApplicationController
+    class AssigneeQuestionnaireController < Decidim::TimeTracker::ApplicationController
       include Decidim::Forms::Concerns::HasQuestionnaire
 
       def questionnaire_for
@@ -10,30 +10,19 @@ module Decidim
       end
 
       def allow_answers?
-        true
+        current_component.published? || current_settings.allow_answers?
       end
 
       def update_url
-        answer_assignee_data_path(id: time_tracker.assignee_questionnaire)
+        answer_assignee_questionnaire_path
       end
 
       def form_path
-        assignee_data_path(id: time_tracker.assignee_questionnaire)
+        assignee_questionnaire_path
       end
 
       def after_answer_path
         Decidim::EngineRouter.main_proxy(current_component).root_path
-      end
-
-      def visitor_can_answer?
-        true
-      end
-
-      private
-
-      # Override to enable response once for each activity
-      def session_token
-        "123123123"
       end
     end
   end
