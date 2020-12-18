@@ -4,6 +4,9 @@ module Decidim
   module TimeTracker
     # The data store for an assigne in the Decidim::TimeTracker component.
     class Assignation < ApplicationRecord
+      include Decidim::Traceable
+      include Decidim::Loggable
+
       self.table_name = :decidim_time_tracker_assignations
 
       belongs_to :user,
@@ -56,6 +59,10 @@ module Decidim
         statuses.map { |status| send(status) }.sum
       end
       # rubocop:enable Lint/UselessAssignment
+
+      def self.log_presenter_class_for(_log)
+        Decidim::TimeTracker::AdminLog::AssignationPresenter
+      end
     end
   end
 end

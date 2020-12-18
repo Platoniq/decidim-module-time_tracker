@@ -19,14 +19,12 @@ module Decidim
       end
 
       def title
-        if list?
-          link_to milestones_path do
-            content_tag :h4, class: "card__title" do
-              t("title", user_name: model.user.name, scope: "decidim.time_tracker.milestone") if options[:type] == :list
-            end
+        return content_tag :strong, model.title unless list?
+
+        link_to milestones_path do
+          content_tag :h4, class: "card__title" do
+            t("title", user_name: model.user.name, scope: "decidim.time_tracker.milestone")
           end
-        else
-          content_tag :strong, model.title
         end
       end
 
@@ -34,7 +32,7 @@ module Decidim
         image_url = model.attachments&.first&.url
 
         if image_url.present?
-          link_to image_url, target: :blank do
+          link_to milestones_path, class: "card__link" do
             image_tag image_url, class: "card__image"
           end
         else

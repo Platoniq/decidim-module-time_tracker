@@ -21,4 +21,5 @@ development_app
 .byebug_history
 node_modules/
 npm_debug.log
+*.gem
 

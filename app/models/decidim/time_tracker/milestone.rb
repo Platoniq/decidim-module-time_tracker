@@ -19,6 +19,8 @@ module Decidim
       has_one :task,
               through: :activity,
               class_name: "Decidim::TimeTracker::Task"
+
+      delegate :component, to: :task
     end
   end
 end

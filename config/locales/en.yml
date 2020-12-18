@@ -52,6 +52,13 @@ en:
               fill: Fill in data
               submit: Submit
             request: Request to join activity
+    log:
+      value_types:
+        activity_presenter:
+          not_found: 'The Activity was not found on the database (ID: %{id})'
+        time_tracker_presenter:
+          not_found: 'The Time Tracker component was not found on the database (ID:
+            %{id})'
     time_tracker:
       admin:
         actions:
@@ -154,6 +161,19 @@ en:
           create:
             error: Error importing the Time Tracker data to accountability
             success: Time Tracker data exported to accountability successfully
+      admin_log:
+        activity:
+          create: "%{user_name} created the %{resource_name} activity"
+          delete: "%{user_name} removed the %{resource_name} activity"
+          update: "%{user_name} updated the %{resource_name} activity"
+        assignation:
+          create: "%{user_name} created an assignation"
+          delete: "%{user_name} removed an assignation"
+          update: "%{user_name} updated an assignation"
+        task:
+          create: "%{user_name} created the %{resource_name} task"
+          delete: "%{user_name} removed the %{resource_name} task"
+          update: "%{user_name} updated the %{resource_name} task"
       assignations:
         request:
           error: Activity assignation request failed!

@@ -5,6 +5,8 @@ module Decidim
     class TimeTracker < ApplicationRecord
       include Decidim::HasComponent
       include Decidim::Forms::HasQuestionnaire
+      include Decidim::Traceable
+      include Decidim::Loggable
 
       self.table_name = :decidim_time_trackers
 
