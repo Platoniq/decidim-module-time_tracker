@@ -286,7 +286,10 @@ en:
             respond: What do you think about this task?
         assignee_data:
           answer: Let's start!
-          description: To better understand our participants and their relationship with these tasks, we ask you to fill a couple questions about your demographic profile. We also want to make sure you agree to the terms of use before signing up for any task. Thank you!
+          description: To better understand our participants and their relationship
+            with these tasks, we ask you to fill a couple questions about your demographic
+            profile. We also want to make sure you agree to the terms of use before
+            signing up for any task. Thank you!
           title: Terms of use and demographic data
         callout_status:
           finished: Ended on %{end_date}
@@ -301,7 +304,8 @@ en:
         request_activity:
           assignation_pending: Already applied! Soon an admin will review your application.
           assignation_rejected: Sorry, you're application has been rejected.
-          assignee_questionnaire: Please accept the <a href="%{path}" target="_blank">terms of use</a> to join the activity.
+          assignee_questionnaire: Please accept the <a href="%{path}" target="_blank">terms
+            of use</a> to join the activity.
       time_tracker_activity_questionnaire_answers_serializer:
         activity_description: Activity
         activity_id: Activity ID
