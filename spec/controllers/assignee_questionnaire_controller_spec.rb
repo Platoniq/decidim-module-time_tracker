@@ -15,6 +15,7 @@ module Decidim::TimeTracker
     let!(:activity_questionnaire) { create :questionnaire }
     let!(:assignee_data) { create :assignee_data, time_tracker: time_tracker, questionnaire: questionnaire }
     let!(:questionnaire) { create :questionnaire }
+    let!(:assignee) { create :assignee, user: user }
     let(:task) { create :task, time_tracker: time_tracker }
 
     let(:form) do
@@ -112,6 +113,7 @@ module Decidim::TimeTracker
           expect(flash[:alert]).to be_present
           expect(questionnaire).not_to be_answered_by(user)
           expect(response).to render_template(:show)
+          expect(Decidim::TimeTracker::TosAcceptance.count).to be_zero
         end
       end
 
@@ -124,6 +126,7 @@ module Decidim::TimeTracker
           expect(flash[:notice]).to be_present
           expect(questionnaire).to be_answered_by(user)
           expect(response).to have_http_status(:redirect)
+          expect(Decidim::TimeTracker::TosAcceptance.last.assignee).to eq(assignee)
         end
       end
     end

@@ -99,6 +99,10 @@ FactoryBot.define do
     end
   end
 
+  factory :assignee, class: "Decidim::TimeTracker::Assignee" do
+    user
+  end
+
   factory :tos_acceptance, class: "Decidim::TimeTracker::TosAcceptance" do
     assignee
     time_tracker
