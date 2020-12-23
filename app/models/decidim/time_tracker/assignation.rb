@@ -32,13 +32,11 @@ module Decidim
                class_name: "Decidim::TimeTracker::Milestone",
                through: :user
 
-      has_one :assignee,
-              through: :user,
-              class_name: "Decidim::TimeTracker::Assignee"
-
       enum status: [:pending, :accepted, :rejected]
 
-      delegate :tos_accepted_at, to: :assignee
+      def assignee
+        Assignee.for(user)
+      end
 
       def time_dedicated
         time_events.sum(&:total_seconds)

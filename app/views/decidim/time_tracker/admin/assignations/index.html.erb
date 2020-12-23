@@ -41,7 +41,7 @@
                 <%= l(assignation.invited_at, format: :decidim_short) if assignation.invited_at.present? %>
               </td>
               <td>
-                <%= l(assignation.tos_accepted_at, format: :decidim_short) if assignation.tos_accepted_at.present? %>
+                <%= l(assignation.assignee.tos_accepted_at(time_tracker), format: :decidim_short) if assignation.assignee.tos_accepted?(time_tracker) %>
               </td>
               <td>
                 <%= clockify_seconds(assignation.time_dedicated) if assignation.time_dedicated > 0 %>

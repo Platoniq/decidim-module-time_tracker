@@ -75,8 +75,8 @@ module Decidim
         Assignation.where(user: user).sum(&:time_dedicated)
       end
 
-      def user_joined_at(user)
-        Assignee.for(user).joined_at
+      def user_joined_at
+        current_assignee.tos_accepted_at(time_tracker)
       end
 
       def user_last_milestone(user)

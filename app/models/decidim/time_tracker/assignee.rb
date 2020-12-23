@@ -17,7 +17,7 @@ module Decidim
         find_or_create_by(user: user)
       end
 
-      def joined_at(time_tracker)
+      def tos_accepted_at(time_tracker)
         tos_acceptances.find_by(time_tracker: time_tracker).created_at
       end
 
