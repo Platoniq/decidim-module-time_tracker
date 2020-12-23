@@ -76,7 +76,7 @@ module Decidim
       end
 
       def user_joined_at(user)
-        Assignation.where(user: user).order(tos_accepted_at: :desc).first.tos_accepted_at
+        Assignee.for(user).joined_at
       end
 
       def user_last_milestone(user)
@@ -84,7 +84,7 @@ module Decidim
       end
 
       def must_fill_in_data?
-        !current_assignee.has_data?(time_tracker.assignee_questionnaire)
+        !current_assignee.tos_accepted?(time_tracker)
       end
     end
   end

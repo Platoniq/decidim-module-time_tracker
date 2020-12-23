@@ -184,6 +184,19 @@ Decidim.register_component(:time_tracker) do |component|
 
         # Add assignations
         Decidim::User.confirmed.not_deleted.not_managed.where(admin: false).sample(10).each do |user|
+          assignee = Decidim.traceability.create!(
+            Decidim::TimeTracker::Assignee,
+            admin_user,
+            user: user
+          )
+
+          Decidim.traceability.create!(
+            Decidim::TimeTracker::TosAcceptance,
+            admin_user,
+            assignee: assignee,
+            time_tracker: time_tracker
+          )
+
           Decidim.traceability.create!(
             Decidim::TimeTracker::Assignation,
             admin_user,
@@ -191,8 +204,7 @@ Decidim.register_component(:time_tracker) do |component|
             user: user,
             status: [:accepted, :rejected, :pending].sample,
             invited_at: 1.week.ago,
-            invited_by_user: admin_user,
-            tos_accepted_at: [nil, Time.zone.now].sample
+            invited_by_user: admin_user
           )
 
           questionnaire_parents.each do |resource|

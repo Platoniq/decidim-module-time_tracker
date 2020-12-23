@@ -38,6 +38,8 @@ module Decidim
 
       enum status: [:pending, :accepted, :rejected]
 
+      delegate :tos_accepted_at, to: :assignee
+
       def time_dedicated
         time_events.sum(&:total_seconds)
       end

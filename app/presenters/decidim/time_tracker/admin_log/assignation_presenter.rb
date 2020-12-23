@@ -22,8 +22,7 @@ module Decidim
             activity_id: "Decidim::TimeTracker::AdminLog::ValueTypes::ActivityPresenter",
             invited_at: :date,
             invited_by_user: :user,
-            requested_at: :date,
-            tos_accepted_at: :date
+            requested_at: :date
           }
         end
 
