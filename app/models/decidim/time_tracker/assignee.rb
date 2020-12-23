@@ -11,7 +11,7 @@ module Decidim
                  class_name: "Decidim::User"
 
       has_many :tos_acceptances,
-                class_name: "Decidim::TimeTracker::TosAcceptance"
+               class_name: "Decidim::TimeTracker::TosAcceptance"
 
       def self.for(user)
         find_or_create_by(user: user)

@@ -8,10 +8,9 @@ module Decidim
 
       belongs_to :assignee,
                  class_name: "Decidim::TimeTracker::Assignee"
-      
+
       belongs_to :time_tracker,
                  class_name: "Decidim::TimeTracker::TimeTracker"
-
     end
   end
 end

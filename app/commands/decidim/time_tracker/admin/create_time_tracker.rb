@@ -9,7 +9,7 @@ module Decidim
           @questionnaire = Decidim::Forms::Questionnaire.new
           @time_tracker = Decidim::TimeTracker::TimeTracker.new(component: component, questionnaire: @questionnaire)
         end
-        
+
         def call
           begin
             @time_tracker.save
@@ -18,7 +18,7 @@ module Decidim
           rescue StandardError
             return broadcast(:invalid)
           end
-  
+
           broadcast(:ok)
         end
 
