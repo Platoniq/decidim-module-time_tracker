@@ -74,7 +74,7 @@ module Decidim
         end
 
         def current_activity
-          @current_activity ||= Activity.find(params[:id])
+          @current_activity ||= Activity.find_by(id: params[:id])
         end
       end
     end
