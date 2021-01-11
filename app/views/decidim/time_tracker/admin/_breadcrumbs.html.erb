@@ -17,7 +17,7 @@
             <%= link_to translated_attribute(current_task.name), edit_task_path(current_task) %>
           </li>
 
-          <% if !current_page?(new_task_activity_path) %>
+          <% if current_activity && !current_page?(new_task_activity_path) %>
             <li class="<%= "active" if current_page? edit_task_activity_path(current_activity) %>">
               <%= translated_attribute current_activity.description %>
             </li>
