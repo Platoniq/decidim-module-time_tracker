@@ -75,12 +75,16 @@ module Decidim
         Assignation.where(user: user).sum(&:time_dedicated)
       end
 
-      def user_joined_at(user)
-        Assignation.where(user: user).order(tos_accepted_at: :desc).first.tos_accepted_at
+      def user_joined_at
+        current_assignee.tos_accepted_at(time_tracker)
       end
 
       def user_last_milestone(user)
         Milestone.where(user: user).order(created_at: :desc).first
+      end
+
+      def must_fill_in_data?
+        !current_assignee.tos_accepted?(time_tracker)
       end
     end
   end

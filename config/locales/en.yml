@@ -19,7 +19,7 @@ en:
                 for the day
               not_started: Activity has not started yet
             assignation:
-              unassigned: User is not assignationd to the task
+              unassigned: User is not assigned to the task
             start:
               date_format: Start time is not a date
             stop:
@@ -48,6 +48,9 @@ en:
           index:
             account_message: <a href="%{sign_in_url}">Sign in with your account</a>
               or <a href="%{sign_up_url}">sign up</a> to participate in this activity.
+            data:
+              fill: Fill in data
+              submit: Submit
             request: Request to join activity
     log:
       value_types:
@@ -114,7 +117,8 @@ en:
           assignations: Assignations
           global: All tasks
         exports:
-          time_tracker_questionnaire_answers: Answers
+          time_tracker_activity_questionnaire_answers: Activity questionnaire answers
+          time_tracker_assignee_questionnaire_answers: Assignee questionnaire answers
         models:
           activity:
             name: Activity
@@ -122,6 +126,9 @@ en:
             name: Assignation
           task:
             name: Task
+        questionnaires:
+          questionnaire:
+            edit: Edit questionnaire
         tasks:
           actions:
             confirm_destroy: Are you sure you want to delete this task?
@@ -129,7 +136,10 @@ en:
             edit: Edit task
             export_to_accountability: Export to Accountability
             new: New task
-            questionnaire: Edit questionnaire
+          activity_questionnaire:
+            title: Activity questionnaire
+          assignee_questionnaire:
+            title: Terms and conditions questionnaire
           create:
             error: Error creating the task
             success: Task created successfully
@@ -139,7 +149,7 @@ en:
             submit: Update
             title: Update task
           index:
-            questionnaire: Questionnaire
+            questionnaires: Questionnaires
             title: Tasks
           new:
             submit: Create
@@ -294,6 +304,13 @@ en:
           questionnaire:
             answered: Thanks for answering the questionnaire!
             respond: What do you think about this task?
+        assignee_data:
+          answer: Let's start!
+          description: To better understand our participants and their relationship
+            with these tasks, we ask you to fill a couple questions about your demographic
+            profile. We also want to make sure you agree to the terms of use before
+            signing up for any task. Thank you!
+          title: Terms of use and demographic data
         callout_status:
           finished: Ended on %{end_date}
           inactive: Inactive
@@ -307,7 +324,9 @@ en:
         request_activity:
           assignation_pending: Already applied! Soon an admin will review your application.
           assignation_rejected: Sorry, you're application has been rejected.
-      time_tracker_questionnaire_answers_serializer:
+          assignee_questionnaire: Please accept the <a href="%{path}" target="_blank">terms
+            of use</a> to join the activity.
+      time_tracker_activity_questionnaire_answers_serializer:
         activity_description: Activity
         activity_id: Activity ID
         created_at: Answered on

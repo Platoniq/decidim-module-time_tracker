@@ -17,13 +17,20 @@ module Decidim
             post :start, controller: "time_events"
             post :stop, controller: "time_events"
 
-            resources :form, controller: "activities_questionnaire", only: [:show] do
+            resources :form, controller: "activity_questionnaire", only: [:show] do
               member do
                 post :answer
               end
             end
           end
         end
+
+        resource :assignee_questionnaire, controller: "assignee_questionnaire", only: [:show] do
+          member do
+            post :answer
+          end
+        end
+
         resources :milestones, only: [:create] do
           get :index, on: :collection, path: "(:nickname)"
         end

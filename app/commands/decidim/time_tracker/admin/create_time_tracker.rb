@@ -8,13 +8,18 @@ module Decidim
         def initialize(component)
           @questionnaire = Decidim::Forms::Questionnaire.new
           @time_tracker = Decidim::TimeTracker::TimeTracker.new(component: component, questionnaire: @questionnaire)
-          populate_questionnaire
         end
 
         def call
-          return broadcast(:ok) if @time_tracker.save
+          begin
+            @time_tracker.save!
+            populate_questionnaire
+            create_assignee_data
+          rescue StandardError
+            return broadcast(:invalid)
+          end
 
-          broadcast(:invalid)
+          broadcast(:ok)
         end
 
         attr_reader :time_tracker, :questionnaire
@@ -51,6 +56,10 @@ module Decidim
             description: i18nize(question[:description]),
             questionnaire: @questionnaire
           )
+        end
+
+        def create_assignee_data
+          Decidim::TimeTracker::AssigneeData.create!(time_tracker: @time_tracker, questionnaire: Decidim::Forms::Questionnaire.new)
         end
 
         def i18nize(key)

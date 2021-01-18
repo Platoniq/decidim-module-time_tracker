@@ -15,6 +15,11 @@ FactoryBot.define do
     questionnaire
   end
 
+  factory :assignee_data, class: "Decidim::TimeTracker::AssigneeData" do
+    time_tracker
+    questionnaire
+  end
+
   factory :activity, class: "Decidim::TimeTracker::Activity" do
     task { create(:task) }
     description { Decidim::Faker::Localized.sentence(3) }
@@ -50,7 +55,6 @@ FactoryBot.define do
     invited_at { 1.month.ago }
     invited_by_user { create(:user) }
     requested_at { 2.months.ago }
-    tos_accepted_at { 1.week.ago }
 
     trait :pending do
       status { :pending }
@@ -93,5 +97,14 @@ FactoryBot.define do
       start { Time.current - 2.minutes }
       stop { Time.current - 1.minute }
     end
+  end
+
+  factory :assignee, class: "Decidim::TimeTracker::Assignee" do
+    user
+  end
+
+  factory :tos_acceptance, class: "Decidim::TimeTracker::TosAcceptance" do
+    assignee
+    time_tracker
   end
 end

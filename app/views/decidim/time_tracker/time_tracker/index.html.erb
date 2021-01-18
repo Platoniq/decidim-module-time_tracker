@@ -5,7 +5,13 @@
     <% if !user_signed_in? %>
       <%= render partial: "sign_in" %>
     <% end %>
+    <% if must_fill_in_data? %>
+      <%= render partial: "assignee_data" %>
+    <% end %>
+
     <% tasks.each do |task| %>
+      <% next if task.activities.active.empty? %>
+
       <h2 class="section-heading task-title"><%= translated_attribute task.name %></h2>
       <div id="activities">
         <% task.activities.active.each do |activity| %>

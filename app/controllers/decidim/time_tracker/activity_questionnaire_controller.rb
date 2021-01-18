@@ -2,7 +2,7 @@
 
 module Decidim
   module TimeTracker
-    class ActivitiesQuestionnaireController < Decidim::TimeTracker::ApplicationController
+    class ActivityQuestionnaireController < Decidim::TimeTracker::ApplicationController
       include Decidim::Forms::Concerns::HasQuestionnaire
 
       def questionnaire_for

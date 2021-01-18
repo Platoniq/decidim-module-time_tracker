@@ -9,7 +9,7 @@ module Decidim
         @user = user
       end
 
-      # Creates the meeting if valid.
+      # Creates the assignation if valid.
       #
       # Broadcasts :ok if successful, :invalid otherwise.
       def call

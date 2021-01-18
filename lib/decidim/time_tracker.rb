@@ -12,7 +12,7 @@ module Decidim
   module TimeTracker
     include ActiveSupport::Configurable
 
-    autoload :TimeTrackerQuestionnaireAnswersSerializer, "decidim/time_tracker/time_tracker_questionnaire_answers_serializer"
+    autoload :TimeTrackerActivityQuestionnaireAnswersSerializer, "decidim/time_tracker/time_tracker_activity_questionnaire_answers_serializer"
 
     # Returns a YAML
     config_accessor :default_questionnaire_seeds do
