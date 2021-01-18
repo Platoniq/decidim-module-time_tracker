@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - main
+      - develop
   pull_request:
 
 env:
   RUBY_VERSION: 2.6.6
+  NODE_VERSION: 12.9.1
 
 jobs:
   test:
@@ -38,20 +40,12 @@ jobs:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
 
-      - run: npm ci
-        name: Install JS deps
-
-      - run: bundle exec rubocop -P
-        name: Lint Ruby files
-
-      - run: bundle exec erblint app/{cells,views}/**/*.erb
-        name: Lint ERB files
-
-      - run: npm run lint
-        name: Lint JS files
+      - uses: actions/setup-node@master
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Setup Database
         run: bundle exec rake test_app
-    
+
       - name: Run RSpec
-        run: SIMPLECOV=1 CODECOV=1 bundle exec rake
+        run: SIMPLECOV=1 CODECOV=1 bundle exec rspec
