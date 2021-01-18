@@ -1,0 +1,37 @@
+title: decidim.time_tracker.default_assignee_questionnaire.title
+description: decidim.time_tracker.default_assignee_questionnaire.description
+tos: decidim.time_tracker.default_assignee_questionnaire.tos
+questions:
+  - question_type: single_option
+    position: 1
+    body: decidim.time_tracker.default_assignee_questionnaire.question_1.body
+    description: decidim.time_tracker.default_assignee_questionnaire.question_1.description
+    answer_options:
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_1.option_1
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_1.option_2
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_1.option_3
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_1.option_4
+        free_text: true
+  - question_type: separator
+    position: 2
+  - question_type: single_option
+    position: 3
+    body: decidim.time_tracker.default_assignee_questionnaire.question_2.body
+    description: decidim.time_tracker.default_assignee_questionnaire.question_2.description
+    answer_options:
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_1
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_2
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_3
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_4
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_5
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_6
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_7
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_8
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_9
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_10
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_11
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_12
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_13
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_14
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_15
+      - body: decidim.time_tracker.default_assignee_questionnaire.question_2.option_16

@@ -7,13 +7,15 @@ module Decidim
       class CreateTimeTracker < Rectify::Command
         def initialize(component)
           @questionnaire = Decidim::Forms::Questionnaire.new
+          @assignee_questionnaire = Decidim::Forms::Questionnaire.new
           @time_tracker = Decidim::TimeTracker::TimeTracker.new(component: component, questionnaire: @questionnaire)
         end
 
         def call
           begin
             @time_tracker.save!
-            populate_questionnaire
+            populate_questionnaire(Decidim::TimeTracker.default_activity_questionnaire, @questionnaire)
+            populate_questionnaire(Decidim::TimeTracker.default_assignee_questionnaire, @assignee_questionnaire)
             create_assignee_data
           rescue StandardError
             return broadcast(:invalid)
@@ -22,28 +24,27 @@ module Decidim
           broadcast(:ok)
         end
 
-        attr_reader :time_tracker, :questionnaire
+        attr_reader :time_tracker, :questionnaire, :assignee_questionnaire
 
         private
 
-        def populate_questionnaire
-          @seeds = Decidim::TimeTracker.default_questionnaire
-          return unless @seeds
-          return unless @seeds[:questions]
+        def populate_questionnaire(seeds, questionnaire)
+          return unless seeds
+          return unless seeds[:questions]
 
-          questions = @seeds[:questions].map do |question|
-            Decidim::Forms::Question.create(prepare_question(question))
+          questions = seeds[:questions].map do |question|
+            Decidim::Forms::Question.create(prepare_question(question, questionnaire))
           end
 
-          @seeds[:title] = i18nize(@seeds[:title])
-          @seeds[:description] = i18nize(@seeds[:description])
-          @seeds[:tos] = i18nize(@seeds[:tos])
-          @seeds[:questions] = questions
+          seeds[:title] = i18nize(seeds[:title])
+          seeds[:description] = i18nize(seeds[:description])
+          seeds[:tos] = i18nize(seeds[:tos])
+          seeds[:questions] = questions
 
-          @questionnaire.attributes = @seeds
+          questionnaire.attributes = seeds
         end
 
-        def prepare_question(question)
+        def prepare_question(question, questionnaire)
           if question.has_key?(:answer_options)
             question[:answer_options].map! do |answer_option|
               answer_option[:body] = i18nize(answer_option[:body])
@@ -54,12 +55,12 @@ module Decidim
           question.merge(
             body: i18nize(question[:body]),
             description: i18nize(question[:description]),
-            questionnaire: @questionnaire
+            questionnaire: questionnaire
           )
         end
 
         def create_assignee_data
-          Decidim::TimeTracker::AssigneeData.create!(time_tracker: @time_tracker, questionnaire: Decidim::Forms::Questionnaire.new)
+          Decidim::TimeTracker::AssigneeData.create!(time_tracker: @time_tracker, questionnaire: @assignee_questionnaire)
         end
 
         def i18nize(key)

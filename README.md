@@ -37,13 +37,13 @@ As said, this questionnaire is enabled by default, but you can also disable or c
 
 If you want to customize the default questionnaire or disable it, just create a new initializer in `config/initializers/time_tracker.rb` with the following content:
 
-**To use your own questionnaire** (use [config/default_questionnaire.yml](config/default_questionnaire.yml) as an example guide):
+**To use your own questionnaire** (use [config/default_activity_questionnaire.yml](config/default_activity_questionnaire.yml) as an example guide):
 ```ruby
 # config/initializers/time_tracker.rb
 
 # Initialize my custom questionnaire placed in config/my_questionnaire.yml
 Decidim::TimeTracker.configure do |config|
-  config.default_questionnaire_seeds = YAML.load_file File.join(Rails.root, 'config', 'my_questionnaire.yml')
+  config.default_activity_questionnaire_seeds = YAML.load_file File.join(Rails.root, 'config', 'my_questionnaire.yml')
 end
 ```
 
@@ -53,7 +53,7 @@ end
 
 # Disable the default questionnaire for time tracker
 Decidim::TimeTracker.configure do |config|
-  config.default_questionnaire_seeds = nil
+  config.default_activity_questionnaire_seeds = nil
 end
 ```
 
