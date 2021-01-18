@@ -50,7 +50,7 @@ module Decidim::TimeTracker::Admin
           Decidim::TimeTracker.default_activity_questionnaire_seeds = default_activity_questionnaire_seeds
           subject.call
         end
-  
+
         it "has questions" do
           expect(subject.time_tracker.has_questions?).to be true
           expect(subject.questionnaire.title["en"]).to eq "How do you perceive this task?"
@@ -66,26 +66,26 @@ module Decidim::TimeTracker::Admin
           expect(subject.questionnaire.questions.third.body["en"]).to eq "Who do you think usually perform this task?"
         end
       end
-  
+
       context "when time_tracker_questionnaire_seeds config is nil" do
         before do
           Decidim::TimeTracker.default_activity_questionnaire_seeds = nil
           subject.call
         end
-  
+
         it "has no questions" do
           expect(subject.time_tracker.has_questions?).to be false
           expect(subject.questionnaire.title).to eq nil
           expect(subject.questionnaire.questions.count).to eq 0
         end
       end
-  
+
       context "when time_tracker_questionnaire_seeds config is customized" do
         before do
           Decidim::TimeTracker.default_activity_questionnaire_seeds = custom_activity_questionnaire_seeds
           subject.call
         end
-  
+
         it "has questions" do
           expect(subject.time_tracker.has_questions?).to be true
           expect(subject.questionnaire.title["en"]).to eq(custom_activity_questionnaire_seeds[:title])
@@ -114,7 +114,7 @@ module Decidim::TimeTracker::Admin
           Decidim::TimeTracker.default_assignee_questionnaire_seeds = default_assignee_questionnaire_seeds
           subject.call
         end
-  
+
         it "has assignee questions" do
           expect(subject.time_tracker.has_assignee_questions?).to be true
           expect(subject.assignee_questionnaire.title["en"]).to eq "Terms of use and demographic data"
@@ -130,26 +130,26 @@ module Decidim::TimeTracker::Admin
           expect(subject.assignee_questionnaire.questions.third.body["en"]).to eq "What is your age?"
         end
       end
-  
+
       context "when time_tracker_questionnaire_seeds config is nil" do
         before do
           Decidim::TimeTracker.default_assignee_questionnaire_seeds = nil
           subject.call
         end
-  
+
         it "has no assignee questions" do
           expect(subject.time_tracker.has_assignee_questions?).to be false
           expect(subject.assignee_questionnaire.title).to eq nil
           expect(subject.assignee_questionnaire.questions.count).to eq 0
         end
       end
-  
+
       context "when time_tracker_questionnaire_seeds config is customized" do
         before do
           Decidim::TimeTracker.default_assignee_questionnaire_seeds = custom_assignee_questionnaire_seeds
           subject.call
         end
-  
+
         it "has assignee questions" do
           expect(subject.time_tracker.has_assignee_questions?).to be true
           expect(subject.assignee_questionnaire.title["en"]).to eq(custom_assignee_questionnaire_seeds[:title])

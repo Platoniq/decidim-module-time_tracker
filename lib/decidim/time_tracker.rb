@@ -24,7 +24,7 @@ module Decidim
 
       config.default_activity_questionnaire_seeds.deep_symbolize_keys
     end
-    
+
     # Returns a YAML with default seeds for assignee data questionnaire
     config_accessor :default_assignee_questionnaire_seeds do
       YAML.load_file File.join(::Decidim::TimeTracker::Engine.root, "config", "assignee_questionnaire.yml")
