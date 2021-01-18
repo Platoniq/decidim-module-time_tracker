@@ -13,6 +13,7 @@ env:
 
 jobs:
   test:
+    name: Test
     runs-on: ubuntu-latest
     services:
       postgres:
