@@ -39,14 +39,15 @@ module Decidim::TimeTracker::Admin
         expect { subject.call }.to change { Decidim::TimeTracker::TimeTracker.count }.by(1)
       end
 
-      it "creates an associated questionnaire" do
-        expect { subject.call }.to change { Decidim::Forms::Questionnaire.count }.by(1)
+      it "creates two associated questionnaires" do
+        expect { subject.call }.to change { Decidim::Forms::Questionnaire.count }.by(2)
       end
     end
 
     context "when time_tracker_questionnaire_seeds config is the default" do
       before do
         Decidim::TimeTracker.default_questionnaire_seeds = default_questionnaire_seeds
+        subject.call
       end
 
       it "has questions" do
@@ -68,6 +69,7 @@ module Decidim::TimeTracker::Admin
     context "when time_tracker_questionnaire_seeds config is nil" do
       before do
         Decidim::TimeTracker.default_questionnaire_seeds = nil
+        subject.call
       end
 
       it "has no questions" do
@@ -80,6 +82,7 @@ module Decidim::TimeTracker::Admin
     context "when time_tracker_questionnaire_seeds config is customized" do
       before do
         Decidim::TimeTracker.default_questionnaire_seeds = custom_questionnaire_seeds
+        subject.call
       end
 
       it "has questions" do
