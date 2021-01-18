@@ -12,7 +12,7 @@ module Decidim
 
         def call
           begin
-            @time_tracker.save
+            @time_tracker.save!
             populate_questionnaire
             create_assignee_data
           rescue StandardError
