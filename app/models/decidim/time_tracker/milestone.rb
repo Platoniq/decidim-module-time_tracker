@@ -21,6 +21,7 @@ module Decidim
               class_name: "Decidim::TimeTracker::Task"
 
       delegate :component, to: :task
+      delegate :organization, to: :user
     end
   end
 end
