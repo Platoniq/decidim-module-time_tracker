@@ -47,7 +47,9 @@
       <% end %>
 
       <% if tasks.empty? %>
-        <%= t(".empty") %>
+        <div class="callout warning">
+          <%= t(".empty") %>
+        </div>
       <% end %>
     </div>
   </div>
