@@ -355,6 +355,7 @@ en:
           assignation_pending: Already applied! Soon an admin will review your application.
           assignation_rejected: Sorry, you're application has been rejected.
         index:
+          empty: There are no activities yet.
           milestones_list: People working in this activity
         request_activity:
           assignation_pending: Already applied! Soon an admin will review your application.
