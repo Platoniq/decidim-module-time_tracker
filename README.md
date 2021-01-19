@@ -31,23 +31,33 @@ bundle exec rails db:migrate
 
 ## About Time tracker and attached questionnaires
 
-By default, every activity created has an attached questionnaire for the volunteer to fill. This is is a very simple form with gender questions that can be useful to have a better understanding of the perception of task and its real gender assignation.
+By default, every time tracker component has an attached questionnaire for the volunteer to fill with their personal data and to give their consent to the T&C (further referenced as **questionnaire for assignees**). Activities have also an attached questionnaire for the volunteer to fill when they request to be assigned to that activity (further referenced as **questionnaire for activities**). This is a very simple questionnaire with questions about how certain tasks may usually be perceived as related to certain genders. This can be useful to have a better understanding of the perception of tasks and their real gender assignation.
 
-As said, this questionnaire is enabled by default, but you can also disable or create your own. However take into account that administrators can always modify or create custom questionnaires.
+Both questionnaires are enabled by default and can be customized. You may also disable the questionnaire shown for activities. However, take into account that administrators can always modify or create custom questionnaires.
 
-If you want to customize the default questionnaire or disable it, just create a new initializer in `config/initializers/time_tracker.rb` with the following content:
+If you want to customize the default questionnaires or disable the questionnaire for activities, just create a new initializer in `config/initializers/time_tracker.rb` with the following content:
 
-**To use your own questionnaire** (use [config/default_activity_questionnaire.yml](config/default_activity_questionnaire.yml) as an example guide):
+**To use your own questionnaire for _assignees_** (use [config/default_assignee_questionnaire.yml](config/default_assignee_questionnaire.yml) as an example guide):
 ```ruby
 # config/initializers/time_tracker.rb
 
 # Initialize my custom questionnaire placed in config/my_questionnaire.yml
 Decidim::TimeTracker.configure do |config|
-  config.default_activity_questionnaire_seeds = YAML.load_file File.join(Rails.root, 'config', 'my_questionnaire.yml')
+  config.default_assignee_questionnaire_seeds = YAML.load_file File.join(Rails.root, 'config', 'my_assignee_questionnaire.yml')
 end
 ```
 
-**To completely disable the default questionnaire**:
+**To use your own questionnaire for _activities_** (use [config/default_activity_questionnaire.yml](config/default_activity_questionnaire.yml) as an example guide):
+```ruby
+# config/initializers/time_tracker.rb
+
+# Initialize my custom questionnaire placed in config/my_questionnaire.yml
+Decidim::TimeTracker.configure do |config|
+  config.default_activity_questionnaire_seeds = YAML.load_file File.join(Rails.root, 'config', 'my_activities_questionnaire.yml')
+end
+```
+
+**To completely disable the default questionnaire for _activities_**:
 ```ruby
 # config/initializers/time_tracker.rb
 
@@ -57,7 +67,7 @@ Decidim::TimeTracker.configure do |config|
 end
 ```
 
-> **NOTE:** If you customize your questionnaire, you can use any I18n key to translate it. Just add it to your locales.
+> **NOTE:** If you customize your questionnaires, you can use any I18n key to translate it. Just add it to your locales.
 > You also can just put a direct text with no translations, then it will be used for all languages.
 
 ## Contributing
