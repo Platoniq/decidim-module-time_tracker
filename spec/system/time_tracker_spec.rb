@@ -57,11 +57,18 @@ describe "Time tracker page", type: :system do
     end
   end
 
-  shared_examples "does not render 'let's start' callout" do
-    it "does not render 'let's start' callout" do
+  shared_examples "does not render links to fill in demographic data" do
+    before do
       visit_time_tracker
+    end
+
+    it "does not render 'let's start' callout" do
       expect(page).not_to have_selector ".time-tracker--assignee-data"
       expect(page).not_to have_link "Let's start!", href: assignee_questionnaire_path
+    end
+
+    it "does not render any link to assignee questionnaire" do
+      expect(page).not_to have_selector("[href=\"#{assignee_questionnaire_path}\"]")
     end
   end
 
@@ -69,7 +76,7 @@ describe "Time tracker page", type: :system do
     context "when user is not logged" do
       context "when there are no activities" do
         it_behaves_like "renders 'no activities' callout"
-        it_behaves_like "does not render 'let's start' callout"
+        it_behaves_like "does not render links to fill in demographic data"
       end
 
       context "when there are activities" do
@@ -77,7 +84,7 @@ describe "Time tracker page", type: :system do
         let!(:activity) { create(:activity, task: task) }
 
         it_behaves_like "renders activity list"
-        it_behaves_like "does not render 'let's start' callout"
+        it_behaves_like "does not render links to fill in demographic data"
       end
     end
 
@@ -88,7 +95,7 @@ describe "Time tracker page", type: :system do
 
       context "when there are no activities" do
         it_behaves_like "renders 'no activities' callout"
-        it_behaves_like "does not render 'let's start' callout"
+        it_behaves_like "does not render links to fill in demographic data"
       end
 
       context "when there are activities" do
@@ -96,7 +103,20 @@ describe "Time tracker page", type: :system do
         let!(:activity) { create(:activity, task: task) }
 
         it_behaves_like "renders activity list"
-        it_behaves_like "renders links to fill in demographic data"
+
+        context "when user has not accepted terms" do
+          it_behaves_like "renders links to fill in demographic data"
+        end
+
+        context "when user has accepted terms" do
+          before do
+            Decidim::TimeTracker::TosAcceptance.create!(assignee: Decidim::TimeTracker::Assignee.for(user), time_tracker: time_tracker)
+            login_as user, scope: :user
+            visit_time_tracker
+          end
+
+          it_behaves_like "does not render links to fill in demographic data"
+        end
       end
     end
   end
