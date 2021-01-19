@@ -4,8 +4,7 @@
   <div id="time_tracker" class="columns">
     <% if !user_signed_in? %>
       <%= render partial: "sign_in" %>
-    <% end %>
-    <% if must_fill_in_data? %>
+    <% elsif must_fill_in_data? %>
       <%= render partial: "assignee_data" %>
     <% end %>
 
