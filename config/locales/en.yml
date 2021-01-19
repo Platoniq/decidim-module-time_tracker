@@ -185,7 +185,7 @@ en:
         hours: "%{n}h"
         minutes: "%{n}m"
         seconds: "%{n}s"
-      default_questionnaire:
+      default_activity_questionnaire:
         description: Thank you for filling this questionnaire! We are asking you this
           set of questions to help you understand whether your project (and its actions
           carried out on a voluntary basis) is balanced in terms of task distribution
@@ -210,6 +210,41 @@ en:
           option_3: I don't see differences by gender
           option_4: Other
         title: How do you perceive this task?
+        tos: Data answered here is treated as confidential and used for statistical
+          purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a>
+          also apply. By submitting this questionnaire, you agree to them.
+      default_assignee_questionnaire:
+        description: Thank you for filling this questionnaire! We are asking you this
+          set of questions to help you understand whether your project (and its actions
+          carried out on a voluntary basis) is balanced in terms of task distribution
+          due to gender.
+        question_1:
+          body: Which gender do you identify with?
+          description: Choose the option that best suits your gender identity.
+          option_1: Woman
+          option_2: Man
+          option_3: Non-Binary
+          option_4: Other
+        question_2:
+          body: What is your age?
+          description: Choose your age range
+          option_1: Under 15
+          option_10: 55 to 60
+          option_11: 65 to 70
+          option_12: 70 to 75
+          option_13: 75 to 80
+          option_14: 80 to 85
+          option_15: 85 to 90
+          option_16: Over 90
+          option_2: 15 to 20
+          option_3: 20 to 25
+          option_4: 25 to 30
+          option_5: 30 to 35
+          option_6: 35 to 40
+          option_7: 40 to 45
+          option_8: 45 to 50
+          option_9: 50 to 55
+        title: Terms of use and demographic data
         tos: Data answered here is treated as confidential and used for statistical
           purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a>
           also apply. By submitting this questionnaire, you agree to them.
