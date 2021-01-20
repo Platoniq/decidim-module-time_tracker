@@ -27,7 +27,9 @@ $(() => {
     const $milestone = $activity.find(".milestone");
     const activity = new ActivityUI($activity);
     const api = new TimerApi(activity.startEndpoint, activity.stopEndpoint);
-
+    // store api
+    $activity.data('_activity', activity);
+    $activity.data('_api', api);
     if($activity.data("counter-active")) {
       activity.showPauseStop();
       activity.startCounter();
@@ -43,7 +45,16 @@ $(() => {
     $activity.find(".time-tracker-activity-start").on("click", () => {
       activity.showPauseStop();
       api.start()
-        .done((data) => activity.startCounter(data))
+        .done((data) => {
+          // stop others
+          $(".time-tracker-activity").each(function() {
+            const activity = $(this).data("_activity");
+            if(activity.isRunning()) {
+              activity.showPlayStop().stopCounter();
+            }
+          });
+          activity.startCounter(data)
+        })
         .fail(activity.showError.bind(activity));
     });
 

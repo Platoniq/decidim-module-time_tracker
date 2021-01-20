@@ -19,9 +19,13 @@ describe "Time tracker page", type: :system do
     visit_time_tracker
   end
 
-  describe "user logs time for activity" do
+  it "has a timer" do
+    expect(page).to have_content "0h0m0s"
+  end
+
+  context "when user counts time" do
     before do
-      page.find(".time-tracker-activity-start").click
+      page.find(".time-tracker-activity-start", match: :first).click
       sleep 1
     end
 
@@ -66,6 +70,41 @@ describe "Time tracker page", type: :system do
         expect(page).to have_current_path milestones_path(user)
         expect(page).to have_content "I saved the world"
         expect(page).to have_link "Back to activities", href: time_tracker_path
+      end
+    end
+
+    context "when starts another timer" do
+      let!(:activity2) { create(:activity, task: task) }
+      let!(:assignation2) { create(:assignation, user: user, activity: activity2) }
+
+      before do
+        # renew page
+        visit_time_tracker
+      end
+
+      it "has different counters" do
+        expect(page).to have_selector(".time-tracker-activity-start", count: 1)
+        expect(page).to have_selector(".time-tracker-activity-stop", count: 1)
+        expect(page).to have_selector(".time-tracker-activity-pause", count: 1)
+      end
+
+      it "has one counter started, one stopped" do
+        expect(page).to have_content("0h0m0s", count: 1)
+        expect(page).to have_content("0h0m", count: 2)
+        within ".time-tracker-activity", match: :first do
+          expect(page).not_to have_content("0h0m0s")
+        end
+      end
+
+      it "stops runninng counters" do
+        page.find(".time-tracker-activity-start").click
+        sleep 1
+        expect(page).not_to have_content("0h0m0s")
+        within ".time-tracker-activity", match: :first do
+          expect(page).to have_selector(".time-tracker-activity-start")
+          expect(page).to have_selector(".time-tracker-activity-stop")
+          expect(page).not_to have_selector(".time-tracker-activity-pause")
+        end
       end
     end
   end

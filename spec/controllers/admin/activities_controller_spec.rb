@@ -18,8 +18,8 @@ module Decidim::TimeTracker::Admin
       {
         description: Decidim::Faker::Localized.sentence(3),
         active: false,
-        start_date: 1.day.from_now.strftime("%d/%m/%Y"),
-        end_date: 1.month.from_now.strftime("%d/%m/%Y"),
+        start_date: 1.day.from_now.strftime("%d/%m/%Y %H:%M"),
+        end_date: 1.month.from_now.strftime("%d/%m/%Y %H:%M"),
         max_minutes_per_day: 60,
         requests_start_at: Time.zone.now.strftime("%d/%m/%Y %H:%M"),
         task_id: task.id
@@ -112,8 +112,8 @@ module Decidim::TimeTracker::Admin
         {
           description: Decidim::Faker::Localized.sentence(3),
           active: false,
-          start_date: 1.month.ago.strftime("%d/%m/%Y"),
-          end_date: 1.month.from_now.strftime("%d/%m/%Y"),
+          start_date: 1.month.ago.strftime("%d/%m/%Y %H:%M"),
+          end_date: 1.month.from_now.strftime("%d/%m/%Y %H:%M"),
           max_minutes_per_day: 60,
           requests_start_at: 2.months.ago.strftime("%d/%m/%Y %H:%M"),
           task: task
