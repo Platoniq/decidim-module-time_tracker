@@ -7,14 +7,11 @@ module Decidim::TimeTracker
   describe AssigneeQuestionnaireController, type: :controller do
     routes { Decidim::TimeTracker::Engine.routes }
 
-    let!(:user) { create(:user, :confirmed, organization: organization) }
-    let(:organization) { create(:organization) }
-    let(:participatory_space) { create(:participatory_process, organization: organization) }
-    let(:component) { create(:time_tracker_component, participatory_space: participatory_space) }
-    let(:time_tracker) { create(:time_tracker, component: component, questionnaire: activity_questionnaire) }
-    let!(:assignee_data) { create :assignee_data, time_tracker: time_tracker, questionnaire: questionnaire }
-    let!(:activity_questionnaire) { create :questionnaire }
-    let!(:questionnaire) { create :questionnaire }
+    include_context "with a time_tracker"
+
+    let!(:assignee_data) { create :assignee_data, time_tracker: time_tracker }
+    let!(:activity_questionnaire) { time_tracker.questionnaire }
+    let!(:questionnaire) { assignee_data.questionnaire }
     let!(:assignee) { create :assignee, user: user }
     let(:task) { create :task, time_tracker: time_tracker }
 

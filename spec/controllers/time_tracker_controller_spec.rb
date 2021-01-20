@@ -6,11 +6,8 @@ module Decidim::TimeTracker
   describe TimeTrackerController, type: :controller do
     routes { Decidim::TimeTracker::Engine.routes }
 
-    let(:organization) { create :organization }
-    let(:user) { create(:user, :confirmed, :admin, organization: organization) }
-    let(:participatory_space) { create(:participatory_process, organization: organization) }
-    let(:component) { create :time_tracker_component, participatory_space: participatory_space }
-    let(:time_tracker) { create :time_tracker, component: component }
+    include_context "with a time_tracker"
+
     let!(:milestone) { create :milestone, activity: activity, user: assignations.first.user }
     let!(:activity) { create :activity, task: task }
     let!(:task) { create :task, time_tracker: time_tracker }
