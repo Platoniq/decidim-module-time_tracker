@@ -197,7 +197,7 @@ ca:
           option_1: Mostly women
           option_2: Mostly men
           option_3: I don't see differences by gender
-          option_4: Other
+          option_4: Altres
         title: How do you perceive this task?
         tos: Data answered here is treated as confidential and used for statistical purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a> also apply. By submitting this questionnaire, you agree to them.
       default_assignee_questionnaire:
@@ -208,7 +208,7 @@ ca:
           option_1: Dona
           option_2: Home
           option_3: No binari
-          option_4: Other
+          option_4: Altres
         question_2:
           body: Quina edat tens?
           description: Tria la teva franja d'edat
@@ -232,42 +232,42 @@ ca:
         tos: Data answered here is treated as confidential and used for statistical purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a> also apply. By submitting this questionnaire, you agree to them.
       milestone:
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
-        time_dedicated: Time dedicated
+        time_dedicated: Temps dedicat
         title: "%{user_name}'s activity"
       milestone_form:
-        button_no: No thanks
+        button_no: No, gràcies
         button_submit: Desa
         description: Share a proof of your work by uploading a picture and a brief description of what you've accomplished.
-        input_file: File
-        input_title: Title
+        input_file: Arxiu
+        input_title: Títol
         title: Leave your mark!
       milestones:
         create:
-          error: Error creating the milestone
-          success: Milestone created successfully
+          error: S'ha produït un error al crear la fita
+          success: Fita creada correctament
         index:
-          assignations_activity: "%{user_name}'s activity"
+          assignations_activity: "Activitat de %{user_name}"
           back_to_list: Torna a les activitats
-          joined_on: Joined on
+          joined_on: Unit el
           last_worked_on: Last worked on
-          total_time: Total time dedicated
+          total_time: Temps total dedicat
         milestone:
-          time_dedicated: Time dedicated
+          time_dedicated: Temps dedicat
       models:
         activity:
           fields:
-            assignations_accepted: Accepted assignations
-            assignations_pending: Pending assignations
-            description: Description
-            end_date: End date
-            max_minutes_per_day: Max. minutes per day
-            requests_start_at: Requests start at
-            start_date: Start date
-            status: Status
+            assignations_accepted: Assignacions acceptades
+            assignations_pending: Assignacions pendents
+            description: Descripció
+            end_date: Data de finalització
+            max_minutes_per_day: Màxim de minuts per dia
+            requests_start_at: Peticions comencen el
+            start_date: Data d'inici
+            status: Estat
             statuses:
-              finished: Finished
-              inactive: Inactive
-              not_started: Not started
+              finished: Acabada
+              inactive: Inactiva
+              not_started: No començada
               open: Oberta
           name: Activitat
         assignation:
@@ -326,31 +326,31 @@ ca:
           title: Condicions d'ús i dades demogràfiques
         callout_status:
           finished: Ended on %{end_date}
-          inactive: Inactive
+          inactive: Inactiu
           not_started: Will start on %{start_date}
           open: Open, started on %{start_date}
         idle_activity:
           assignation_pending: Already applied! Soon an admin will review your application.
           assignation_rejected: Sorry, you're application has been rejected.
         index:
-          empty: There are no activities yet.
+          empty: Encara no hi ha activitats.
           milestones_list: People working in this activity
         request_activity:
           assignation_pending: Already applied! Soon an admin will review your application.
           assignation_rejected: Sorry, you're application has been rejected.
           assignee_questionnaire: Please accept the <a href="%{path}" target="_blank">terms of use</a> to join the activity.
       time_tracker_activity_questionnaire_answers_serializer:
-        activity_description: Activity
-        activity_id: Activity ID
-        created_at: Answered on
-        id: Answer ID
-        ip_hash: Ip Hash
-        registered: Registered
-        task_id: Task ID
-        task_name: Task
-        unregistered: Unregistered
-        user_status: User status
+        activity_description: Activitat
+        activity_id: ID de l'activitat
+        created_at: Contestat el
+        id: ID de la resposta
+        ip_hash: Hash d'adreça Ip
+        registered: Registrada
+        task_id: ID de la tasca
+        task_name: Tasca
+        unregistered: No registrada
+        user_status: Estat de l'usuari/a
   layouts:
     decidim:
       user_profile:
-        time_tracker: My voluntary work
+        time_tracker: La meva feina voluntària
