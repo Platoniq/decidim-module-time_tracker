@@ -93,7 +93,7 @@ describe "Time tracker page", type: :system do
 
       it "stops runninng counters" do
         within ".time-tracker-activity", match: :first do
-          page.find(".time-tracker-activity-start:last").click
+          page.find(".time-tracker-activity-start", match: :last).click
           sleep 1
         end
 
