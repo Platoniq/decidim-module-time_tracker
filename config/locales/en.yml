@@ -265,7 +265,7 @@ en:
           success: Milestone created successfully
         index:
           assignations_activity: "%{user_name}'s activity"
-          back_to_list: Back to list
+          back_to_list: Back to activities
           joined_on: Joined on
           last_worked_on: Last worked on
           total_time: Total time dedicated
