@@ -68,13 +68,11 @@ Decidim.register_component(:time_tracker) do |component|
 
   component.register_stat :activities_count, primary: true, priority: Decidim::StatsRegistry::MEDIUM_PRIORITY do |components, start_at, end_at|
     time_tracker = Decidim::TimeTracker::TimeTracker.find_by(component: components)
-    activities = time_tracker.activities
+    activities = time_tracker.activities.active
 
     if start_at.present? || end_at.present?
-      activities = activities.where("end_date >= ?", start_at) if start_at.present?
+      activities = activities.where("start_date >= ?", start_at) if start_at.present?
       activities = activities.where("start_date <= ?", end_at) if end_at.present?
-    else
-      activities = activities.active
     end
 
     activities.count
