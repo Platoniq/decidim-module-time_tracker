@@ -3,10 +3,7 @@
 require "spec_helper"
 
 describe "User reports page", type: :system do
-  let(:organization) { create :organization }
-  let(:user) { create(:user, :confirmed, organization: organization) }
-  let(:participatory_space) { create(:participatory_process, organization: organization) }
-  let(:component) { create :time_tracker_component, participatory_space: participatory_space }
+  include_context "with a time_tracker"
 
   before do
     switch_to_host(user.organization.host)
@@ -35,7 +32,6 @@ describe "User reports page", type: :system do
     end
 
     context "when user has assignations" do
-      let(:time_tracker) { create :time_tracker, component: component }
       let!(:task) { create :task, time_tracker: time_tracker }
       let!(:activity) { create :activity, task: task }
       let!(:assignation) { create :assignation, :accepted, activity: activity, user: user }
