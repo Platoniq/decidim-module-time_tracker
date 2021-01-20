@@ -301,7 +301,7 @@ cs:
         ip_hash: Ip Hash
         registered: Registrován
         task_id: ID úkolu
-        task_name: Úkol
+        task_name: Úloha
         unregistered: Neregistrovaný
         user_status: Stav uživatele
   layouts:
