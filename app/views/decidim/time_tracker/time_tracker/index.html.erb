@@ -2,47 +2,54 @@
 
 <div class="row">
   <div id="time_tracker" class="columns">
-    <% if !user_signed_in? %>
-      <%= render partial: "sign_in" %>
-    <% end %>
-    <% if must_fill_in_data? %>
-      <%= render partial: "assignee_data" %>
-    <% end %>
+    <% if activities_empty? %>
+      <div class="callout warning">
+        <%= t(".empty") %>
+      </div>
+    <% else %>
+      <% if !user_signed_in? %>
+        <%= render partial: "sign_in" %>
+      <% elsif must_fill_in_data? %>
+        <%= render partial: "assignee_data" %>
+      <% end %>
 
-    <% tasks.each do |task| %>
-      <% next if task.activities.active.empty? %>
+      <div id="tasks">
+        <% tasks.each do |task| %>
+          <% next if task.activities.active.empty? %>
 
-      <h2 class="section-heading task-title"><%= translated_attribute task.name %></h2>
-      <div id="activities">
-        <% task.activities.active.each do |activity| %>
-          <div class="section">
-            <% if activity.assignation_accepted? current_user %>
-              <%= render partial: "activity", locals: { activity: activity } %>
-            <% elsif allowed_to? :create, :assignation, activity: activity %>
-              <%= render partial: "request_activity", locals: { activity: activity } %>
-            <% else %>
-              <%= render partial: "idle_activity", locals: { activity: activity } %>
-            <% end %>
-
-            <% milestones_for_activity = assignation_milestones(activity) %>
-            <% if milestones_for_activity.any? %>
+          <h2 class="section-heading task-title"><%= translated_attribute task.name %></h2>
+          <div id="activities">
+            <% task.activities.active.each do |activity| %>
               <div class="section">
-                <div class="row columns large-12" data-toggle="milestones-collection-<%= activity.id %>">
-                  <%= icon "caret-right", class: "icon--small" %>
-                  <span class="show-milestones">
-                    <%= t(".milestones_list") %>
-                  <span>
-                </div>
+                <% if activity.assignation_accepted? current_user %>
+                  <%= render partial: "activity", locals: { activity: activity } %>
+                <% elsif allowed_to? :create, :assignation, activity: activity %>
+                  <%= render partial: "request_activity", locals: { activity: activity } %>
+                <% else %>
+                  <%= render partial: "idle_activity", locals: { activity: activity } %>
+                <% end %>
 
-                <div id="milestones-collection-<%= activity.id %>" data-toggler=".hide" class="hide row small-up-1 medium-up-2 large-up-4 card-grid">
-                  <% milestones_for_activity.each do |milestone| %>
-                    <%= card_for milestone, type: :list %>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
-          <% end %>
-        </div>
+                <% milestones_for_activity = assignation_milestones(activity) %>
+                <% if milestones_for_activity.any? %>
+                  <div class="section">
+                    <div class="row columns large-12" data-toggle="milestones-collection-<%= activity.id %>">
+                      <%= icon "caret-right", class: "icon--small" %>
+                      <span class="show-milestones">
+                        <%= t(".milestones_list") %>
+                      <span>
+                    </div>
+
+                    <div id="milestones-collection-<%= activity.id %>" data-toggler=".hide" class="hide row small-up-1 medium-up-2 large-up-4 card-grid">
+                      <% milestones_for_activity.each do |milestone| %>
+                        <%= card_for milestone, type: :list %>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
       </div>
     <% end %>
   </div>
