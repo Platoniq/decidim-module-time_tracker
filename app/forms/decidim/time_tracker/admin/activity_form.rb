@@ -10,8 +10,8 @@ module Decidim
         translatable_attribute :description, String
 
         attribute :active, Boolean
-        attribute :start_date, Decidim::Attributes::LocalizedDate
-        attribute :end_date, Decidim::Attributes::LocalizedDate
+        attribute :start_date, Decidim::Attributes::TimeWithZone
+        attribute :end_date, Decidim::Attributes::TimeWithZone
         attribute :max_minutes_per_day, Integer
         attribute :requests_start_at, Decidim::Attributes::TimeWithZone
 
