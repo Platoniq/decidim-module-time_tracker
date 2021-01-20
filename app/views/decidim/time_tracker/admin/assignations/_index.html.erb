@@ -1,0 +1,58 @@
+<div class="card">
+  <div class="card-divider">
+    <h2 class="card-title">
+      <%= t(".title") %>
+
+      <div class="button--title">
+        <%= link_to t("assignations.actions.accept_all", scope: "decidim.time_tracker.admin", name: assignations_label), "accept_all_pending_assignations_path", class: "button tiny button--simple" %>
+      </div>
+    </h2>
+  </div>
+
+    <div class="card-section">
+    <div class="table-scroll">
+      <table class="table-list">
+        <thead>
+          <tr>
+            <th><%= t("models.assignation.fields.task", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignation.fields.activity", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignation.fields.invited_by", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignation.fields.invited_at", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignation.fields.tos_accepted_at", scope: "decidim.time_tracker") %></th>
+            <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker.admin") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% assignations.each do |assignation| %>
+            <tr data-id="<%= assignation.id %>">
+              <td>
+                <%= assignation.user.name %>
+              </td>
+              <td>
+                <%= assignation.user.email %>
+              </td>
+              <td>
+                <%= assignation.invited_by_user&.name %>
+              </td>
+              <td>
+                <%= l(assignation.invited_at, format: :decidim_short) if assignation.invited_at.present? %>
+              </td>
+              <td>
+                <%= l(assignation.assignee.tos_accepted_at(time_tracker), format: :decidim_short) if assignation.assignee.tos_accepted?(time_tracker) %>
+              </td>
+              <td class="table-list__actions">
+                <% if allowed_to? :update, :assignation, assignation: assignation %>
+                  <%= change_assignation_status_button assignation, success_path: tasks_path %>
+                <% end %>
+
+                <% if allowed_to? :destroy, :assignation, assignation: assignation %>
+                  <%= icon_link_to "circle-x", task_activity_assignation_path(assignation.task, assignation.activity, assignation), t("assignations.actions.destroy", scope: "decidim.time_tracker.admin"), method: :delete, class: "action-icon--remove", data: { confirm: t("assignations.actions.confirm_destroy", scope: "decidim.time_tracker.admin") } %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

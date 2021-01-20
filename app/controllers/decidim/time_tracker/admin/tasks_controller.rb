@@ -5,7 +5,7 @@ module Decidim
     module Admin
       class TasksController < Admin::ApplicationController
         include Decidim::TimeTracker::ApplicationHelper
-        helper_method :tasks, :current_task, :tasks_label, :activities_label
+        helper_method :tasks, :current_task, :assignations, :tasks_label, :activities_label, :assignations_label
 
         delegate :tasks, to: :time_tracker
 
@@ -75,6 +75,10 @@ module Decidim
 
         def tasks
           time_tracker.tasks
+        end
+
+        def assignations
+          time_tracker.assignations.pending
         end
 
         def current_task
