@@ -19,9 +19,13 @@ describe "Time tracker page", type: :system do
     visit_time_tracker
   end
 
-  describe "user logs time for activity" do
+  it "has a timer" do
+    expect(page).to have_content "0h0m0s"
+  end
+
+  context "when user counts time" do
     before do
-      page.find(".time-tracker-activity-start").click
+      page.find(".time-tracker-activity-start:first").click
       sleep 1
     end
 
@@ -66,6 +70,40 @@ describe "Time tracker page", type: :system do
         expect(page).to have_current_path milestones_path(user)
         expect(page).to have_content "I saved the world"
         expect(page).to have_link "Back to activities", href: time_tracker_path
+      end
+    end
+
+    context "when starts another timer" do
+      let!(:activity2) { create(:activity, task: task) }
+      let!(:assignation2) { create(:assignation, user: user, activity: activity2) }
+
+      it "has different counters" do
+        expect(page).to have_selector(".time-tracker-activity-start", count: 2)
+        expect(page).not_to have_selector(".time-tracker-activity-stop")
+        expect(page).not_to have_selector(".time-tracker-activity-pause")
+      end
+
+      it "has one counter started, one stopped" do
+        expect(page).to have_content("0h0m0s", count: 1)
+        expect(page).to have_content("0h0m", count: 2)
+        within ".time-tracker-activity:first" do
+          expect(page).not_to have_content("0h0m0s")
+        end
+      end
+
+      it "stops runninng counters" do
+        within ".time-tracker-activity:first" do
+          page.find(".time-tracker-activity-start:last").click
+          sleep 1
+        end
+
+        expect(page).not_to have_content("0h0m0s")
+
+        within ".time-tracker-activity:first" do
+          expect(page).to have_selector(".time-tracker-activity-play")
+          expect(page).to have_selector(".time-tracker-activity-stop")
+          expect(page).not_to have_selector(".time-tracker-activity-pause")
+        end
       end
     end
   end
