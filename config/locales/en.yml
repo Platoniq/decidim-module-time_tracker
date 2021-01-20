@@ -176,8 +176,8 @@ en:
           update: "%{user_name} updated the %{resource_name} task"
       assignations:
         request:
-          error: Activity assignation request failed!
-          success: Activity assignation request succeded!
+          error: There was an error assigning you to this activity.
+          success: You have successfully requested to join this activity!
         show:
           assignations_activity: "%{user_name}'s activity"
           milestones_list: List of milestones
@@ -254,9 +254,9 @@ en:
         title: "%{user_name}'s activity"
       milestone_form:
         button_no: No thanks
-        button_submit: Send milestone
-        description: Leave a proof of your work by uploading a picture and a simple
-          phrase
+        button_submit: Save
+        description: Share a proof of your work by uploading a picture and a brief
+          description of what you've accomplished.
         input_file: File
         input_title: Title
         title: Leave your mark!
@@ -266,7 +266,7 @@ en:
           success: Milestone created successfully
         index:
           assignations_activity: "%{user_name}'s activity"
-          back_to_list: Back to list
+          back_to_list: Back to activities
           joined_on: Joined on
           last_worked_on: Last worked on
           total_time: Total time dedicated
@@ -355,6 +355,7 @@ en:
           assignation_pending: Already applied! Soon an admin will review your application.
           assignation_rejected: Sorry, you're application has been rejected.
         index:
+          empty: There are no activities yet.
           milestones_list: People working in this activity
         request_activity:
           assignation_pending: Already applied! Soon an admin will review your application.

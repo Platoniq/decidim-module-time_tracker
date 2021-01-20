@@ -84,7 +84,11 @@ module Decidim
       end
 
       def must_fill_in_data?
-        !current_assignee.tos_accepted?(time_tracker)
+        !current_assignee.tos_accepted?(time_tracker) && !activities_empty?
+      end
+
+      def activities_empty?
+        time_tracker.activities.active.empty?
       end
     end
   end
