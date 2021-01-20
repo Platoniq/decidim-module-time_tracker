@@ -176,8 +176,8 @@ en:
           update: "%{user_name} updated the %{resource_name} task"
       assignations:
         request:
-          error: Activity assignation request failed!
-          success: Activity assignation request succeded!
+          error: There was an error assigning you to this activity.
+          success: You have successfully requested to join this activity!
         show:
           assignations_activity: "%{user_name}'s activity"
           milestones_list: List of milestones

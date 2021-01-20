@@ -116,6 +116,43 @@ describe "Time tracker page", type: :system do
           end
 
           it_behaves_like "does not render links to fill in demographic data"
+
+          describe "user signs up for activity" do
+            it "allows joining activity" do
+              expect(page).to have_button "Request to join activity"
+
+              click_button "Request to join activity"
+
+              within "#activities .time-tracker-request" do
+                within ".callout.success" do
+                  expect(page).to have_content "successfully"
+                end
+              end
+            end
+          end
+
+          context "when user is signed up for activity" do
+            let(:assignation) { create(:assignation, user: user, activity: activity, status: status) }
+
+            context "when status is pending" do
+              let(:status) { :pending }
+              # TODO
+            end
+
+            context "when status is rejected" do
+              let(:status) { :rejected }
+              # TODO
+            end
+
+            context "when status is accepted" do
+              let(:status) { :accepted }
+              # TODO
+
+              describe "user logs time for activity" do
+                # TODO
+              end
+            end
+          end
         end
       end
     end
