@@ -179,6 +179,30 @@ describe "Time tracker page", type: :system do
                   expect(page).to have_selector ".time-tracker-activity-stop"
                   expect(page).to have_selector ".time-tracker-activity-pause"
                 end
+
+                it "pauses the timer when clicking on the start button" do
+                  page.find(".time-tracker-activity-start").click
+                  sleep 1
+                  expect(page).not_to have_content "0h0m0s"
+                  page.find(".time-tracker-activity-pause").click
+                  expect(page).not_to have_selector ".time-tracker-activity-pause"
+                  expect(page).to have_selector ".time-tracker-activity-stop"
+                  expect(page).to have_selector ".time-tracker-activity-start"
+                end
+
+                it "stops the timer when clicking on the stop button" do
+                  page.find(".time-tracker-activity-start").click
+                  sleep 1
+                  expect(page).not_to have_content "0h0m0s"
+                  page.find(".time-tracker-activity-stop").click
+                  expect(page).not_to have_selector ".time-tracker-activity-stop"
+                  expect(page).not_to have_selector ".time-tracker-activity-pause"
+                  expect(page).to have_selector ".time-tracker-activity-start"
+                  expect(page).to have_content "Leave your mark"
+                  within ".milestone" do
+                    expect(page).to have_button "Save"
+                  end
+                end
               end
             end
           end

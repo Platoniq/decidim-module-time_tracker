@@ -254,9 +254,8 @@ en:
         title: "%{user_name}'s activity"
       milestone_form:
         button_no: No thanks
-        button_submit: Send milestone
-        description: Leave a proof of your work by uploading a picture and a simple
-          phrase
+        button_submit: Save
+        description: Share a proof of your work by uploading a picture and a brief description of what you've accomplished.
         input_file: File
         input_title: Title
         title: Leave your mark!
