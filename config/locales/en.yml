@@ -255,7 +255,8 @@ en:
       milestone_form:
         button_no: No thanks
         button_submit: Save
-        description: Share a proof of your work by uploading a picture and a brief description of what you've accomplished.
+        description: Share a proof of your work by uploading a picture and a brief
+          description of what you've accomplished.
         input_file: File
         input_title: Title
         title: Leave your mark!
