@@ -84,8 +84,8 @@ describe "Time tracker page", type: :system do
 
       it "has different counters" do
         expect(page).to have_selector(".time-tracker-activity-start", count: 1)
-        expect(page).not_to have_selector(".time-tracker-activity-stop", count: 1)
-        expect(page).not_to have_selector(".time-tracker-activity-pause", count: 1)
+        expect(page).to have_selector(".time-tracker-activity-stop", count: 1)
+        expect(page).to have_selector(".time-tracker-activity-pause", count: 1)
       end
 
       it "has one counter started, one stopped" do
@@ -101,7 +101,7 @@ describe "Time tracker page", type: :system do
         sleep 1
         expect(page).not_to have_content("0h0m0s")
         within ".time-tracker-activity", match: :first do
-          expect(page).to have_selector(".time-tracker-activity-play")
+          expect(page).to have_selector(".time-tracker-activity-start")
           expect(page).to have_selector(".time-tracker-activity-stop")
           expect(page).not_to have_selector(".time-tracker-activity-pause")
         end
