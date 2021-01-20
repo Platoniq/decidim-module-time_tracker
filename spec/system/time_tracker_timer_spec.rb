@@ -77,10 +77,15 @@ describe "Time tracker page", type: :system do
       let!(:activity2) { create(:activity, task: task) }
       let!(:assignation2) { create(:assignation, user: user, activity: activity2) }
 
+      before do
+        # renew page
+        visit_time_tracker
+      end
+
       it "has different counters" do
-        expect(page).to have_selector(".time-tracker-activity-start", count: 2)
-        expect(page).not_to have_selector(".time-tracker-activity-stop")
-        expect(page).not_to have_selector(".time-tracker-activity-pause")
+        expect(page).to have_selector(".time-tracker-activity-start", count: 1)
+        expect(page).not_to have_selector(".time-tracker-activity-stop", count: 1)
+        expect(page).not_to have_selector(".time-tracker-activity-pause", count: 1)
       end
 
       it "has one counter started, one stopped" do
@@ -92,13 +97,9 @@ describe "Time tracker page", type: :system do
       end
 
       it "stops runninng counters" do
-        within ".time-tracker-activity", match: :first do
-          page.find(".time-tracker-activity-start").last.click
-          sleep 1
-        end
-
+        page.find(".time-tracker-activity-start").click
+        sleep 1
         expect(page).not_to have_content("0h0m0s")
-
         within ".time-tracker-activity", match: :first do
           expect(page).to have_selector(".time-tracker-activity-play")
           expect(page).to have_selector(".time-tracker-activity-stop")
