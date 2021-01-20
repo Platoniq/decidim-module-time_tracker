@@ -25,7 +25,7 @@ describe "Time tracker page", type: :system do
 
   context "when user counts time" do
     before do
-      page.find(".time-tracker-activity-start:first").click
+      page.find(".time-tracker-activity-start", match: :first).click
       sleep 1
     end
 
@@ -86,20 +86,20 @@ describe "Time tracker page", type: :system do
       it "has one counter started, one stopped" do
         expect(page).to have_content("0h0m0s", count: 1)
         expect(page).to have_content("0h0m", count: 2)
-        within ".time-tracker-activity:first" do
+        within ".time-tracker-activity", match: :first do
           expect(page).not_to have_content("0h0m0s")
         end
       end
 
       it "stops runninng counters" do
-        within ".time-tracker-activity:first" do
+        within ".time-tracker-activity", match: :first do
           page.find(".time-tracker-activity-start:last").click
           sleep 1
         end
 
         expect(page).not_to have_content("0h0m0s")
 
-        within ".time-tracker-activity:first" do
+        within ".time-tracker-activity", match: :first do
           expect(page).to have_selector(".time-tracker-activity-play")
           expect(page).to have_selector(".time-tracker-activity-stop")
           expect(page).not_to have_selector(".time-tracker-activity-pause")
