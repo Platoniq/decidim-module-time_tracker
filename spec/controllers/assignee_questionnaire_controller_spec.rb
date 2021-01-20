@@ -12,6 +12,7 @@ module Decidim::TimeTracker
     let(:participatory_space) { create(:participatory_process, organization: organization) }
     let(:component) { create(:time_tracker_component, participatory_space: participatory_space) }
     let(:time_tracker) { create(:time_tracker, component: component, questionnaire: activity_questionnaire) }
+    let!(:assignee_data) { create :assignee_data, time_tracker: time_tracker, questionnaire: questionnaire }
     let!(:activity_questionnaire) { create :questionnaire }
     let!(:questionnaire) { create :questionnaire }
     let!(:assignee) { create :assignee, user: user }
@@ -37,7 +38,7 @@ module Decidim::TimeTracker
         get :show
 
         expect(response).to have_http_status(:ok)
-        expect(controller.helpers.questionnaire_for).to eq(time_tracker.assignee_data)
+        expect(controller.helpers.questionnaire_for).to eq(assignee_data)
         expect(controller.helpers.allow_answers?).not_to eq(true)
         expect(controller.helpers.visitor_can_answer?).to eq(can_answer)
         expect(controller.helpers.visitor_already_answered?).not_to eq(true)
@@ -50,7 +51,7 @@ module Decidim::TimeTracker
         get :show
 
         expect(response).to have_http_status(:ok)
-        expect(controller.helpers.questionnaire_for).to eq(time_tracker.assignee_data)
+        expect(controller.helpers.questionnaire_for).to eq(assignee_data)
         expect(controller.helpers.allow_answers?).to eq(true)
         expect(controller.helpers.visitor_can_answer?).not_to eq(false) # visitor_can_answer? returns the instance of current_user when present, not 'true'
         expect(controller.helpers.visitor_already_answered?).not_to eq(true)

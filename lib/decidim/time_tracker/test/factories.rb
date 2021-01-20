@@ -13,10 +13,6 @@ FactoryBot.define do
   factory :time_tracker, class: "Decidim::TimeTracker::TimeTracker" do
     component factory: :time_tracker_component
     questionnaire
-
-    after(:create) do |time_tracker, _evaluator|
-      create :assignee_data, time_tracker: time_tracker
-    end
   end
 
   factory :assignee_data, class: "Decidim::TimeTracker::AssigneeData" do
