@@ -132,24 +132,53 @@ describe "Time tracker page", type: :system do
           end
 
           context "when user is signed up for activity" do
-            let(:assignation) { create(:assignation, user: user, activity: activity, status: status) }
+            let!(:assignation) { create(:assignation, user: user, activity: activity, status: status) }
+
+            before do
+              visit_time_tracker
+            end
 
             context "when status is pending" do
               let(:status) { :pending }
-              # TODO
+
+              it "shows a callout with the correct message" do
+                within "#activities .time-tracker-request" do
+                  within ".callout.warning" do
+                    expect(page).to have_content "Already applied"
+                  end
+                end
+              end
             end
 
             context "when status is rejected" do
               let(:status) { :rejected }
-              # TODO
+
+              it "shows a callout with the correct message" do
+                within "#activities .time-tracker-request" do
+                  within ".callout.alert" do
+                    expect(page).to have_content "rejected"
+                  end
+                end
+              end
             end
 
             context "when status is accepted" do
               let(:status) { :accepted }
-              # TODO
+
+              it "shows a callout with the correct message" do
+                within ".time-tracker-activity" do
+                  expect(page).to have_content "Time elapsed"
+                  expect(page).to have_content "0h0m0s"
+                end
+              end
 
               describe "user logs time for activity" do
-                # TODO
+                it "starts the timer when clicking on the start button" do
+                  page.find(".time-tracker-activity-start").click
+                  expect(page).not_to have_selector ".time-tracker-activity-start"
+                  expect(page).to have_selector ".time-tracker-activity-stop"
+                  expect(page).to have_selector ".time-tracker-activity-pause"
+                end
               end
             end
           end
