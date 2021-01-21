@@ -139,10 +139,6 @@ en:
           questionnaire:
             edit: Edit questionnaire
         tasks:
-          assignations:
-            pending: Pending assignations
-            bulk_ok: Successfully assigned %{count} participants
-            bulk_ko: Error, %{count} participants could not be assigned
           actions:
             confirm_destroy: Are you sure you want to delete this task?
             destroy: Delete task
@@ -151,6 +147,10 @@ en:
             new: New task
           activity_questionnaire:
             title: Activity questionnaire
+          assignations:
+            bulk_ko: Error, %{count} participants could not be assigned
+            bulk_ok: Successfully assigned %{count} participants
+            pending: Pending assignations
           assignee_questionnaire:
             title: Terms and conditions questionnaire
           create:
@@ -161,11 +161,11 @@ en:
           edit:
             submit: Update
             title: Update task
+          index:
+            title: Tasks
           new:
             submit: Create
             title: Create task
-          index: 
-            title: Tasks
           update:
             error: Error updating the task
             success: Task updated successfully
@@ -303,7 +303,6 @@ en:
           name: Activity
         assignation:
           fields:
-            task: Task
             activity: Activity
             email: Email
             invited_at: Invited at
@@ -315,6 +314,7 @@ en:
               accepted: Accepted
               pending: Pending
               rejected: Rejected
+            task: Task
             time_dedicated: Time dedicated
             tos_accepted_at: Joined at
           name: Assignation
