@@ -6,6 +6,7 @@ shared_context "with a time_tracker" do
   let(:participatory_space) { create(:participatory_process, organization: organization) }
   let(:component) { create :time_tracker_component, participatory_space: participatory_space }
   let!(:time_tracker) { create :time_tracker, component: component }
+  let!(:assignee_data) { create :assignee_data, time_tracker: time_tracker }
 end
 
 shared_context "with a full time_tracker" do

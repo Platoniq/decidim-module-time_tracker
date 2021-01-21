@@ -3,13 +3,9 @@
 require "spec_helper"
 
 describe "Admin manages Time tracker", type: :system do
-  let(:organization) { create :organization }
-  let(:user) { create(:user, :admin, organization: organization) }
-  let(:participatory_space) { create(:participatory_process, organization: organization) }
-  let(:component) { create :time_tracker_component, participatory_space: participatory_space }
-  let!(:time_tracker) { create :time_tracker, component: component }
-  let!(:tasks) { create_list :task, 3, time_tracker: time_tracker }
-  let!(:activities) { tasks.map { |task| create_list :activity, 3, task: task }.flatten }
+  include_context "with a full time_tracker"
+
+  let(:user) { create :user, :admin, organization: organization }
 
   before do
     switch_to_host(user.organization.host)
@@ -18,7 +14,7 @@ describe "Admin manages Time tracker", type: :system do
   end
 
   it "shows activity counter next to component name in list" do
-    expect(page).to have_link "Time Tracker #{activities.count}", href: time_tracker_admin_path
+    expect(page).to have_link "Time Tracker #{time_tracker.activities.active.count}", href: time_tracker_admin_path
   end
 
   def visit_time_tracker_admin
