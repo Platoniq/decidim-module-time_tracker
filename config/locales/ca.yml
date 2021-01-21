@@ -61,6 +61,11 @@ ca:
           activities_count: Activities
           assignees_count: Volunteers
           tasks_count: Tasks
+    participatory_processes:
+      statistics:
+        activities_count: Activities
+        assignees_count: Volunteers
+        tasks_count: Tasks
     time_tracker:
       admin:
         actions:
@@ -91,6 +96,7 @@ ca:
         assignations:
           actions:
             accept: D’acord
+            accept_all: Accept all pending assignations
             assignations: Gestiona les assignacions
             confirm_destroy: Confirmes que vols eliminar aquesta assignació?
             destroy: Elimina l'assignació
@@ -129,6 +135,8 @@ ca:
           task:
             name: Tasca
         questionnaires:
+          index:
+            title: Questionnaires
           questionnaire:
             edit: Edita el qüestionari
         tasks:
@@ -140,6 +148,10 @@ ca:
             new: Nova tasca
           activity_questionnaire:
             title: Qüestionari d'activitats
+          assignations:
+            bulk_invalid: Error, %{count} participants could not be assigned
+            bulk_ok: Successfully assigned %{count} participants
+            pending: Pending assignations
           assignee_questionnaire:
             title: Termes i condicions del qüestionari
           create:
@@ -151,7 +163,6 @@ ca:
             submit: Actualitza
             title: Actualitza la tasca
           index:
-            questionnaires: Qüestionaris
             title: Tasques
           new:
             submit: Crea
@@ -278,8 +289,9 @@ ca:
           name: Activitat
         assignation:
           fields:
+            activity: Activity
             email: Correu electrònic
-            invited_at: Convidat el %{time}
+            invited_at: Invited at
             invited_by: Convidat per
             name: Nom
             requested_at: Petició feta el %{time}
@@ -288,6 +300,7 @@ ca:
               accepted: Acceptat
               pending: Pendent
               rejected: Rebutjat
+            task: Task
             time_dedicated: Temps dedicat
             tos_accepted_at: Unit el
           name: Assignació
@@ -297,7 +310,7 @@ ca:
             title: Títol
         task:
           fields:
-            activities_count: Número d'activitats
+            activities_count: Number of activities
             activities_end_at: L'última activitat acaba el
             activities_start_at: La primer activitat comença el
             assignations_accepted: Assignacions acceptades
@@ -315,11 +328,11 @@ ca:
         start:
           already_started: El temporitzador ja està en marxa
           error: Error iniciant el temporitzador
-          success: Temporitzador iniciat correctament
+          success: Counter started successfully
         stop:
           already_stopped: El temporitzador ja s'ha aturat
           error: Error aturant el temporitzador
-          success: Temporitzador aturat correctament
+          success: Counter stopped successfully
       time_tracker:
         activity:
           counter_stopped: El temporitzador s'ha aturat automàticament
