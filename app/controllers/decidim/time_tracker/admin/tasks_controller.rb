@@ -74,21 +74,21 @@ module Decidim
         def accept_all_pending_assignations
           return redirect_to(tasks_path) if assignations.blank?
 
-          ok = ko = 0
+          ok_count = invalid_count = 0
           assignations.each do |assignation|
             UpdateAssignation.call(assignation, current_user, :accepted) do
               on(:ok) do
-                ok += 1
+                ok_count += 1
               end
 
               on(:invalid) do
-                ko += 1
+                invalid_count += 1
               end
             end
           end
 
-          flash[:notice] = I18n.t("tasks.assignations.bulk_ok", scope: "decidim.time_tracker.admin", count: ok) if ok.positive?
-          flash[:alert] = I18n.t("tasks.assignations.bulk_ko", scope: "decidim.time_tracker.admin", count: ko) if ko.positive?
+          flash[:notice] = I18n.t("tasks.assignations.bulk_ok", scope: "decidim.time_tracker.admin", count: ok_count) if ok_count.positive?
+          flash[:alert] = I18n.t("tasks.assignations.bulk_invalid", scope: "decidim.time_tracker.admin", count: invalid_count) if invalid_count.positive?
 
           redirect_to(tasks_path)
         end

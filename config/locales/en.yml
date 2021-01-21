@@ -65,6 +65,11 @@ en:
           activities_count: Activities
           assignees_count: Volunteers
           tasks_count: Tasks
+    participatory_processes:
+      statistics:
+        activities_count: Activities
+        assignees_count: Volunteers
+        tasks_count: Tasks
     time_tracker:
       admin:
         actions:
@@ -148,7 +153,7 @@ en:
           activity_questionnaire:
             title: Activity questionnaire
           assignations:
-            bulk_ko: Error, %{count} participants could not be assigned
+            bulk_invalid: Error, %{count} participants could not be assigned
             bulk_ok: Successfully assigned %{count} participants
             pending: Pending assignations
           assignee_questionnaire:
