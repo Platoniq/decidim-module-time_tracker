@@ -3,11 +3,7 @@
 require "spec_helper"
 
 describe "Time tracker page", type: :system do
-  let(:organization) { create :organization }
-  let(:user) { create(:user, :confirmed, organization: organization) }
-  let(:participatory_space) { create(:participatory_process, organization: organization) }
-  let(:component) { create :time_tracker_component, participatory_space: participatory_space }
-  let!(:time_tracker) { create :time_tracker, component: component }
+  include_context "with a time_tracker"
 
   before do
     switch_to_host(user.organization.host)
