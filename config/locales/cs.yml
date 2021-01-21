@@ -61,6 +61,11 @@ cs:
           activities_count: Activities
           assignees_count: Volunteers
           tasks_count: Tasks
+    participatory_processes:
+      statistics:
+        activities_count: Activities
+        assignees_count: Volunteers
+        tasks_count: Tasks
     time_tracker:
       admin:
         actions:
@@ -91,6 +96,7 @@ cs:
         assignations:
           actions:
             accept: Přijmout
+            accept_all: Accept all pending assignations
             assignations: Správa přiřazení
             confirm_destroy: Opravdu chcete odstranit toto přiřazení?
             destroy: Odstranit přiřazení
@@ -129,6 +135,8 @@ cs:
           task:
             name: Úloha
         questionnaires:
+          index:
+            title: Questionnaires
           questionnaire:
             edit: Upravit dotazník
         tasks:
@@ -140,6 +148,10 @@ cs:
             new: Nová úloha
           activity_questionnaire:
             title: Activity questionnaire
+          assignations:
+            bulk_invalid: Error, %{count} participants could not be assigned
+            bulk_ok: Successfully assigned %{count} participants
+            pending: Pending assignations
           assignee_questionnaire:
             title: Terms and conditions questionnaire
           create:
@@ -151,7 +163,6 @@ cs:
             submit: Aktualizovat
             title: Aktualizovat úkol
           index:
-            questionnaires: Questionnaires
             title: Úlohy
           new:
             submit: Vytvořit
@@ -278,8 +289,9 @@ cs:
           name: Aktivita
         assignation:
           fields:
+            activity: Activity
             email: E-mail
-            invited_at: Pozván/a v %{time}
+            invited_at: Invited at
             invited_by: Pozván od
             name: Jméno
             requested_at: Požadováno v %{time}
@@ -288,6 +300,7 @@ cs:
               accepted: Přijato
               pending: Čekající
               rejected: Odmítnuto
+            task: Task
             time_dedicated: Vyhrazený čas
             tos_accepted_at: Členem od
           name: Přiřazení
@@ -297,7 +310,7 @@ cs:
             title: Název
         task:
           fields:
-            activities_count: Počet aktivit
+            activities_count: Number of activities
             activities_end_at: Poslední aktivita končí v
             activities_start_at: První aktivita začíná v
             assignations_accepted: Přijaté přiřazení
@@ -315,11 +328,11 @@ cs:
         start:
           already_started: Počítadlo je již spuštěno
           error: Chyba při spuštění počítadla
-          success: Počítadlo úspěšně spuštěno
+          success: Counter started successfully
         stop:
           already_stopped: Počítadlo již zastaveno
           error: Chyba při zastavování počítadla
-          success: Počítadlo úspěšně zastaveno
+          success: Counter stopped successfully
       time_tracker:
         activity:
           counter_stopped: Počítadlo bylo automaticky zastaveno
