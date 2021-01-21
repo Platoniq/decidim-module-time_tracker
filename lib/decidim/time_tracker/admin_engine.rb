@@ -22,6 +22,9 @@ module Decidim
         end
 
         resource :assignee_questionnaire, controller: "assignee_questionnaire", only: [:edit, :update] do
+          get "/answer/:session_token", to: "assignee_questionnaire#show", as: :show
+          get "/answer/:session_token/export", to: "assignee_questionnaire#export_response", as: :export_response
+          get "/answers", to: "assignee_questionnaire#index", as: :index
           get "/answer_options", to: "assignee_questionnaire#answer_options", as: :answer_options
         end
 
