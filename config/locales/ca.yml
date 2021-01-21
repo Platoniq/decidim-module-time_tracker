@@ -55,6 +55,12 @@ ca:
           not_found: 'L''activitat no s''ha trobat a la base de dades (ID: %{id})'
         time_tracker_presenter:
           not_found: 'El component TimeTracker no s''ha trobat a la base de dades (ID: %{id})'
+    pages:
+      home:
+        statistics:
+          activities_count: Activities
+          assignees_count: Volunteers
+          tasks_count: Tasks
     time_tracker:
       admin:
         actions:
