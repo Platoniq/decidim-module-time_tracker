@@ -15,6 +15,7 @@ module Decidim
           resources :activities do
             resources :assignations
           end
+          post "accept_all_pending_assignations", on: :collection
         end
 
         resource :activity_questionnaire, controller: "activity_questionnaire", only: [:edit, :update] do

@@ -5,7 +5,7 @@ module Decidim
     module Admin
       class TasksController < Admin::ApplicationController
         include Decidim::TimeTracker::ApplicationHelper
-        helper_method :tasks, :current_task, :tasks_label, :activities_label
+        helper_method :tasks, :current_task, :assignations, :tasks_label, :activities_label, :assignations_label
 
         delegate :tasks, to: :time_tracker
 
@@ -71,10 +71,36 @@ module Decidim
           end
         end
 
+        def accept_all_pending_assignations
+          return redirect_to(tasks_path) if assignations.blank?
+
+          ok_count = invalid_count = 0
+          assignations.each do |assignation|
+            UpdateAssignation.call(assignation, current_user, :accepted) do
+              on(:ok) do
+                ok_count += 1
+              end
+
+              on(:invalid) do
+                invalid_count += 1
+              end
+            end
+          end
+
+          flash[:notice] = I18n.t("tasks.assignations.bulk_ok", scope: "decidim.time_tracker.admin", count: ok_count) if ok_count.positive?
+          flash[:alert] = I18n.t("tasks.assignations.bulk_invalid", scope: "decidim.time_tracker.admin", count: invalid_count) if invalid_count.positive?
+
+          redirect_to(tasks_path)
+        end
+
         private
 
         def tasks
           time_tracker.tasks
+        end
+
+        def assignations
+          time_tracker.assignations.pending
         end
 
         def current_task
