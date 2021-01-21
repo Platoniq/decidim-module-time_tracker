@@ -141,6 +141,8 @@ en:
         tasks:
           assignations:
             pending: Pending assignations
+            bulk_ok: Successfully assigned %{count} participants
+            bulk_ko: Error, %{count} participants could not be assigned
           actions:
             confirm_destroy: Are you sure you want to delete this task?
             destroy: Delete task
@@ -322,7 +324,7 @@ en:
             title: Title
         task:
           fields:
-            activities_count: Number of activites
+            activities_count: Number of activities
             activities_end_at: Last activity ends at
             activities_start_at: First activity starts at
             assignations_accepted: Accepted assignations
@@ -340,11 +342,11 @@ en:
         start:
           already_started: Counter already started
           error: Error starting counter
-          success: Counter started succesfully
+          success: Counter started successfully
         stop:
           already_stopped: Counter already stopped
           error: Error stopping counter
-          success: Counter stopped succesfully
+          success: Counter stopped successfully
       time_tracker:
         activity:
           counter_stopped: Counter has been stopped automatically

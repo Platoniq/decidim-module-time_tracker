@@ -4,7 +4,7 @@
       <%= t(".pending") %>
 
       <div class="button--title">
-        <%= link_to t("assignations.actions.accept_all", scope: "decidim.time_tracker.admin", name: assignations_label), "accept_all_pending_assignations_path", class: "button tiny button--simple" %>
+        <%= link_to t("assignations.actions.accept_all", scope: "decidim.time_tracker.admin", name: assignations_label), accept_all_pending_assignations_tasks_path, method: :post, class: "button tiny button--simple" %>
       </div>
     </h2>
   </div>
