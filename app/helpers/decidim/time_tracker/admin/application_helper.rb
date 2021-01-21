@@ -6,7 +6,6 @@ module Decidim
       # Custom helpers, scoped to the time_tracker engine.
       #
       module ApplicationHelper
-
         def change_assignation_status_button(assignation, success_path: nil)
           path_reject = task_activity_assignation_path(assignation.task, assignation.activity, assignation, assignation_status: :rejected, success_path: success_path)
           path_accept = task_activity_assignation_path(assignation.task, assignation.activity, assignation, assignation_status: :accepted, success_path: success_path)
