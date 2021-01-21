@@ -61,6 +61,11 @@ es:
           activities_count: Activities
           assignees_count: Volunteers
           tasks_count: Tasks
+    participatory_processes:
+      statistics:
+        activities_count: Activities
+        assignees_count: Volunteers
+        tasks_count: Tasks
     time_tracker:
       admin:
         actions:
@@ -91,6 +96,7 @@ es:
         assignations:
           actions:
             accept: Accept
+            accept_all: Accept all pending assignations
             assignations: Manage assignations
             confirm_destroy: Are you sure you want to delete this assignation?
             destroy: Delete assignation
@@ -129,6 +135,8 @@ es:
           task:
             name: Task
         questionnaires:
+          index:
+            title: Questionnaires
           questionnaire:
             edit: Edit questionnaire
         tasks:
@@ -140,6 +148,10 @@ es:
             new: New task
           activity_questionnaire:
             title: Activity questionnaire
+          assignations:
+            bulk_invalid: Error, %{count} participants could not be assigned
+            bulk_ok: Successfully assigned %{count} participants
+            pending: Pending assignations
           assignee_questionnaire:
             title: Terms and conditions questionnaire
           create:
@@ -151,7 +163,6 @@ es:
             submit: Update
             title: Update task
           index:
-            questionnaires: Questionnaires
             title: Tasks
           new:
             submit: Create
@@ -278,8 +289,9 @@ es:
           name: Activity
         assignation:
           fields:
+            activity: Activity
             email: Email
-            invited_at: Invited at %{time}
+            invited_at: Invited at
             invited_by: Invited by
             name: Name
             requested_at: Requested at %{time}
@@ -288,6 +300,7 @@ es:
               accepted: Accepted
               pending: Pending
               rejected: Rejected
+            task: Task
             time_dedicated: Time dedicated
             tos_accepted_at: Joined at
           name: Assignation
@@ -297,7 +310,7 @@ es:
             title: Title
         task:
           fields:
-            activities_count: Number of activites
+            activities_count: Number of activities
             activities_end_at: Last activity ends at
             activities_start_at: First activity starts at
             assignations_accepted: Accepted assignations
@@ -315,11 +328,11 @@ es:
         start:
           already_started: Counter already started
           error: Error starting counter
-          success: Counter started succesfully
+          success: Counter started successfully
         stop:
           already_stopped: Counter already stopped
           error: Error stopping counter
-          success: Counter stopped succesfully
+          success: Counter stopped successfully
       time_tracker:
         activity:
           counter_stopped: Counter has been stopped automatically
