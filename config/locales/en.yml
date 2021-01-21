@@ -133,6 +133,8 @@ en:
           questionnaire:
             edit: Edit questionnaire
         tasks:
+          assignations:
+            pending: Pending assignations
           actions:
             confirm_destroy: Are you sure you want to delete this task?
             destroy: Delete task

@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-divider">
     <h2 class="card-title">
-      <%= t(".title") %>
+      <%= t(".pending") %>
 
       <div class="button--title">
         <%= link_to t("assignations.actions.accept_all", scope: "decidim.time_tracker.admin", name: assignations_label), "accept_all_pending_assignations_path", class: "button tiny button--simple" %>
@@ -14,8 +14,8 @@
       <table class="table-list">
         <thead>
           <tr>
+            <th><%= t("models.assignation.fields.name", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignation.fields.task", scope: "decidim.time_tracker") %></th>
-            <th><%= t("models.assignation.fields.activity", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignation.fields.invited_by", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignation.fields.invited_at", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignation.fields.tos_accepted_at", scope: "decidim.time_tracker") %></th>
@@ -24,12 +24,14 @@
         </thead>
         <tbody>
           <% assignations.each do |assignation| %>
-            <tr data-id="<%= assignation.id %>">
+            <tr data-id="<%= assignation.id %>" class="assignation--pending">
               <td>
-                <%= assignation.user.name %>
+                <%= link_to assignation.user.name, decidim.profile_path(assignation.user.nickname) %>
+                (<%= assignation.user.email %>)
               </td>
               <td>
-                <%= assignation.user.email %>
+                <%= link_to translated_attribute(assignation.task.name), edit_task_path(assignation.task) %> /
+                <%= link_to translated_attribute(assignation.activity.description), task_activity_assignations_path(assignation.task, assignation.activity) %>
               </td>
               <td>
                 <%= assignation.invited_by_user&.name %>
