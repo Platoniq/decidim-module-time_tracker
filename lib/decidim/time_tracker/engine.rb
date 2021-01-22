@@ -20,6 +20,9 @@ module Decidim
             resources :form, controller: "activity_questionnaire", only: [:show] do
               member do
                 post :answer
+                # for admin preview actions
+                get :preview
+                post :preview
               end
             end
           end
@@ -28,6 +31,9 @@ module Decidim
         resource :assignee_questionnaire, controller: "assignee_questionnaire", only: [:show] do
           member do
             post :answer
+            # for admin preview actions
+            get :preview
+            post :preview
           end
         end
 

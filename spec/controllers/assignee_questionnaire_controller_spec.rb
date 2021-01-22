@@ -9,6 +9,8 @@ module Decidim::TimeTracker
 
     include_context "with a time_tracker"
 
+    let(:user) { create :user, :confirmed, organization: organization }
+
     let!(:activity_questionnaire) { time_tracker.questionnaire }
     let!(:questionnaire) { assignee_data.questionnaire }
     let!(:assignee) { create :assignee, user: user }
@@ -49,7 +51,7 @@ module Decidim::TimeTracker
         expect(response).to have_http_status(:ok)
         expect(controller.helpers.questionnaire_for).to eq(assignee_data)
         expect(controller.helpers.allow_answers?).to eq(true)
-        expect(controller.helpers.visitor_can_answer?).not_to eq(false) # visitor_can_answer? returns the instance of current_user when present, not 'true'
+        expect(controller.helpers.visitor_can_answer?).to eq(true)
         expect(controller.helpers.visitor_already_answered?).not_to eq(true)
         expect(subject).to render_template(:show)
       end

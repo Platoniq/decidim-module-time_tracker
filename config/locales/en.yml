@@ -389,6 +389,8 @@ en:
         index:
           empty: There are no activities yet.
           milestones_list: People working in this activity
+        questionnaire_in_preview_mode: This questionnaire cannot be answered in preview
+          mode!
         request_activity:
           assignation_pending: Already applied! Soon an admin will review your application.
           assignation_rejected: Sorry, you're application has been rejected.

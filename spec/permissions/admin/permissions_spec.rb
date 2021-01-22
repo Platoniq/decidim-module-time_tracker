@@ -23,7 +23,7 @@ module Decidim::TimeTracker::Admin
       it_behaves_like "permission is not set"
     end
 
-    context "when subject is not an assignation, an activity, or a task" do
+    context "when subject is not an assignation, an activity, a questionnaire, or a task" do
       let(:action) do
         { scope: :admin, action: :read, subject: :foo }
       end
@@ -80,6 +80,34 @@ module Decidim::TimeTracker::Admin
 
       context "when destroying" do
         it_behaves_like "action is allowed", :admin, :destroy, :activity
+      end
+    end
+
+    context "when subject is a questionnaire" do
+      context "when previewing" do
+        it_behaves_like "action is allowed", :admin, :preview, :questionnaire
+      end
+
+      context "when updating" do
+        it_behaves_like "action is allowed", :admin, :update, :questionnaire
+      end
+
+      context "when exporting answers" do
+        it_behaves_like "action is allowed", :admin, :export_answers, :questionnaire
+      end
+    end
+
+    context "when subject is questionnaire_answers" do
+      context "when showing" do
+        it_behaves_like "action is allowed", :admin, :show, :questionnaire_answers
+      end
+
+      context "when indexing" do
+        it_behaves_like "action is allowed", :admin, :index, :questionnaire_answers
+      end
+
+      context "when exporting responses" do
+        it_behaves_like "action is allowed", :admin, :export_response, :questionnaire_answers
       end
     end
 

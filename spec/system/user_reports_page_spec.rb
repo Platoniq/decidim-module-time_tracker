@@ -4,6 +4,7 @@ require "spec_helper"
 
 describe "User reports page", type: :system do
   include_context "with a time_tracker"
+  let(:user) { create :user, :confirmed, organization: organization }
 
   before do
     switch_to_host(user.organization.host)
