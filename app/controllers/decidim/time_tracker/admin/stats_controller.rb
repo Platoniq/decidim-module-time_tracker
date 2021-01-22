@@ -11,8 +11,7 @@ module Decidim
 
         helper_method :tasks, :activities, :assignations
 
-        def index
-        end
+        def index; end
 
         def assignations_collection
           @assignations_collection ||= Decidim::TimeTracker::Assignation.joins(:task).where(decidim_time_tracker_tasks: { time_tracker_id: time_tracker.id })

@@ -39,7 +39,7 @@ module Decidim
           def translated_activity_id_eq(id)
             translated_attribute(Activity.find_by(id: id).description)
           end
-          
+
           def translated_activity_task_id_eq(id)
             translated_attribute(Task.find_by(id: id).name)
           end
