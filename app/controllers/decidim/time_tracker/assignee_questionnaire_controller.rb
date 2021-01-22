@@ -51,13 +51,13 @@ module Decidim
       # Override so can answer only if is an assignation can view
       # Also admins can preview it (but not answer)
       def visitor_can_answer?
-        return false if current_user.blank?
-
-        params[:action] == "preview" && current_user.admin?
+        current_user.present?
       end
 
       def visitor_already_answered?
-        !visitor_can_answer?
+        return false if params[:action] == "preview" && current_user.admin?
+
+        questionnaire.answered_by?(current_user)
       end
 
       # Returns the path to answer this questionnaire for normal users
