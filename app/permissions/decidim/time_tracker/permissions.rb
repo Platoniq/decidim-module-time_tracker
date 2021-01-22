@@ -13,7 +13,7 @@ module Decidim
 
         case permission_action.subject
         when :questionnaire
-          allow! if permission_action.action == :answer
+          allow_answer?
         when :assignation
           allow_assignation?
         when :milestone
@@ -23,6 +23,12 @@ module Decidim
         end
 
         permission_action
+      end
+
+      def allow_answer?
+        return unless permission_action.action == :answer
+
+        allow! if current_component&.published?
       end
 
       def allow_assignation?
@@ -53,6 +59,10 @@ module Decidim
 
       def activity
         @activity ||= context.fetch(:activity, nil)
+      end
+
+      def current_component
+        @current_component ||= context.fetch(:current_component, nil)
       end
     end
   end

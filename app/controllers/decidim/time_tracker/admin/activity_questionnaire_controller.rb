@@ -30,12 +30,12 @@ module Decidim
         def update_url
           EngineRouter.admin_proxy(current_component).activity_questionnaire_path
         end
-        
+
         def public_url
           activity = time_tracker.activities.first
-          
           return unless activity
-          EngineRouter.main_proxy(current_component).task_activity_form_path(task_id: activity.task, activity_id: activity, id: activity.questionnaire)
+
+          EngineRouter.main_proxy(current_component).preview_task_activity_form_path(task_id: activity.task, activity_id: activity, id: activity.questionnaire)
         end
 
         def after_update_url

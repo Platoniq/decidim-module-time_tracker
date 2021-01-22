@@ -5,15 +5,30 @@ module Decidim
     class ActivityQuestionnaireController < Decidim::TimeTracker::ApplicationController
       include Decidim::Forms::Concerns::HasQuestionnaire
 
+      def preview
+        return show if request.method == "GET"
+
+        flash[":alert"] = I18n.t("activity.questionnaire.preview_mode", scope: "decidim.time_tracker.time_tracker")
+        redirect_to preview_task_activity_form_path(activity_id: activity.id, id: activity.questionnaire)
+      end
+
       def questionnaire_for
         time_tracker
       end
 
       def allow_answers?
+        return false unless current_user
+
+        return true if params[:action] == "preview" && current_user.admin?
+
         activity.allow_answers_for? current_user
       end
 
+      # Returns the path to answer this questionnaire for normal users
+      # If the questionnaire is rendered in a preview route, then just do nothing with the responses
       def update_url
+        return preview_task_activity_form_path(activity_id: activity.id, id: activity.questionnaire) if params[:action] == "preview"
+
         answer_task_activity_form_path(activity_id: activity.id, id: activity.questionnaire)
       end
 
@@ -25,8 +40,13 @@ module Decidim
         Decidim::EngineRouter.main_proxy(current_component).root_path
       end
 
-      # Override so can answer only if is an assignation
+      # Override so can answer only if is an assignation can view
+      # Also admins can preview it (but not answer)
       def visitor_can_answer?
+        return false unless current_user
+
+        return true if params[:action] == "preview" && current_user.admin?
+
         activity.assignation_accepted? current_user
       end
 

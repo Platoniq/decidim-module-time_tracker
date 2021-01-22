@@ -29,10 +29,8 @@ module Decidim
 
           if permission_action.subject == :questionnaire
             case permission_action.action
-            when :export_answers, :update
+            when :export_answers, :update, :preview
               permission_action.allow!
-            when :preview
-              permission_action.disallow!
             end
           elsif permission_action.subject == :questionnaire_answers
             case permission_action.action

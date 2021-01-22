@@ -358,6 +358,7 @@ en:
           questionnaire:
             answered: Thanks for answering the questionnaire!
             respond: What do you think about this task?
+            preview_mode: This questionnaire cannot be answered in preview mode!
         assignee_data:
           answer: Let's start!
           description: To better understand our participants and their relationship
