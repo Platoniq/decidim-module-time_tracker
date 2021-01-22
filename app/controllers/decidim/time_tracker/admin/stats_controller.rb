@@ -9,7 +9,7 @@ module Decidim
 
         helper Decidim::TimeTracker::ApplicationHelper
 
-        helper_method :tasks, :activities, :assignations
+        helper_method :assignations
 
         def index; end
 
