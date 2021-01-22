@@ -354,6 +354,7 @@ cs:
         index:
           empty: There are no activities yet.
           milestones_list: Lidé pracující v této aktivitě
+        questionnaire_in_preview_mode: This questionnaire cannot be answered in preview mode!
         request_activity:
           assignation_pending: Již aplikováno! Brzy správce zkontroluje vaši žádost.
           assignation_rejected: Omlouváme se, Vaše žádost byla zamítnuta.
