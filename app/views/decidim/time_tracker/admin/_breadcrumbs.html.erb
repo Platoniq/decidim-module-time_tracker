@@ -2,8 +2,8 @@
   <div class="card-section">
     <nav role="navigation">
       <ul class="breadcrumbs">
-        <% if current_page? tasks_path %>
-          <li class="<%= "active" if current_page? stats_path %>">
+        <% if current_page?(tasks_path) || current_page?(root_path) %>
+          <li class="<%= "active" %>">
             <%= link_to t(".stats"), stats_path %>
           </li>
         <% else %>
