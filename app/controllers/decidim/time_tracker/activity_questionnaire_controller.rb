@@ -56,7 +56,7 @@ module Decidim
       def visitor_already_answered?
         return false if current_user.blank?
 
-        return true if params[:action] == "preview" && current_user.admin?
+        return false if params[:action] == "preview" && current_user.admin?
 
         activity.questionnaire.answered_by?(session_token)
       end

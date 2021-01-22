@@ -17,6 +17,6 @@ describe "Admin manages Time tracker assignee questionnaire", type: :system do
   end
 
   def questionnaire_public_path
-    Decidim::EngineRouter.main_proxy(component).assignee_questionnaire_path
+    Decidim::EngineRouter.main_proxy(component).preview_assignee_questionnaire_path
   end
 end
