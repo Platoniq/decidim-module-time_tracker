@@ -1,4 +1,4 @@
-<%= link_to "stats", stats_path %>
+<%= render partial: "decidim/time_tracker/admin/breadcrumbs" %>
 
 <%= render partial: "decidim/time_tracker/admin/tasks/assignations" if assignations.present? %>
 <%= render partial: "decidim/time_tracker/admin/tasks/index" %>

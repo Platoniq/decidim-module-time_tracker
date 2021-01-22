@@ -26,6 +26,14 @@ en:
               date_format: Stop time is not a date
               stop_before_start: Stop is before start
   decidim:
+    admin:
+      filters:
+        activity_id_eq:
+          label: Activity
+        activity_task_id_eq:
+          label: Task
+        search_placeholder:
+          user_name_or_user_nickname_cont: Search for a user's name or their nickname
     components:
       time_tracker:
         name: Time Tracker
@@ -128,6 +136,7 @@ en:
         breadcrumbs:
           assignations: Assignations
           global: All tasks
+          stats: Stats
         exports:
           time_tracker_activity_questionnaire_answers: Activity questionnaire answers
           time_tracker_assignee_questionnaire_answers: Assignee questionnaire answers

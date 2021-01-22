@@ -5,6 +5,8 @@ module Decidim
     module Admin
       class StatsController < Admin::ApplicationController
         include Paginable
+        include Decidim::TimeTracker::Admin::FilterableAssignations
+
         helper Decidim::TimeTracker::ApplicationHelper
 
         helper_method :tasks, :activities, :assignations
@@ -12,11 +14,11 @@ module Decidim
         def index
         end
 
-        private
-
-        def assignations
-          paginate time_tracker.assignations.accepted
+        def assignations_collection
+          @assignations_collection ||= Decidim::TimeTracker::Assignation.joins(:task).where(decidim_time_tracker_tasks: { time_tracker_id: time_tracker.id })
         end
+
+        alias assignations filtered_collection
       end
     end
   end

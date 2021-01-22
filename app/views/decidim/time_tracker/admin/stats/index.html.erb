@@ -1,16 +1,17 @@
+<%= render partial: "decidim/time_tracker/admin/breadcrumbs" %>
+
 <div class="card">
   <div class="card-divider">
     <h2 class="card-title">
       <%= t(".title") %>
     </h2>
   </div>
-
+  <%= admin_filter_selector %>
   <div class="card-section">
     <div class="table-scroll">
       <table class="table-list">
         <thead>
           <tr>
-          total time = <%= clockify_seconds(assignations.sum(&:time_dedicated)) %>
           </tr>
           <tr>
             <th><%= t("models.assignation.fields.task", scope: "decidim.time_tracker") %></th>
