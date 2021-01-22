@@ -178,6 +178,9 @@ en:
           create:
             error: Error importing the Time Tracker data to accountability
             success: Time Tracker data exported to accountability successfully
+        stats:
+          index:
+            title: Stats
       admin_log:
         activity:
           create: "%{user_name} created the %{resource_name} activity"

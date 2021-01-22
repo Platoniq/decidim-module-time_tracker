@@ -11,6 +11,8 @@ module Decidim
 
       routes do
         # Add admin engine routes here
+        get :stats, to: "stats#index"
+
         resources :tasks do
           resources :activities do
             resources :assignations
