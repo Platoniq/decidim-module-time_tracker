@@ -9,7 +9,7 @@ module Decidim
       def preview
         return show if request.method == "GET"
 
-        flash[":alert"] = I18n.t("activity.questionnaire.preview_mode", scope: "decidim.time_tracker.time_tracker")
+        flash[":alert"] = I18n.t("questionnaire_in_preview_mode", scope: "decidim.time_tracker.time_tracker")
         redirect_to preview_task_activity_form_path(activity_id: activity.id, id: activity.questionnaire)
       end
 
