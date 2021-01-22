@@ -102,6 +102,8 @@ Decidim.register_component(:time_tracker) do |component|
     end
 
     exports.serializer Decidim::TimeTracker::TimeTrackerActivityQuestionnaireAnswersSerializer
+
+    exports.formats %w(CSV JSON Excel FormPDF)
   end
 
   component.exports :time_tracker_assignee_questionnaire_answers do |exports|
@@ -111,6 +113,8 @@ Decidim.register_component(:time_tracker) do |component|
     end
 
     exports.serializer Decidim::Forms::UserAnswersSerializer
+
+    exports.formats %w(CSV JSON Excel FormPDF)
   end
 
   component.seeds do |participatory_space|
