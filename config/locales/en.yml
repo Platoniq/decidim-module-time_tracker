@@ -33,7 +33,8 @@ en:
         activity_task_id_eq:
           label: Task
         search_placeholder:
-          user_name_or_user_nickname_cont: Search for a user's name or their nickname
+          user_name_or_user_nickname_or_user_email_cont: Search for a user's name,
+            nickname or email
     components:
       time_tracker:
         name: Time Tracker
@@ -152,6 +153,9 @@ en:
             title: Questionnaires
           questionnaire:
             edit: Edit questionnaire
+        stats:
+          index:
+            title: Stats
         tasks:
           actions:
             confirm_destroy: Are you sure you want to delete this task?
@@ -187,9 +191,6 @@ en:
           create:
             error: Error importing the Time Tracker data to accountability
             success: Time Tracker data exported to accountability successfully
-        stats:
-          index:
-            title: Stats
       admin_log:
         activity:
           create: "%{user_name} created the %{resource_name} activity"

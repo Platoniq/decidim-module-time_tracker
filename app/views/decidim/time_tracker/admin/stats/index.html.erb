@@ -17,6 +17,7 @@
             <th><%= t("models.assignation.fields.task", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignation.fields.activity", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignation.fields.name", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignation.fields.email", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignation.fields.time_dedicated", scope: "decidim.time_tracker") %></th>
           </tr>
         </thead>
@@ -31,6 +32,9 @@
               </td>
               <td>
                 <%= link_to assignation.user.name, decidim.profile_path(assignation.user.nickname) %>
+              </td>
+              <td>
+                <%= assignation.user.email %>
               </td>
               <td>
                 <%= clockify_seconds assignation.time_dedicated, padded: true %>
