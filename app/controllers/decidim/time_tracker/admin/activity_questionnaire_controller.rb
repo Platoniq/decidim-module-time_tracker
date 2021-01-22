@@ -31,6 +31,7 @@ module Decidim
           EngineRouter.admin_proxy(current_component).activity_questionnaire_path
         end
 
+        # URL is a custom preview path so we can take control of the answer action
         def public_url
           activity = time_tracker.activities.first
           return unless activity

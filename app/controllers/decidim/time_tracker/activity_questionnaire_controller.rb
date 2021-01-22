@@ -5,6 +5,7 @@ module Decidim
     class ActivityQuestionnaireController < Decidim::TimeTracker::ApplicationController
       include Decidim::Forms::Concerns::HasQuestionnaire
 
+      # only allows answers if not in preview mode
       def preview
         return show if request.method == "GET"
 
@@ -16,8 +17,9 @@ module Decidim
         time_tracker
       end
 
+      # only allows answers if not in preview mode
       def allow_answers?
-        return false unless current_user
+        return false if current_user.blank?
 
         return true if params[:action] == "preview" && current_user.admin?
 
@@ -43,7 +45,7 @@ module Decidim
       # Override so can answer only if is an assignation can view
       # Also admins can preview it (but not answer)
       def visitor_can_answer?
-        return false unless current_user
+        return false if current_user.blank?
 
         return true if params[:action] == "preview" && current_user.admin?
 
@@ -52,6 +54,10 @@ module Decidim
 
       # Override to allow respond users once per-activity
       def visitor_already_answered?
+        return false if current_user.blank?
+
+        return true if params[:action] == "preview" && current_user.admin?
+
         activity.questionnaire.answered_by?(session_token)
       end
 

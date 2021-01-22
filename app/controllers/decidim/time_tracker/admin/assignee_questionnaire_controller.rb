@@ -7,6 +7,15 @@ module Decidim
         include Decidim::Forms::Admin::Concerns::HasQuestionnaire
         include Decidim::Forms::Admin::Concerns::HasQuestionnaireAnswers
 
+        # only allows answers if not in preview mode
+        def allow_answers?
+          return false unless current_user
+
+          return true if params[:action] == "preview" && current_user.admin?
+
+          activity.allow_answers_for? current_user
+        end
+
         def questionnaire_for
           time_tracker.assignee_data
         end
@@ -31,8 +40,9 @@ module Decidim
           EngineRouter.admin_proxy(current_component).assignee_questionnaire_path
         end
 
+        # URL is a custom preview path so we can take control of the answer action
         def public_url
-          EngineRouter.main_proxy(current_component).assignee_questionnaire_path
+          EngineRouter.main_proxy(current_component).preview_assignee_questionnaire_path
         end
 
         def after_update_url

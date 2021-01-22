@@ -5,6 +5,15 @@ module Decidim
     class AssigneeQuestionnaireController < Decidim::TimeTracker::ApplicationController
       include Decidim::Forms::Concerns::HasQuestionnaire
 
+      # only allows answers if not in preview mode
+      def preview
+        return show if request.method == "GET"
+
+        flash[":alert"] = I18n.t("activity.questionnaire.preview_mode", scope: "decidim.time_tracker.time_tracker")
+        redirect_to preview_assignee_questionnaire_path
+      end
+
+      # overwrite this method to automatically accept TOS
       def answer
         enforce_permission_to :answer, :questionnaire
 
@@ -30,11 +39,32 @@ module Decidim
         time_tracker.assignee_data
       end
 
+      # only allows answers if not in preview mode
       def allow_answers?
-        current_user.present? && current_component.published?
+        return false if current_user.blank?
+
+        return true if params[:action] == "preview" && current_user.admin?
+
+        current_component.published?
       end
 
+      # Override so can answer only if is an assignation can view
+      # Also admins can preview it (but not answer)
+      def visitor_can_answer?
+        return false if current_user.blank?
+
+        params[:action] == "preview" && current_user.admin?
+      end
+
+      def visitor_already_answered?
+        !visitor_can_answer?
+      end
+
+      # Returns the path to answer this questionnaire for normal users
+      # If the questionnaire is rendered in a preview route, then just do nothing with the responses
       def update_url
+        return preview_assignee_questionnaire_path if params[:action] == "preview"
+
         answer_assignee_questionnaire_path
       end
 
