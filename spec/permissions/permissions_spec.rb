@@ -46,7 +46,17 @@ module Decidim::TimeTracker
           { scope: :public, action: :answer, subject: :questionnaire }
         end
 
-        it { is_expected.to eq true }
+        it_behaves_like "permission is not set"
+
+        context "and component is published" do
+          let(:context) do
+            {
+              current_component: double(published?: true)
+            }
+          end
+
+          it { is_expected.to eq true }
+        end
       end
     end
 

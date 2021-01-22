@@ -13,7 +13,7 @@ module Decidim
 
       delegate :questions, :answers, to: :questionnaire
 
-      delegate :organization, to: :time_tracker
+      delegate :organization, :component, to: :time_tracker
     end
   end
 end

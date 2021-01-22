@@ -6,6 +6,8 @@ PATH
       decidim-admin (>= 0.23.1)
       decidim-core (>= 0.23.1)
       decidim-forms (>= 0.23.1)
+      wicked_pdf (~> 1.4)
+      wkhtmltopdf-binary (~> 0.12)
 
 GEM
   remote: https://rubygems.org/

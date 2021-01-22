@@ -18,12 +18,13 @@ module Decidim
           post "accept_all_pending_assignations", on: :collection
         end
 
-        resource :activity_questionnaire, controller: "activity_questionnaire", only: [:edit, :update] do
-          get "/answer_options", to: "activity_questionnaire#answer_options", as: :answer_options
-        end
-
-        resource :assignee_questionnaire, controller: "assignee_questionnaire", only: [:edit, :update] do
-          get "/answer_options", to: "assignee_questionnaire#answer_options", as: :answer_options
+        [:activity_questionnaire, :assignee_questionnaire].each do |questionnaire|
+          resource questionnaire, controller: questionnaire, only: [:edit, :update] do
+            get "/answer/:session_token", to: "#{questionnaire}#show", as: :show
+            get "/answer/:session_token/export", to: "#{questionnaire}#export_response", as: :export_response
+            get "/answers", to: "#{questionnaire}#index", as: :index
+            get "/answer_options", to: "#{questionnaire}#answer_options", as: :answer_options
+          end
         end
 
         get :time_tracker_exports, to: "time_tracker_exports#export"

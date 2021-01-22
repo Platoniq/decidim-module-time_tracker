@@ -9,6 +9,8 @@ module Decidim::TimeTracker
 
     include_context "with a time_tracker"
 
+    let(:user) { create :user, :confirmed, organization: organization }
+
     let!(:questionnaire) { time_tracker.questionnaire }
     let(:task) { create :task, time_tracker: time_tracker }
     let!(:activity) { create :activity, task: task }

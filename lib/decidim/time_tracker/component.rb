@@ -67,25 +67,21 @@ Decidim.register_component(:time_tracker) do |component|
   end
 
   component.register_stat :activities_count, primary: true, priority: Decidim::StatsRegistry::MEDIUM_PRIORITY do |components, start_at, end_at|
-    time_tracker = Decidim::TimeTracker::TimeTracker.find_by(component: components)
-    activities = time_tracker.activities.active
-
-    if start_at.present? || end_at.present?
-      activities = activities.where("start_date >= ?", start_at) if start_at.present?
-      activities = activities.where("start_date <= ?", end_at) if end_at.present?
-    end
-
+    tasks = Decidim::TimeTracker::Task.joins(:time_tracker).where(decidim_time_trackers: { decidim_component_id: components })
+    activities = Decidim::TimeTracker::Activity.where(task: tasks).active
+    activities = activities.where("start_date >= ?", start_at) if start_at.present?
+    activities = activities.where("start_date <= ?", end_at) if end_at.present?
     activities.count
   end
 
   component.register_stat :tasks_count, tag: :tasks, priority: Decidim::StatsRegistry::MEDIUM_PRIORITY do |components, _start_at, _end_at|
-    time_tracker = Decidim::TimeTracker::TimeTracker.find_by(component: components)
-    time_tracker.tasks.count
+    tasks = Decidim::TimeTracker::Task.joins(:time_tracker).where(decidim_time_trackers: { decidim_component_id: components })
+    tasks.count
   end
 
   component.register_stat :assignees_count, tag: :assignees, priority: Decidim::StatsRegistry::HIGH_PRIORITY do |components, start_at, end_at|
-    time_tracker = Decidim::TimeTracker::TimeTracker.find_by(component: components)
-    assignations = time_tracker.assignations.accepted.distinct(:decidim_user_id)
+    tasks = Decidim::TimeTracker::Task.joins(:time_tracker).where(decidim_time_trackers: { decidim_component_id: components })
+    assignations = Decidim::TimeTracker::Assignation.joins(:activity).where(decidim_time_tracker_activities: { task_id: tasks })
     assignations = assignations.where("created_at >= ?", start_at) if start_at.present?
     assignations = assignations.where("created_at <= ?", end_at) if end_at.present?
     assignations.count

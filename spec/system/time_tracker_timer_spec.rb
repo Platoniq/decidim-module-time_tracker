@@ -5,6 +5,8 @@ require "spec_helper"
 describe "Time tracker page", type: :system do
   include_context "with a full time_tracker"
 
+  let(:user) { create :user, :confirmed, organization: organization }
+
   before do
     switch_to_host(user.organization.host)
     login_as user, scope: :user
