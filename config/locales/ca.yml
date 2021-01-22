@@ -172,35 +172,35 @@ ca:
         minutes: "%{n}m"
         seconds: "%{n}s"
       default_questionnaire:
-        description: Thank you for filling this questionnaire! We are asking you this set of questions to help you understand whether your project (and its actions carried out on a voluntary basis) is balanced in terms of task distribution due to gender. Reflecting on these questions might also be a useful opportunity to analyse what are the types of tasks considered important and who usually performs these tasks.
+        description: Gràcies per omplir aquest qüestionari. Us fem aquest conjunt de preguntes per ajudar-vos a comprendre si el vostre projecte (i les seves accions realitzades de forma voluntària) és equilibrat en termes de distribució de tasques segons el gènere. Reflexionar sobre aquestes preguntes també pot ser una oportunitat útil per analitzar quins són els tipus de tasques que es consideren importants i qui realitza normalment aquestes tasques.
         question_1:
           body: Com d'important consideres que és aquesta tasca?
-          description: From 1 to 5, do you perceive this task as the most important (5), not important at all (1) or something in between?
-          option_1: 1 (Not important at all)
-          option_2: 2 (Not very important)
-          option_3: 3 (Quite important)
-          option_4: 4 (Very important)
-          option_5: 5 (The most important)
+          description: De l'1 al 5, percebeu aquesta tasca com la més important (5), gens important (1) o alguna cosa entremig?
+          option_1: 1 (Gens important)
+          option_2: 2 (No gaire important)
+          option_3: 3 (Força important)
+          option_4: 4 (Molt important)
+          option_5: 5 (La més important)
         question_2:
-          body: Who do you think usually perform this task?
-          description: Do you think this task is mostly performed by people who identify with a certain gender?
-          option_1: Mostly women
-          option_2: Mostly men
-          option_3: I don't see differences by gender
+          body: Qui creus que realitza habitualment aquesta tasca?
+          description: Creus que aquesta tasca la fan sobretot persones que s’identifiquen amb un gènere determinat?
+          option_1: Sobretot dones
+          option_2: Sobretot homes
+          option_3: No veig diferències per gènere
           option_4: Altres
-        title: How do you perceive this task?
-        tos: Data answered here is treated as confidential and used for statistical purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a> also apply. By submitting this questionnaire, you agree to them.
+        title: Com perceps aquesta tasca?
+        tos: Les dades que es responen aquí es tracten com a confidencials i s'utilitzen només amb finalitats estadístiques. També s'apliquen els <a href="/pages/terms-and-conditions">Termes i condicions d'ús</a> generals. El fet d'enviar aquest qüestionari en suposa l'acceptació.
       milestone:
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
         time_dedicated: Temps dedicat
-        title: "%{user_name}'s activity"
+        title: "Activitat de %{user_name}"
       milestone_form:
         button_no: No, gràcies
         button_submit: Send milestone
         description: Leave a proof of your work by uploading a picture and a simple phrase
         input_file: Arxiu
         input_title: Títol
-        title: Leave your mark!
+        title: Deixa la teva marca!
       milestones:
         create:
           error: S'ha produït un error al crear la fita
@@ -209,7 +209,7 @@ ca:
           assignations_activity: "Activitat de %{user_name}"
           back_to_list: Back to list
           joined_on: Unit el
-          last_worked_on: Last worked on
+          last_worked_on: Última activitat a
           total_time: Temps total dedicat
         milestone:
           time_dedicated: Temps dedicat
@@ -281,18 +281,18 @@ ca:
             answered: Gràcies per respondre al qüestionari!
             respond: Què en penses d'aquesta tasca?
         callout_status:
-          finished: Ended on %{end_date}
+          finished: Aturat el %{end_date}
           inactive: Inactiu
-          not_started: Will start on %{start_date}
-          open: Open, started on %{start_date}
+          not_started: Començarà el %{start_date}
+          open: Oberta, va començar el %{start_date}
         idle_activity:
-          assignation_pending: Already applied! Soon an admin will review your application.
-          assignation_rejected: Sorry, you're application has been rejected.
+          assignation_pending: Ja has aplicat! Aviat un administrador revisarà la teva petició.
+          assignation_rejected: Malauradament, s'ha rebutjat la teva sol·licitud.
         index:
-          milestones_list: People working in this activity
+          milestones_list: Persones que treballen en aquesta activitat
         request_activity:
-          assignation_pending: Already applied! Soon an admin will review your application.
-          assignation_rejected: Sorry, you're application has been rejected.
+          assignation_pending: Ja has aplicat! Aviat un administrador revisarà la teva petició.
+          assignation_rejected: Malauradament, s'ha rebutjat la teva sol·licitud.
       time_tracker_questionnaire_answers_serializer:
         activity_description: Activitat
         activity_id: ID de l'activitat
