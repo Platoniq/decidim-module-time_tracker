@@ -58,14 +58,14 @@ ca:
     pages:
       home:
         statistics:
-          activities_count: Activities
-          assignees_count: Volunteers
-          tasks_count: Tasks
+          activities_count: Activitats
+          assignees_count: Voluntaris
+          tasks_count: Tasques
     participatory_processes:
       statistics:
-        activities_count: Activities
-        assignees_count: Volunteers
-        tasks_count: Tasks
+        activities_count: Activitats
+        assignees_count: Voluntaris
+        tasks_count: Tasques
     time_tracker:
       admin:
         actions:
@@ -96,7 +96,7 @@ ca:
         assignations:
           actions:
             accept: D’acord
-            accept_all: Accept all pending assignations
+            accept_all: Accepta totes les assignacions pendents
             assignations: Gestiona les assignacions
             confirm_destroy: Confirmes que vols eliminar aquesta assignació?
             destroy: Elimina l'assignació
@@ -136,7 +136,7 @@ ca:
             name: Tasca
         questionnaires:
           index:
-            title: Questionnaires
+            title: Qüestionaris
           questionnaire:
             edit: Edita el qüestionari
         tasks:
@@ -149,9 +149,9 @@ ca:
           activity_questionnaire:
             title: Qüestionari d'activitats
           assignations:
-            bulk_invalid: Error, %{count} participants could not be assigned
-            bulk_ok: Successfully assigned %{count} participants
-            pending: Pending assignations
+            bulk_invalid: Error, %{count} participants no s'han pogut assignar
+            bulk_ok: Assignats %{count} participants correctament
+            pending: Assignacions pendents
           assignee_questionnaire:
             title: Termes i condicions del qüestionari
           create:
