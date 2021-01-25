@@ -27,11 +27,11 @@ es:
     admin:
       filters:
         activity_id_eq:
-          label: Activity
+          label: Actividad
         activity_task_id_eq:
-          label: Task
+          label: Tarea
         search_placeholder:
-          user_name_or_user_nickname_or_user_email_cont: Search for a user's name, nickname or email
+          user_name_or_user_nickname_or_user_email_cont: Buscar nombre de usuario, apodo o correo electrónico
     components:
       time_tracker:
         name: Contador de Tiempo
@@ -132,7 +132,7 @@ es:
         breadcrumbs:
           assignations: Asignaciones
           global: Todas las tareas
-          stats: Stats
+          stats: Estadísticas
         exports:
           time_tracker_activity_questionnaire_answers: Respuestas al cuestionario de actividades
           time_tracker_assignee_questionnaire_answers: Respuestas al cuestionario de asignados
@@ -150,7 +150,7 @@ es:
             edit: Editar cuestionario
         stats:
           index:
-            title: Stats
+            title: Estadísticas
         tasks:
           actions:
             confirm_destroy: '¿Estás seguro de que deseas borrar esta tarea?'
@@ -172,16 +172,16 @@ es:
           destroy:
             success: Tarea eliminada correctamente
           edit:
-            submit: Update
-            title: Update task
+            submit: Actualizar
+            title: Actualizar tarea
           index:
-            title: Tasks
+            title: Tareas
           new:
-            submit: Create
-            title: Create task
+            submit: Crear
+            title: Crear tarea
           update:
-            error: Error updating the task
-            success: Task updated successfully
+            error: Error al actualizar la tarea
+            success: Tarea actualizada correctamente
         time_tracker_exports:
           create:
             error: Error importing the Time Tracker data to accountability
@@ -249,68 +249,68 @@ es:
           option_14: 80 a 85
           option_15: 85 a 90
           option_16: Más de 90
-          option_2: 15 to 20
-          option_3: 20 to 25
-          option_4: 25 to 30
-          option_5: 30 to 35
-          option_6: 35 to 40
-          option_7: 40 to 45
-          option_8: 45 to 50
-          option_9: 50 to 55
-        title: Terms of use and demographic data
-        tos: Data answered here is treated as confidential and used for statistical purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a> also apply. By submitting this questionnaire, you agree to them.
+          option_2: 15 a 20
+          option_3: 20 a 25
+          option_4: 25 a 30
+          option_5: 30 a 35
+          option_6: 35 a 40
+          option_7: 40 a 45
+          option_8: 45 a 50
+          option_9: 50 a 55
+        title: Términos de uso y datos demográficos
+        tos: Los datos contestados aquí son tratados como confidenciales y utilizados únicamente para fines estadísticos. Los <a href="/pages/terms-and-conditions">Términos y Condiciones Generales</a> también se aplican. Al enviar este cuestionario, estás dando tu consentimiento.
       milestone:
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
-        time_dedicated: Time dedicated
-        title: "%{user_name}'s activity"
+        time_dedicated: Tiempo dedicado
+        title: "Actividad de %{user_name}"
       milestone_form:
-        button_no: No thanks
-        button_submit: Save
-        description: Share a proof of your work by uploading a picture and a brief description of what you've accomplished.
-        input_file: File
-        input_title: Title
-        title: Leave your mark!
+        button_no: No, gracias
+        button_submit: Guardar
+        description: Comparte una prueba de tu trabajo subiendo una foto y una breve descripción de lo que has conseguido.
+        input_file: Archivo
+        input_title: Título
+        title: '¡Deja tu marca!'
       milestones:
         create:
-          error: Error creating the milestone
-          success: Milestone created successfully
+          error: Error al crear el hito
+          success: Hito creado correctamente
         index:
-          assignations_activity: "%{user_name}'s activity"
-          back_to_list: Back to activities
-          joined_on: Joined on
-          last_worked_on: Last worked on
-          total_time: Total time dedicated
+          assignations_activity: "Actividad de %{user_name}"
+          back_to_list: Volver a actividades
+          joined_on: Se unió el
+          last_worked_on: Último trabajo en
+          total_time: Tiempo total dedicado
         milestone:
-          time_dedicated: Time dedicated
+          time_dedicated: Tiempo dedicado
       models:
         activity:
           fields:
-            assignations_accepted: Accepted assignations
-            assignations_pending: Pending assignations
-            description: Description
-            end_date: End date
-            max_minutes_per_day: Max. minutes per day
-            requests_start_at: Requests start at
-            start_date: Start date
-            status: Status
+            assignations_accepted: Asignaciones aceptadas
+            assignations_pending: Asignaciones pendientes
+            description: Descripción
+            end_date: Fecha de finalización
+            max_minutes_per_day: Máximo de minutos por día
+            requests_start_at: Las solicitudes comienzan el
+            start_date: Fecha de inicio
+            status: Estado
             statuses:
-              finished: Finished
-              inactive: Inactive
-              not_started: Not started
-              open: Open
-          name: Activity
+              finished: Completada
+              inactive: Inactiva
+              not_started: Sin comenzar
+              open: Abierta
+          name: Actividad
         assignation:
           fields:
-            activity: Activity
+            activity: Actividad
             email: Email
-            invited_at: Invited at
-            invited_by: Invited by
-            name: Name
-            requested_at: Requested at %{time}
-            status: Status
+            invited_at: Invitado el
+            invited_by: Invitado por
+            name: Nombre
+            requested_at: Solicitado el %{time}
+            status: Estado
             statuses:
-              accepted: Accepted
-              pending: Pending
+              accepted: Aceptada
+              pending: Pendiente
               rejected: Rechazada
             task: Tarea
             time_dedicated: Tiempo dedicado
@@ -380,9 +380,9 @@ es:
         registered: Registrado
         task_id: ID de tarea
         task_name: Tarea
-        unregistered: Unregistered
-        user_status: User status
+        unregistered: No registrado
+        user_status: Estado del usuario
   layouts:
     decidim:
       user_profile:
-        time_tracker: My voluntary work
+        time_tracker: Mi trabajo voluntario
