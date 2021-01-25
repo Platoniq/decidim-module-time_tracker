@@ -2,143 +2,143 @@ es:
   activemodel:
     attributes:
       milestone:
-        title: What have you done?
+        title: '¿Qué has hecho?'
     errors:
       models:
         milestone:
           attributes:
             attachment:
-              needs_to_be_reattached: Needs to be reattached
+              needs_to_be_reattached: Es necesario volver a adjuntar el archivo
         time_event:
           attributes:
             activity:
-              finished: Activity has finished already
-              inactive: Activity is not active
-              no_time_available: User has reached the maximum amount of time available for the day
-              not_started: Activity has not started yet
+              finished: La actividad ya ha finalizado
+              inactive: La actividad no está activa
+              no_time_available: El usuario ha alcanzado el tiempo máximo disponible para el día
+              not_started: La actividad aún no ha comenzado
             assignation:
               unassigned: User is not assignationd to the task
             start:
-              date_format: Start time is not a date
+              date_format: La hora inicial no es una fecha
             stop:
-              date_format: Stop time is not a date
-              stop_before_start: Stop is before start
+              date_format: La hora de finalización no es una fecha
+              stop_before_start: Finalizar es antes del inicio
   decidim:
     components:
       time_tracker:
-        name: Time Tracker
+        name: Contador de Tiempo
         settings:
           global:
-            activities_label: Name for "Activities"
-            announcement: Announcement
-            assignations_label: Name for "Assignations"
-            max_number_of_assignations: Maximum number of assignations
-            milestones_label: Name for "Milestones"
-            tasks_label: Name for "Tasks"
-            time_events_label: Name for "Time Events"
-            tos: Terms and conditions
+            activities_label: Nombre para "Actividades"
+            announcement: Anuncio
+            assignations_label: Nombre para "Asignaciones"
+            max_number_of_assignations: Número máximo de asignaciones
+            milestones_label: Nombre para "Hitos"
+            tasks_label: Nombre para "Tareas"
+            time_events_label: Nombre para "Eventos de tiempo"
+            tos: Términos y condiciones
           step:
-            announcement: Announcement
+            announcement: Anuncio
         views:
           activity:
-            info: Click on the button to track your time.
-            time_elapsed: 'Time elapsed:'
+            info: Haga clic en el botón para seguir su tiempo.
+            time_elapsed: 'Tiempo transcurrido:'
           index:
-            account_message: <a href="%{sign_in_url}">Sign in with your account</a> or <a href="%{sign_up_url}">sign up</a> to participate in this activity.
-            request: Request to join activity
+            account_message: <a href="%{sign_in_url}">Inicia sesión con tu cuenta</a> o <a href="%{sign_up_url}">regístrate</a> para participar en esta actividad.
+            request: Solicitar unirse a la actividad
     log:
       value_types:
         activity_presenter:
-          not_found: 'The Activity was not found on the database (ID: %{id})'
+          not_found: 'La actividad no se encontró en la base de datos (ID: %{id})'
         time_tracker_presenter:
-          not_found: 'The Time Tracker component was not found on the database (ID: %{id})'
+          not_found: 'El componente Time Tracker no se encontró en la base de datos (ID: %{id})'
     time_tracker:
       admin:
         actions:
-          title: Actions
+          title: Acciones
         activities:
           actions:
-            assignations: Manage assignations
-            confirm_destroy: Are you sure you want to delete this activity?
-            destroy: Delete activity
-            edit: Edit activity
-            new: New activity
+            assignations: Administrar asignaciones
+            confirm_destroy: '¿Seguro que desea eliminar esta actividad?'
+            destroy: Eliminar actividad
+            edit: Editar actividad
+            new: Nueva actividad
           create:
-            error: Error creating the activity
-            success: Activity created successfully
+            error: Ocurrió un error al añadir la actividad
+            success: Actividad agregada correctamente
           destroy:
-            success: Activity deleted successfully
+            success: Actividad eliminada correctamente
           edit:
-            submit: Update activity
-            title: Edit activity
+            submit: Actualizar actividad
+            title: Editar actividad
           index:
-            title: Task activities
+            title: Actividades de la tarea
           new:
-            submit: Create activity
-            title: New activity
+            submit: Crear actividad
+            title: Nueva actividad
           update:
-            error: Error updating activity
-            success: Activity updated successfully
+            error: Error al actualizar la actividad
+            success: Actividad actualizada correctamente
         assignations:
           actions:
-            accept: Accept
-            assignations: Manage assignations
-            confirm_destroy: Are you sure you want to delete this assignation?
-            destroy: Delete assignation
-            new: New assignation
-            reject: Reject
+            accept: Aceptar
+            assignations: Administrar asignaciones
+            confirm_destroy: '¿Estás seguro de que quieres eliminar esta asignación?'
+            destroy: Eliminar asignación
+            new: Nueva asignación
+            reject: Rechazar
           create:
-            error: Error creating assignation
-            success: Assignation created successfully
+            error: Error al crear la asignación
+            success: Asignación creada correctamente
           destroy:
-            error: Error removing assignation
-            succcess: Assignation removed successfully
+            error: Error al eliminar la asignación
+            succcess: Asignación eliminada correctamente
           form:
-            existing_user: Existing participant
-            non_user: Non participant
-            select_user: Select a participant
-            user_type: Participant type
+            existing_user: Participante existente
+            non_user: No participante
+            select_user: Selecciona una participante
+            user_type: Tipo de participante
           index:
-            title: Assignations
+            title: Asignaciones
           new:
-            create: Create assignation
-            title: New assignation to this activity
+            create: Crear asignación
+            title: Nueva asignación a esta actividad
           update:
-            error: Error updating assignation
-            success: Assigne updated successfully
+            error: Error al actualizar la asignación
+            success: Asignación actualizada correctamente
         breadcrumbs:
-          assignations: Assignations
-          global: All tasks
+          assignations: Asignaciones
+          global: Todas las tareas
         exports:
           time_tracker_questionnaire_answers: Answers
         models:
           activity:
-            name: Activity
+            name: Actividad
           assignation:
-            name: Assignation
+            name: Asignación
           task:
-            name: Task
+            name: Tarea
         tasks:
           actions:
-            confirm_destroy: Are you sure you want to delete this task?
-            destroy: Delete task
-            edit: Edit task
+            confirm_destroy: '¿Estás seguro de que deseas borrar esta tarea?'
+            destroy: Eliminar tarea
+            edit: Editar tarea
             export_to_accountability: Export to Accountability
-            new: New task
-            questionnaire: Edit questionnaire
+            new: Nueva tarea
+            questionnaire: Editar cuestionario
           create:
-            error: Error creating the task
-            success: Task created successfully
+            error: Error al crear la tarea
+            success: Tarea creada correctamente
           destroy:
-            success: Task deleted successfully
+            success: Tarea eliminada correctamente
           edit:
-            submit: Update
-            title: Update task
+            submit: Actualizar
+            title: Actualizar tarea
           index:
             questionnaire: Questionnaire
-            title: Tasks
+            title: Tareas
           new:
-            submit: Create
+            submit: Crear
             title: Create task
           update:
             error: Error updating the task
@@ -149,47 +149,47 @@ es:
             success: Time Tracker data exported to accountability successfully
       admin_log:
         activity:
-          create: "%{user_name} created the %{resource_name} activity"
-          delete: "%{user_name} removed the %{resource_name} activity"
-          update: "%{user_name} updated the %{resource_name} activity"
+          create: "%{user_name} ha creado la actividad %{resource_name}"
+          delete: "%{user_name} ha eliminado la actividad %{resource_name}"
+          update: "%{user_name} ha actualizado la actividad %{resource_name}"
         assignation:
-          create: "%{user_name} created an assignation"
-          delete: "%{user_name} removed an assignation"
-          update: "%{user_name} updated an assignation"
+          create: "%{user_name} ha creado una asignación"
+          delete: "%{user_name} ha eliminado una asignación"
+          update: "%{user_name} ha actualizado una asignación"
         task:
-          create: "%{user_name} created the %{resource_name} task"
-          delete: "%{user_name} removed the %{resource_name} task"
-          update: "%{user_name} updated the %{resource_name} task"
+          create: "%{user_name} ha creado la tarea %{resource_name}"
+          delete: "%{user_name} ha eliminado la tarea %{resource_name}"
+          update: "%{user_name} ha actualizado la tarea %{resource_name}"
       assignations:
         request:
           error: Activity assignation request failed!
           success: Activity assignation request succeded!
         show:
-          assignations_activity: "%{user_name}'s activity"
-          milestones_list: List of milestones
+          assignations_activity: "Actividad de %{user_name}"
+          milestones_list: Lista de hitos
       clock:
         hours: "%{n}h"
         minutes: "%{n}m"
         seconds: "%{n}s"
       default_questionnaire:
-        description: Thank you for filling this questionnaire! We are asking you this set of questions to help you understand whether your project (and its actions carried out on a voluntary basis) is balanced in terms of task distribution due to gender. Reflecting on these questions might also be a useful opportunity to analyse what are the types of tasks considered important and who usually performs these tasks.
+        description: '¡Gracias por completar este cuestionario! Le hacemos este conjunto de preguntas para ayudarlo a comprender si este proyecto (y sus acciones llevadas a cabo de manera voluntaria) está equilibrado en términos de distribución de tareas por género. Reflexionar sobre estas preguntas también puede ser una oportunidad útil para analizar cuáles son los tipos de tareas que se consideran importantes y quién las realiza habitualmente.'
         question_1:
-          body: How important do you think this task is?
-          description: From 1 to 5, do you perceive this task as the most important (5), not important at all (1) or something in between?
-          option_1: 1 (Not important at all)
-          option_2: 2 (Not very important)
-          option_3: 3 (Quite important)
-          option_4: 4 (Very important)
-          option_5: 5 (The most important)
+          body: '¿Cuál crees que es la importancia de esta tarea?'
+          description: De 1 a 5, ¿consideras esta tarea como la más importante (5), no importante en absoluto (1) o algo en medio?
+          option_1: 1 (Nada importante)
+          option_2: 2 (No muy importante)
+          option_3: 3 (Bastante importante)
+          option_4: 4 (Muy importante)
+          option_5: 5 (La más importante)
         question_2:
-          body: Who do you think usually perform this task?
-          description: Do you think this task is mostly performed by people who identify with a certain gender?
-          option_1: Mostly women
-          option_2: Mostly men
-          option_3: I don't see differences by gender
-          option_4: Other
-        title: How do you perceive this task?
-        tos: Data answered here is treated as confidential and used for statistical purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a> also apply. By submitting this questionnaire, you agree to them.
+          body: '¿Quiénes crees que suelen realizar esta tarea?'
+          description: '¿Crees que esta tarea es principalmente realizada por personas que se identifican con un determinado género?'
+          option_1: Principalmente mujeres
+          option_2: Principalmente hombres
+          option_3: No veo diferencias por género
+          option_4: Otra
+        title: '¿Cómo percibes esta tarea?'
+        tos: Los datos contestados aquí son tratados como confidenciales y utilizados únicamente para fines estadísticos. Los <a href="/pages/terms-and-conditions">Términos y Condiciones Generales</a> también se aplican. Al enviar este cuestionario, estás dando tu consentimiento.
       milestone:
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
         time_dedicated: Time dedicated
@@ -241,67 +241,67 @@ es:
             statuses:
               accepted: Accepted
               pending: Pending
-              rejected: Rejected
-            time_dedicated: Time dedicated
-            tos_accepted_at: Joined at
-          name: Assignation
+              rejected: Rechazada
+            time_dedicated: Tiempo dedicado
+            tos_accepted_at: Se unió el
+          name: Asignación
         questionnaire:
           fields:
-            name: Name
-            title: Title
+            name: Nombre
+            title: Título
         task:
           fields:
             activities_count: Number of activites
-            activities_end_at: Last activity ends at
-            activities_start_at: First activity starts at
-            assignations_accepted: Accepted assignations
-            assignations_pending: Pending assignations
-            name: Name
-          name: Task
+            activities_end_at: La última actividad termina el
+            activities_start_at: La primera actividad comienza el
+            assignations_accepted: Asignaciones aceptadas
+            assignations_pending: Asignaciones pendientes
+            name: Nombre
+          name: Tarea
       reports:
         user:
           index:
-            accepted: Accepted
-            dedicated_time: 'Time dedicated so far: %{time}'
-            empty: You don't have any activity assignations
-            pending: Pending
+            accepted: Aceptada
+            dedicated_time: 'Tiempo dedicado hasta ahora: %{time}'
+            empty: No tienes ninguna actividad asignada
+            pending: Pendiente
       time_events:
         start:
-          already_started: Counter already started
-          error: Error starting counter
+          already_started: El contador ya ha comenzado
+          error: Error iniciando contador
           success: Counter started succesfully
         stop:
-          already_stopped: Counter already stopped
-          error: Error stopping counter
+          already_stopped: El contador ya está detenido
+          error: Error al detener el contador
           success: Counter stopped succesfully
       time_tracker:
         activity:
-          counter_stopped: Counter has been stopped automatically
+          counter_stopped: Contador se ha detenido automáticamente
           questionnaire:
-            answered: Thanks for answering the questionnaire!
-            respond: What do you think about this task?
+            answered: '¡Gracias por responder al cuestionario!'
+            respond: '¿Qué opinas sobre esta tarea?'
         callout_status:
-          finished: Ended on %{end_date}
-          inactive: Inactive
-          not_started: Will start on %{start_date}
-          open: Open, started on %{start_date}
+          finished: Terminó el %{end_date}
+          inactive: Inactiva
+          not_started: Empezará el %{start_date}
+          open: Abierta, iniciada el %{start_date}
         idle_activity:
-          assignation_pending: Already applied! Soon an admin will review your application.
-          assignation_rejected: Sorry, you're application has been rejected.
+          assignation_pending: '¡Ya inscrita! Pronto un administrador revisará tu aplicación.'
+          assignation_rejected: Lo sentimos pero tu solicitud ha sido rechazada.
         index:
-          milestones_list: People working in this activity
+          milestones_list: Personas trabajando en esta actividad
         request_activity:
-          assignation_pending: Already applied! Soon an admin will review your application.
-          assignation_rejected: Sorry, you're application has been rejected.
+          assignation_pending: '¡Ya inscrita! Pronto un administrador revisará tu aplicación.'
+          assignation_rejected: Lo sentimos pero tu solicitud ha sido rechazada.
       time_tracker_questionnaire_answers_serializer:
-        activity_description: Activity
-        activity_id: Activity ID
-        created_at: Answered on
-        id: Answer ID
-        ip_hash: Ip Hash
-        registered: Registered
-        task_id: Task ID
-        task_name: Task
+        activity_description: Actividad
+        activity_id: ID de actividad
+        created_at: Respondido el
+        id: ID de respuesta
+        ip_hash: Hash de Dirección IP
+        registered: Registrado
+        task_id: ID de tarea
+        task_name: Tarea
         unregistered: Unregistered
         user_status: User status
   layouts:
