@@ -1,0 +1,388 @@
+es:
+  activemodel:
+    attributes:
+      milestone:
+        title: '¿Qué has hecho?'
+    errors:
+      models:
+        milestone:
+          attributes:
+            attachment:
+              needs_to_be_reattached: Es necesario volver a adjuntar el archivo
+        time_event:
+          attributes:
+            activity:
+              finished: La actividad ya ha finalizado
+              inactive: La actividad no está activa
+              no_time_available: El usuario ha alcanzado el tiempo máximo disponible para el día
+              not_started: La actividad aún no ha comenzado
+            assignation:
+              unassigned: El usuario no está asignado a la tarea
+            start:
+              date_format: La hora inicial no es una fecha
+            stop:
+              date_format: La hora de finalización no es una fecha
+              stop_before_start: Finalizar es antes del inicio
+  decidim:
+    admin:
+      filters:
+        activity_id_eq:
+          label: Actividad
+        activity_task_id_eq:
+          label: Tarea
+        search_placeholder:
+          user_name_or_user_nickname_or_user_email_cont: Buscar nombre de usuario, apodo o correo electrónico
+    components:
+      time_tracker:
+        name: Contador de Tiempo
+        settings:
+          global:
+            activities_label: Nombre para "Actividades"
+            announcement: Anuncio
+            assignations_label: Nombre para "Asignaciones"
+            max_number_of_assignations: Número máximo de asignaciones
+            milestones_label: Nombre para "Hitos"
+            tasks_label: Nombre para "Tareas"
+            time_events_label: Nombre para "Eventos de tiempo"
+            tos: Términos y condiciones
+          step:
+            announcement: Anuncio
+        views:
+          activity:
+            info: Haga clic en el botón para seguir su tiempo.
+            time_elapsed: 'Tiempo transcurrido:'
+          index:
+            account_message: <a href="%{sign_in_url}">Inicia sesión con tu cuenta</a> o <a href="%{sign_up_url}">regístrate</a> para participar en esta actividad.
+            data:
+              fill: Rellenar datos
+              submit: Enviar
+            request: Solicitar unirse a la actividad
+    log:
+      value_types:
+        activity_presenter:
+          not_found: 'La actividad no se encontró en la base de datos (ID: %{id})'
+        time_tracker_presenter:
+          not_found: 'El componente Time Tracker no se encontró en la base de datos (ID: %{id})'
+    pages:
+      home:
+        statistics:
+          activities_count: Actividades
+          assignees_count: Voluntarios
+          tasks_count: Tareas
+    participatory_processes:
+      statistics:
+        activities_count: Actividades
+        assignees_count: Voluntarios
+        tasks_count: Tareas
+    time_tracker:
+      admin:
+        actions:
+          title: Acciones
+        activities:
+          actions:
+            assignations: Administrar asignaciones
+            confirm_destroy: '¿Seguro que desea eliminar esta actividad?'
+            destroy: Eliminar actividad
+            edit: Editar actividad
+            new: Nueva actividad
+          create:
+            error: Ocurrió un error al añadir la actividad
+            success: Actividad agregada correctamente
+          destroy:
+            success: Actividad eliminada correctamente
+          edit:
+            submit: Actualizar actividad
+            title: Editar actividad
+          index:
+            title: Actividades de la tarea
+          new:
+            submit: Crear actividad
+            title: Nueva actividad
+          update:
+            error: Error al actualizar la actividad
+            success: Actividad actualizada correctamente
+        assignations:
+          actions:
+            accept: Aceptar
+            accept_all: Aceptar todas las asignaciones pendientes
+            assignations: Administrar asignaciones
+            confirm_destroy: '¿Estás seguro de que quieres eliminar esta asignación?'
+            destroy: Eliminar asignación
+            new: Nueva asignación
+            reject: Rechazar
+          create:
+            error: Error al crear la asignación
+            success: Asignación creada correctamente
+          destroy:
+            error: Error al eliminar la asignación
+            succcess: Asignación eliminada correctamente
+          form:
+            existing_user: Participante existente
+            non_user: No participante
+            select_user: Selecciona una participante
+            user_type: Tipo de participante
+          index:
+            title: Asignaciones
+          new:
+            create: Crear asignación
+            title: Nueva asignación a esta actividad
+          update:
+            error: Error al actualizar la asignación
+            success: Asignación actualizada correctamente
+        breadcrumbs:
+          assignations: Asignaciones
+          global: Todas las tareas
+          stats: Estadísticas
+        exports:
+          time_tracker_activity_questionnaire_answers: Respuestas al cuestionario de actividades
+          time_tracker_assignee_questionnaire_answers: Respuestas al cuestionario de asignados
+        models:
+          activity:
+            name: Actividad
+          assignation:
+            name: Asignación
+          task:
+            name: Tarea
+        questionnaires:
+          index:
+            title: Cuestionarios
+          questionnaire:
+            edit: Editar cuestionario
+        stats:
+          index:
+            title: Estadísticas
+        tasks:
+          actions:
+            confirm_destroy: '¿Estás seguro de que deseas borrar esta tarea?'
+            destroy: Eliminar tarea
+            edit: Editar tarea
+            export_to_accountability: Export to Accountability
+            new: Nueva tarea
+          activity_questionnaire:
+            title: Cuestionario de actividades
+          assignations:
+            bulk_invalid: Error, no se han podido asignar %{count} participantes
+            bulk_ok: '%{count} participantes asignados correctamente'
+            pending: Asignaciones pendientes
+          assignee_questionnaire:
+            title: Cuestionario de términos y Condiciones
+          create:
+            error: Error al crear la tarea
+            success: Tarea creada correctamente
+          destroy:
+            success: Tarea eliminada correctamente
+          edit:
+            submit: Actualizar
+            title: Actualizar tarea
+          index:
+            title: Tareas
+          new:
+            submit: Crear
+            title: Crear tarea
+          update:
+            error: Error al actualizar la tarea
+            success: Tarea actualizada correctamente
+        time_tracker_exports:
+          create:
+            error: Error importing the Time Tracker data to accountability
+            success: Time Tracker data exported to accountability successfully
+      admin_log:
+        activity:
+          create: "%{user_name} ha creado la actividad %{resource_name}"
+          delete: "%{user_name} ha eliminado la actividad %{resource_name}"
+          update: "%{user_name} ha actualizado la actividad %{resource_name}"
+        assignation:
+          create: "%{user_name} ha creado una asignación"
+          delete: "%{user_name} ha eliminado una asignación"
+          update: "%{user_name} ha actualizado una asignación"
+        task:
+          create: "%{user_name} ha creado la tarea %{resource_name}"
+          delete: "%{user_name} ha eliminado la tarea %{resource_name}"
+          update: "%{user_name} ha actualizado la tarea %{resource_name}"
+      assignations:
+        request:
+          error: Se ha producido un error al asignarle a esta actividad.
+          success: '¡Tu solicitud de unirse a la actividad se ha tramitado correctamente!'
+        show:
+          assignations_activity: "Actividad de %{user_name}"
+          milestones_list: Lista de hitos
+      clock:
+        hours: "%{n}h"
+        minutes: "%{n}m"
+        seconds: "%{n}s"
+      default_activity_questionnaire:
+        description: '¡Gracias por completar este cuestionario! Le hacemos este conjunto de preguntas para ayudarlo a comprender si este proyecto (y sus acciones llevadas a cabo de manera voluntaria) está equilibrado en términos de distribución de tareas por género. Reflexionar sobre estas preguntas también puede ser una oportunidad útil para analizar cuáles son los tipos de tareas que se consideran importantes y quién las realiza habitualmente.'
+        question_1:
+          body: '¿Cuál crees que es la importancia de esta tarea?'
+          description: De 1 a 5, ¿consideras esta tarea como la más importante (5), no importante en absoluto (1) o algo en medio?
+          option_1: 1 (Nada importante)
+          option_2: 2 (No muy importante)
+          option_3: 3 (Bastante importante)
+          option_4: 4 (Muy importante)
+          option_5: 5 (La más importante)
+        question_2:
+          body: '¿Quiénes crees que suelen realizar esta tarea?'
+          description: '¿Crees que esta tarea es principalmente realizada por personas que se identifican con un determinado género?'
+          option_1: Principalmente mujeres
+          option_2: Principalmente hombres
+          option_3: No veo diferencias por género
+          option_4: Otra
+        title: '¿Cómo percibes esta tarea?'
+        tos: Los datos contestados aquí son tratados como confidenciales y utilizados únicamente para fines estadísticos. Los <a href="/pages/terms-and-conditions">Términos y Condiciones Generales</a> también se aplican. Al enviar este cuestionario, estás dando tu consentimiento.
+      default_assignee_questionnaire:
+        description: '¡Gracias por rellenar este cuestionario! Hacemos este conjunto de preguntas para ayudar a comprender si este proyecto (y sus acciones llevadas a cabo de forma voluntaria) está equilibrado en términos de distribución de tareas debido al género.'
+        question_1:
+          body: '¿Con qué género te identificas?'
+          description: Elige la opción que mejor se adapte a tu identidad de género.
+          option_1: Mujer
+          option_2: Hombre
+          option_3: No-binario
+          option_4: Otro
+        question_2:
+          body: '¿Cual es tu edad?'
+          description: Elige tu rango de edad
+          option_1: Menos de 15
+          option_10: 55 a 60
+          option_11: 65 a 70
+          option_12: 70 a 75
+          option_13: 75 a 80
+          option_14: 80 a 85
+          option_15: 85 a 90
+          option_16: Más de 90
+          option_2: 15 a 20
+          option_3: 20 a 25
+          option_4: 25 a 30
+          option_5: 30 a 35
+          option_6: 35 a 40
+          option_7: 40 a 45
+          option_8: 45 a 50
+          option_9: 50 a 55
+        title: Términos de uso y datos demográficos
+        tos: Los datos contestados aquí son tratados como confidenciales y utilizados únicamente para fines estadísticos. Los <a href="/pages/terms-and-conditions">Términos y Condiciones Generales</a> también se aplican. Al enviar este cuestionario, estás dando tu consentimiento.
+      milestone:
+        dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
+        time_dedicated: Tiempo dedicado
+        title: "Actividad de %{user_name}"
+      milestone_form:
+        button_no: No, gracias
+        button_submit: Guardar
+        description: Comparte una prueba de tu trabajo subiendo una foto y una breve descripción de lo que has conseguido.
+        input_file: Archivo
+        input_title: Título
+        title: '¡Deja tu marca!'
+      milestones:
+        create:
+          error: Error al crear el hito
+          success: Hito creado correctamente
+        index:
+          assignations_activity: "Actividad de %{user_name}"
+          back_to_list: Volver a actividades
+          joined_on: Se unió el
+          last_worked_on: Último trabajo en
+          total_time: Tiempo total dedicado
+        milestone:
+          time_dedicated: Tiempo dedicado
+      models:
+        activity:
+          fields:
+            assignations_accepted: Asignaciones aceptadas
+            assignations_pending: Asignaciones pendientes
+            description: Descripción
+            end_date: Fecha de finalización
+            max_minutes_per_day: Máximo de minutos por día
+            requests_start_at: Las solicitudes comienzan el
+            start_date: Fecha de inicio
+            status: Estado
+            statuses:
+              finished: Completada
+              inactive: Inactiva
+              not_started: Sin comenzar
+              open: Abierta
+          name: Actividad
+        assignation:
+          fields:
+            activity: Actividad
+            email: Email
+            invited_at: Invitado el
+            invited_by: Invitado por
+            name: Nombre
+            requested_at: Solicitado el %{time}
+            status: Estado
+            statuses:
+              accepted: Aceptada
+              pending: Pendiente
+              rejected: Rechazada
+            task: Tarea
+            time_dedicated: Tiempo dedicado
+            tos_accepted_at: Se unió el
+          name: Asignación
+        questionnaire:
+          fields:
+            name: Nombre
+            title: Título
+        task:
+          fields:
+            activities_count: Número de actividades
+            activities_end_at: La última actividad termina el
+            activities_start_at: La primera actividad comienza el
+            assignations_accepted: Asignaciones aceptadas
+            assignations_pending: Asignaciones pendientes
+            name: Nombre
+          name: Tarea
+      reports:
+        user:
+          index:
+            accepted: Aceptada
+            dedicated_time: 'Tiempo dedicado hasta ahora: %{time}'
+            empty: No tienes ninguna actividad asignada
+            pending: Pendiente
+      time_events:
+        start:
+          already_started: El contador ya ha comenzado
+          error: Error iniciando contador
+          success: Contador iniciado correctamente
+        stop:
+          already_stopped: El contador ya está detenido
+          error: Error al detener el contador
+          success: Contador detenido correctamente
+      time_tracker:
+        activity:
+          counter_stopped: Contador se ha detenido automáticamente
+          questionnaire:
+            answered: '¡Gracias por responder al cuestionario!'
+            respond: '¿Qué opinas sobre esta tarea?'
+        assignee_data:
+          answer: '¡Empecemos!'
+          description: Para comprender mejor nuestros participantes y su relación con estas tareas, te pedimos que rellenes un par de preguntas sobre tu perfil demográfico. También queremos asegurarnos de que aceptas los términos de uso antes de registrarte en cualquier tarea. ¡Gracias!
+          title: Términos de uso y datos demográficos
+        callout_status:
+          finished: Terminó el %{end_date}
+          inactive: Inactiva
+          not_started: Empezará el %{start_date}
+          open: Abierta, iniciada el %{start_date}
+        idle_activity:
+          assignation_pending: '¡Ya inscrita! Pronto un administrador revisará tu aplicación.'
+          assignation_rejected: Lo sentimos pero tu solicitud ha sido rechazada.
+        index:
+          empty: Todavía no hay actividades.
+          milestones_list: Personas trabajando en esta actividad
+        questionnaire_in_preview_mode: '¡Este cuestionario no puede ser respondido en modo de vista previa!'
+        request_activity:
+          assignation_pending: '¡Ya inscrita! Pronto un administrador revisará tu aplicación.'
+          assignation_rejected: Lo sentimos pero tu solicitud ha sido rechazada.
+          assignee_questionnaire: Por favor, acepta los <a href="%{path}" target="_blank">términos de uso</a> para unirse a la actividad.
+      time_tracker_activity_questionnaire_answers_serializer:
+        activity_description: Actividad
+        activity_id: ID de actividad
+        created_at: Respondido el
+        id: ID de respuesta
+        ip_hash: Hash de Dirección IP
+        registered: Registrado
+        task_id: ID de tarea
+        task_name: Tarea
+        unregistered: No registrado
+        user_status: Estado del usuario
+  layouts:
+    decidim:
+      user_profile:
+        time_tracker: Mi trabajo voluntario
