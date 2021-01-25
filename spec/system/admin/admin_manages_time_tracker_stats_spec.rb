@@ -33,13 +33,11 @@ describe "Admin manages Time tracker stats", type: :system do
 
     it "shows a table with assignations" do
       within ".table-list", match: :first do
-        within "tbody tr", match: :first do
-          expect(page).to have_link(translated(assignation_1.task.name), href: time_tracker_admin_task_path(assignation_1.activity.task))
-          expect(page).to have_link(translated(assignation_1.activity.description), href: time_tracker_admin_assignations_path(assignation_1.activity))
-          expect(page).to have_link(assignation_1.user.name, href: decidim.profile_path(assignation_1.user.nickname))
-          expect(page).to have_content(assignation_1.user.email)
-          expect(page).to have_content("00h02m00s")
-        end
+        expect(page).to have_link(translated(assignation_1.task.name), href: time_tracker_admin_task_path(assignation_1.activity.task))
+        expect(page).to have_link(translated(assignation_1.activity.description), href: time_tracker_admin_assignations_path(assignation_1.activity))
+        expect(page).to have_link(assignation_1.user.name, href: decidim.profile_path(assignation_1.user.nickname))
+        expect(page).to have_content(assignation_1.user.email)
+        expect(page).to have_content("00h02m00s")
       end
     end
 
