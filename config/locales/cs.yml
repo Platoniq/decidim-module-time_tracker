@@ -24,6 +24,14 @@ cs:
               date_format: Čas ukončení není datum
               stop_before_start: Ukončení je před začátkem
   decidim:
+    admin:
+      filters:
+        activity_id_eq:
+          label: Activity
+        activity_task_id_eq:
+          label: Task
+        search_placeholder:
+          user_name_or_user_nickname_or_user_email_cont: Search for a user's name, nickname or email
     components:
       time_tracker:
         name: Časový záznam
@@ -124,6 +132,7 @@ cs:
         breadcrumbs:
           assignations: Přiřazení
           global: Všechny úkoly
+          stats: Stats
         exports:
           time_tracker_activity_questionnaire_answers: Activity questionnaire answers
           time_tracker_assignee_questionnaire_answers: Assignee questionnaire answers
@@ -139,6 +148,9 @@ cs:
             title: Questionnaires
           questionnaire:
             edit: Upravit dotazník
+        stats:
+          index:
+            title: Stats
         tasks:
           actions:
             confirm_destroy: Jste si jisti, že chcete odstranit tento úkol?
