@@ -2,9 +2,15 @@
   <div class="card-section">
     <nav role="navigation">
       <ul class="breadcrumbs">
-        <li class="<%= "active" if current_page? tasks_path %>">
-          <%= link_to t(".global"), tasks_path %>
-        </li>
+        <% if current_page?(tasks_path) || current_page?(root_path) %>
+          <li class="<%= "active" %>">
+            <%= link_to t(".stats"), stats_path %>
+          </li>
+        <% else %>
+          <li>
+            <%= link_to t(".global"), tasks_path %>
+          </li>
+        <% end %>
 
         <% if controller_name == "tasks" %>
           <% if action_name == "edit" || action_name == "new" %>
