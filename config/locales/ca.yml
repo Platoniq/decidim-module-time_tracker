@@ -24,6 +24,14 @@ ca:
               date_format: La data de finalització no es una data vàlida
               stop_before_start: Aturat abans de començar
   decidim:
+    admin:
+      filters:
+        activity_id_eq:
+          label: Activity
+        activity_task_id_eq:
+          label: Task
+        search_placeholder:
+          user_name_or_user_nickname_or_user_email_cont: Search for a user's name, nickname or email
     components:
       time_tracker:
         name: Comptador de temps
@@ -124,6 +132,7 @@ ca:
         breadcrumbs:
           assignations: Assignacions
           global: Totes les tasques
+          stats: Stats
         exports:
           time_tracker_activity_questionnaire_answers: Respostes del qüestionari d'activitats
           time_tracker_assignee_questionnaire_answers: Respostes del qüestionari d'assignats
@@ -139,6 +148,9 @@ ca:
             title: Qüestionaris
           questionnaire:
             edit: Edita el qüestionari
+        stats:
+          index:
+            title: Stats
         tasks:
           actions:
             confirm_destroy: Confirmes que vols eliminar aquesta tasquest?
@@ -354,7 +366,7 @@ ca:
         index:
           empty: Encara no hi ha activitats.
           milestones_list: Persones que treballen en aquesta activitat
-        questionnaire_in_preview_mode: This questionnaire cannot be answered in preview mode!
+        questionnaire_in_preview_mode: El qüestionari no es pot respondre en el mode de previsualització!
         request_activity:
           assignation_pending: Ja has aplicat! Aviat un administrador revisarà la teva petició.
           assignation_rejected: Malauradament, s'ha rebutjat la teva sol·licitud.
