@@ -65,9 +65,9 @@ module Decidim
 
       def assignation_date(assignation)
         if assignation.invited_at.present?
-          t("models.assignation.fields.invited_at", time: l(assignation.invited_at, format: :long), scope: "decidim.time_tracker")
+          t("models.assignation.fields.invited_at", time: l(assignation.invited_at, format: :short), scope: "decidim.time_tracker")
         elsif assignation.requested_at.present?
-          t("models.assignation.fields.requested_at", time: l(assignation.requested_at, format: :long), scope: "decidim.time_tracker")
+          t("models.assignation.fields.requested_at", time: l(assignation.requested_at, format: :short), scope: "decidim.time_tracker")
         end
       end
 
