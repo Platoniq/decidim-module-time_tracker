@@ -156,7 +156,6 @@ cs:
             confirm_destroy: Jste si jisti, že chcete odstranit tento úkol?
             destroy: Smazat úkol
             edit: Upravit úkol
-            export_to_accountability: Export do odpovědnosti
             new: Nová úloha
           activity_questionnaire:
             title: Activity questionnaire

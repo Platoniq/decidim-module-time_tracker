@@ -156,7 +156,6 @@ ca:
             confirm_destroy: Confirmes que vols eliminar aquesta tasquest?
             destroy: Eliminar tasca
             edit: Edita la tasca
-            export_to_accountability: Export to Accountability
             new: Nova tasca
           activity_questionnaire:
             title: Qüestionari d'activitats

@@ -156,7 +156,6 @@ es:
             confirm_destroy: '¿Estás seguro de que deseas borrar esta tarea?'
             destroy: Eliminar tarea
             edit: Editar tarea
-            export_to_accountability: Export to Accountability
             new: Nueva tarea
           activity_questionnaire:
             title: Cuestionario de actividades
