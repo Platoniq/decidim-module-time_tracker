@@ -40,7 +40,6 @@ cs:
             activities_label: Název pro "Aktivity"
             announcement: Oznámení
             assignations_label: Jméno pro "Přiřazení"
-            max_number_of_assignations: Maximální počet přiřazených
             milestones_label: Název pro "Milníky"
             tasks_label: Název pro "Úkoly"
             time_events_label: Název pro "Čas události"

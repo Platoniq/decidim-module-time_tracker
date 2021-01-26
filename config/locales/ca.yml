@@ -40,7 +40,6 @@ ca:
             activities_label: Nom per "Activitats"
             announcement: Anunci
             assignations_label: Nom per "Assignacions"
-            max_number_of_assignations: Número màxim d'assignacions
             milestones_label: Nom per "Fites"
             tasks_label: Nom per "Tasques"
             time_events_label: Nom per "Entrades de temps"
