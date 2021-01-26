@@ -12,7 +12,7 @@ ca:
         time_event:
           attributes:
             activity:
-              finished: Aquesta 'activitat ja ha acabat
+              finished: Aquesta activitat ja ha acabat
               inactive: Aquesta activitat no està activa
               no_time_available: L'usuari ha esgotat la quantitat màxima de temps disponible per al dia
               not_started: Aquesta activitat encara no ha començat
