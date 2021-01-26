@@ -42,8 +42,6 @@ Decidim.register_component(:time_tracker) do |component|
     # Add your global settings
     # Available types: :integer, :boolean
     settings.attribute :announcement, type: :text, translated: true, editor: true
-    settings.attribute :max_number_of_assignations, type: :integer
-    settings.attribute :tos, type: :text, translated: true, editor: true
     settings.attribute :tasks_label, type: :string, translated: true, editor: true
     settings.attribute :activities_label, type: :string, translated: true, editor: true
     settings.attribute :assignations_label, type: :string, translated: true, editor: true
@@ -124,13 +122,7 @@ Decidim.register_component(:time_tracker) do |component|
       name: Decidim::Components::Namer.new(participatory_space.organization.available_locales, :time_tracker).i18n_name,
       manifest_name: :time_tracker,
       published_at: Time.current,
-      participatory_space: participatory_space,
-      settings: {
-        max_number_of_assignations: 10,
-        tos: Decidim::Faker::Localized.wrapped("<p>", "</p>") do
-          Decidim::Faker::Localized.paragraph(3)
-        end
-      }
+      participatory_space: participatory_space
     }
 
     component = Decidim.traceability.perform_action!(

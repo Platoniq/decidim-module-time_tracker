@@ -40,11 +40,9 @@ cs:
             activities_label: Název pro "Aktivity"
             announcement: Oznámení
             assignations_label: Jméno pro "Přiřazení"
-            max_number_of_assignations: Maximální počet přiřazených
             milestones_label: Název pro "Milníky"
             tasks_label: Název pro "Úkoly"
             time_events_label: Název pro "Čas události"
-            tos: Podmínky používání
           step:
             announcement: Oznámení
         views:
@@ -156,7 +154,6 @@ cs:
             confirm_destroy: Jste si jisti, že chcete odstranit tento úkol?
             destroy: Smazat úkol
             edit: Upravit úkol
-            export_to_accountability: Export do odpovědnosti
             new: Nová úloha
           activity_questionnaire:
             title: Activity questionnaire

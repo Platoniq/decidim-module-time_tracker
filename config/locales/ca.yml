@@ -52,11 +52,9 @@ ca:
             activities_label: Nom per a "Activitats"
             announcement: Anunci
             assignations_label: Nom per a "Assignacions"
-            max_number_of_assignations: Nombre màxim d'assignacions
             milestones_label: Nom per a "Fites"
             tasks_label: Nom per a "Tasques"
             time_events_label: Nom per a "Entrades de temps"
-            tos: Condicions d'ús
           step:
             announcement: Anunci
         views:
@@ -172,7 +170,6 @@ ca:
             confirm_destroy: Confirmes que vols eliminar aquesta tasca?
             destroy: Eliminar tasca
             edit: Edita la tasca
-            export_to_accountability: Export to Accountability
             new: Nova tasca
           activity_questionnaire:
             title: Qüestionari d'activitats

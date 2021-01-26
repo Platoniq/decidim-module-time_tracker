@@ -52,11 +52,9 @@ es:
             activities_label: Nombre para "Actividades"
             announcement: Anuncio
             assignations_label: Nombre para "Asignaciones"
-            max_number_of_assignations: Número máximo de asignaciones
             milestones_label: Nombre para "Hitos"
             tasks_label: Nombre para "Tareas"
             time_events_label: Nombre para "Eventos de tiempo"
-            tos: Términos y condiciones
           step:
             announcement: Anuncio
         views:
@@ -172,7 +170,6 @@ es:
             confirm_destroy: "¿Estás seguro de que deseas borrar esta tarea?"
             destroy: Eliminar tarea
             edit: Editar tarea
-            export_to_accountability: Export to Accountability
             new: Nueva tarea
           activity_questionnaire:
             title: Cuestionario de actividades
