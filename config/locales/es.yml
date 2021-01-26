@@ -3,6 +3,15 @@ es:
     attributes:
       milestone:
         title: '¿Qué has hecho?'
+      task:
+        name: Tarea
+      activity:
+        active: Activa
+        description: Descripción
+        start_date: Fecha de inicio
+        end_date: Fecha de finalización
+        requests_start_at: Las solicitudes empiezan el
+        max_minutes_per_day: Minutos máximos por dia
     errors:
       models:
         milestone:

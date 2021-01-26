@@ -3,6 +3,15 @@ ca:
     attributes:
       milestone:
         title: Què has fet?
+      task:
+        name: Tasca
+      activity:
+        active: Activa
+        description: Descripció
+        start_date: Data d'inici
+        end_date: Data de finalització
+        requests_start_at: Les sol·licituds comencen el
+        max_minutes_per_day: Minuts màxims per dia
     errors:
       models:
         milestone:

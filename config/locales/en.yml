@@ -4,6 +4,15 @@ en:
     attributes:
       milestone:
         title: What have you done?
+      task:
+        name: Name
+      activity:
+        active: Active
+        description: Description
+        start_date: Start date
+        end_date: End date
+        requests_start_at: Requests start at
+        max_minutes_per_day: Maximum minutes per day
     errors:
       models:
         milestone:
