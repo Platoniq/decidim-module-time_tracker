@@ -12,7 +12,7 @@ ca:
         time_event:
           attributes:
             activity:
-              finished: Aquesta 'activitat ja ha acabat
+              finished: Aquesta activitat ja ha acabat
               inactive: Aquesta activitat no està activa
               no_time_available: L'usuari ha esgotat la quantitat màxima de temps disponible per al dia
               not_started: Aquesta activitat encara no ha començat
@@ -27,11 +27,11 @@ ca:
     admin:
       filters:
         activity_id_eq:
-          label: Activity
+          label: Activitat
         activity_task_id_eq:
-          label: Task
+          label: Tasca
         search_placeholder:
-          user_name_or_user_nickname_or_user_email_cont: Search for a user's name, nickname or email
+          user_name_or_user_nickname_or_user_email_cont: Cerca el nom, l'alias o el correu electrònic d'una usuària
     components:
       time_tracker:
         name: Comptador de temps
@@ -54,7 +54,7 @@ ca:
             data:
               fill: Omple les dades
               submit: Envia
-            request: Demana unir-se a l'activitat
+            request: Demana d'unir-te a l'activitat
     log:
       value_types:
         activity_presenter:
@@ -130,7 +130,7 @@ ca:
         breadcrumbs:
           assignations: Assignacions
           global: Totes les tasques
-          stats: Stats
+          stats: Estadístiques
         exports:
           time_tracker_activity_questionnaire_answers: Respostes del qüestionari d'activitats
           time_tracker_assignee_questionnaire_answers: Respostes del qüestionari d'assignats
@@ -148,7 +148,7 @@ ca:
             edit: Edita el qüestionari
         stats:
           index:
-            title: Stats
+            title: Estadístiques
         tasks:
           actions:
             confirm_destroy: Confirmes que vols eliminar aquesta tasquest?
