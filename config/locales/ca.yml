@@ -45,7 +45,7 @@ ca:
             time_elapsed: 'Temps transcorregut:'
           index:
             account_message: <a href="%{sign_in_url}">Inicia la sessió amb el teu compte</a> o <a href="%{sign_up_url}">registra't</a> per participar en aquesta activitat.
-            request: Demana unir-se a l'activitat
+            request: Demana d'unir-te a l'activitat
     log:
       value_types:
         activity_presenter:
