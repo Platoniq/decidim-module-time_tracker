@@ -43,11 +43,9 @@ en:
             activities_label: Name for "Activities"
             announcement: Announcement
             assignations_label: Name for "Assignations"
-            max_number_of_assignations: Maximum number of assignations
             milestones_label: Name for "Milestones"
             tasks_label: Name for "Tasks"
             time_events_label: Name for "Time Events"
-            tos: Terms and conditions
           step:
             announcement: Announcement
         views:
