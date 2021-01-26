@@ -1,8 +1,17 @@
 cs:
   activemodel:
     attributes:
+      activity:
+        active: Active
+        description: Description
+        end_date: End date
+        max_minutes_per_day: Maximum minutes per day
+        requests_start_at: Requests start at
+        start_date: Start date
       milestone:
         title: Co jste udělal?
+      task:
+        name: Name
     errors:
       models:
         milestone:
