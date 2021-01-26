@@ -43,7 +43,6 @@ ca:
             milestones_label: Nom per "Fites"
             tasks_label: Nom per "Tasques"
             time_events_label: Nom per "Entrades de temps"
-            tos: Condicions d'ús
           step:
             announcement: Anunci
         views:

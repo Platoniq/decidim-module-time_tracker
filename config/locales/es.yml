@@ -43,7 +43,6 @@ es:
             milestones_label: Nombre para "Hitos"
             tasks_label: Nombre para "Tareas"
             time_events_label: Nombre para "Eventos de tiempo"
-            tos: Términos y condiciones
           step:
             announcement: Anuncio
         views:

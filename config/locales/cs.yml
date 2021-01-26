@@ -43,7 +43,6 @@ cs:
             milestones_label: Název pro "Milníky"
             tasks_label: Název pro "Úkoly"
             time_events_label: Název pro "Čas události"
-            tos: Podmínky používání
           step:
             announcement: Oznámení
         views:
