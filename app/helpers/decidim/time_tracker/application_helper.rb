@@ -65,9 +65,9 @@ module Decidim
 
       def assignation_date(assignation)
         if assignation.invited_at.present?
-          t("models.assignation.fields.invited_at", time: l(assignation.invited_at, format: :long), scope: "decidim.time_tracker")
+          t("models.assignation.fields.invited_at", time: l(assignation.invited_at, format: :short), scope: "decidim.time_tracker")
         elsif assignation.requested_at.present?
-          t("models.assignation.fields.requested_at", time: l(assignation.requested_at, format: :long), scope: "decidim.time_tracker")
+          t("models.assignation.fields.requested_at", time: l(assignation.requested_at, format: :short), scope: "decidim.time_tracker")
         end
       end
 
@@ -76,11 +76,19 @@ module Decidim
       end
 
       def user_joined_at(user)
-        Assignation.where(user: user).order(tos_accepted_at: :desc).first.tos_accepted_at
+        Assignee.for(user).tos_accepted_at(time_tracker)
       end
 
       def user_last_milestone(user)
         Milestone.where(user: user).order(created_at: :desc).first
+      end
+
+      def must_fill_in_data?
+        !current_assignee.tos_accepted?(time_tracker) && !activities_empty?
+      end
+
+      def activities_empty?
+        time_tracker.activities.active.empty?
       end
     end
   end

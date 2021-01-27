@@ -12,17 +12,28 @@ module Decidim
   module TimeTracker
     include ActiveSupport::Configurable
 
-    autoload :TimeTrackerQuestionnaireAnswersSerializer, "decidim/time_tracker/time_tracker_questionnaire_answers_serializer"
+    autoload :TimeTrackerActivityQuestionnaireAnswersSerializer, "decidim/time_tracker/time_tracker_activity_questionnaire_answers_serializer"
 
-    # Returns a YAML
-    config_accessor :default_questionnaire_seeds do
-      YAML.load_file File.join(::Decidim::TimeTracker::Engine.root, "config", "gender_questionnaire.yml")
+    # Returns a YAML with default seeds for activities questionnaire
+    config_accessor :default_activity_questionnaire_seeds do
+      YAML.load_file File.join(::Decidim::TimeTracker::Engine.root, "config", "activity_questionnaire.yml")
     end
 
-    def self.default_questionnaire
-      return unless config[:default_questionnaire_seeds]
+    def self.default_activity_questionnaire
+      return unless config[:default_activity_questionnaire_seeds]
 
-      config.default_questionnaire_seeds.deep_symbolize_keys
+      config.default_activity_questionnaire_seeds.deep_symbolize_keys
+    end
+
+    # Returns a YAML with default seeds for assignee data questionnaire
+    config_accessor :default_assignee_questionnaire_seeds do
+      YAML.load_file File.join(::Decidim::TimeTracker::Engine.root, "config", "assignee_questionnaire.yml")
+    end
+
+    def self.default_assignee_questionnaire
+      return unless config[:default_assignee_questionnaire_seeds]
+
+      config.default_assignee_questionnaire_seeds.deep_symbolize_keys
     end
   end
 end

@@ -4,15 +4,14 @@ require "spec_helper"
 require "decidim/forms/test/factories"
 
 module Decidim::TimeTracker
-  describe ActivitiesQuestionnaireController, type: :controller do
+  describe ActivityQuestionnaireController, type: :controller do
     routes { Decidim::TimeTracker::Engine.routes }
 
-    let!(:user) { create(:user, :confirmed, organization: organization) }
-    let(:organization) { create(:organization) }
-    let(:participatory_space) { create(:participatory_process, organization: organization) }
-    let(:component) { create(:time_tracker_component, participatory_space: participatory_space) }
-    let(:time_tracker) { create(:time_tracker, component: component, questionnaire: questionnaire) }
-    let!(:questionnaire) { create :questionnaire }
+    include_context "with a time_tracker"
+
+    let(:user) { create :user, :confirmed, organization: organization }
+
+    let!(:questionnaire) { time_tracker.questionnaire }
     let(:task) { create :task, time_tracker: time_tracker }
     let!(:activity) { create :activity, task: task }
 
@@ -86,7 +85,7 @@ module Decidim::TimeTracker
           end
 
           context "and questionnaire have questions" do
-            let!(:question) { create :questionnaire_question, question_type: :short_answer, body: "name", questionnaire: questionnaire }
+            let!(:question) { create :questionnaire_question, question_type: :short_answer, body: Decidim::Faker::Localized.word, questionnaire: questionnaire }
 
             it_behaves_like "renders the form"
           end
@@ -95,7 +94,7 @@ module Decidim::TimeTracker
     end
 
     describe "POST #answer" do
-      let!(:question) { create :questionnaire_question, question_type: :short_answer, body: "name", questionnaire: questionnaire }
+      let!(:question) { create :questionnaire_question, question_type: :short_answer, body: Decidim::Faker::Localized.word, questionnaire: questionnaire }
       let(:tos_agreement) { "0" }
       let(:form) do
         {

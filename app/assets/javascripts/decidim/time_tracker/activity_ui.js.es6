@@ -42,23 +42,27 @@ class ActivityUI { // eslint-disable-line no-unused-vars
     this.$startButton.removeClass("hide");
     this.$pauseButton.addClass("hide");
     this.$stopButton.addClass("hide");
+    return this;
   }
 
   showPauseStop() {
     this.$startButton.addClass("hide");
     this.$pauseButton.removeClass("hide");
     this.$stopButton.removeClass("hide");
+    return this;
   }
 
   showPlayStop() {
     this.$startButton.removeClass("hide");
     this.$pauseButton.addClass("hide");
     this.$stopButton.removeClass("hide");
+    return this;
   }
 
   showError(error) {
     this.$activity.find(".callout.alert").html(error).removeClass("hide");
     this.showStart(this.$activity);
+    return this;
   }
 
   clockifySeconds(totalSeconds) {
@@ -75,7 +79,7 @@ class ActivityUI { // eslint-disable-line no-unused-vars
       this.stopCounter()
       return this.onStop();
     }
-    this.$elapsed.html(this.clockifySeconds(this.elapsed + diff))
+    this.$elapsed.html(this.clockifySeconds(this.elapsed + diff));
   }
 
   startCounter(data) {
@@ -85,14 +89,20 @@ class ActivityUI { // eslint-disable-line no-unused-vars
     this.interval = setInterval(() => {
       this.updateElapsedTime();
       }, 1000);
+    return this;
   }
-
+  
   stopCounter(data) {
     const diff = this.now - this.initTime
     console.log("stopping counter", data)
     this.elapsed = this.elapsed + diff;
     this.remaining = this.remaining - diff;
     clearInterval(this.interval);
+    return this;
+  }
+
+  isRunning() {
+    return !!this.interval;
   }
   
   showMilestone() {

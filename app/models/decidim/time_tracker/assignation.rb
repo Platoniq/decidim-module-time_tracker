@@ -2,12 +2,20 @@
 
 module Decidim
   module TimeTracker
-    # The data store for an assigne in the Decidim::TimeTracker component.
+    # The data store for an assignation in the Decidim::TimeTracker component.
     class Assignation < ApplicationRecord
       include Decidim::Traceable
       include Decidim::Loggable
 
       self.table_name = :decidim_time_tracker_assignations
+
+      belongs_to :user,
+                 foreign_key: "decidim_user_id",
+                 class_name: "Decidim::User"
+
+      belongs_to :invited_by_user,
+                 class_name: "Decidim::User",
+                 optional: true
 
       belongs_to :activity,
                  class_name: "Decidim::TimeTracker::Activity"
@@ -24,15 +32,11 @@ module Decidim
                class_name: "Decidim::TimeTracker::Milestone",
                through: :user
 
-      belongs_to :user,
-                 foreign_key: "decidim_user_id",
-                 class_name: "Decidim::User"
-
-      belongs_to :invited_by_user,
-                 class_name: "Decidim::User",
-                 optional: true
-
       enum status: [:pending, :accepted, :rejected]
+
+      def assignee
+        Assignee.for(user)
+      end
 
       def time_dedicated
         time_events.sum(&:total_seconds)

@@ -53,7 +53,11 @@ module Decidim
           UpdateAssignation.call(current_assignation, current_user, params[:assignation_status].to_sym) do
             on(:ok) do
               flash[:notice] = I18n.t("assignations.update.success", scope: "decidim.time_tracker.admin")
-              redirect_to EngineRouter.admin_proxy(current_component).task_activity_assignations_path(current_task, current_activity)
+              if params[:success_path].present?
+                redirect_to params[:success_path]
+              else
+                redirect_to EngineRouter.admin_proxy(current_component).task_activity_assignations_path(current_task, current_activity)
+              end
             end
           end
         end

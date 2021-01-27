@@ -10,7 +10,7 @@ module Decidim
           @task = task
         end
 
-        # Creates the meeting if valid.
+        # Creates the activity if valid.
         #
         # Broadcasts :ok if successful, :invalid otherwise.
         def call

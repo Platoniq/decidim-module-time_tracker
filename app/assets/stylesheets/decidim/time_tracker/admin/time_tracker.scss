@@ -8,37 +8,52 @@
   }
 }
 
-.breadcrumbs{
+.breadcrumbs {
   margin-bottom: 0;
 
-  li{
+  li {
     font-size: 1em;
   }
 }
 
-.activity--inactive{
-  opacity: .5;
+.activity--inactive {
+  opacity: 0.5;
 }
 
-.assignation-{
-  &-pending{
-    .assignation--status{
+.assignation- {
+  &-pending {
+    .assignation--status {
       background-color: $warning;
     }
-    td{
+    td {
       background-color: transparentize($warning, 0.9);
     }
   }
-  &-accepted{
-    .assignation--status{
+  &-accepted {
+    .assignation--status {
       background-color: $success;
     }
-    td{
+    td {
       background-color: transparentize($success, 0.9);
     }
   }
 
-  &-rejected td{
-    opacity: .5;
+  &-rejected td {
+    opacity: 0.5;
+  }
+}
+
+.help-text + .form-error {
+  margin-top: 0rem;
+}
+
+.time-tracker {
+  &--clock {
+    span:not(:last-child)::after {
+      content: " ";
+    }
+    .text-muted {
+      opacity: 0.5;
+    }
   }
 }

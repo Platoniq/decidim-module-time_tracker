@@ -2,8 +2,17 @@
 en:
   activemodel:
     attributes:
+      activity:
+        active: Active
+        description: Description
+        end_date: End date
+        max_minutes_per_day: Maximum minutes per day
+        requests_start_at: Requests start at
+        start_date: Start date
       milestone:
         title: What have you done?
+      task:
+        name: Name
     errors:
       models:
         milestone:
@@ -19,13 +28,22 @@ en:
                 for the day
               not_started: Activity has not started yet
             assignation:
-              unassigned: User is not assignationd to the task
+              unassigned: User is not assigned to the task
             start:
               date_format: Start time is not a date
             stop:
               date_format: Stop time is not a date
               stop_before_start: Stop is before start
   decidim:
+    admin:
+      filters:
+        activity_id_eq:
+          label: Activity
+        activity_task_id_eq:
+          label: Task
+        search_placeholder:
+          user_name_or_user_nickname_or_user_email_cont: Search for a user's name,
+            nickname or email
     components:
       time_tracker:
         name: Time Tracker
@@ -34,11 +52,9 @@ en:
             activities_label: Name for "Activities"
             announcement: Announcement
             assignations_label: Name for "Assignations"
-            max_number_of_assignations: Maximum number of assignations
             milestones_label: Name for "Milestones"
             tasks_label: Name for "Tasks"
             time_events_label: Name for "Time Events"
-            tos: Terms and conditions
           step:
             announcement: Announcement
         views:
@@ -48,6 +64,9 @@ en:
           index:
             account_message: <a href="%{sign_in_url}">Sign in with your account</a>
               or <a href="%{sign_up_url}">sign up</a> to participate in this activity.
+            data:
+              fill: Fill in data
+              submit: Submit
             request: Request to join activity
     log:
       value_types:
@@ -56,6 +75,17 @@ en:
         time_tracker_presenter:
           not_found: 'The Time Tracker component was not found on the database (ID:
             %{id})'
+    pages:
+      home:
+        statistics:
+          activities_count: Activities
+          assignees_count: Volunteers
+          tasks_count: Tasks
+    participatory_processes:
+      statistics:
+        activities_count: Activities
+        assignees_count: Volunteers
+        tasks_count: Tasks
     time_tracker:
       admin:
         actions:
@@ -86,6 +116,7 @@ en:
         assignations:
           actions:
             accept: Accept
+            accept_all: Accept all pending assignations
             assignations: Manage assignations
             confirm_destroy: Are you sure you want to delete this assignation?
             destroy: Delete assignation
@@ -109,12 +140,14 @@ en:
             title: New assignation to this activity
           update:
             error: Error updating assignation
-            success: Assigne updated successfully
+            success: Assignee updated successfully
         breadcrumbs:
           assignations: Assignations
           global: All tasks
+          stats: Stats
         exports:
-          time_tracker_questionnaire_answers: Answers
+          time_tracker_activity_questionnaire_answers: Activity questionnaire answers
+          time_tracker_assignee_questionnaire_answers: Assignee questionnaire answers
         models:
           activity:
             name: Activity
@@ -122,14 +155,28 @@ en:
             name: Assignation
           task:
             name: Task
+        questionnaires:
+          index:
+            title: Questionnaires
+          questionnaire:
+            edit: Edit questionnaire
+        stats:
+          index:
+            title: Stats
         tasks:
           actions:
             confirm_destroy: Are you sure you want to delete this task?
             destroy: Delete task
             edit: Edit task
-            export_to_accountability: Export to Accountability
             new: New task
-            questionnaire: Edit questionnaire
+          activity_questionnaire:
+            title: Activity questionnaire
+          assignations:
+            bulk_invalid: Error, %{count} participants could not be assigned
+            bulk_ok: Successfully assigned %{count} participants
+            pending: Pending assignations
+          assignee_questionnaire:
+            title: Terms and conditions questionnaire
           create:
             error: Error creating the task
             success: Task created successfully
@@ -139,7 +186,6 @@ en:
             submit: Update
             title: Update task
           index:
-            questionnaire: Questionnaire
             title: Tasks
           new:
             submit: Create
@@ -166,8 +212,8 @@ en:
           update: "%{user_name} updated the %{resource_name} task"
       assignations:
         request:
-          error: Activity assignation request failed!
-          success: Activity assignation request succeded!
+          error: There was an error assigning you to this activity.
+          success: You have successfully requested to join this activity!
         show:
           assignations_activity: "%{user_name}'s activity"
           milestones_list: List of milestones
@@ -175,7 +221,7 @@ en:
         hours: "%{n}h"
         minutes: "%{n}m"
         seconds: "%{n}s"
-      default_questionnaire:
+      default_activity_questionnaire:
         description: Thank you for filling this questionnaire! We are asking you this
           set of questions to help you understand whether your project (and its actions
           carried out on a voluntary basis) is balanced in terms of task distribution
@@ -203,15 +249,50 @@ en:
         tos: Data answered here is treated as confidential and used for statistical
           purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a>
           also apply. By submitting this questionnaire, you agree to them.
+      default_assignee_questionnaire:
+        description: Thank you for filling this questionnaire! We are asking you this
+          set of questions to help you understand whether your project (and its actions
+          carried out on a voluntary basis) is balanced in terms of task distribution
+          due to gender.
+        question_1:
+          body: Which gender do you identify with?
+          description: Choose the option that best suits your gender identity.
+          option_1: Woman
+          option_2: Man
+          option_3: Non-Binary
+          option_4: Other
+        question_2:
+          body: What is your age?
+          description: Choose your age range
+          option_1: Under 15
+          option_10: 55 to 60
+          option_11: 65 to 70
+          option_12: 70 to 75
+          option_13: 75 to 80
+          option_14: 80 to 85
+          option_15: 85 to 90
+          option_16: Over 90
+          option_2: 15 to 20
+          option_3: 20 to 25
+          option_4: 25 to 30
+          option_5: 30 to 35
+          option_6: 35 to 40
+          option_7: 40 to 45
+          option_8: 45 to 50
+          option_9: 50 to 55
+        title: Terms of use and demographic data
+        tos: Data answered here is treated as confidential and used for statistical
+          purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a>
+          also apply. By submitting this questionnaire, you agree to them.
       milestone:
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
         time_dedicated: Time dedicated
         title: "%{user_name}'s activity"
       milestone_form:
         button_no: No thanks
-        button_submit: Send milestone
-        description: Leave a proof of your work by uploading a picture and a simple
-          phrase
+        button_submit: Save
+        description: Share a proof of your work by uploading a picture and a brief
+          description of what you've accomplished.
         input_file: File
         input_title: Title
         title: Leave your mark!
@@ -221,7 +302,7 @@ en:
           success: Milestone created successfully
         index:
           assignations_activity: "%{user_name}'s activity"
-          back_to_list: Back to list
+          back_to_list: Back to activities
           joined_on: Joined on
           last_worked_on: Last worked on
           total_time: Total time dedicated
@@ -246,8 +327,9 @@ en:
           name: Activity
         assignation:
           fields:
+            activity: Activity
             email: Email
-            invited_at: Invited at %{time}
+            invited_at: Invited at
             invited_by: Invited by
             name: Name
             requested_at: Requested at %{time}
@@ -256,6 +338,7 @@ en:
               accepted: Accepted
               pending: Pending
               rejected: Rejected
+            task: Task
             time_dedicated: Time dedicated
             tos_accepted_at: Joined at
           name: Assignation
@@ -265,7 +348,7 @@ en:
             title: Title
         task:
           fields:
-            activities_count: Number of activites
+            activities_count: Number of activities
             activities_end_at: Last activity ends at
             activities_start_at: First activity starts at
             assignations_accepted: Accepted assignations
@@ -283,17 +366,24 @@ en:
         start:
           already_started: Counter already started
           error: Error starting counter
-          success: Counter started succesfully
+          success: Counter started successfully
         stop:
           already_stopped: Counter already stopped
           error: Error stopping counter
-          success: Counter stopped succesfully
+          success: Counter stopped successfully
       time_tracker:
         activity:
           counter_stopped: Counter has been stopped automatically
           questionnaire:
             answered: Thanks for answering the questionnaire!
             respond: What do you think about this task?
+        assignee_data:
+          answer: Let's start!
+          description: To better understand our participants and their relationship
+            with these tasks, we ask you to fill a couple questions about your demographic
+            profile. We also want to make sure you agree to the terms of use before
+            signing up for any task. Thank you!
+          title: Terms of use and demographic data
         callout_status:
           finished: Ended on %{end_date}
           inactive: Inactive
@@ -303,11 +393,16 @@ en:
           assignation_pending: Already applied! Soon an admin will review your application.
           assignation_rejected: Sorry, you're application has been rejected.
         index:
+          empty: There are no activities yet.
           milestones_list: People working in this activity
+        questionnaire_in_preview_mode: This questionnaire cannot be answered in preview
+          mode!
         request_activity:
           assignation_pending: Already applied! Soon an admin will review your application.
           assignation_rejected: Sorry, you're application has been rejected.
-      time_tracker_questionnaire_answers_serializer:
+          assignee_questionnaire: Please accept the <a href="%{path}" target="_blank">terms
+            of use</a> to join the activity.
+      time_tracker_activity_questionnaire_answers_serializer:
         activity_description: Activity
         activity_id: Activity ID
         created_at: Answered on

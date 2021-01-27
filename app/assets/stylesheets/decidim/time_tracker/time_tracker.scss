@@ -4,16 +4,15 @@
 @import "decidim/time_tracker/variables";
 
 .time-tracker {
-  &-activity, &-request {
+  &-activity,
+  &-request {
     background-color: white;
     border: 1px solid #eee;
     padding: 1rem;
     margin-bottom: 1rem;
-
     h2 {
       color: var(--secondary);
     }
-
     .content {
       @media only screen and (min-width: 38em) {
         display: grid;
@@ -23,7 +22,8 @@
       @media only screen and (min-width: 50em) {
         grid-template-columns: 75% 25%;
       }
-      .left, .right {
+      .left,
+      .right {
         display: flex;
         flex-direction: column;
       }
@@ -31,7 +31,7 @@
         flex: 1;
       }
       .bottom {
-        padding:0.5em 0;
+        padding: 0.5em 0;
         text-align: center;
       }
     }
@@ -44,52 +44,55 @@
         margin-left: 0;
       }
     }
-
     .callout {
       margin: 0;
     }
-
     .elapsed-time {
       width: max-content;
-
       .elapsed-time-clock {
         font-size: 2rem;
       }
     }
-
     .milestone {
       margin: 1em;
       padding-top: 1em;
       border-top: 1px solid #eee;
     }
   }
-
-  &--report{
-    .card--list__annotation{
+  &--report {
+    .card--list__annotation {
       margin-right: 1rem;
     }
-  
-    .card--list__heading{
-      margin-bottom: .5rem;
+    .card--list__heading {
+      margin-bottom: 0.5rem;
     }
   }
-
-  &--clock{
+  &--clock {
     span:not(:last-child)::after {
-      content: ' ';
+      content: " ";
     }
-
     .text-muted {
-      opacity: .5;
+      opacity: 0.5;
     }
   }
-
-  &--activity{
+  &--activity {
     &:hover {
-      .card--list__item{
+      .card--list__item {
         transition: background-color 200ms;
         background-color: #fbfbfb;
       }
+    }
+  }
+  &--assignee-data {
+    margin-bottom: 3rem;
+  }
+  &--start-button {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    &-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }
@@ -109,7 +112,6 @@
 
 .show-milestones {
   color: $secondary;
-
   &:hover {
     text-decoration: underline;
   }

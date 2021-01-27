@@ -9,7 +9,7 @@ module Decidim
           @form = form
         end
 
-        # Creates the meeting if valid.
+        # Creates the task if valid.
         #
         # Broadcasts :ok if successful, :invalid otherwise.
         def call

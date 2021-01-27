@@ -43,6 +43,11 @@
           <%= clockify_seconds user_total_time_dedicated(user) %>
         </div>
 
+        <div class="definition-data__item start-date">
+          <span class="definition-data__title"><%= t(".joined_on") %></span>
+          <%= user_joined_at(user).strftime("%d %b %Y") %>
+        </div>
+
         <div class="definition-data__item end-date">
           <span class="definition-data__title"><%= t(".last_worked_on") %></span>
           <%= user_last_milestone(user).created_at.strftime("%d %b %Y") %>

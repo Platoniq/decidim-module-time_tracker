@@ -17,3 +17,4 @@ Decidim::Dev.dummy_app_path =
 require "decidim/dev/test/base_spec_helper"
 
 require "decidim/forms/test"
+require "decidim/time_tracker/test/time_tracker_context"

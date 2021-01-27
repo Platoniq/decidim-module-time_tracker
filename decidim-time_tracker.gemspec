@@ -23,5 +23,8 @@ Gem::Specification.new do |s|
   s.add_dependency "decidim-core", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
   s.add_dependency "decidim-forms", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
 
+  s.add_dependency "wicked_pdf", "~> 1.4"
+  s.add_dependency "wkhtmltopdf-binary", "~> 0.12"
+
   s.add_development_dependency "decidim-dev", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
 end
