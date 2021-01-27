@@ -18,7 +18,7 @@ module Decidim
       end
 
       def tos_accepted_at(time_tracker)
-        tos_acceptances.find_by(time_tracker: time_tracker).created_at
+        tos_acceptances.find_by(time_tracker: time_tracker)&.created_at
       end
 
       def tos_accepted?(time_tracker)
