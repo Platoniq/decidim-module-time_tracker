@@ -135,7 +135,7 @@ es:
             title: Nueva asignación a esta actividad
           update:
             error: Error al actualizar la asignación
-            success: Asignación actualizada correctamente
+            success: Assignee updated successfully
         breadcrumbs:
           assignations: Asignaciones
           global: Todas las tareas
