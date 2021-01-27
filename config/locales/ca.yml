@@ -6,12 +6,12 @@ ca:
         description: Descripció
         end_date: Data de finalització
         max_minutes_per_day: Minuts màxims per dia
-        requests_start_at: Peticions comencen el
+        requests_start_at: Les sol·licituds comencen el
         start_date: Data d'inici
       milestone:
-        title: Que heu fet?
+        title: Què has fet?
       task:
-        name: Nom
+        name: Tasca
     errors:
       models:
         milestone:
@@ -46,20 +46,20 @@ ca:
         name: Comptador de temps
         settings:
           global:
-            activities_label: Nom per "Activitats"
+            activities_label: Nom per a "Activitats"
             announcement: Anunci
-            assignations_label: Nom per "Assignacions"
-            milestones_label: Nom per "Fites"
-            tasks_label: Nom per "Tasques"
-            time_events_label: Nom per "Entrades de temps"
+            assignations_label: Nom per a "Assignacions"
+            milestones_label: Nom per a "Fites"
+            tasks_label: Nom per a "Tasques"
+            time_events_label: Nom per a "Entrades de temps"
           step:
             announcement: Anunci
         views:
           activity:
-            info: Fes clic en el botó per comptar el teu temps.
+            info: Fes clic al botó per comptar el teu temps.
             time_elapsed: 'Temps transcorregut:'
           index:
-            account_message: <a href="%{sign_in_url}">Inicia la sessió amb el teu compte</a> o <a href="%{sign_up_url}">registra't</a> per participar en aquesta activitat.
+            account_message: <a href="%{sign_in_url}">Inicia sessió amb el teu compte</a> o <a href="%{sign_up_url}">registra't</a> per participar en aquesta activitat.
             data:
               fill: Omple les dades
               submit: Envia
@@ -126,7 +126,7 @@ ca:
           form:
             existing_user: Participant existent
             non_user: No participant
-            select_user: Seleccioneu un participant
+            select_user: Selecciona una participant
             user_type: Tipus de participant
           index:
             title: Assignacions
@@ -139,7 +139,7 @@ ca:
         breadcrumbs:
           assignations: Assignacions
           global: Totes les tasques
-          stats: Stats
+          stats: Estadístiques
         exports:
           time_tracker_activity_questionnaire_answers: Respostes del qüestionari d'activitats
           time_tracker_assignee_questionnaire_answers: Respostes del qüestionari de voluntàries
@@ -160,7 +160,7 @@ ca:
             title: Estadístiques
         tasks:
           actions:
-            confirm_destroy: Confirmes que vols eliminar aquesta tasquest?
+            confirm_destroy: Confirmes que vols eliminar aquesta tasca?
             destroy: Eliminar tasca
             edit: Edita la tasca
             new: Nova tasca
@@ -217,10 +217,10 @@ ca:
         minutes: "%{n}m"
         seconds: "%{n}s"
       default_activity_questionnaire:
-        description: Gràcies per omplir aquest qüestionari. Us fem aquest conjunt de preguntes per ajudar-vos a comprendre si el vostre projecte (i les seves accions realitzades de forma voluntària) és equilibrat en termes de distribució de tasques segons el gènere. Reflexionar sobre aquestes preguntes també pot ser una oportunitat útil per analitzar quins són els tipus de tasques que es consideren importants i qui realitza normalment aquestes tasques.
+        description: Gràcies per omplir aquest qüestionari. Et fem aquest conjunt de preguntes per ajudar a comprendre si aquest projecte (i les seves accions realitzades de forma voluntària) és equilibrat en termes de distribució de tasques segons el gènere. Reflexionar sobre aquestes preguntes també pot ser una oportunitat útil per analitzar quins són els tipus de tasques que es consideren importants i qui realitza normalment aquestes tasques.
         question_1:
           body: Com d'important consideres que és aquesta tasca?
-          description: De l'1 al 5, percebeu aquesta tasca com la més important (5), gens important (1) o alguna cosa entremig?
+          description: De l'1 al 5, perceps aquesta tasca com la més important (5), gens important (1) o alguna cosa entremig?
           option_1: 1 (Gens important)
           option_2: 2 (No gaire important)
           option_3: 3 (Força important)
@@ -283,8 +283,8 @@ ca:
         index:
           assignations_activity: "Activitat de %{user_name}"
           back_to_list: Torna a les activitats
-          joined_on: Unit el
-          last_worked_on: Última activitat a
+          joined_on: Es va unir el
+          last_worked_on: Última activitat el
           total_time: Temps total dedicat
         milestone:
           time_dedicated: Temps dedicat
@@ -296,7 +296,7 @@ ca:
             description: Descripció
             end_date: Data de finalització
             max_minutes_per_day: Màxim de minuts per dia
-            requests_start_at: Peticions comencen el
+            requests_start_at: Les sol·licituds comencen el
             start_date: Data d'inici
             status: Estat
             statuses:
@@ -310,9 +310,9 @@ ca:
             activity: Activitat
             email: Correu electrònic
             invited_at: Convidada el
-            invited_by: Convidat per
+            invited_by: Convidada per
             name: Nom
-            requested_at: Petició feta el %{time}
+            requested_at: Sol·licitud feta el %{time}
             status: Estat
             statuses:
               accepted: Acceptat
@@ -320,7 +320,7 @@ ca:
               rejected: Rebutjat
             task: Tasca
             time_dedicated: Temps dedicat
-            tos_accepted_at: Unit el
+            tos_accepted_at: Es va unir el
           name: Assignació
         questionnaire:
           fields:
@@ -329,7 +329,7 @@ ca:
         task:
           fields:
             activities_count: Nombre d'activitats
-            activities_end_at: L'última activitat acaba el
+            activities_end_at: La última activitat acaba el
             activities_start_at: La primer activitat comença el
             assignations_accepted: Assignacions acceptades
             assignations_pending: Assignacions pendents
@@ -345,15 +345,15 @@ ca:
       time_events:
         start:
           already_started: El temporitzador ja està en marxa
-          error: Error iniciant el temporitzador
+          error: Error iniciant el comptador
           success: Comptador iniciat correctament
         stop:
-          already_stopped: El temporitzador ja s'ha aturat
-          error: Error aturant el temporitzador
+          already_stopped: El comptador ja s'ha aturat
+          error: Error aturant el comptador
           success: Comptador aturat correctament
       time_tracker:
         activity:
-          counter_stopped: El temporitzador s'ha aturat automàticament
+          counter_stopped: El comptador s'ha aturat automàticament
           questionnaire:
             answered: Gràcies per respondre al qüestionari!
             respond: Què en penses d'aquesta tasca?
@@ -362,19 +362,19 @@ ca:
           description: Per entendre millor les nostres participants i la seva relació amb aquestes tasques, et demanem que contestis un parell de preguntes sobre el vostre perfil demogràfic. També volem assegurar-nos que acceptes les condicions d’ús abans de registrar-te en qualsevol tasca. Gràcies!
           title: Condicions d'ús i dades demogràfiques
         callout_status:
-          finished: Aturat el %{end_date}
+          finished: Va acabar el %{end_date}
           inactive: Inactiu
           not_started: Començarà el %{start_date}
           open: Oberta, va començar el %{start_date}
         idle_activity:
-          assignation_pending: Ja has aplicat! Aviat un administrador revisarà la teva petició.
+          assignation_pending: Ja has aplicat! Aviat una administradora revisarà la teva sol·licitud.
           assignation_rejected: Malauradament, s'ha rebutjat la teva sol·licitud.
         index:
           empty: Encara no hi ha activitats.
           milestones_list: Persones que treballen en aquesta activitat
         questionnaire_in_preview_mode: El qüestionari no es pot respondre en el mode de previsualització!
         request_activity:
-          assignation_pending: Ja has aplicat! Aviat un administrador revisarà la teva petició.
+          assignation_pending: Ja has aplicat! Aviat una administradora revisarà la teva sol·licitud.
           assignation_rejected: Malauradament, s'ha rebutjat la teva sol·licitud.
           assignee_questionnaire: Accepta les <a href="%{path}" target="_blank">condicions d'ús</a> per unir-te a l'activitat.
       time_tracker_activity_questionnaire_answers_serializer:
@@ -382,12 +382,12 @@ ca:
         activity_id: ID de l'activitat
         created_at: Contestat el
         id: ID de la resposta
-        ip_hash: Hash d'adreça Ip
+        ip_hash: Hash d'adreça IP
         registered: Registrada
         task_id: ID de la tasca
         task_name: Tasca
         unregistered: No registrada
-        user_status: Estat de l'usuari/a
+        user_status: Estat de l'usuària
   layouts:
     decidim:
       user_profile:
