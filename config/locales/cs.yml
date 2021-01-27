@@ -135,7 +135,7 @@ cs:
             title: Nové přiřazení k této aktivitě
           update:
             error: Chyba při aktualizaci přiřazení
-            success: Přiřazená osoba úspěšně aktualizována
+            success: Assignee updated successfully
         breadcrumbs:
           assignations: Přiřazení
           global: Všechny úkoly
