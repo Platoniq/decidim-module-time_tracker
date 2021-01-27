@@ -72,8 +72,8 @@ FactoryBot.define do
   factory :milestone, class: "Decidim::TimeTracker::Milestone" do
     activity { create(:activity) }
     user { create(:user) }
-    title { Decidim::Faker::Localized.word }
-    description { Decidim::Faker::Localized.sentence(3) }
+    title { Faker::Lorem.word }
+    description { Faker::Lorem.sentence(3) }
   end
 
   factory :task, class: "Decidim::TimeTracker::Task" do
