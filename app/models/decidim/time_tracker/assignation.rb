@@ -2,7 +2,7 @@
 
 module Decidim
   module TimeTracker
-    # The data store for an assigne in the Decidim::TimeTracker component.
+    # The data store for an assignation in the Decidim::TimeTracker component.
     class Assignation < ApplicationRecord
       include Decidim::Traceable
       include Decidim::Loggable
