@@ -1,4 +1,3 @@
----
 es:
   activemodel:
     attributes:
@@ -7,12 +6,12 @@ es:
         description: Descripción
         end_date: Fecha de finalización
         max_minutes_per_day: Minutos máximos por dia
-        requests_start_at: Las solicitudes empiezan el
+        requests_start_at: Las solicitudes comienzan el
         start_date: Fecha de inicio
       milestone:
-        title: "¿Qué has hecho?"
+        title: '¿Qué has hecho?'
       task:
-        name: Tarea
+        name: Nombre
     errors:
       models:
         milestone:
@@ -24,8 +23,7 @@ es:
             activity:
               finished: La actividad ya ha finalizado
               inactive: La actividad no está activa
-              no_time_available: La usuaria ha alcanzado el tiempo máximo disponible
-                para el día
+              no_time_available: El usuario ha alcanzado el tiempo máximo disponible para el día
               not_started: La actividad aún no ha comenzado
             assignation:
               unassigned: La usuaria no está asignada a la tarea
@@ -33,7 +31,7 @@ es:
               date_format: La hora inicial no es una fecha
             stop:
               date_format: La hora de finalización no es una fecha
-              stop_before_start: Detenido antes del inicio
+              stop_before_start: Finalizar es antes del inicio
   decidim:
     admin:
       filters:
@@ -42,8 +40,7 @@ es:
         activity_task_id_eq:
           label: Tarea
         search_placeholder:
-          user_name_or_user_nickname_or_user_email_cont: Busca por nombre de usuaria,
-            apodo o correo electrónico
+          user_name_or_user_nickname_or_user_email_cont: Busca por nombre de usuaria, apodo o correo electrónico
     components:
       time_tracker:
         name: Contador de Tiempo
@@ -59,11 +56,10 @@ es:
             announcement: Anuncio
         views:
           activity:
-            info: Haz clic en el botón para contar tu tiempo.
+            info: Haga clic en el botón para seguir su tiempo.
             time_elapsed: 'Tiempo transcurrido:'
           index:
-            account_message: <a href="%{sign_in_url}">Inicia sesión con tu cuenta</a>
-              o <a href="%{sign_up_url}">regístrate</a> para participar en esta actividad.
+            account_message: <a href="%{sign_in_url}">Inicia sesión con tu cuenta</a> o <a href="%{sign_up_url}">regístrate</a> para participar en esta actividad.
             data:
               fill: Rellenar datos
               submit: Enviar
@@ -73,8 +69,7 @@ es:
         activity_presenter:
           not_found: 'La actividad no se encontró en la base de datos (ID: %{id})'
         time_tracker_presenter:
-          not_found: 'El componente Time Tracker no se encontró en la base de datos
-            (ID: %{id})'
+          not_found: 'El componente Time Tracker no se encontró en la base de datos (ID: %{id})'
     pages:
       home:
         statistics:
@@ -93,7 +88,7 @@ es:
         activities:
           actions:
             assignations: Administrar asignaciones
-            confirm_destroy: "¿Confirmas que deseas eliminar esta actividad?"
+            confirm_destroy: '¿Seguro que desea eliminar esta actividad?'
             destroy: Eliminar actividad
             edit: Editar actividad
             new: Nueva actividad
@@ -118,7 +113,7 @@ es:
             accept: Aceptar
             accept_all: Aceptar todas las asignaciones pendientes
             assignations: Administrar asignaciones
-            confirm_destroy: "¿Confirmas de que quieres eliminar esta asignación?"
+            confirm_destroy: '¿Estás seguro de que quieres eliminar esta asignación?'
             destroy: Eliminar asignación
             new: Nueva asignación
             reject: Rechazar
@@ -146,10 +141,8 @@ es:
           global: Todas las tareas
           stats: Estadísticas
         exports:
-          time_tracker_activity_questionnaire_answers: Respuestas al cuestionario
-            de actividades
-          time_tracker_assignee_questionnaire_answers: Respuestas al cuestionario
-            de voluntarias
+          time_tracker_activity_questionnaire_answers: Respuestas al cuestionario de actividades
+          time_tracker_assignee_questionnaire_answers: Respuestas al cuestionario de voluntarias
         models:
           activity:
             name: Actividad
@@ -167,7 +160,7 @@ es:
             title: Estadísticas
         tasks:
           actions:
-            confirm_destroy: "¿Estás seguro de que deseas borrar esta tarea?"
+            confirm_destroy: '¿Estás seguro de que deseas borrar esta tarea?'
             destroy: Eliminar tarea
             edit: Editar tarea
             new: Nueva tarea
@@ -175,7 +168,7 @@ es:
             title: Cuestionario de actividades
           assignations:
             bulk_invalid: Error, no se han podido asignar %{count} participantes
-            bulk_ok: "%{count} participantes asignadas correctamente"
+            bulk_ok: '%{count} participantes asignadas correctamente'
             pending: Asignaciones pendientes
           assignee_questionnaire:
             title: Cuestionario de términos y Condiciones
@@ -215,57 +208,44 @@ es:
       assignations:
         request:
           error: Se ha producido un error al asignarle a esta actividad.
-          success: "¡Tu solicitud de unirte a la actividad se ha tramitado correctamente!"
+          success: '¡Tu solicitud de unirte a la actividad se ha tramitado correctamente!'
         show:
-          assignations_activity: Actividad de %{user_name}
+          assignations_activity: "Actividad de %{user_name}"
           milestones_list: Lista de hitos
       clock:
         hours: "%{n}h"
         minutes: "%{n}m"
         seconds: "%{n}s"
       default_activity_questionnaire:
-        description: "¡Gracias por completar este cuestionario! Te hacemos este conjunto
-          de preguntas para ayudar a comprender si este proyecto (y sus acciones llevadas
-          a cabo de manera voluntaria) está equilibrado en términos de distribución
-          de tareas por género. Reflexionar sobre estas preguntas también puede ser
-          una oportunidad útil para analizar cuáles son los tipos de tareas que se
-          consideran importantes y quién las realiza habitualmente."
+        description: '¡Gracias por completar este cuestionario! Le hacemos este conjunto de preguntas para ayudarlo a comprender si este proyecto (y sus acciones llevadas a cabo de manera voluntaria) está equilibrado en términos de distribución de tareas por género. Reflexionar sobre estas preguntas también puede ser una oportunidad útil para analizar cuáles son los tipos de tareas que se consideran importantes y quién las realiza habitualmente.'
         question_1:
-          body: "¿Cuál crees que es la importancia de esta tarea?"
-          description: De 1 a 5, ¿consideras esta tarea como la más importante (5),
-            no importante en absoluto (1) o algo en medio?
+          body: '¿Cuál crees que es la importancia de esta tarea?'
+          description: De 1 a 5, ¿consideras esta tarea como la más importante (5), no importante en absoluto (1) o algo en medio?
           option_1: 1 (Nada importante)
           option_2: 2 (No muy importante)
           option_3: 3 (Bastante importante)
           option_4: 4 (Muy importante)
           option_5: 5 (La más importante)
         question_2:
-          body: "¿Quiénes crees que suelen realizar esta tarea?"
-          description: "¿Crees que esta tarea es principalmente realizada por personas
-            que se identifican con un determinado género?"
+          body: '¿Quiénes crees que suelen realizar esta tarea?'
+          description: '¿Crees que esta tarea es principalmente realizada por personas que se identifican con un determinado género?'
           option_1: Principalmente mujeres
           option_2: Principalmente hombres
           option_3: No veo diferencias por género
           option_4: Otra
-        title: "¿Cómo percibes esta tarea?"
-        tos: Los datos contestados aquí son tratados como confidenciales y utilizados
-          únicamente para fines estadísticos. Los <a href="/pages/terms-and-conditions">Términos
-          y Condiciones Generales</a> también se aplican. Al enviar este cuestionario,
-          estás dando tu consentimiento.
+        title: '¿Cómo percibes esta tarea?'
+        tos: Los datos contestados aquí son tratados como confidenciales y utilizados únicamente para fines estadísticos. Los <a href="/pages/terms-and-conditions">Términos y Condiciones Generales</a> también se aplican. Al enviar este cuestionario, estás dando tu consentimiento.
       default_assignee_questionnaire:
-        description: "¡Gracias por rellenar este cuestionario! Hacemos este conjunto
-          de preguntas para ayudar a comprender si este proyecto (y sus acciones llevadas
-          a cabo de forma voluntaria) está equilibrado en términos de distribución
-          de tareas debido al género."
+        description: '¡Gracias por rellenar este cuestionario! Hacemos este conjunto de preguntas para ayudar a comprender si este proyecto (y sus acciones llevadas a cabo de forma voluntaria) está equilibrado en términos de distribución de tareas debido al género.'
         question_1:
-          body: "¿Con qué género te identificas?"
+          body: '¿Con qué género te identificas?'
           description: Elige la opción que mejor se adapte a tu identidad de género.
           option_1: Mujer
           option_2: Hombre
           option_3: No-binario
-          option_4: Otro
+          option_4: Otra
         question_2:
-          body: "¿Cual es tu edad?"
+          body: '¿Cual es tu edad?'
           description: Elige tu rango de edad
           option_1: Menos de 15
           option_10: 55 a 60
@@ -284,31 +264,27 @@ es:
           option_8: 45 a 50
           option_9: 50 a 55
         title: Términos de uso y datos demográficos
-        tos: Los datos contestados aquí son tratados como confidenciales y utilizados
-          únicamente para fines estadísticos. Los <a href="/pages/terms-and-conditions">Términos
-          y Condiciones Generales</a> también se aplican. Al enviar este cuestionario,
-          estás dando tu consentimiento.
+        tos: Los datos contestados aquí son tratados como confidenciales y utilizados únicamente para fines estadísticos. Los <a href="/pages/terms-and-conditions">Términos y Condiciones Generales</a> también se aplican. Al enviar este cuestionario, estás dando tu consentimiento.
       milestone:
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
         time_dedicated: Tiempo dedicado
-        title: Actividad de %{user_name}
+        title: "Actividad de %{user_name}"
       milestone_form:
         button_no: No, gracias
         button_submit: Guardar
-        description: Comparte una prueba de tu trabajo subiendo una foto y una breve
-          descripción de lo que has conseguido.
+        description: Comparte una prueba de tu trabajo subiendo una foto y una breve descripción de lo que has conseguido.
         input_file: Archivo
         input_title: Título
-        title: "¡Deja tu marca!"
+        title: '¡Deja tu marca!'
       milestones:
         create:
           error: Error al crear el hito
           success: Hito creado correctamente
         index:
-          assignations_activity: Actividad de %{user_name}
+          assignations_activity: "Actividad de %{user_name}"
           back_to_list: Volver a actividades
           joined_on: Se unió el
-          last_worked_on: Trabajó por última vez el
+          last_worked_on: Último trabajo en
           total_time: Tiempo total dedicado
         milestone:
           time_dedicated: Tiempo dedicado
@@ -334,7 +310,7 @@ es:
             activity: Actividad
             email: Email
             invited_at: Invitada el
-            invited_by: Invitada por
+            invited_by: Invitado por
             name: Nombre
             requested_at: Solicitado el %{time}
             status: Estado
@@ -379,14 +355,11 @@ es:
         activity:
           counter_stopped: Contador se ha detenido automáticamente
           questionnaire:
-            answered: "¡Gracias por responder al cuestionario!"
-            respond: "¿Qué opinas sobre esta tarea?"
+            answered: '¡Gracias por responder al cuestionario!'
+            respond: '¿Qué opinas sobre esta tarea?'
         assignee_data:
-          answer: "¡Empecemos!"
-          description: Para comprender mejor a nuestras participantes y su relación
-            con estas tareas, te pedimos que rellenes un par de preguntas sobre tu
-            perfil demográfico. También queremos asegurarnos de que aceptas los términos
-            de uso antes de registrarte en cualquier tarea. ¡Gracias!
+          answer: '¡Empecemos!'
+          description: Para comprender mejor a nuestras participantes y su relación con estas tareas, te pedimos que rellenes un par de preguntas sobre tu perfil demográfico. También queremos asegurarnos de que aceptas los términos de uso antes de registrarte en cualquier tarea. ¡Gracias!
           title: Términos de uso y datos demográficos
         callout_status:
           finished: Terminó el %{end_date}
@@ -394,31 +367,27 @@ es:
           not_started: Empezará el %{start_date}
           open: Abierta, iniciada el %{start_date}
         idle_activity:
-          assignation_pending: "¡Ya estás inscrita! Pronto un administrador revisará
-            tu aplicación."
-          assignation_rejected: Lo sentimos, tu solicitud ha sido rechazada.
+          assignation_pending: '¡Ya inscrita! Pronto un administrador revisará tu aplicación.'
+          assignation_rejected: Lo sentimos pero tu solicitud ha sido rechazada.
         index:
           empty: Todavía no hay actividades.
           milestones_list: Personas trabajando en esta actividad
-        questionnaire_in_preview_mode: "¡Este cuestionario no puede ser respondido
-          en modo de vista previa!"
+        questionnaire_in_preview_mode: '¡Este cuestionario no puede ser respondido en modo de vista previa!'
         request_activity:
-          assignation_pending: "¡Ya inscrita! Pronto un administrador revisará tu
-            aplicación."
-          assignation_rejected: Lo sentimos, tu solicitud ha sido rechazada.
-          assignee_questionnaire: Por favor, acepta los <a href="%{path}" target="_blank">términos
-            de uso</a> para unirte a la actividad.
+          assignation_pending: '¡Ya inscrita! Pronto un administrador revisará tu aplicación.'
+          assignation_rejected: Lo sentimos pero tu solicitud ha sido rechazada.
+          assignee_questionnaire: Por favor, acepta los <a href="%{path}" target="_blank">términos de uso</a> para unirte a la actividad.
       time_tracker_activity_questionnaire_answers_serializer:
         activity_description: Actividad
         activity_id: ID de actividad
         created_at: Respondido el
         id: ID de respuesta
         ip_hash: Hash de Dirección IP
-        registered: Registrada
+        registered: Registrado
         task_id: ID de tarea
         task_name: Tarea
-        unregistered: No registrada
-        user_status: Estado de la usuaria
+        unregistered: No registrado
+        user_status: Estado del usuario
   layouts:
     decidim:
       user_profile:
