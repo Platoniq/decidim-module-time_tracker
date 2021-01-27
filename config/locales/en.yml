@@ -140,7 +140,7 @@ en:
             title: New assignation to this activity
           update:
             error: Error updating assignation
-            success: Assigne updated successfully
+            success: Assignee updated successfully
         breadcrumbs:
           assignations: Assignations
           global: All tasks
