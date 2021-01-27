@@ -1,17 +1,8 @@
 cs:
   activemodel:
     attributes:
-      activity:
-        active: Active
-        description: Popis
-        end_date: Datum ukončení
-        max_minutes_per_day: Maximum minutes per day
-        requests_start_at: Požadavky začínají v
-        start_date: Datum zahájení
       milestone:
         title: Co jste udělal?
-      task:
-        name: Jméno
     errors:
       models:
         milestone:
@@ -36,9 +27,9 @@ cs:
     admin:
       filters:
         activity_id_eq:
-          label: Aktivita
+          label: Activity
         activity_task_id_eq:
-          label: Úloha
+          label: Task
         search_placeholder:
           user_name_or_user_nickname_or_user_email_cont: Search for a user's name, nickname or email
     components:
@@ -75,12 +66,12 @@ cs:
         statistics:
           activities_count: Activities
           assignees_count: Volunteers
-          tasks_count: Úlohy
+          tasks_count: Tasks
     participatory_processes:
       statistics:
         activities_count: Activities
         assignees_count: Volunteers
-        tasks_count: Úlohy
+        tasks_count: Tasks
     time_tracker:
       admin:
         actions:
@@ -169,7 +160,7 @@ cs:
           assignations:
             bulk_invalid: Error, %{count} participants could not be assigned
             bulk_ok: Successfully assigned %{count} participants
-            pending: Čekající přiřazení
+            pending: Pending assignations
           assignee_questionnaire:
             title: Terms and conditions questionnaire
           create:
@@ -307,7 +298,7 @@ cs:
           name: Aktivita
         assignation:
           fields:
-            activity: Aktivita
+            activity: Activity
             email: E-mail
             invited_at: Invited at
             invited_by: Pozván od
@@ -318,7 +309,7 @@ cs:
               accepted: Přijato
               pending: Čekající
               rejected: Odmítnuto
-            task: Úloha
+            task: Task
             time_dedicated: Vyhrazený čas
             tos_accepted_at: Členem od
           name: Přiřazení
