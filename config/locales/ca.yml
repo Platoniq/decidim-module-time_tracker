@@ -135,7 +135,7 @@ ca:
             title: Nova assignació per a aquesta activitat
           update:
             error: S'ha produït un error actualitzant l'assignació
-            success: Assignació actualitzada correctament
+            success: Assignee updated successfully
         breadcrumbs:
           assignations: Assignacions
           global: Totes les tasques
