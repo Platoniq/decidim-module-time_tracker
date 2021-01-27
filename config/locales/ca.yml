@@ -23,14 +23,14 @@ ca:
             activity:
               finished: Aquesta activitat ja ha acabat
               inactive: Aquesta activitat no està activa
-              no_time_available: L'usuari ha esgotat la quantitat màxima de temps disponible per al dia
+              no_time_available: L'usuària ha esgotat la quantitat màxima de temps disponible per al dia
               not_started: Aquesta activitat encara no ha començat
             assignation:
               unassigned: L'usuària no està assignada a la tasca
             start:
-              date_format: La data d'inici no es una data vàlida
+              date_format: La data d'inici no és una data vàlida
             stop:
-              date_format: La data de finalització no es una data vàlida
+              date_format: La data de finalització no és una data vàlida
               stop_before_start: Aturat abans de començar
   decidim:
     admin:
@@ -106,11 +106,11 @@ ca:
             submit: Crea una activitat
             title: Nova activitat
           update:
-            error: S'ha produït un error al actualitzar l'activitat
+            error: S'ha produït un error actualitzant l'activitat
             success: Activitat actualitzada correctament
         assignations:
           actions:
-            accept: D’acord
+            accept: D'acord
             accept_all: Accepta totes les assignacions pendents
             assignations: Gestiona les assignacions
             confirm_destroy: Confirmes que vols eliminar aquesta assignació?
@@ -118,10 +118,10 @@ ca:
             new: Nova assignació
             reject: Rebutja
           create:
-            error: S'ha produït un error al crear l'assignació
+            error: S'ha produït un error creant l'assignació
             success: Assignació creada correctament
           destroy:
-            error: S'ha produït un error al esborrar l'assignació
+            error: S'ha produït un error esborrant l'assignació
             succcess: Assignació eliminada correctament
           form:
             existing_user: Participant existent
@@ -132,10 +132,10 @@ ca:
             title: Assignacions
           new:
             create: Crea l'assignació
-            title: Nova assignació per aquesta activitat
+            title: Nova assignació per a aquesta activitat
           update:
-            error: S'ha produït un error al actualitzar l'assignació
-            success: Assignat actualitzat correctament
+            error: S'ha produït un error actualitzant l'assignació
+            success: Assignació actualitzada correctament
         breadcrumbs:
           assignations: Assignacions
           global: Totes les tasques
@@ -198,9 +198,9 @@ ca:
           delete: "%{user_name} ha esborrat l'activitat %{resource_name}"
           update: "%{user_name} ha actualitzat l'activitat %{resource_name}"
         assignation:
-          create: "%{user_name} ha creat l'assignació"
-          delete: "%{user_name} ha esborrat l'assignació"
-          update: "%{user_name} ha actualitzat l'assignació"
+          create: "%{user_name} ha creat una assignació"
+          delete: "%{user_name} ha esborrat una assignació"
+          update: "%{user_name} ha actualitzat una assignació"
         task:
           create: "%{user_name} ha creat la tasca %{resource_name}"
           delete: "%{user_name} ha esborrat la tasca %{resource_name}"
@@ -330,7 +330,7 @@ ca:
           fields:
             activities_count: Nombre d'activitats
             activities_end_at: La última activitat acaba el
-            activities_start_at: La primer activitat comença el
+            activities_start_at: La primera activitat comença el
             assignations_accepted: Assignacions acceptades
             assignations_pending: Assignacions pendents
             name: Nom
@@ -338,7 +338,7 @@ ca:
       reports:
         user:
           index:
-            accepted: Acceptat
+            accepted: Acceptada
             dedicated_time: 'Temps dedicat fins ara: %{time}'
             empty: No tens cap activitat assignada
             pending: Pendent
