@@ -2,10 +2,10 @@ cs:
   activemodel:
     attributes:
       activity:
-        active: Active
+        active: Aktivní
         description: Popis
         end_date: Datum ukončení
-        max_minutes_per_day: Maximum minutes per day
+        max_minutes_per_day: Maximální počet minut za den
         requests_start_at: Požadavky začínají v
         start_date: Datum zahájení
       milestone:
@@ -26,7 +26,7 @@ cs:
               no_time_available: Uživatel dosáhl maximálního množství času dostupného pro den
               not_started: Aktivita zatím nezačala
             assignation:
-              unassigned: User is not assigned to the task
+              unassigned: Uživatel není přiřazen k úkolu
             start:
               date_format: Čas začátku není datum
             stop:
@@ -40,7 +40,7 @@ cs:
         activity_task_id_eq:
           label: Úloha
         search_placeholder:
-          user_name_or_user_nickname_or_user_email_cont: Search for a user's name, nickname or email
+          user_name_or_user_nickname_or_user_email_cont: Hledat uživatelské jméno, přezdívku nebo e-mail
     components:
       time_tracker:
         name: Časový záznam
@@ -61,25 +61,25 @@ cs:
           index:
             account_message: <a href="%{sign_in_url}">Přihlaste se pomocí svého účtu</a> nebo se <a href="%{sign_up_url}">zaregistrujte</a> pro účast na této aktivitě.
             data:
-              fill: Fill in data
-              submit: Submit
+              fill: Vyplnit data
+              submit: Odeslat
             request: Žádost o připojení k aktivitě
     log:
       value_types:
         activity_presenter:
-          not_found: 'The Activity was not found on the database (ID: %{id})'
+          not_found: 'Aktivita nebyla v databázi nalezena (ID: %{id})'
         time_tracker_presenter:
-          not_found: 'The Time Tracker component was not found on the database (ID: %{id})'
+          not_found: 'Komponenta pro sledování času Time Tracker nebyla v databázi nalezena (ID: %{id})'
     pages:
       home:
         statistics:
-          activities_count: Activities
-          assignees_count: Volunteers
+          activities_count: Aktivity
+          assignees_count: Dobrovolníci
           tasks_count: Úlohy
     participatory_processes:
       statistics:
-        activities_count: Activities
-        assignees_count: Volunteers
+        activities_count: Aktivity
+        assignees_count: Dobrovolníci
         tasks_count: Úlohy
     time_tracker:
       admin:
@@ -111,7 +111,7 @@ cs:
         assignations:
           actions:
             accept: Přijmout
-            accept_all: Accept all pending assignations
+            accept_all: Přijmout všechny čekající přiřazení
             assignations: Správa přiřazení
             confirm_destroy: Opravdu chcete odstranit toto přiřazení?
             destroy: Odstranit přiřazení
@@ -139,10 +139,10 @@ cs:
         breadcrumbs:
           assignations: Přiřazení
           global: Všechny úkoly
-          stats: Stats
+          stats: Statistiky
         exports:
-          time_tracker_activity_questionnaire_answers: Activity questionnaire answers
-          time_tracker_assignee_questionnaire_answers: Assignee questionnaire answers
+          time_tracker_activity_questionnaire_answers: Odpovědi na dotazník aktivity
+          time_tracker_assignee_questionnaire_answers: Odpovědi přiřazeného na dotazník
         models:
           activity:
             name: Aktivita
@@ -152,12 +152,12 @@ cs:
             name: Úloha
         questionnaires:
           index:
-            title: Questionnaires
+            title: Dotazníky
           questionnaire:
             edit: Upravit dotazník
         stats:
           index:
-            title: Stats
+            title: Statistiky
         tasks:
           actions:
             confirm_destroy: Jste si jisti, že chcete odstranit tento úkol?
@@ -165,13 +165,13 @@ cs:
             edit: Upravit úkol
             new: Nová úloha
           activity_questionnaire:
-            title: Activity questionnaire
+            title: Dotazník týkající se aktivit
           assignations:
-            bulk_invalid: Error, %{count} participants could not be assigned
-            bulk_ok: Successfully assigned %{count} participants
+            bulk_invalid: Chyba, %{count} účastníků nelze přiřadit
+            bulk_ok: Úspěšně přiřazeno %{count} účastníků
             pending: Čekající přiřazení
           assignee_questionnaire:
-            title: Terms and conditions questionnaire
+            title: Dotazník týkající se podmínek
           create:
             error: Chyba při vytváření úlohy
             success: Úloha úspěšně vytvořena
@@ -194,21 +194,21 @@ cs:
             success: Data sledování času byla úspěšně exportována do odpovědnosti
       admin_log:
         activity:
-          create: "%{user_name} created the %{resource_name} activity"
-          delete: "%{user_name} removed the %{resource_name} activity"
-          update: "%{user_name} updated the %{resource_name} activity"
+          create: "%{user_name} vytvořil aktivitu %{resource_name}"
+          delete: "%{user_name} odstranil aktivitu %{resource_name}"
+          update: "%{user_name} aktualizoval aktivitu %{resource_name}"
         assignation:
-          create: "%{user_name} created an assignation"
-          delete: "%{user_name} removed an assignation"
-          update: "%{user_name} updated an assignation"
+          create: "%{user_name} vytvořil přiřazení"
+          delete: "%{user_name} odstranil přiřazení"
+          update: "%{user_name} aktualizoval přiřazení"
         task:
-          create: "%{user_name} created the %{resource_name} task"
-          delete: "%{user_name} removed the %{resource_name} task"
-          update: "%{user_name} updated the %{resource_name} task"
+          create: "%{user_name} vytvořil úkol %{resource_name}"
+          delete: "%{user_name} odstranil úkol %{resource_name}"
+          update: "%{user_name} aktualizoval úkol %{resource_name}"
       assignations:
         request:
-          error: There was an error assigning you to this activity.
-          success: You have successfully requested to join this activity!
+          error: Došlo k chybě při přiřazování vás k této aktivitě.
+          success: Úspěšně jste požádal o připojení k této aktivitě!
         show:
           assignations_activity: "Aktivita %{user_name}"
           milestones_list: Seznam milníků
@@ -236,34 +236,34 @@ cs:
         title: Jak vnímáte tento úkol?
         tos: Údaje, které zde byly zodpovězeny, se považují za důvěrné a používají se pouze pro statistické účely. Také platí všeobecné <a href="/pages/terms-and-conditions">Podmínky</a>. Odesláním tohoto dotazníku s nimi souhlasíte.
       default_assignee_questionnaire:
-        description: Thank you for filling this questionnaire! We are asking you this set of questions to help you understand whether your project (and its actions carried out on a voluntary basis) is balanced in terms of task distribution due to gender.
+        description: Děkujeme, že jste vyplnili tento dotazník! Ptáme se vás na tento soubor otázek, který vám pomůže pochopit, zda je váš projekt (a jeho akce prováděné na dobrovolném základě) vyvážený, pokud jde o rozdělení úkolů kvůli pohlaví.
         question_1:
-          body: Which gender do you identify with?
-          description: Choose the option that best suits your gender identity.
-          option_1: Woman
-          option_2: Man
-          option_3: Non-Binary
+          body: S kterým pohlavím se identifikujete?
+          description: Vyberte si možnost, která nejlépe vyhovuje vaší identitě.
+          option_1: Žena
+          option_2: Muž
+          option_3: Nebinární
           option_4: Ostatní
         question_2:
-          body: What is your age?
-          description: Choose your age range
-          option_1: Under 15
-          option_10: 55 to 60
-          option_11: 65 to 70
-          option_12: 70 to 75
-          option_13: 75 to 80
-          option_14: 80 to 85
-          option_15: 85 to 90
-          option_16: Over 90
-          option_2: 15 to 20
-          option_3: 20 to 25
-          option_4: 25 to 30
-          option_5: 30 to 35
-          option_6: 35 to 40
-          option_7: 40 to 45
-          option_8: 45 to 50
-          option_9: 50 to 55
-        title: Terms of use and demographic data
+          body: Jaký je Váš věk?
+          description: Vyberte věkový rozsah
+          option_1: Méně než 15
+          option_10: 55 až 60
+          option_11: 65 až 70
+          option_12: 70 až 75
+          option_13: 75 až 80
+          option_14: 80 až 85
+          option_15: 85 až 90
+          option_16: Nad 90
+          option_2: 15 až 20
+          option_3: 20 až 25
+          option_4: 25 až 30
+          option_5: 30 až 35
+          option_6: 35 až 40
+          option_7: 40 až 45
+          option_8: 45 až 50
+          option_9: 50 až 55
+        title: Podmínky použití a demografické údaje
         tos: Údaje, které zde byly zodpovězeny, se považují za důvěrné a používají se pouze pro statistické účely. Také platí všeobecné <a href="/pages/terms-and-conditions">Podmínky</a>. Odesláním tohoto dotazníku s nimi souhlasíte.
       milestone:
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
@@ -271,8 +271,8 @@ cs:
         title: "Aktivita %{user_name}"
       milestone_form:
         button_no: Ne, děkuji
-        button_submit: Save
-        description: Share a proof of your work by uploading a picture and a brief description of what you've accomplished.
+        button_submit: Uložit
+        description: Sdílejte důkaz o své práci nahráním obrázku a stručným popisem toho, čeho jste dosáhli.
         input_file: Soubor
         input_title: Název
         title: Zanechte svou značku!
@@ -282,7 +282,7 @@ cs:
           success: Milník byl úspěšně vytvořen
         index:
           assignations_activity: "Aktivita %{user_name}"
-          back_to_list: Back to activities
+          back_to_list: Zpět na aktivity
           joined_on: Přidal/a se dne
           last_worked_on: Naposledy pracoval
           total_time: Celkový čas vyhrazen
@@ -309,7 +309,7 @@ cs:
           fields:
             activity: Aktivita
             email: E-mail
-            invited_at: Invited at
+            invited_at: Pozván na
             invited_by: Pozván od
             name: Jméno
             requested_at: Požadováno v %{time}
@@ -328,7 +328,7 @@ cs:
             title: Název
         task:
           fields:
-            activities_count: Number of activities
+            activities_count: Počet aktivit
             activities_end_at: Poslední aktivita končí v
             activities_start_at: První aktivita začíná v
             assignations_accepted: Přijaté přiřazení
@@ -346,11 +346,11 @@ cs:
         start:
           already_started: Počítadlo je již spuštěno
           error: Chyba při spuštění počítadla
-          success: Counter started successfully
+          success: Počítadlo úspěšně spuštěno
         stop:
           already_stopped: Počítadlo již zastaveno
           error: Chyba při zastavování počítadla
-          success: Counter stopped successfully
+          success: Počítadlo úspěšně zastaveno
       time_tracker:
         activity:
           counter_stopped: Počítadlo bylo automaticky zastaveno
@@ -358,9 +358,9 @@ cs:
             answered: Děkujeme za zodpovězení dotazníku!
             respond: Co si myslíte o tomto úkolu?
         assignee_data:
-          answer: Let's start!
-          description: To better understand our participants and their relationship with these tasks, we ask you to fill a couple questions about your demographic profile. We also want to make sure you agree to the terms of use before signing up for any task. Thank you!
-          title: Terms of use and demographic data
+          answer: Začínáme!
+          description: Abychom lépe pochopili naše účastníky a jejich vztah k těmto úkolům, žádáme vás, abyste vyplnili několik otázek týkajících se demografického profilu. Chceme se také ujistit, že souhlasíte s podmínkami používání před přihlášením k libovolnému úkolu. Děkujeme!
+          title: Podmínky užití a demografické údaje
         callout_status:
           finished: Ukončeno %{end_date}
           inactive: Neaktivní
@@ -370,13 +370,13 @@ cs:
           assignation_pending: Již aplikováno! Brzy správce zkontroluje vaši žádost.
           assignation_rejected: Omlouváme se, Vaše žádost byla zamítnuta.
         index:
-          empty: There are no activities yet.
+          empty: Zatím nejsou žádné aktivity.
           milestones_list: Lidé pracující v této aktivitě
-        questionnaire_in_preview_mode: This questionnaire cannot be answered in preview mode!
+        questionnaire_in_preview_mode: Tento dotazník nelze zodpovědět v režimu náhledu!
         request_activity:
           assignation_pending: Již aplikováno! Brzy správce zkontroluje vaši žádost.
           assignation_rejected: Omlouváme se, Vaše žádost byla zamítnuta.
-          assignee_questionnaire: Please accept the <a href="%{path}" target="_blank">terms of use</a> to join the activity.
+          assignee_questionnaire: Přijměte prosím <a href="%{path}" target="_blank">podmínky použití</a> pro připojení k aktivitě.
       time_tracker_activity_questionnaire_answers_serializer:
         activity_description: Aktivita
         activity_id: ID aktivity
