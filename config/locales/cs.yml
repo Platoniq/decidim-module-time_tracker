@@ -376,7 +376,7 @@ cs:
         request_activity:
           assignation_pending: Již požádáno! Brzy správce zkontroluje vaši žádost.
           assignation_rejected: Omlouváme se, Vaše žádost byla zamítnuta.
-          assignee_questionnaire: Chcete-li se připojit k této aktivitě, přijměte prosím <a href="%{cesta}" target="_blank">podmínky používání</a>.
+          assignee_questionnaire: Chcete-li se připojit k této aktivitě, přijměte prosím <a href="%{path}" target="_blank">Podmínky užití</a>.
       time_tracker_activity_questionnaire_answers_serializer:
         activity_description: Aktivita
         activity_id: ID aktivity
