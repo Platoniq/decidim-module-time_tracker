@@ -1,11 +1,9 @@
-//= require decidim/time_tracker/timer_api
-//= require decidim/time_tracker/activity_ui
-//= require decidim/time_tracker/reports/reports
-//= require jsrender.min
-//= require_self
+import TimerApi from "src/decidim/time_tracker/timer_api"
+import ActivityUI from "src/decidim/time_tracker/activity_ui"
+import updateReports from "src/decidim/time_tracker/updateReports"
 
 $(() => {
-
+  $(document).ready(updateReports);
   // For each request track ajax responses
   $(document).on("ajax:success", ".time-tracker-request", (event) => {
     const detail = event.detail;

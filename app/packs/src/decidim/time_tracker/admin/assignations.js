@@ -1,6 +1,6 @@
-((exports) => {
-  const { createFieldDependentInputs } = exports.DecidimAdmin;
+import createFieldDependentInputs from "src/decidim/admin/field_dependent_inputs.component"
 
+$(() => { 
   const $assignationType = $("#assignation_existing_user");
 
   createFieldDependentInputs({
@@ -31,5 +31,5 @@
     enablingCondition: ($field) => {
       return $field.val() === "true"
     }
-  });
-})(window);
+  });       
+})

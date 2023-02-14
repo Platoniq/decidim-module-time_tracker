@@ -46,10 +46,10 @@ module Decidim
         root to: "time_tracker#index"
       end
 
-      initializer "decidim_time_tracker.assets" do |app|
-        app.config.assets.precompile += %w(decidim_time_tracker_manifest.js decidim_time_tracker_manifest.css)
+      initializer "decidim_time_tracker.webpacker.assets_path" do
+        Decidim.register_assets_path File.expand_path("app/packs", root)
       end
-
+      
       initializer "decidim.time_tracker.add_cells_view_paths" do
         Cell::ViewModel.view_paths << File.expand_path("#{Decidim::TimeTracker::Engine.root}/app/cells")
         Cell::ViewModel.view_paths << File.expand_path("#{Decidim::TimeTracker::Engine.root}/app/views") # for partials

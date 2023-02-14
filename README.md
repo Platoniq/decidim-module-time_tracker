@@ -25,6 +25,7 @@ And then execute:
 
 ```bash
 bundle
+bundle exec rails decidim_time_tracker:webpacker:install
 bundle exec rails decidim_time_tracker:install:migrations
 bundle exec rails db:migrate
 ```
