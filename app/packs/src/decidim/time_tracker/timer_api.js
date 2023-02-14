@@ -1,6 +1,6 @@
 // Controlls time events
 
-class TimerApi { // eslint-disable-line no-unused-vars
+export default class TimerApi { 
   constructor(startEndpoint, stopEndpoint) {
     this.startEndpoint = startEndpoint;
     this.stopEndpoint = stopEndpoint;

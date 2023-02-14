@@ -1,7 +1,6 @@
-@import "decidim/variables";
-@import "decidim/utils/settings";
-@import "decidim/utils/mixins";
-@import "decidim/time_tracker/variables";
+@import "stylesheets/decidim/variables";
+@import "stylesheets/decidim/utils/settings";
+@import "stylesheets/decidim/utils/mixins";
 
 .time-tracker {
   &-activity,

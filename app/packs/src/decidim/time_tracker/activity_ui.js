@@ -1,4 +1,4 @@
-class ActivityUI { // eslint-disable-line no-unused-vars
+export default class ActivityUI { // eslint-disable-line no-unused-vars
   constructor(target) {
     this.$activity = $(target);
     this.$elapsed = this.$activity.find(".elapsed-time-clock");
