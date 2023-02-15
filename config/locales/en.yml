@@ -127,7 +127,7 @@ en:
             success: Assignation created successfully
           destroy:
             error: Error removing assignation
-            succcess: Assignation removed successfully
+            success: Assignation removed successfully
           form:
             existing_user: Existing participant
             non_user: Non participant
