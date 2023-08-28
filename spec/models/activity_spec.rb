@@ -26,7 +26,7 @@ module Decidim
         end
 
         it "is associated with a task" do
-          expect(subject.task). to eq(task)
+          expect(subject.task).to eq(task)
         end
 
         it "is associated with time_events in reverse order" do

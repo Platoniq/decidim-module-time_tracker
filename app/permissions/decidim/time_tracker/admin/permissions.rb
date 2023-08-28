@@ -27,12 +27,13 @@ module Decidim
         def allowed_questionnaire_action?
           return unless permission_action.subject.in? [:questionnaire, :questionnaire_answers]
 
-          if permission_action.subject == :questionnaire
+          case permission_action.subject
+          when :questionnaire
             case permission_action.action
             when :export_answers, :update, :preview
               permission_action.allow!
             end
-          elsif permission_action.subject == :questionnaire_answers
+          when :questionnaire_answers
             case permission_action.action
             when :show, :index, :export_response
               permission_action.allow!

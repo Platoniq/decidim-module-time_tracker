@@ -18,13 +18,13 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,lib,vendor,db}/**/*", "LICENSE-AGPLv3.txt", "Rakefile", "README.md"]
 
-  s.add_dependency "decidim-accountability", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
-  s.add_dependency "decidim-admin", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
-  s.add_dependency "decidim-core", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
-  s.add_dependency "decidim-forms", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
+  s.add_dependency "decidim-accountability", Decidim::TimeTracker::COMPAT_DECIDIM_VERSION
+  s.add_dependency "decidim-admin", Decidim::TimeTracker::COMPAT_DECIDIM_VERSION
+  s.add_dependency "decidim-core", Decidim::TimeTracker::COMPAT_DECIDIM_VERSION
+  s.add_dependency "decidim-forms", Decidim::TimeTracker::COMPAT_DECIDIM_VERSION
 
   s.add_dependency "wicked_pdf", "~> 2.1"
   s.add_dependency "wkhtmltopdf-binary", "~> 0.12"
 
-  s.add_development_dependency "decidim-dev", ">= #{Decidim::TimeTracker::DECIDIM_VERSION}"
+  s.add_development_dependency "decidim-dev", Decidim::TimeTracker::COMPAT_DECIDIM_VERSION
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :decidim_time_tracker do
   namespace :webpacker do
     desc "Installs Decidim Time Tracker webpacker files in Rails instance application"

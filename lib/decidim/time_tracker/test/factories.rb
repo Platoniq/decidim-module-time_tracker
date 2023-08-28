@@ -22,7 +22,7 @@ FactoryBot.define do
 
   factory :activity, class: "Decidim::TimeTracker::Activity" do
     task { create(:task) }
-    description { Decidim::Faker::Localized.sentence(3) }
+    description { Decidim::Faker::Localized.sentence(word_count: 3) }
     active { true }
     start_date { 1.day.ago }
     end_date { 1.month.from_now }
@@ -49,7 +49,7 @@ FactoryBot.define do
   end
 
   factory :assignation, class: "Decidim::TimeTracker::Assignation" do
-    user { create(:user) }
+    user { create(:user, :confirmed) }
     activity { create(:activity) }
     status { :accepted }
     invited_at { 1.month.ago }
@@ -73,7 +73,7 @@ FactoryBot.define do
     activity { create(:activity) }
     user { create(:user) }
     title { Faker::Lorem.word }
-    description { Faker::Lorem.sentence(3) }
+    description { Faker::Lorem.sentence(word_count: 3) }
   end
 
   factory :task, class: "Decidim::TimeTracker::Task" do

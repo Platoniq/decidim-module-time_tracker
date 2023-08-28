@@ -52,7 +52,7 @@ module Decidim
 
         unless time_available?
           form.errors.add(:activity, :no_time_available)
-          return true
+          true
         end
       end
 
