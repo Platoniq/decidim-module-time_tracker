@@ -9,7 +9,7 @@ on:
 
 env:
   RUBY_VERSION: 2.7.5
-  NODE_VERSION: 12.9.1
+  NODE_VERSION: 12.13.0
 
 jobs:
   unit:
