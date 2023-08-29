@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "A tool for Decidim that allows to track time dedicated by volunteers doing any arbitrary task",
   "scripts": {
-    "lint": "eslint -c .eslintrc.json --ext .js,.js.es6 app/assets"
+    "lint": "eslint -c .eslintrc.json --ext .js, app/packs/src/decidim/time_tracker"
   },
   "repository": {
     "type": "git",
