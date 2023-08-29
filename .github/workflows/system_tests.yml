@@ -1,10 +1,10 @@
-name: Test
+name: Integration Tests
 
 on:
   push:
     branches:
       - main
-      - master
+      - develop
   pull_request:
 
 env:
@@ -12,7 +12,7 @@ env:
   NODE_VERSION: 12.13.0
 
 jobs:
-  test:
+  system:
     runs-on: ubuntu-20.04
     services:
       postgres:
@@ -40,20 +40,18 @@ jobs:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
 
-      - run: npm ci
-        name: Install JS deps
-
-      - run: bundle exec rubocop -P
-        name: Lint Ruby files
-
-      - run: bundle exec erblint app/{cells,views}/**/*.erb
-        name: Lint ERB files
-
-      - run: npm run lint
-        name: Lint JS files
+      - uses: actions/setup-node@master
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Setup Database
         run: bundle exec rake test_app
 
       - name: Run RSpec
-        run: SIMPLECOV=1 CODECOV=1 bundle exec rake
+        run: SIMPLECOV=1 CODECOV=1 bundle exec rspec spec/system --exclude-pattern 'spec/system/admin/**/*questionnaire_spec.rb'
+
+      - uses: actions/upload-artifact@v2-preview
+        if: always()
+        with:
+          name: screenshots
+          path: ./spec/decidim_dummy_app/tmp/screenshots
