@@ -49,7 +49,7 @@ module Decidim::TimeTracker
       context "when user is not logged in" do
         it "redirects" do
           post :create, params: params
-          expect(response).to redirect_to("/")
+          expect(response).to redirect_to("/users/sign_in")
         end
       end
     end
