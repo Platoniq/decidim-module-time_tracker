@@ -64,11 +64,9 @@ module Decidim::TimeTracker::Admin
       end
 
       it "updates the questionnaire" do
-        debugger
         patch :update, params: params
-        debugger
         expect(Decidim::TimeTracker::Task.first.questionnaire.title).to eq(form[:title])
       end
     end
-    end
+  end
 end
