@@ -16,6 +16,8 @@ gem "decidim-time_tracker", path: "."
 gem "bootsnap", "~> 1.4"
 gem "puma", ">= 4.3"
 gem "uglifier", "~> 4.1"
+gem "mimemagic", "~> 0.3.7"
+gem "nokogiri", "1.11.2"
 
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
