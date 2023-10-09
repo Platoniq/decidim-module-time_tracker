@@ -8,12 +8,12 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 2.6.6
-  NODE_VERSION: 12.9.1
+  RUBY_VERSION: 2.7.5
+  NODE_VERSION: 16.9.1
 
 jobs:
   unit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     services:
       postgres:
         image: postgres:11
