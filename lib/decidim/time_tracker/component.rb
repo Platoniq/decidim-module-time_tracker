@@ -137,18 +137,18 @@ Decidim.register_component(:time_tracker) do |component|
     time_tracker = Decidim::TimeTracker::TimeTracker.create!(
       component: component,
       questionnaire: Decidim::Forms::Questionnaire.new(
-        tos: Decidim::Faker::Localized.sentence(10),
-        title: Decidim::Faker::Localized.sentence(4),
-        description: Decidim::Faker::Localized.sentence(10)
+        tos: Decidim::Faker::Localized.sentence(word_count: 10),
+        title: Decidim::Faker::Localized.sentence(word_count: 4),
+        description: Decidim::Faker::Localized.sentence(word_count: 10)
       )
     )
 
     assignee_data = Decidim::TimeTracker::AssigneeData.create!(
       time_tracker: time_tracker,
       questionnaire: Decidim::Forms::Questionnaire.new(
-        tos: Decidim::Faker::Localized.sentence(10),
-        title: Decidim::Faker::Localized.sentence(4),
-        description: Decidim::Faker::Localized.sentence(10)
+        tos: Decidim::Faker::Localized.sentence(word_count: 10),
+        title: Decidim::Faker::Localized.sentence(word_count: 4),
+        description: Decidim::Faker::Localized.sentence(word_count: 10)
       )
     )
 
@@ -159,15 +159,15 @@ Decidim.register_component(:time_tracker) do |component|
                                          {
                                            questionnaire: resource.questionnaire,
                                            question_type: "short_answer",
-                                           body: Decidim::Faker::Localized.sentence(5),
+                                           body: Decidim::Faker::Localized.sentence(word_count: 5),
                                            position: 1
                                          },
                                          {
                                            questionnaire: resource.questionnaire,
                                            question_type: "single_option",
-                                           body: Decidim::Faker::Localized.sentence(5),
+                                           body: Decidim::Faker::Localized.sentence(word_count: 5),
                                            position: 2,
-                                           answer_options: 3.times.to_a.map { Decidim::Forms::AnswerOption.new(body: Decidim::Faker::Localized.sentence(5)) }
+                                           answer_options: 3.times.to_a.map { Decidim::Forms::AnswerOption.new(body: Decidim::Faker::Localized.sentence(word_count: 5)) }
                                          }
                                        ])
     end
@@ -177,7 +177,7 @@ Decidim.register_component(:time_tracker) do |component|
       task = Decidim.traceability.create!(
         Decidim::TimeTracker::Task,
         admin_user,
-        name: Decidim::Faker::Localized.sentence(2),
+        name: Decidim::Faker::Localized.sentence(word_count: 2),
         time_tracker: time_tracker
       )
 
@@ -186,7 +186,7 @@ Decidim.register_component(:time_tracker) do |component|
         activity = Decidim.traceability.create!(
           Decidim::TimeTracker::Activity,
           admin_user,
-          description: Decidim::Faker::Localized.sentence(4),
+          description: Decidim::Faker::Localized.sentence(word_count: 4),
           active: [true, false].sample,
           start_date: 1.week.ago + (index * 1.week),
           end_date: 1.week.from_now + (index * 1.week),

@@ -44,8 +44,8 @@ module Decidim::TimeTracker::Admin
     describe "PATCH #update" do
       let(:form) do
         {
-          title: Decidim::Faker::Localized.sentence(3),
-          tos: Decidim::Faker::Localized.sentence(3)
+          title: Decidim::Faker::Localized.sentence(word_count: 3),
+          tos: Decidim::Faker::Localized.sentence(word_count: 3)
         }
       end
 

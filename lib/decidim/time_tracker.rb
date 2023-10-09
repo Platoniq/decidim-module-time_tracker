@@ -32,6 +32,7 @@ module Decidim
 
     def self.default_assignee_questionnaire
       return unless config[:default_assignee_questionnaire_seeds]
+
       config.default_assignee_questionnaire_seeds.deep_symbolize_keys
     end
   end

@@ -51,7 +51,7 @@ module Decidim
 
       def activities
         @activities ||= Activity.select("DISTINCT ON (id) *")
-                                .where(id: Milestone.where(user: user).pluck(:activity_id))
+                                .where(id: Milestone.where(user: user).select(:activity_id))
       end
 
       def user

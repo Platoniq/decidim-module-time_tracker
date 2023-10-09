@@ -66,8 +66,8 @@ module Decidim
         def i18nize(key)
           return key unless key.is_a? String
 
-          I18n.available_locales.each_with_object({}) do |locale, acc|
-            acc[locale] = I18n.with_locale(locale) { I18n.t(key, default: key) }
+          I18n.available_locales.index_with do |locale|
+            I18n.with_locale(locale) { I18n.t(key, default: key) }
           end
         end
       end
