@@ -9,71 +9,89 @@
     border: 1px solid #eee;
     padding: 1rem;
     margin-bottom: 1rem;
+
     h2 {
       color: var(--secondary);
     }
+
     .content {
       @media only screen and (min-width: 38em) {
         display: grid;
         grid-auto-flow: column;
         grid-template-columns: 66.6% 33.3%;
       }
+
       @media only screen and (min-width: 50em) {
         grid-template-columns: 75% 25%;
       }
+
       .left,
       .right {
         display: flex;
         flex-direction: column;
       }
+
       .top {
         flex: 1;
       }
+
       .bottom {
-        padding: 0.5em 0;
+        padding: .5em 0;
         text-align: center;
       }
     }
+
     .tracker-buttons {
       text-align: right;
+
       .button {
         margin-left: 1rem;
       }
+
       .button:last-child {
         margin-left: 0;
       }
     }
+
     .callout {
       margin: 0;
     }
+
     .elapsed-time {
       width: max-content;
+
       .elapsed-time-clock {
         font-size: 2rem;
       }
     }
+
     .milestone {
       margin: 1em;
       padding-top: 1em;
       border-top: 1px solid #eee;
     }
   }
+
   &--report {
     .card--list__annotation {
       margin-right: 1rem;
     }
+
     .card--list__heading {
-      margin-bottom: 0.5rem;
+      margin-bottom: .5rem;
     }
   }
+
   &--clock {
     span:not(:last-child)::after {
       content: " ";
     }
+
     .text-muted {
-      opacity: 0.5;
+      opacity: .5;
     }
   }
+
   &--activity {
     &:hover {
       .card--list__item {
@@ -82,12 +100,15 @@
       }
     }
   }
+
   &--assignee-data {
     margin-bottom: 3rem;
   }
+
   &--start-button {
     margin-top: 2rem;
     margin-bottom: 1rem;
+
     &-wrapper {
       display: flex;
       justify-content: center;
@@ -102,6 +123,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     & > svg {
       fill: $medium-gray;
       font-size: 2rem;
@@ -111,6 +133,7 @@
 
 .show-milestones {
   color: $secondary;
+
   &:hover {
     text-decoration: underline;
   }

@@ -4,18 +4,18 @@ export default class TimerApi {
   constructor(startEndpoint, stopEndpoint) {
     this.startEndpoint = startEndpoint;
     this.stopEndpoint = stopEndpoint;
-    this.csrfToken = $('meta[name=csrf-token]').attr('content');
+    this.csrfToken = $("meta[name=csrf-token]").attr("content");
   }
 
   start() {
-    const promise = $.Deferred();
+    const promise = $.Deferred(); // eslint-disable-line new-cap
 
     $.ajax({
       method: "POST",
       url: this.startEndpoint,
       contentType: "application/json",
       headers: {
-        'X-CSRF-Token': this.csrfToken
+        "X-CSRF-Token": this.csrfToken
       },
       success: (data) => {
         promise.resolve(data);
@@ -31,14 +31,14 @@ export default class TimerApi {
   }
   
   stop() {
-    const promise = $.Deferred();
+    const promise = $.Deferred(); // eslint-disable-line new-cap
 
     $.ajax({
       method: "POST",
       url: this.stopEndpoint,
       contentType: "application/json",
       headers: {
-        'X-CSRF-Token': this.csrfToken
+        "X-CSRF-Token": this.csrfToken
       },
       success: (data) => {
         promise.resolve(data);

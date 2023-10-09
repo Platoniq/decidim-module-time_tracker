@@ -1,5 +1,5 @@
-
 @import "stylesheets/decidim/variables";
+
 .action-icon {
   &-success {
     .icon {
@@ -17,7 +17,7 @@
 }
 
 .activity--inactive {
-  opacity: 0.5;
+  opacity: .5;
 }
 
 .assignation- {
@@ -25,26 +25,29 @@
     .assignation--status {
       background-color: $warning;
     }
+
     td {
-      background-color: transparentize($warning, 0.9);
+      background-color: transparentize($warning, .9);
     }
   }
+
   &-accepted {
     .assignation--status {
       background-color: $success;
     }
+
     td {
-      background-color: transparentize($success, 0.9);
+      background-color: transparentize($success, .9);
     }
   }
 
   &-rejected td {
-    opacity: 0.5;
+    opacity: .5;
   }
 }
 
 .help-text + .form-error {
-  margin-top: 0rem;
+  margin-top: 0;
 }
 
 .time-tracker {
@@ -52,8 +55,9 @@
     span:not(:last-child)::after {
       content: " ";
     }
+
     .text-muted {
-      opacity: 0.5;
+      opacity: .5;
     }
   }
 }

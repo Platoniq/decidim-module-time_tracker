@@ -37,5 +37,8 @@ jobs:
       - run: bundle exec erblint app/{cells,views}/**/*.erb
         name: Lint ERB files
 
+      - run: npm run stylelint
+        name: Lint SCSS files
+
       - run: npm run lint
         name: Lint JS files
