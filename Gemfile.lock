@@ -2,10 +2,10 @@ PATH
   remote: .
   specs:
     decidim-time_tracker (0.4)
-      decidim-accountability (>= 0.26.4)
-      decidim-admin (>= 0.26.4)
-      decidim-core (>= 0.26.4)
-      decidim-forms (>= 0.26.4)
+      decidim-accountability (>= 0.25.0, < 0.27)
+      decidim-admin (>= 0.25.0, < 0.27)
+      decidim-core (>= 0.25.0, < 0.27)
+      decidim-forms (>= 0.25.0, < 0.27)
       wicked_pdf (~> 2.1)
       wkhtmltopdf-binary (~> 0.12)
 

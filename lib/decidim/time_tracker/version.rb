@@ -5,5 +5,6 @@ module Decidim
   module TimeTracker
     VERSION = "0.4"
     DECIDIM_VERSION = "0.26.4"
+    COMPAT_DECIDIM_VERSION = [">= 0.25.0", "< 0.27"].freeze
   end
 end
