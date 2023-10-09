@@ -75,17 +75,15 @@ en:
         time_tracker_presenter:
           not_found: 'The Time Tracker component was not found on the database (ID:
             %{id})'
-    pages:
-      home:
-        statistics:
-          activities_count: Activities
-          assignees_count: Volunteers
-          tasks_count: Tasks
     participatory_processes:
       statistics:
         activities_count: Activities
         assignees_count: Volunteers
         tasks_count: Tasks
+    statistics:
+      activities_count: Activities
+      assignees_count: Volunteers
+      tasks_count: Tasks
     time_tracker:
       admin:
         actions:

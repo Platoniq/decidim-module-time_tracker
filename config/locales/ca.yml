@@ -70,17 +70,15 @@ ca:
           not_found: 'L''activitat no s''ha trobat a la base de dades (ID: %{id})'
         time_tracker_presenter:
           not_found: 'El component TimeTracker no s''ha trobat a la base de dades (ID: %{id})'
-    pages:
-      home:
-        statistics:
-          activities_count: Activitats
-          assignees_count: Voluntàries
-          tasks_count: Tasques
     participatory_processes:
       statistics:
         activities_count: Activitats
         assignees_count: Voluntàries
         tasks_count: Tasques
+    statistics:
+      activities_count: Activitats
+      assignees_count: Voluntàries
+      tasks_count: Tasques
     time_tracker:
       admin:
         actions:
