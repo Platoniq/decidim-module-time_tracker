@@ -5,6 +5,7 @@ require "spec_helper"
 describe "Admin manages Time tracker stats", type: :system do
   include_context "with a time_tracker"
 
+  let(:resource_controller) { Decidim::TimeTracker::Admin::StatsController }
   let(:user) { create :user, :admin, :confirmed, organization: organization }
 
   before do
