@@ -10,7 +10,7 @@
         <div class="author author--inline">
           <%= link_to decidim.profile_path(user.nickname) do %>
             <span class="author__avatar">
-              <%= image_tag user.avatar_url %>
+              <%= image_tag present(user).avatar_url %>
             </span>
             <span class="author__name">
               <%= user.name %>
