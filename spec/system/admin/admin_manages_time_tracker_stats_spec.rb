@@ -5,7 +5,7 @@ require "spec_helper"
 describe "Admin manages Time tracker stats", type: :system do
   include_context "with a time_tracker"
 
-  let(:user) { create :user, :admin, organization: organization }
+  let(:user) { create :user, :admin, :confirmed, organization: organization }
 
   before do
     switch_to_host(user.organization.host)
