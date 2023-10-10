@@ -18,7 +18,9 @@ describe "Admin manages Time tracker", type: :system do
     end
 
     it "shows activity counter next to component name in list" do
-      expect(page).to have_link "Time Tracker #{time_tracker.activities.active.count}", href: time_tracker_admin_path
+      within "a[href='#{time_tracker_admin_path}']" do
+        expect(page).to have_content("Time Tracker\n#{time_tracker.activities.active.count}")
+      end
     end
 
     it "do not show pendig assignees section" do
