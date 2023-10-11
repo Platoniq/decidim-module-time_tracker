@@ -4,7 +4,7 @@ module Decidim
   module TimeTracker
     module Admin
       # A command with all the business logic when creating a task
-      class CreateTimeTracker < Rectify::Command
+      class CreateTimeTracker < Decidim::Command
         def initialize(component)
           @questionnaire = Decidim::Forms::Questionnaire.new
           @assignee_questionnaire = Decidim::Forms::Questionnaire.new

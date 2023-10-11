@@ -4,7 +4,7 @@ module Decidim
   module TimeTracker
     module Admin
       # A command with all the business logic when creating a assignation
-      class CreateAssignation < Rectify::Command
+      class CreateAssignation < Decidim::Command
         def initialize(form, activity)
           @form = form
           @activity = activity

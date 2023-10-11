@@ -4,7 +4,7 @@ module Decidim
   module TimeTracker
     module Admin
       # A command with all the business logic when updating an task
-      class UpdateTask < Rectify::Command
+      class UpdateTask < Decidim::Command
         # Public: Initializes the command.
         #
         # form - A form object with the params.

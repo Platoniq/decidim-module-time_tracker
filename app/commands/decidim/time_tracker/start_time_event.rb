@@ -3,7 +3,7 @@
 module Decidim
   module TimeTracker
     # A command with all the business logic when creating a time event
-    class StartTimeEvent < Rectify::Command
+    class StartTimeEvent < Decidim::Command
       # Public: Initializes the command.
       #
       # form - A form object with the params.
