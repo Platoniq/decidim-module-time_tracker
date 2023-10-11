@@ -70,17 +70,15 @@ es:
           not_found: 'La actividad no se encontró en la base de datos (ID: %{id})'
         time_tracker_presenter:
           not_found: 'El componente Time Tracker no se encontró en la base de datos (ID: %{id})'
-    pages:
-      home:
-        statistics:
-          activities_count: Actividades
-          assignees_count: Voluntarias
-          tasks_count: Tareas
     participatory_processes:
       statistics:
         activities_count: Actividades
         assignees_count: Voluntarias
         tasks_count: Tareas
+    statistics:
+      activities_count: Actividades
+      assignees_count: Voluntarias
+      tasks_count: Tareas
     time_tracker:
       admin:
         actions:

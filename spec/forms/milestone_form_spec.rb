@@ -4,8 +4,10 @@ require "spec_helper"
 
 module Decidim::TimeTracker
   describe MilestoneForm do
-    subject(:form) { described_class.from_params(attributes) }
+    subject(:form) { described_class.from_params(attributes).with_context(context) }
 
+    let(:organization) { create(:organization) }
+    let(:context) { { current_organization: organization } }
     let(:activity) { create :activity }
     let(:title) { "My milestone" }
     let(:description) { "Description" }

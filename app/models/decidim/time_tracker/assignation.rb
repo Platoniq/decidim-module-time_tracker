@@ -32,7 +32,7 @@ module Decidim
                class_name: "Decidim::TimeTracker::Milestone",
                through: :user
 
-      enum status: [:pending, :accepted, :rejected]
+      enum status: { pending: 0, accepted: 1, rejected: 2 }
 
       def assignee
         Assignee.for(user)

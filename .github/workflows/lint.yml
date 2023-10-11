@@ -8,12 +8,12 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 2.6.6
-  NODE_VERSION: 12.9.1
+  RUBY_VERSION: 2.7.5
+  NODE_VERSION: 16.9.1
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -36,6 +36,9 @@ jobs:
 
       - run: bundle exec erblint app/{cells,views}/**/*.erb
         name: Lint ERB files
+
+      - run: npm run stylelint
+        name: Lint SCSS files
 
       - run: npm run lint
         name: Lint JS files

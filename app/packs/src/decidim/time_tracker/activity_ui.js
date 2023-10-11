@@ -1,4 +1,4 @@
-class ActivityUI { // eslint-disable-line no-unused-vars
+export default class ActivityUI { // eslint-disable-line no-unused-vars
   constructor(target) {
     this.$activity = $(target);
     this.$elapsed = this.$activity.find(".elapsed-time-clock");
@@ -11,11 +11,11 @@ class ActivityUI { // eslint-disable-line no-unused-vars
   }
 
   get startEndpoint() {
-    return this.$activity.data('start-endpoint');
+    return this.$activity.data("start-endpoint");
   }
 
   get stopEndpoint() {
-    return this.$activity.data('stop-endpoint');
+    return this.$activity.data("stop-endpoint");
   }
 
   get now() {
@@ -70,16 +70,18 @@ class ActivityUI { // eslint-disable-line no-unused-vars
     const minutes = Math.floor((totalSeconds / 60) % 60)
     const seconds = totalSeconds % 60
 
-    return `${ hours }h ${ minutes }m ${ seconds }s`
+    return `${hours}h ${minutes}m ${seconds}s`
   }
 
   updateElapsedTime() {
     const diff = this.now - this.initTime
-    if(this.remaining <= diff) {
+    if (this.remaining <= diff) {
       this.stopCounter()
       return this.onStop();
     }
     this.$elapsed.html(this.clockifySeconds(this.elapsed + diff));
+
+    return null;
   }
 
   startCounter(data) {
@@ -88,21 +90,21 @@ class ActivityUI { // eslint-disable-line no-unused-vars
     this.initTime = this.now;
     this.interval = setInterval(() => {
       this.updateElapsedTime();
-      }, 1000);
+    }, 1000);
     return this;
   }
   
   stopCounter(data) {
     const diff = this.now - this.initTime
     console.log("stopping counter", data)
-    this.elapsed = this.elapsed + diff;
-    this.remaining = this.remaining - diff;
+    this.elapsed += diff;
+    this.remaining -= diff;
     clearInterval(this.interval);
     return this;
   }
 
   isRunning() {
-    return !!this.interval;
+    return Boolean(this.interval);
   }
   
   showMilestone() {

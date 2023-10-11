@@ -16,7 +16,7 @@ module Decidim::TimeTracker::Admin
 
     let(:activity_params) do
       {
-        description: Decidim::Faker::Localized.sentence(3),
+        description: Decidim::Faker::Localized.sentence(word_count: 3),
         active: false,
         start_date: 1.day.from_now.strftime("%d/%m/%Y %H:%M"),
         end_date: 1.month.from_now.strftime("%d/%m/%Y %H:%M"),
@@ -110,7 +110,7 @@ module Decidim::TimeTracker::Admin
     describe "PATCH #update" do
       let(:activity_params) do
         {
-          description: Decidim::Faker::Localized.sentence(3),
+          description: Decidim::Faker::Localized.sentence(word_count: 3),
           active: false,
           start_date: 1.month.ago.strftime("%d/%m/%Y %H:%M"),
           end_date: 1.month.from_now.strftime("%d/%m/%Y %H:%M"),

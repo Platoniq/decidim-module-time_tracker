@@ -70,17 +70,15 @@ cs:
           not_found: 'The Activity was not found on the database (ID: %{id})'
         time_tracker_presenter:
           not_found: 'The Time Tracker component was not found on the database (ID: %{id})'
-    pages:
-      home:
-        statistics:
-          activities_count: Activities
-          assignees_count: Volunteers
-          tasks_count: Úlohy
     participatory_processes:
       statistics:
         activities_count: Activities
         assignees_count: Volunteers
         tasks_count: Úlohy
+    statistics:
+      activities_count: Activities
+      assignees_count: Volunteers
+      tasks_count: Úlohy
     time_tracker:
       admin:
         actions:
