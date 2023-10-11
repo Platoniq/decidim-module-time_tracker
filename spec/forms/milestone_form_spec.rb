@@ -41,6 +41,7 @@ module Decidim::TimeTracker
         }
       end
 
+      it { byebug }
       it { is_expected.to be_valid }
 
       context "when the form has some errors" do

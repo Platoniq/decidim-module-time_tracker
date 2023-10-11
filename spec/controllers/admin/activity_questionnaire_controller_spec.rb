@@ -12,6 +12,8 @@ module Decidim::TimeTracker::Admin
     let(:component) { create :time_tracker_component, participatory_space: participatory_space }
     let(:time_tracker) { create :time_tracker, component: component }
     let!(:task) { create :task, time_tracker: time_tracker }
+    let(:questionnaire) { Decidim::TimeTracker::Task.first.questionnaire }
+    let(:title) { questionnaire.title.except("machine_translations") }
 
     let(:form) do
       {
@@ -44,7 +46,7 @@ module Decidim::TimeTracker::Admin
     describe "PATCH #update" do
       let(:form) do
         {
-          title: Decidim::Faker::Localized.sentence(word_count: 3),
+          title: Decidim::Faker::Localized.sentence(word_count: 3).except(:machine_translations),
           tos: Decidim::Faker::Localized.sentence(word_count: 3)
         }
       end
@@ -65,7 +67,7 @@ module Decidim::TimeTracker::Admin
 
       it "updates the questionnaire" do
         patch :update, params: params
-        expect(Decidim::TimeTracker::Task.first.questionnaire.title).to eq(form[:title])
+        expect(title).to eq(form[:title])
       end
     end
   end
