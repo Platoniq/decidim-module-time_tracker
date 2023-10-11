@@ -13,7 +13,7 @@ module Decidim::TimeTracker::Admin
         current_organization: organization
       }
     end
-    let(:permission_action) { Decidim::PermissionAction.new(action) }
+    let(:permission_action) { Decidim::PermissionAction.new(**action) }
 
     context "when scope is not admin" do
       let(:action) do
