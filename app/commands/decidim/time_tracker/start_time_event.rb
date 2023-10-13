@@ -18,11 +18,11 @@ module Decidim
       #
       # Returns nothing.
       def call
-        return broadcast(:invalid, form.errors&.first&.second) if form.invalid?
+        return broadcast(:invalid, form.errors.messages&.first&.second) if form.invalid?
 
         return broadcast(:already_active, @time_entry) if already_active?
 
-        return broadcast(:invalid, form.errors&.first&.second) if activity_invalid?
+        return broadcast(:invalid, form.errors.messages&.first&.second) if activity_invalid?
 
         begin
           stop_previous_activity
