@@ -52,7 +52,7 @@ module Decidim::TimeTracker
           expect(subject).not_to be_valid
 
           expect(subject.errors.full_messages).to match_array(["Attachment Needs to be reattached", "What have you done? can't be blank"])
-          expect(subject.errors.keys).to match_array([:title, :attachment])
+          expect(subject.errors.attribute_names).to match_array([:title, :attachment])
         end
       end
     end
