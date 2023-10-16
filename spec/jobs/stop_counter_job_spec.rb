@@ -19,8 +19,8 @@ module Decidim::TimeTracker
       it "do not stop the counter" do
         StopCounterJob.perform_now(time_event)
 
-        expect(time_event.stopped?).to eq(false)
-        expect(time_event.stop).to eq(nil)
+        expect(time_event.stopped?).to be(false)
+        expect(time_event.stop).to be_nil
       end
     end
 
@@ -30,7 +30,7 @@ module Decidim::TimeTracker
       it "stops the counter" do
         StopCounterJob.perform_now(time_event)
 
-        expect(time_event.stopped?).to eq(true)
+        expect(time_event.stopped?).to be(true)
         expect(time_event.stop).to eq(Time.current.to_i)
       end
     end
@@ -45,7 +45,7 @@ module Decidim::TimeTracker
       it "stops the counter" do
         StopCounterJob.perform_now(time_event)
 
-        expect(time_event.stopped?).to eq(true)
+        expect(time_event.stopped?).to be(true)
         expect(time_event.stop).to eq(Time.current.to_i)
       end
     end
@@ -57,8 +57,8 @@ module Decidim::TimeTracker
         it "do not stop the counter" do
           StopCounterJob.perform_now(time_event)
 
-          expect(time_event.stopped?).to eq(false)
-          expect(time_event.stop).to eq(nil)
+          expect(time_event.stopped?).to be(false)
+          expect(time_event.stop).to be_nil
         end
       end
 
@@ -68,7 +68,7 @@ module Decidim::TimeTracker
         it "stops the counter" do
           StopCounterJob.perform_now(time_event)
 
-          expect(time_event.stopped?).to eq(true)
+          expect(time_event.stopped?).to be(true)
           expect(time_event.stop).to eq(Time.current.to_i)
         end
       end

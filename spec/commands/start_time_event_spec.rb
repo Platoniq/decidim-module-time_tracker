@@ -4,7 +4,8 @@ require "spec_helper"
 
 module Decidim::TimeTracker
   describe StartTimeEvent do
-    let(:subject) { described_class.new(form) }
+    subject { described_class.new(form) }
+
     let(:activity) { create :activity, max_minutes_per_day: 60 }
     let(:user) { create :user, :confirmed, organization: organization }
     let(:assignation) { create :assignation, user: user, activity: activity, status: status }
@@ -35,7 +36,7 @@ module Decidim::TimeTracker
       end
 
       it "creates a new time event" do
-        expect { subject.call }.to change { Decidim::TimeTracker::TimeEvent.count }.by(1)
+        expect { subject.call }.to change(Decidim::TimeTracker::TimeEvent, :count).by(1)
       end
     end
 
@@ -45,7 +46,7 @@ module Decidim::TimeTracker
       end
 
       it "do not create a new time event" do
-        expect { subject.call }.to change { Decidim::TimeTracker::TimeEvent.count }.by(0)
+        expect { subject.call }.not_to change(Decidim::TimeTracker::TimeEvent, :count)
       end
 
       it "form returns error" do
@@ -103,8 +104,8 @@ module Decidim::TimeTracker
         prev = Decidim::TimeTracker::TimeEvent.where(activity: prev_entry.activity).last_for(user)
         last = Decidim::TimeTracker::TimeEvent.where(activity: activity).last_for(user)
 
-        expect(prev.stopped?).to eq(true)
-        expect(prev.stop).not_to be(nil)
+        expect(prev.stopped?).to be(true)
+        expect(prev.stop).not_to be_nil
         expect(prev.total_seconds).not_to be(0)
         expect(prev.total_seconds).to be(prev.stop - prev.start)
         expect(prev.stop).to eq(last.start)
@@ -133,13 +134,13 @@ module Decidim::TimeTracker
         end
 
         it "do not create a new time event" do
-          expect { subject.call }.to change { Decidim::TimeTracker::TimeEvent.count }.by(0)
+          expect { subject.call }.not_to change(Decidim::TimeTracker::TimeEvent, :count)
         end
       end
 
       context "and there are more time accumulated than the allowed" do
-        let(:start) { Time.current - 2.hours }
-        let(:stop) { Time.current - 59.minutes }
+        let(:start) { 2.hours.ago }
+        let(:stop) { 59.minutes.ago }
         let!(:older_entry) { create(:time_event, start: start, stop: stop, total_seconds: stop - start, assignation: assignation, activity: activity) }
 
         it_behaves_like "returns error", :activity

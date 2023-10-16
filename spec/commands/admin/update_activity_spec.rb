@@ -4,7 +4,8 @@ require "spec_helper"
 
 module Decidim::TimeTracker::Admin
   describe UpdateActivity do
-    let(:subject) { described_class.new(activity, form, user) }
+    subject { described_class.new(activity, form, user) }
+
     let(:organization) { create :organization }
     let(:task) { create :task }
     let(:activity) { create :activity, task: task }

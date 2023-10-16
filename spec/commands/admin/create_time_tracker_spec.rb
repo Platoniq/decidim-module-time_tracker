@@ -4,7 +4,7 @@ require "spec_helper"
 
 module Decidim::TimeTracker::Admin
   describe CreateTimeTracker do
-    let(:subject) { described_class.new(component) }
+    subject { described_class.new(component) }
 
     let(:organization) { create :organization }
     let(:user) { create :user, :admin, :confirmed, organization: organization }
@@ -25,11 +25,11 @@ module Decidim::TimeTracker::Admin
       end
 
       it "creates a new time_tracker for the organization" do
-        expect { subject.call }.to change { Decidim::TimeTracker::TimeTracker.count }.by(1)
+        expect { subject.call }.to change(Decidim::TimeTracker::TimeTracker, :count).by(1)
       end
 
       it "creates two associated questionnaires" do
-        expect { subject.call }.to change { Decidim::Forms::Questionnaire.count }.by(2)
+        expect { subject.call }.to change(Decidim::Forms::Questionnaire, :count).by(2)
       end
     end
 
@@ -60,7 +60,7 @@ module Decidim::TimeTracker::Admin
           expect(subject.questionnaire.questions.first.body["en"]).to eq "How important do you think this task is?"
           expect(subject.questionnaire.questions.second.question_type).to eq "separator"
           expect(subject.questionnaire.questions.second.position).to eq 2
-          expect(subject.questionnaire.questions.second.body).to eq nil
+          expect(subject.questionnaire.questions.second.body).to be_nil
           expect(subject.questionnaire.questions.third.question_type).to eq "single_option"
           expect(subject.questionnaire.questions.third.position).to eq 3
           expect(subject.questionnaire.questions.third.body["en"]).to eq "Who do you think usually perform this task?"
@@ -75,7 +75,7 @@ module Decidim::TimeTracker::Admin
 
         it "has no questions" do
           expect(subject.time_tracker.has_questions?).to be false
-          expect(subject.questionnaire.title).to eq nil
+          expect(subject.questionnaire.title).to be_nil
           expect(subject.questionnaire.questions.count).to eq 0
         end
       end
@@ -93,7 +93,7 @@ module Decidim::TimeTracker::Admin
           expect(subject.questionnaire.description["en"]).to eq(custom_activity_questionnaire_seeds[:description][:en])
           expect(subject.questionnaire.questions.first.body["en"]).to eq(custom_activity_questionnaire_seeds[:questions][0][:body])
           expect(subject.questionnaire.questions.second.answer_options.first.body["en"]).to eq(custom_activity_questionnaire_seeds[:questions][1][:answer_options][0][:body])
-          expect(subject.questionnaire.questions.second.answer_options.first.free_text).to eq true
+          expect(subject.questionnaire.questions.second.answer_options.first.free_text).to be true
         end
       end
     end
@@ -124,7 +124,7 @@ module Decidim::TimeTracker::Admin
           expect(subject.assignee_questionnaire.questions.first.body["en"]).to eq "Which gender do you identify with?"
           expect(subject.assignee_questionnaire.questions.second.question_type).to eq "separator"
           expect(subject.assignee_questionnaire.questions.second.position).to eq 2
-          expect(subject.assignee_questionnaire.questions.second.body).to eq nil
+          expect(subject.assignee_questionnaire.questions.second.body).to be_nil
           expect(subject.assignee_questionnaire.questions.third.question_type).to eq "single_option"
           expect(subject.assignee_questionnaire.questions.third.position).to eq 3
           expect(subject.assignee_questionnaire.questions.third.body["en"]).to eq "What is your age?"
@@ -139,7 +139,7 @@ module Decidim::TimeTracker::Admin
 
         it "has no assignee questions" do
           expect(subject.time_tracker.has_assignee_questions?).to be false
-          expect(subject.assignee_questionnaire.title).to eq nil
+          expect(subject.assignee_questionnaire.title).to be_nil
           expect(subject.assignee_questionnaire.questions.count).to eq 0
         end
       end
@@ -157,7 +157,7 @@ module Decidim::TimeTracker::Admin
           expect(subject.assignee_questionnaire.description["en"]).to eq(custom_assignee_questionnaire_seeds[:description][:en])
           expect(subject.assignee_questionnaire.questions.first.body["en"]).to eq(custom_assignee_questionnaire_seeds[:questions][0][:body])
           expect(subject.assignee_questionnaire.questions.second.answer_options.first.body["en"]).to eq(custom_assignee_questionnaire_seeds[:questions][1][:answer_options][0][:body])
-          expect(subject.assignee_questionnaire.questions.second.answer_options.first.free_text).to eq true
+          expect(subject.assignee_questionnaire.questions.second.answer_options.first.free_text).to be true
         end
       end
     end

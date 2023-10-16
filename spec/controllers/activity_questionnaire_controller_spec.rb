@@ -35,9 +35,9 @@ module Decidim::TimeTracker
 
         expect(response).to have_http_status(:ok)
         expect(controller.helpers.questionnaire_for).to eq(time_tracker)
-        expect(controller.helpers.allow_answers?).to eq(false)
+        expect(controller.helpers.allow_answers?).to be(false)
         expect(controller.helpers.visitor_can_answer?).to eq(can_answer)
-        expect(controller.helpers.visitor_already_answered?).not_to eq(true)
+        expect(controller.helpers.visitor_already_answered?).not_to be(true)
         expect(subject).to render_template(:show)
       end
     end
@@ -48,9 +48,9 @@ module Decidim::TimeTracker
 
         expect(response).to have_http_status(:ok)
         expect(controller.helpers.questionnaire_for).to eq(time_tracker)
-        expect(controller.helpers.allow_answers?).to eq(true)
-        expect(controller.helpers.visitor_can_answer?).to eq(true)
-        expect(controller.helpers.visitor_already_answered?).to eq(false)
+        expect(controller.helpers.allow_answers?).to be(true)
+        expect(controller.helpers.visitor_can_answer?).to be(true)
+        expect(controller.helpers.visitor_already_answered?).to be(false)
         expect(subject).to render_template(:show)
       end
     end

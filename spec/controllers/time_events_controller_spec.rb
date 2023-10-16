@@ -31,7 +31,6 @@ module Decidim::TimeTracker
       sign_in user
     end
 
-    # rubocop:disable Rails/Date
     describe "post #start" do
       context "when is a new entry" do
         it "creates a new time event" do
@@ -48,7 +47,7 @@ module Decidim::TimeTracker
       end
 
       context "when a previous counter exists" do
-        let!(:time_event) { create(:time_event, start: (Time.current - 15.minutes), assignation: assignation, activity: activity) }
+        let!(:time_event) { create(:time_event, start: 15.minutes.ago, assignation: assignation, activity: activity) }
 
         it "returns already active" do
           get :start, params: params
@@ -81,7 +80,7 @@ module Decidim::TimeTracker
       end
 
       context "when the assignation is not in the time window for the activity" do
-        let(:activity) { create :activity, task: task, start_date: (Time.current + 1.day) }
+        let(:activity) { create :activity, task: task, start_date: 1.day.from_now }
 
         it "returns error" do
           get :start, params: params
@@ -90,10 +89,9 @@ module Decidim::TimeTracker
         end
       end
     end
-    # rubocop:enable Rails/Date
 
     describe "post #stop" do
-      let!(:time_event) { create :time_event, start: (Time.current - 1.hour), activity: activity, assignation: assignation }
+      let!(:time_event) { create :time_event, start: 1.hour.ago, activity: activity, assignation: assignation }
 
       context "when counter is active" do
         it "stops the time entry" do
@@ -110,7 +108,7 @@ module Decidim::TimeTracker
       end
 
       context "when counter is stopped" do
-        let!(:time_event) { create :time_event, start: (Time.current - 1.hour), stop: (Time.current - 15.minutes), activity: activity, assignation: assignation }
+        let!(:time_event) { create :time_event, start: 1.hour.ago, stop: 15.minutes.ago, activity: activity, assignation: assignation }
 
         it "returns already stopped" do
           get :stop, params: params

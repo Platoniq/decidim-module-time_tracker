@@ -43,7 +43,7 @@ module Decidim::TimeTracker
     end
 
     context "when stop is lower than start" do
-      let(:stop) { Time.current - 10.minutes }
+      let(:stop) { 10.minutes.ago }
 
       it { is_expected.to be_invalid }
     end

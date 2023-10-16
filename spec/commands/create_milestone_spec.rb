@@ -4,7 +4,8 @@ require "spec_helper"
 
 module Decidim::TimeTracker
   describe CreateMilestone do
-    let(:subject) { described_class.new(form, user) }
+    subject { described_class.new(form, user) }
+
     let(:activity) { create :activity, max_minutes_per_day: 60 }
     let(:user) { create :user, :confirmed, organization: organization }
     let(:assignation) { create :assignation, user: user, activity: activity, status: status }

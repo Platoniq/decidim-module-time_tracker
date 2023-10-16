@@ -44,7 +44,7 @@ module Decidim::TimeTracker::Admin
         { scope: scope, action: action, subject: subject }
       end
 
-      it { is_expected.to eq true }
+      it { is_expected.to be true }
     end
 
     context "when subject is a task" do

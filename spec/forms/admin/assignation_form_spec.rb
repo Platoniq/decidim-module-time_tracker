@@ -31,7 +31,7 @@ module Decidim::TimeTracker
       it { is_expected.to be_valid }
 
       it "user exists" do
-        expect(subject.existing_user).to eq(true)
+        expect(subject.existing_user).to be(true)
       end
     end
   end

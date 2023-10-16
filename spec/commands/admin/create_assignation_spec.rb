@@ -4,7 +4,8 @@ require "spec_helper"
 
 module Decidim::TimeTracker::Admin
   describe CreateAssignation do
-    let(:subject) { described_class.new(form, activity) }
+    subject { described_class.new(form, activity) }
+
     let(:form) do
       double(
         # AssignationForm,
@@ -37,7 +38,7 @@ module Decidim::TimeTracker::Admin
       end
 
       it "creates a new assignation for the activity" do
-        expect { subject.call }.to change { Decidim::TimeTracker::Assignation.count }.by(1)
+        expect { subject.call }.to change(Decidim::TimeTracker::Assignation, :count).by(1)
       end
 
       it "traces the action", versioning: true do
@@ -73,7 +74,7 @@ module Decidim::TimeTracker::Admin
       end
 
       it "creates a new assignation for the activity" do
-        expect { subject.call }.to change { Decidim::TimeTracker::Assignation.count }.by(1)
+        expect { subject.call }.to change(Decidim::TimeTracker::Assignation, :count).by(1)
       end
 
       it "traces the action", versioning: true do

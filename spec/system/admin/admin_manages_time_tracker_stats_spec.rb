@@ -16,17 +16,17 @@ describe "Admin manages Time tracker stats", type: :system do
   context "when there are assignations" do
     let(:users) { create_list(:user, 3, :confirmed, organization: organization) }
 
-    let(:task_1) { create(:task, time_tracker: time_tracker, name: { en: "Fix plumbing" }) }
-    let(:task_2) { create(:task, time_tracker: time_tracker, name: { en: "Clean windows" }) }
-    let(:activity_1) { create(:activity, task: task_1, description: { en: "Make a hole in the wall" }) }
-    let(:activity_2) { create(:activity, task: task_1, description: { en: "Replace pipes" }) }
-    let(:activity_3) { create(:activity, task: task_2, description: { en: "Buy cleaning products" }) }
-    let!(:assignation_1) { create(:assignation, user: users.first, activity: activity_1) }
-    let!(:assignation_2) { create(:assignation, user: users.second, activity: activity_1) }
-    let!(:assignation_3) { create(:assignation, user: users.second, activity: activity_2) }
-    let!(:assignation_4) { create(:assignation, user: users.third, activity: activity_3) }
+    let(:first_task) { create(:task, time_tracker: time_tracker, name: { en: "Fix plumbing" }) }
+    let(:second_task) { create(:task, time_tracker: time_tracker, name: { en: "Clean windows" }) }
+    let(:first_activity) { create(:activity, task: first_task, description: { en: "Make a hole in the wall" }) }
+    let(:second_activity) { create(:activity, task: first_task, description: { en: "Replace pipes" }) }
+    let(:third_activity) { create(:activity, task: second_task, description: { en: "Buy cleaning products" }) }
+    let!(:first_assignation) { create(:assignation, user: users.first, activity: first_activity) }
+    let!(:second_assignation) { create(:assignation, user: users.second, activity: first_activity) }
+    let!(:third_assignation) { create(:assignation, user: users.second, activity: second_activity) }
+    let!(:fourth_assignation) { create(:assignation, user: users.third, activity: third_activity) }
 
-    let!(:time_event) { create(:time_event, assignation: assignation_1, total_seconds: 120) }
+    let!(:time_event) { create(:time_event, assignation: first_assignation, total_seconds: 120) }
 
     before do
       visit_time_tracker_admin_stats
@@ -34,10 +34,10 @@ describe "Admin manages Time tracker stats", type: :system do
 
     it "shows a table with assignations" do
       within ".table-list", match: :first do
-        expect(page).to have_link(translated(assignation_1.task.name), href: time_tracker_admin_task_path(assignation_1.activity.task))
-        expect(page).to have_link(translated(assignation_1.activity.description), href: time_tracker_admin_assignations_path(assignation_1.activity))
-        expect(page).to have_link(assignation_1.user.name, href: decidim.profile_path(assignation_1.user.nickname))
-        expect(page).to have_content(assignation_1.user.email)
+        expect(page).to have_link(translated(first_assignation.task.name), href: time_tracker_admin_task_path(first_assignation.activity.task))
+        expect(page).to have_link(translated(first_assignation.activity.description), href: time_tracker_admin_assignations_path(first_assignation.activity))
+        expect(page).to have_link(first_assignation.user.name, href: decidim.profile_path(first_assignation.user.nickname))
+        expect(page).to have_content(first_assignation.user.email)
         expect(page).to have_content("00h02m00s")
       end
     end
