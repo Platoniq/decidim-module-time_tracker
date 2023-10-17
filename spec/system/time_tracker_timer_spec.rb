@@ -57,7 +57,9 @@ describe "Time tracker page", type: :system do
         within ".new_milestone" do
           fill_in "What have you done?", with: "I saved the world from chaos!"
           fill_in "Description", with: "Specs are the only thing that separate us from barbaric coding"
-          attach_file :milestone_attachment_file, Decidim::Dev.asset("city.jpeg")
+        end
+        dynamically_attach_file(:milestone_attachment_file, Decidim::Dev.asset("city.jpeg"))
+        within ".new_milestone" do
           click_button "Save"
         end
 
