@@ -13,7 +13,7 @@ module Decidim::TimeTracker::Admin
         current_organization: organization
       }
     end
-    let(:permission_action) { Decidim::PermissionAction.new(action) }
+    let(:permission_action) { Decidim::PermissionAction.new(**action) }
 
     context "when scope is not admin" do
       let(:action) do
@@ -44,7 +44,7 @@ module Decidim::TimeTracker::Admin
         { scope: scope, action: action, subject: subject }
       end
 
-      it { is_expected.to eq true }
+      it { is_expected.to be true }
     end
 
     context "when subject is a task" do

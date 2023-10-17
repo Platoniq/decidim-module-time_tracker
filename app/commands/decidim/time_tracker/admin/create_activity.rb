@@ -4,7 +4,7 @@ module Decidim
   module TimeTracker
     module Admin
       # A command with all the business logic when creating a activity
-      class CreateActivity < Rectify::Command
+      class CreateActivity < Decidim::Command
         def initialize(form, task)
           @form = form
           @task = task

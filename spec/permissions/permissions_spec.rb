@@ -13,7 +13,7 @@ module Decidim::TimeTracker
         current_organization: organization
       }
     end
-    let(:permission_action) { Decidim::PermissionAction.new(action) }
+    let(:permission_action) { Decidim::PermissionAction.new(**action) }
 
     context "when scope is admin" do
       let(:action) do
@@ -55,7 +55,7 @@ module Decidim::TimeTracker
             }
           end
 
-          it { is_expected.to eq true }
+          it { is_expected.to be true }
         end
       end
     end
@@ -66,7 +66,7 @@ module Decidim::TimeTracker
           { scope: :public, action: :create, subject: :assignation }
         end
 
-        it { is_expected.to eq true }
+        it { is_expected.to be true }
       end
 
       context "and there activity is defined" do
@@ -99,7 +99,7 @@ module Decidim::TimeTracker
           context "and user is not assigned" do
             let!(:assignation) { create :assignation, user: user }
 
-            it { is_expected.to eq true }
+            it { is_expected.to be true }
 
             context "and activity is not open" do
               let(:activity) { create :activity, :closed }
@@ -124,7 +124,7 @@ module Decidim::TimeTracker
             { scope: :public, action: :show, subject: :milestone }
           end
 
-          it { is_expected.to eq true }
+          it { is_expected.to be true }
         end
       end
 
@@ -152,7 +152,7 @@ module Decidim::TimeTracker
           context "and user is assigned" do
             let!(:assignation) { create :assignation, activity: activity, user: user }
 
-            it { is_expected.to eq true }
+            it { is_expected.to be true }
           end
 
           context "and user is not assigned" do

@@ -3,7 +3,7 @@
 module Decidim
   module TimeTracker
     # A command with all the business logic when a user creates a new milestone.
-    class CreateMilestone < Rectify::Command
+    class CreateMilestone < Decidim::Command
       include ::Decidim::AttachmentMethods
       # Public: Initializes the command.
       #

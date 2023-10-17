@@ -3,7 +3,7 @@
 module Decidim
   module TimeTracker
     # Stops the last event for the user
-    class StopLastTimeEvent < Rectify::Command
+    class StopLastTimeEvent < Decidim::Command
       # Public: Initializes the command.
       #
       # form - A form object with the params.

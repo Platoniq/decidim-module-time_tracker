@@ -3,7 +3,7 @@
 module Decidim
   module TimeTracker
     # A command with all the business logic when requesting to be an assignation
-    class CreateRequestAssignation < Rectify::Command
+    class CreateRequestAssignation < Decidim::Command
       def initialize(activity, user)
         @activity = activity
         @user = user

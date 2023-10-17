@@ -9,7 +9,7 @@ module Decidim::TimeTracker
     let(:user) { create(:user) }
     let(:assignation) { create(:assignation, activity: activity) }
     let(:activity) { create(:activity) }
-    let(:start) { Time.current }
+    let(:start) { Time.current.to_date }
     let(:stop) { nil }
 
     let(:attributes) do
@@ -43,7 +43,7 @@ module Decidim::TimeTracker
     end
 
     context "when stop is lower than start" do
-      let(:stop) { Time.current - 10.minutes }
+      let(:stop) { 10.minutes.ago }
 
       it { is_expected.to be_invalid }
     end

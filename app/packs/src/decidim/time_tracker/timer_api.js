@@ -1,4 +1,4 @@
-// Controlls time events
+// Controls time events
 
 export default class TimerApi { 
   constructor(startEndpoint, stopEndpoint) {

@@ -4,7 +4,8 @@ require "spec_helper"
 
 module Decidim::TimeTracker::Admin
   describe CreateTask do
-    let(:subject) { described_class.new(form) }
+    subject { described_class.new(form) }
+
     let(:form) do
       double(
         # taskForm,
@@ -38,7 +39,7 @@ module Decidim::TimeTracker::Admin
       end
 
       it "creates a new task for the organization" do
-        expect { subject.call }.to change { Decidim::TimeTracker::Task.count }.by(1)
+        expect { subject.call }.to change(Decidim::TimeTracker::Task, :count).by(1)
       end
 
       it "traces the action", versioning: true do

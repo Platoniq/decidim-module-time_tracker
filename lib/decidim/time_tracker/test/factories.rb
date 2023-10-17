@@ -90,12 +90,12 @@ FactoryBot.define do
     user { assignation.user }
 
     trait :running do
-      start { Time.current - 1.minute }
+      start { 1.minute.ago }
     end
 
     trait :stopped do
-      start { Time.current - 2.minutes }
-      stop { Time.current - 1.minute }
+      start { 2.minutes.ago }
+      stop { 1.minute.ago }
     end
   end
 

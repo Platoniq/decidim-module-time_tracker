@@ -21,7 +21,6 @@ module Decidim
       default_scope { order(start: :desc) }
       scope :started_between, ->(start_date, end_date) { where("start >= ? AND start <= ?", start_date.to_i, end_date.to_i) }
 
-      # rubocop:disable Rails/FindBy
       def self.last_for(user)
         if user.is_a?(Assignation)
           where(assignation: user).first
@@ -29,7 +28,6 @@ module Decidim
           where(user: user).first
         end
       end
-      # rubocop:enable Rails/FindBy
 
       # number of seconds since the counting started
       # zero if activity is stopped

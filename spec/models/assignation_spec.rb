@@ -37,9 +37,9 @@ module Decidim
         let(:assignation) { create :assignation, :accepted }
 
         it "detects as accepted" do
-          expect(subject.accepted?).to eq(true)
-          expect(subject.rejected?).to eq(false)
-          expect(subject.pending?).to eq(false)
+          expect(subject.accepted?).to be(true)
+          expect(subject.rejected?).to be(false)
+          expect(subject.pending?).to be(false)
         end
       end
 
@@ -47,9 +47,9 @@ module Decidim
         let(:assignation) { create :assignation, :rejected }
 
         it "detects as rejected" do
-          expect(subject.accepted?).to eq(false)
-          expect(subject.rejected?).to eq(true)
-          expect(subject.pending?).to eq(false)
+          expect(subject.accepted?).to be(false)
+          expect(subject.rejected?).to be(true)
+          expect(subject.pending?).to be(false)
         end
       end
 
@@ -57,9 +57,9 @@ module Decidim
         let(:assignation) { create :assignation, :pending }
 
         it "detects as pending" do
-          expect(subject.accepted?).to eq(false)
-          expect(subject.rejected?).to eq(false)
-          expect(subject.pending?).to eq(true)
+          expect(subject.accepted?).to be(false)
+          expect(subject.rejected?).to be(false)
+          expect(subject.pending?).to be(true)
         end
       end
 

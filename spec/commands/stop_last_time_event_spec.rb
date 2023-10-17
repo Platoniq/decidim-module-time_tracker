@@ -4,7 +4,8 @@ require "spec_helper"
 
 module Decidim::TimeTracker
   describe StopLastTimeEvent do
-    let(:subject) { described_class.new(user) }
+    subject { described_class.new(user) }
+
     let(:activity) { create :activity, max_minutes_per_day: 60 }
     let(:user) { create :user, :confirmed }
     let(:assignation) { create :assignation, user: user, activity: activity, status: status }
@@ -25,14 +26,14 @@ module Decidim::TimeTracker
       end
 
       it "do not create a new time event" do
-        expect { subject.call }.to change { Decidim::TimeTracker::TimeEvent.count }.by(0)
+        expect { subject.call }.not_to change(Decidim::TimeTracker::TimeEvent, :count)
       end
 
       it "event is stopped" do
         subject.call
         last = Decidim::TimeTracker::TimeEvent.last_for(user)
 
-        expect(last.stopped?).to eq(true)
+        expect(last.stopped?).to be(true)
         expect(last.stop).to eq(Time.current.to_i)
         expect(last.total_seconds).to be(30 * 60)
         expect(last.total_seconds).to be(last.stop.to_i - last.start)

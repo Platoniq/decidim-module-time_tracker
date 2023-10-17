@@ -4,7 +4,7 @@ module Decidim
   module TimeTracker
     module Admin
       # A command with all the business logic when updating an assignation
-      class UpdateAssignation < Rectify::Command
+      class UpdateAssignation < Decidim::Command
         # Public: Initializes the command.
         #
         # assignation_status - A symbol representing the assignation status.

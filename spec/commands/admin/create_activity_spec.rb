@@ -4,7 +4,8 @@ require "spec_helper"
 
 module Decidim::TimeTracker::Admin
   describe CreateActivity do
-    let(:subject) { described_class.new(form, task) }
+    subject { described_class.new(form, task) }
+
     let(:form) do
       double(
         # activityForm,
@@ -38,7 +39,7 @@ module Decidim::TimeTracker::Admin
       end
 
       it "creates a new activity for the task" do
-        expect { subject.call }.to change { Decidim::TimeTracker::Activity.count }.by(1)
+        expect { subject.call }.to change(Decidim::TimeTracker::Activity, :count).by(1)
       end
 
       it "traces the action", versioning: true do

@@ -18,7 +18,7 @@ $(() => {
     $form.hide();
     setTimeout(() => $callout.fadeOut(() => { $callout.remove(); $form.show(); }), 2000);  // eslint-disable-line max-statements-per-line
   });
- 
+
   // For each activity set up the counters
   $(".time-tracker-activity").each(function() {
     const $activity = $(this); // eslint-disable-line no-invalid-this
@@ -57,7 +57,6 @@ $(() => {
         fail(activity.showError.bind(activity));
     });
 
-
     $activity.find(".time-tracker-activity-pause").on("click", () => {
       activity.showPlayStop();
       api.stop().
@@ -76,6 +75,5 @@ $(() => {
         fail(activity.showError.bind(activity));
     });
   });
-
 });
 

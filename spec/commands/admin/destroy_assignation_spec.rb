@@ -4,7 +4,8 @@ require "spec_helper"
 
 module Decidim::TimeTracker::Admin
   describe DestroyActivity do
-    let(:subject) { described_class.new(activity, user) }
+    subject { described_class.new(activity, user) }
+
     let(:organization) { create :organization }
     let(:activity) { create :activity, task: task }
     let(:task) { create :task }

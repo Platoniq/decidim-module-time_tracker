@@ -5,7 +5,7 @@ module Decidim
     module Admin
       # A command with all the business logic when an admin exports time tracker to
       # create an accountability component.
-      class ExportTimeTracker < Rectify::Command
+      class ExportTimeTracker < Decidim::Command
         # Public: Initializes the command.
         def initialize(current_component, current_user)
           @component = current_component

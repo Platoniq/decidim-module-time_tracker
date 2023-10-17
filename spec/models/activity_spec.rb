@@ -93,21 +93,21 @@ module Decidim
         let!(:pending) { create :assignation, :pending, activity: activity }
 
         it "detects accepted assignations" do
-          expect(subject.assignation_accepted?(accepted.user)).to eq(true)
-          expect(subject.assignation_rejected?(accepted.user)).to eq(false)
-          expect(subject.assignation_pending?(accepted.user)).to eq(false)
+          expect(subject.assignation_accepted?(accepted.user)).to be(true)
+          expect(subject.assignation_rejected?(accepted.user)).to be(false)
+          expect(subject.assignation_pending?(accepted.user)).to be(false)
         end
 
         it "detects rejected assignations" do
-          expect(subject.assignation_accepted?(rejected.user)).to eq(false)
-          expect(subject.assignation_rejected?(rejected.user)).to eq(true)
-          expect(subject.assignation_pending?(rejected.user)).to eq(false)
+          expect(subject.assignation_accepted?(rejected.user)).to be(false)
+          expect(subject.assignation_rejected?(rejected.user)).to be(true)
+          expect(subject.assignation_pending?(rejected.user)).to be(false)
         end
 
         it "detects pending assignations" do
-          expect(subject.assignation_accepted?(pending.user)).to eq(false)
-          expect(subject.assignation_rejected?(pending.user)).to eq(false)
-          expect(subject.assignation_pending?(pending.user)).to eq(true)
+          expect(subject.assignation_accepted?(pending.user)).to be(false)
+          expect(subject.assignation_rejected?(pending.user)).to be(false)
+          expect(subject.assignation_pending?(pending.user)).to be(true)
         end
       end
 
@@ -116,7 +116,7 @@ module Decidim
 
         context "and there are no time events" do
           it "detects counter as not active" do
-            expect(subject.counter_active_for?(assignation.user)).to eq(false)
+            expect(subject.counter_active_for?(assignation.user)).to be(false)
           end
         end
 
@@ -124,7 +124,7 @@ module Decidim
           let!(:event) { create :time_event, :stopped, activity: activity, assignation: assignation }
 
           it "detects counter as not active" do
-            expect(subject.counter_active_for?(assignation.user)).to eq(false)
+            expect(subject.counter_active_for?(assignation.user)).to be(false)
           end
         end
 
@@ -133,7 +133,7 @@ module Decidim
           let!(:event2) { create :time_event, :running, activity: activity, assignation: assignation }
 
           it "detects counter as active" do
-            expect(subject.counter_active_for?(assignation.user)).to eq(true)
+            expect(subject.counter_active_for?(assignation.user)).to be(true)
           end
 
           it "detects the number of elapsed seconds" do
