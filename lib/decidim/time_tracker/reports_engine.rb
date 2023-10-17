@@ -19,10 +19,11 @@ module Decidim
 
       initializer "decidim.user_menu" do
         Decidim.menu :user_menu do |menu|
-          menu.item t("time_tracker", scope: "layouts.decidim.user_profile"),
-                    decidim_time_tracker.root_path,
-                    position: 5.0,
-                    active: :exact
+          menu.add_item :time_tracker,
+                        t("time_tracker", scope: "layouts.decidim.user_profile"),
+                        decidim_time_tracker.root_path,
+                        position: 5.0,
+                        active: :exact
         end
       end
 
