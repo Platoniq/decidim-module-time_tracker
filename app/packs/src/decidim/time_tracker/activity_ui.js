@@ -93,7 +93,7 @@ export default class ActivityUI { // eslint-disable-line no-unused-vars
     }, 1000);
     return this;
   }
-  
+
   stopCounter(data) {
     const diff = this.now - this.initTime
     console.log("stopping counter", data)
@@ -106,7 +106,7 @@ export default class ActivityUI { // eslint-disable-line no-unused-vars
   isRunning() {
     return Boolean(this.interval);
   }
-  
+
   showMilestone() {
     console.log("TODO: show milestone")
   }

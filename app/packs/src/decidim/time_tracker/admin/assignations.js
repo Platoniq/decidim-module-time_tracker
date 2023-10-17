@@ -31,5 +31,5 @@ $(() => {
     enablingCondition: ($field) => {
       return $field.val() === "true"
     }
-  });       
+  });
 })
