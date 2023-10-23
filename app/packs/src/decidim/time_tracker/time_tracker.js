@@ -49,7 +49,7 @@ $(() => {
           $(".time-tracker-activity").each(function() {
             const activityData = $(this).data("_activity"); // eslint-disable-line no-invalid-this
             if (activityData.isRunning()) {
-              activityData.showPlayStop().stopCounter();
+              activityData.stopCounter();
             }
           });
           activity.startCounter(data)

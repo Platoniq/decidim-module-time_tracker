@@ -27,7 +27,7 @@ export default class ActivityUI { // eslint-disable-line no-unused-vars
   }
 
   set elapsed(seconds) {
-    this.$activity.data("elapsed-time", seconds); 
+    this.$activity.data("elapsed-time", seconds);
   }
 
   get remaining() {
@@ -35,26 +35,32 @@ export default class ActivityUI { // eslint-disable-line no-unused-vars
   }
 
   set remaining(seconds) {
-    this.$activity.data("remaining-time", seconds); 
+    this.$activity.data("remaining-time", seconds);
   }
 
-  showStart() {
-    this.$startButton.removeClass("hide");
+  hidePlayer()  {
+    this.$startButton.addClass("hide");
     this.$pauseButton.addClass("hide");
     this.$stopButton.addClass("hide");
     return this;
   }
 
+  showStart() {
+    this.hidePlayer();
+    this.$startButton.removeClass("hide");
+    return this;
+  }
+
   showPauseStop() {
-    this.$startButton.addClass("hide");
+    this.hidePlayer();
     this.$pauseButton.removeClass("hide");
     this.$stopButton.removeClass("hide");
     return this;
   }
 
   showPlayStop() {
+    this.hidePlayer();
     this.$startButton.removeClass("hide");
-    this.$pauseButton.addClass("hide");
     this.$stopButton.removeClass("hide");
     return this;
   }
