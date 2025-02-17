@@ -8,12 +8,12 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 3.0.2
-  NODE_VERSION: 16.9.1
+  RUBY_VERSION: 3.1.1
+  NODE_VERSION: 18.17.1
 
 jobs:
   system:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     services:
       postgres:
         image: postgres:11
@@ -50,7 +50,7 @@ jobs:
       - name: Run RSpec
         run: SIMPLECOV=1 CODECOV=1 bundle exec rspec spec/system/admin/*questionnaire_spec.rb
 
-      - uses: actions/upload-artifact@v2-preview
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: screenshots
