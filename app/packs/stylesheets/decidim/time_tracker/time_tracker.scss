@@ -1,5 +1,4 @@
-@import "stylesheets/decidim/utils/settings";
-@import "stylesheets/decidim/utils/mixins";
+@import "stylesheets/decidim/legacy/variables";
 
 .time-tracker {
   &-activity,
@@ -118,13 +117,13 @@
 
 .card--milestone {
   .card__image.empty {
-    background: $light-gray;
+    background: gray;
     display: flex;
     align-items: center;
     justify-content: center;
 
     & > svg {
-      fill: $medium-gray;
+      fill: gray;
       font-size: 2rem;
     }
   }

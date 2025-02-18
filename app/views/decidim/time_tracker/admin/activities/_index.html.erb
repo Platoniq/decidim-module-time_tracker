@@ -57,11 +57,11 @@
                 <% end %>
 
                 <% if allowed_to? :update, :activity, activity: activity %>
-                  <%= icon_link_to "pencil", edit_task_activity_path(@current_task, activity), t("activities.actions.edit", scope: "decidim.time_tracker.admin"), class: "action-icon--edit" %>
+                  <%= icon_link_to "pencil-line", edit_task_activity_path(@current_task, activity), t("activities.actions.edit", scope: "decidim.time_tracker.admin"), class: "action-icon--edit" %>
                 <% end %>
 
                 <% if allowed_to? :destroy, :activity, activity: activity %>
-                  <%= icon_link_to "circle-x", task_activity_path(@current_task, activity), t("activities.actions.destroy", scope: "decidim.time_tracker.admin"), method: :delete, class: "action-icon--remove", data: { confirm: t("activities.actions.confirm_destroy", scope: "decidim.time_tracker.admin") } %>
+                  <%= icon_link_to "close-circle-line", task_activity_path(@current_task, activity), t("activities.actions.destroy", scope: "decidim.time_tracker.admin"), method: :delete, class: "action-icon--remove", data: { confirm: t("activities.actions.confirm_destroy", scope: "decidim.time_tracker.admin") } %>
                 <% end %>
               </td>
             </tr>

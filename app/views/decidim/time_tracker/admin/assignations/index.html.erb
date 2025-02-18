@@ -1,16 +1,14 @@
 <%= render partial: "decidim/time_tracker/admin/breadcrumbs" %>
 
 <div class="card">
-  <div class="card-divider">
-    <h2 class="card-title">
+  <div class="item_show__header">
+    <h1 class="item_show__header-title">
       <%= t(".title") %>
-      <div class="button--title">
-         <%= link_to t("assignations.actions.new", scope: "decidim.time_tracker.admin", name: assignations_label), new_task_activity_assignation_path, class: "button tiny button--simple" %>
-      </div>
-    </h2>
+         <%= link_to t("assignations.actions.new", scope: "decidim.time_tracker.admin", name: assignations_label), new_task_activity_assignation_path, class: "button button__sm button__secondary" %>
+    </h1>
   </div>
 
-    <div class="card-section">
+  <div class="card-section">
     <div class="table-scroll">
       <table class="table-list">
         <thead>
@@ -55,7 +53,7 @@
                 <% end %>
 
                 <% if allowed_to? :destroy, :assignation, assignation: assignation %>
-                  <%= icon_link_to "circle-x", task_activity_assignation_path(current_task, current_activity, assignation), t("assignations.actions.destroy", scope: "decidim.time_tracker.admin"), method: :delete, class: "action-icon--remove", data: { confirm: t("assignations.actions.confirm_destroy", scope: "decidim.time_tracker.admin") } %>
+                  <%= icon_link_to "close-circle-line", task_activity_assignation_path(current_task, current_activity, assignation), t("assignations.actions.destroy", scope: "decidim.time_tracker.admin"), method: :delete, class: "action-icon--remove", data: { confirm: t("assignations.actions.confirm_destroy", scope: "decidim.time_tracker.admin") } %>
                 <% end %>
               </td>
             </tr>

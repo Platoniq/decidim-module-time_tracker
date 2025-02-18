@@ -4,11 +4,11 @@
       <ul class="breadcrumbs">
         <% if current_page?(tasks_path) || current_page?(root_path) %>
           <li class="<%= "active" %>">
-            <%= link_to t(".stats"), stats_path %>
+            <%= link_to t(".stats"), stats_path, class: "button button__sm button__secondary" %>
           </li>
         <% else %>
           <li>
-            <%= link_to t(".global"), tasks_path %>
+            <%= link_to t(".global"), tasks_path, class: "button button__sm button__secondary" %>
           </li>
         <% end %>
 
