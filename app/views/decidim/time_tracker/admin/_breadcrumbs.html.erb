@@ -15,12 +15,12 @@
         <% if controller_name == "tasks" %>
           <% if action_name == "edit" || action_name == "new" %>
             <li class="<%= "active" if current_page? edit_task_path(current_task) %>">
-              <%= translated_attribute current_task.name %>
+              <b><%= translated_attribute current_task.name %></b>
             </li>
           <% end %>
         <% elsif controller_name == "activities" %>
           <li>
-            <%= link_to translated_attribute(current_task.name), edit_task_path(current_task) %>
+            <b><%= link_to translated_attribute(current_task.name), edit_task_path(current_task) %></b>
           </li>
 
           <% if current_activity && !current_page?(new_task_activity_path) %>
@@ -30,7 +30,7 @@
           <% end %>
         <% elsif controller_name == "assignations" %>
           <li>
-            <%= link_to translated_attribute(current_task.name), edit_task_path(current_task) %>
+            <b><%= link_to translated_attribute(current_task.name), edit_task_path(current_task) %></b>
           </li>
 
           <li>
@@ -39,7 +39,7 @@
 
           <% if action_name == "new" %>
             <li>
-              <%= link_to t("assignations.actions.assignations", scope: "decidim.time_tracker.admin"), task_activity_assignations_path(current_task, current_activity) %>
+              <%= link_to t("assignations.actions.assignations", scope: "decidim.time_tracker.admin"), task_activity_assignations_path(current_task, current_activity), class: "button button__sm button__secondary" %>
             </li>
             <li>
               <%= t("assignations.actions.new", scope: "decidim.time_tracker.admin") %>

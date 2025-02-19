@@ -1,14 +1,14 @@
 <div class="card">
-  <div class="card-divider">
-    <h2 class="card-title">
+  <div class="item_show__header">
+    <h1 class="item_show__header-title">
       <%= t(".title") %>
-      <div class="button--title">
-         <%= link_to t("activities.actions.new", scope: "decidim.time_tracker.admin", name: activities_label), new_task_activity_path(task_id: current_task.id), class: "button tiny button--simple" %>
-      </div>
-    </h2>
+    <div class="button--title">
+        <%= link_to t("activities.actions.new", scope: "decidim.time_tracker.admin", name: activities_label), new_task_activity_path(task_id: current_task.id), class: "button button__sm button__secondary" %>
+    </div>
+    </h1>
   </div>
 
-    <div class="card-section">
+  <div class="card-section">
     <div class="table-scroll">
       <table class="table-list">
         <thead>
@@ -53,7 +53,7 @@
               </td>
               <td class="table-list__actions">
                <% if allowed_to? :index, :assignations %>
-                  <%= icon_link_to "people", task_activity_assignations_path(@current_task, activity), t("activities.actions.assignations", scope: "decidim.time_tracker.admin"), class: "action-icon--assignations" %>
+                  <%= icon_link_to "group-line", task_activity_assignations_path(@current_task, activity), t("activities.actions.assignations", scope: "decidim.time_tracker.admin"), class: "action-icon--assignations" %>
                 <% end %>
 
                 <% if allowed_to? :update, :activity, activity: activity %>
