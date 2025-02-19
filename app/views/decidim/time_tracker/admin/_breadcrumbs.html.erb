@@ -1,56 +1,64 @@
 <div class="card">
   <div class="card-section">
-    <nav role="navigation">
-      <ul class="breadcrumbs">
+    <nav class="flex" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
         <% if current_page?(tasks_path) || current_page?(root_path) %>
           <li class="<%= "active" %>">
-            <%= link_to t(".stats"), stats_path, class: "button button__sm button__secondary" %>
+            <%= link_to t(".stats"), stats_path, class: "breadcrumb-link" %>
           </li>
         <% else %>
           <li>
-            <%= link_to t(".global"), tasks_path, class: "button button__sm button__secondary" %>
+            <%= link_to t(".global"), tasks_path, class: "breadcrumb-link" %>
           </li>
         <% end %>
 
         <% if controller_name == "tasks" %>
           <% if action_name == "edit" || action_name == "new" %>
             <li class="<%= "active" if current_page? edit_task_path(current_task) %>">
-              <b><%= translated_attribute current_task.name %></b>
+              <span class="text-gray-400 mx-1">/</span>
+              <%= translated_attribute current_task.name %>
             </li>
           <% end %>
         <% elsif controller_name == "activities" %>
           <li>
-            <b><%= link_to translated_attribute(current_task.name), edit_task_path(current_task) %></b>
+            <span class="text-gray-400 mx-1">/</span>
+            <%= link_to translated_attribute(current_task.name), edit_task_path(current_task), class: "breadcrumb-link" %>
           </li>
 
           <% if current_activity && !current_page?(new_task_activity_path) %>
             <li class="<%= "active" if current_page? edit_task_activity_path(current_activity) %>">
+              <span class="text-gray-400 mx-1">/</span>
               <%= translated_attribute current_activity.description %>
             </li>
           <% end %>
         <% elsif controller_name == "assignations" %>
           <li>
-            <b><%= link_to translated_attribute(current_task.name), edit_task_path(current_task) %></b>
+            <span class="text-gray-400 mx-1">/</span>
+            <%= link_to translated_attribute(current_task.name), edit_task_path(current_task), class: "breadcrumb-link" %>
           </li>
 
           <li>
-            <%= link_to translated_attribute(current_activity.description), edit_task_activity_path(current_task, current_activity) %>
+            <span class="text-gray-400 mx-1">/</span>
+            <%= link_to translated_attribute(current_activity.description), edit_task_activity_path(current_task, current_activity), class: "breadcrumb-link" %>
           </li>
 
           <% if action_name == "new" %>
             <li>
-              <%= link_to t("assignations.actions.assignations", scope: "decidim.time_tracker.admin"), task_activity_assignations_path(current_task, current_activity), class: "button button__sm button__secondary" %>
+              <span class="text-gray-400 mx-1">/</span>
+              <%= link_to t("assignations.actions.assignations", scope: "decidim.time_tracker.admin"), task_activity_assignations_path(current_task, current_activity), class: "breadcrumb-link" %>
             </li>
             <li>
+              <span class="text-gray-400 mx-1">/</span>
               <%= t("assignations.actions.new", scope: "decidim.time_tracker.admin") %>
             </li>
           <% else %>
             <li>
+              <span class="text-gray-400 mx-1">/</span>
               <%= t("activities.actions.assignations", scope: "decidim.time_tracker.admin") %>
             </li>
           <% end %>
         <% end %>
-      </ul>
+      </ol>
     </nav>
   </div>
 </div>
