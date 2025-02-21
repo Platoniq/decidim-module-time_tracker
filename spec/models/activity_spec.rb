@@ -8,20 +8,20 @@ module Decidim
       subject { activity }
 
       let(:component) { create(:time_tracker_component) }
-      let(:time_tracker) { create(:time_tracker, component: component, questionnaire: questionnaire) }
+      let(:time_tracker) { create(:time_tracker, component:, questionnaire:) }
       let(:questionnaire) { create(:questionnaire) }
-      let(:task) { create(:task, time_tracker: time_tracker) }
-      let(:activity) { create(:activity, task: task) }
+      let(:task) { create(:task, time_tracker:) }
+      let(:activity) { create(:activity, task:) }
 
       it { is_expected.to be_valid }
 
       context "when the activity is correctly associated" do
-        let!(:assignations) { create_list(:assignation, 2, activity: activity) }
+        let!(:assignations) { create_list(:assignation, 2, activity:) }
         let!(:time_events) do
           [
-            create(:time_event, activity: activity, start: 1000),
-            create(:time_event, activity: activity, start: 2000),
-            create(:time_event, activity: activity, start: 3000)
+            create(:time_event, activity:, start: 1000),
+            create(:time_event, activity:, start: 2000),
+            create(:time_event, activity:, start: 3000)
           ]
         end
 
@@ -88,9 +88,9 @@ module Decidim
       end
 
       context "when the activity has assignations with different statuses" do
-        let!(:accepted) { create :assignation, :accepted, activity: activity }
-        let!(:rejected) { create :assignation, :rejected, activity: activity }
-        let!(:pending) { create :assignation, :pending, activity: activity }
+        let!(:accepted) { create(:assignation, :accepted, activity:) }
+        let!(:rejected) { create(:assignation, :rejected, activity:) }
+        let!(:pending) { create(:assignation, :pending, activity:) }
 
         it "detects accepted assignations" do
           expect(subject.assignation_accepted?(accepted.user)).to be(true)
@@ -112,7 +112,7 @@ module Decidim
       end
 
       context "when assignation is tracking" do
-        let!(:assignation) { create :assignation, :accepted, activity: activity }
+        let!(:assignation) { create(:assignation, :accepted, activity:) }
 
         context "and there are no time events" do
           it "detects counter as not active" do
@@ -121,7 +121,7 @@ module Decidim
         end
 
         context "and counter is not running" do
-          let!(:event) { create :time_event, :stopped, activity: activity, assignation: assignation }
+          let!(:event) { create(:time_event, :stopped, activity:, assignation:) }
 
           it "detects counter as not active" do
             expect(subject.counter_active_for?(assignation.user)).to be(false)
@@ -129,8 +129,8 @@ module Decidim
         end
 
         context "and counter is running" do
-          let!(:event1) { create :time_event, :stopped, activity: activity, assignation: assignation }
-          let!(:event2) { create :time_event, :running, activity: activity, assignation: assignation }
+          let!(:first_event) { create(:time_event, :stopped, activity:, assignation:) }
+          let!(:second_event) { create(:time_event, :running, activity:, assignation:) }
 
           it "detects counter as active" do
             expect(subject.counter_active_for?(assignation.user)).to be(true)

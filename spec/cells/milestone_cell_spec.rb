@@ -8,7 +8,7 @@ module Decidim::TimeTracker
 
     subject { my_cell.call }
 
-    let(:my_cell) { cell("decidim/time_tracker/milestone", model, type: type) }
+    let(:my_cell) { cell("decidim/time_tracker/milestone", model, type:) }
     let(:model) { create(:milestone) }
     let(:type) { nil }
     # For some reason "within" does not work well in cells, so using "find"
@@ -31,7 +31,7 @@ module Decidim::TimeTracker
       end
 
       it "doesn't link to the user milestones" do
-        expect(card_header).not_to have_link(my_cell.milestones_path)
+        expect(card_header).to have_no_link(my_cell.milestones_path)
       end
 
       it "shows the milestone created_at date in the footer" do

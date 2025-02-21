@@ -8,15 +8,15 @@ module Decidim::TimeTracker
 
     let(:organization) { create(:organization) }
     let(:context) { { current_organization: organization } }
-    let(:activity) { create :activity }
+    let(:activity) { create(:activity) }
     let(:title) { "My milestone" }
     let(:description) { "Description" }
     let(:attachment_params) { nil }
     let(:attributes) do
       {
         activity_id: activity.id,
-        title: title,
-        description: description,
+        title:,
+        description:,
         attachment: attachment_params
       }
     end
@@ -51,8 +51,8 @@ module Decidim::TimeTracker
         it "adds an error to the `:attachment` field" do
           expect(subject).not_to be_valid
 
-          expect(subject.errors.full_messages).to match_array(["Attachment Needs to be reattached", "What have you done? can't be blank"])
-          expect(subject.errors.attribute_names).to match_array([:title, :attachment])
+          expect(subject.errors.full_messages).to contain_exactly("Attachment Needs to be reattached", "What have you done? can't be blank")
+          expect(subject.errors.attribute_names).to contain_exactly(:title, :attachment)
         end
       end
     end

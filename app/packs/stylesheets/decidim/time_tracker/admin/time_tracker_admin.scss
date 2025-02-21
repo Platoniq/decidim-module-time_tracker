@@ -17,7 +17,7 @@
 }
 
 .activity--inactive {
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .assignation- {
@@ -27,7 +27,7 @@
     }
 
     td {
-      background-color: transparentize($warning, .9);
+      background-color: transparentize($warning, 0.9);
     }
   }
 
@@ -37,12 +37,12 @@
     }
 
     td {
-      background-color: transparentize($success, .9);
+      background-color: transparentize($success, 0.9);
     }
   }
 
   &-rejected td {
-    opacity: .5;
+    opacity: 0.5;
   }
 }
 
@@ -57,7 +57,7 @@
     }
 
     .text-muted {
-      opacity: .5;
+      opacity: 0.5;
     }
   }
 }

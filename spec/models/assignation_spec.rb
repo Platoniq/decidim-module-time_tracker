@@ -8,13 +8,13 @@ module Decidim
       subject { assignation }
 
       let(:organization) { create(:organization) }
-      let(:assignation) { create(:assignation, invited_by_user: invited_by_user, user: user, activity: activity) }
+      let(:assignation) { create(:assignation, invited_by_user:, user:, activity:) }
       let(:user) { create(:user) }
       let(:invited_by_user) { create(:user) }
       let(:activity) { create(:activity) }
 
       context "when the assignation is correctly associated" do
-        let!(:time_events) { create_list(:time_event, 3, assignation: assignation) }
+        let!(:time_events) { create_list(:time_event, 3, assignation:) }
 
         it "belongs to an activity" do
           expect(subject.activity.id).to eq(activity.id)
@@ -34,7 +34,7 @@ module Decidim
       end
 
       context "when assignation is accepted" do
-        let(:assignation) { create :assignation, :accepted }
+        let(:assignation) { create(:assignation, :accepted) }
 
         it "detects as accepted" do
           expect(subject.accepted?).to be(true)
@@ -44,7 +44,7 @@ module Decidim
       end
 
       context "when assignation is rejected" do
-        let(:assignation) { create :assignation, :rejected }
+        let(:assignation) { create(:assignation, :rejected) }
 
         it "detects as rejected" do
           expect(subject.accepted?).to be(false)
@@ -54,7 +54,7 @@ module Decidim
       end
 
       context "when assignation is pending" do
-        let(:assignation) { create :assignation, :pending }
+        let(:assignation) { create(:assignation, :pending) }
 
         it "detects as pending" do
           expect(subject.accepted?).to be(false)
@@ -64,8 +64,8 @@ module Decidim
       end
 
       context "when assignation has time events" do
-        let!(:event1) { create :time_event, :stopped, assignation: assignation }
-        let!(:event2) { create :time_event, :running, assignation: assignation }
+        let!(:first_event) { create(:time_event, :stopped, assignation:) }
+        let!(:second_event) { create(:time_event, :running, assignation:) }
 
         it "detect the time dedicated" do
           expect(subject.time_dedicated).to eq(1.minute)
@@ -73,12 +73,12 @@ module Decidim
 
         it "detect the time dedicated to activity" do
           expect(subject.time_dedicated_to(activity)).to eq(0)
-          expect(subject.time_dedicated_to(event1.activity)).to eq(1.minute)
+          expect(subject.time_dedicated_to(first_event.activity)).to eq(1.minute)
         end
 
         context "and there is more events" do
-          let!(:event3) { create :time_event, :stopped, assignation: assignation, activity: event1.activity }
-          let!(:event4) { create :time_event, :running, assignation: assignation, activity: event1.activity }
+          let!(:third_event) { create(:time_event, :stopped, assignation:, activity: first_event.activity) }
+          let!(:fourth_event) { create(:time_event, :running, assignation:, activity: first_event.activity) }
 
           it "detect the time dedicated" do
             expect(subject.time_dedicated).to eq(2.minutes)
@@ -86,7 +86,7 @@ module Decidim
 
           it "detect the time dedicated to activity" do
             expect(subject.time_dedicated_to(activity)).to eq(0)
-            expect(subject.time_dedicated_to(event1.activity)).to eq(2.minutes)
+            expect(subject.time_dedicated_to(first_event.activity)).to eq(2.minutes)
           end
         end
       end

@@ -7,7 +7,7 @@ FactoryBot.define do
   factory :time_tracker_component, parent: :component do
     name { Decidim::Components::Namer.new(participatory_space.organization.available_locales, :time_tracker).i18n_name }
     manifest_name { :time_tracker }
-    participatory_space { create(:participatory_process, :with_steps) }
+    participatory_space
   end
 
   factory :time_tracker, class: "Decidim::TimeTracker::TimeTracker" do
@@ -21,7 +21,7 @@ FactoryBot.define do
   end
 
   factory :activity, class: "Decidim::TimeTracker::Activity" do
-    task { create(:task) }
+    task
     description { Decidim::Faker::Localized.sentence(word_count: 3) }
     active { true }
     start_date { 1.day.ago }
@@ -31,9 +31,9 @@ FactoryBot.define do
 
     trait :with_assignations do
       after(:create) do |activity, _evaluator|
-        create_list(:assignation, 2, :pending, activity: activity)
-        create_list(:assignation, 3, :accepted, activity: activity)
-        create_list(:assignation, 1, :rejected, activity: activity)
+        create_list(:assignation, 2, :pending, activity:)
+        create_list(:assignation, 3, :accepted, activity:)
+        create_list(:assignation, 1, :rejected, activity:)
       end
     end
 
@@ -49,11 +49,11 @@ FactoryBot.define do
   end
 
   factory :assignation, class: "Decidim::TimeTracker::Assignation" do
-    user { create(:user) }
-    activity { create(:activity) }
+    user
+    activity
     status { :accepted }
     invited_at { 1.month.ago }
-    invited_by_user { create(:user) }
+    invited_by_user
     requested_at { 2.months.ago }
 
     trait :pending do
@@ -70,8 +70,8 @@ FactoryBot.define do
   end
 
   factory :milestone, class: "Decidim::TimeTracker::Milestone" do
-    activity { create(:activity) }
-    user { create(:user) }
+    activity
+    user
     title { Faker::Lorem.word }
     description { Faker::Lorem.sentence(word_count: 3) }
   end
@@ -82,8 +82,8 @@ FactoryBot.define do
   end
 
   factory :time_event, class: "Decidim::TimeTracker::TimeEvent" do
-    assignation { create(:assignation) }
-    activity { create(:activity) }
+    assignation
+    activity
     start { Time.current }
     stop { nil }
     total_seconds { stop.present? ? (stop - start) : 0 }

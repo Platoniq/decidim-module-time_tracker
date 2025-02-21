@@ -2,11 +2,11 @@
 
 require "spec_helper"
 
-describe "Admin manages Time tracker stats", type: :system do
+describe "Admin manages Time tracker stats" do
   include_context "with a time_tracker"
 
   let(:resource_controller) { Decidim::TimeTracker::Admin::StatsController }
-  let(:user) { create :user, :admin, :confirmed, organization: organization }
+  let(:user) { create(:user, :admin, :confirmed, organization:) }
 
   before do
     switch_to_host(user.organization.host)
@@ -14,10 +14,10 @@ describe "Admin manages Time tracker stats", type: :system do
   end
 
   context "when there are assignations" do
-    let(:users) { create_list(:user, 3, :confirmed, organization: organization) }
+    let(:users) { create_list(:user, 3, :confirmed, organization:) }
 
-    let(:first_task) { create(:task, time_tracker: time_tracker, name: { en: "Fix plumbing" }) }
-    let(:second_task) { create(:task, time_tracker: time_tracker, name: { en: "Clean windows" }) }
+    let(:first_task) { create(:task, time_tracker:, name: { en: "Fix plumbing" }) }
+    let(:second_task) { create(:task, time_tracker:, name: { en: "Clean windows" }) }
     let(:first_activity) { create(:activity, task: first_task, description: { en: "Make a hole in the wall" }) }
     let(:second_activity) { create(:activity, task: first_task, description: { en: "Replace pipes" }) }
     let(:third_activity) { create(:activity, task: second_task, description: { en: "Buy cleaning products" }) }
@@ -65,7 +65,7 @@ describe "Admin manages Time tracker stats", type: :system do
           search_by_text(users.first.send(field))
 
           expect(page).to have_content(users.first.send(field))
-          expect(page).not_to have_content(users.second.send(field))
+          expect(page).to have_no_content(users.second.send(field))
         end
       end
 
@@ -73,7 +73,7 @@ describe "Admin manages Time tracker stats", type: :system do
         search_by_text(users.first.nickname)
 
         expect(page).to have_content(users.first.name)
-        expect(page).not_to have_content(users.second.name)
+        expect(page).to have_no_content(users.second.name)
       end
     end
   end

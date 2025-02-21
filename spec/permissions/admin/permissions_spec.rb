@@ -6,8 +6,8 @@ module Decidim::TimeTracker::Admin
   describe Permissions do
     subject { described_class.new(user, permission_action, context).permissions.allowed? }
 
-    let(:organization) { create :organization }
-    let(:user) { create :user, organization: organization }
+    let(:organization) { create(:organization) }
+    let(:user) { create(:user, organization:) }
     let(:context) do
       {
         current_organization: organization
@@ -41,7 +41,7 @@ module Decidim::TimeTracker::Admin
 
     shared_examples_for "action is allowed" do |scope, action, subject|
       let(:action) do
-        { scope: scope, action: action, subject: subject }
+        { scope:, action:, subject: }
       end
 
       it { is_expected.to be true }
@@ -127,7 +127,7 @@ module Decidim::TimeTracker::Admin
       context "when updating" do
         let(:assignation) { create(:assignation) }
         let(:context) do
-          { assignation: assignation }
+          { assignation: }
         end
 
         context "when the assignation has no time events" do
@@ -135,7 +135,7 @@ module Decidim::TimeTracker::Admin
         end
 
         context "when the assignation has time events" do
-          let!(:time_event) { create(:time_event, assignation: assignation, total_seconds: 30) }
+          let!(:time_event) { create(:time_event, assignation:, total_seconds: 30) }
           let(:action) do
             { scope: :admin, action: :update, subject: :assignation }
           end

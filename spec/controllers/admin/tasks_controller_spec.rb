@@ -3,15 +3,15 @@
 require "spec_helper"
 
 module Decidim::TimeTracker::Admin
-  describe TasksController, type: :controller do
+  describe TasksController do
     routes { Decidim::TimeTracker::AdminEngine.routes }
 
-    let(:organization) { create :organization }
-    let(:user) { create(:user, :confirmed, :admin, organization: organization) }
-    let(:participatory_space) { create(:participatory_process, organization: organization) }
-    let(:component) { create :time_tracker_component, participatory_space: participatory_space }
-    let(:time_tracker) { create :time_tracker, component: component }
-    let!(:task) { create :task, time_tracker: time_tracker }
+    let(:organization) { create(:organization) }
+    let(:user) { create(:user, :confirmed, :admin, organization:) }
+    let(:participatory_space) { create(:participatory_process, organization:) }
+    let(:component) { create(:time_tracker_component, participatory_space:) }
+    let(:time_tracker) { create(:time_tracker, component:) }
+    let!(:task) { create(:task, time_tracker:) }
 
     let(:form) do
       {
@@ -35,7 +35,7 @@ module Decidim::TimeTracker::Admin
       end
 
       it "renders the index listing" do
-        get :index, params: params
+        get(:index, params:)
         expect(controller.helpers.tasks.count).to eq(1)
         expect(response).to have_http_status(:ok)
         expect(subject).to render_template(:index)
@@ -51,7 +51,7 @@ module Decidim::TimeTracker::Admin
       end
 
       it "renders the empty form" do
-        get :new, params: params
+        get(:new, params:)
         expect(response).to have_http_status(:ok)
         expect(subject).to render_template(:new)
       end
@@ -67,7 +67,7 @@ module Decidim::TimeTracker::Admin
       end
 
       it "renders the empty form" do
-        get :edit, params: params
+        get(:edit, params:)
         expect(response).to have_http_status(:ok)
         expect(subject).to render_template(:edit)
       end
@@ -82,20 +82,20 @@ module Decidim::TimeTracker::Admin
 
       context "when there is permission" do
         it "returns ok" do
-          post :create, params: params
+          post(:create, params:)
           expect(flash[:notice]).not_to be_empty
           expect(response).to have_http_status(:found)
         end
 
         it "creates the new task" do
-          post :create, params: params
+          post(:create, params:)
           expect(Decidim::TimeTracker::Task.last.name).to eq(form[:name])
         end
       end
     end
 
     describe "PATCH #update" do
-      let!(:task) { create :task, time_tracker: time_tracker }
+      let!(:task) { create(:task, time_tracker:) }
       let(:form) do
         {
           name: Decidim::Faker::Localized.word
@@ -113,13 +113,13 @@ module Decidim::TimeTracker::Admin
 
       context "when there is permission" do
         it "returns ok" do
-          patch :update, params: params
+          patch(:update, params:)
           expect(flash[:notice]).not_to be_empty
           expect(response).to have_http_status(:found)
         end
 
         it "updates the new task" do
-          patch :update, params: params
+          patch(:update, params:)
           expect(Decidim::TimeTracker::Task.last.name).to eq(form[:name])
         end
       end
@@ -136,13 +136,13 @@ module Decidim::TimeTracker::Admin
 
       context "when there is permission" do
         it "returns ok" do
-          delete :destroy, params: params
+          delete(:destroy, params:)
           expect(flash[:notice]).not_to be_empty
           expect(response).to have_http_status(:found)
         end
 
         it "destroy the task" do
-          delete :destroy, params: params
+          delete(:destroy, params:)
           expect { task.reload }.to raise_error(ActiveRecord::RecordNotFound)
         end
       end

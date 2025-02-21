@@ -4,17 +4,17 @@ require "spec_helper"
 require "decidim/forms/test/factories"
 
 module Decidim::TimeTracker
-  describe AssigneeQuestionnaireController, type: :controller do
+  describe AssigneeQuestionnaireController do
     routes { Decidim::TimeTracker::Engine.routes }
 
     include_context "with a time_tracker"
 
-    let(:user) { create :user, :confirmed, organization: organization }
+    let(:user) { create(:user, :confirmed, organization:) }
 
     let!(:activity_questionnaire) { time_tracker.questionnaire }
     let!(:questionnaire) { assignee_data.questionnaire }
-    let!(:assignee) { create :assignee, user: user }
-    let(:task) { create :task, time_tracker: time_tracker }
+    let!(:assignee) { create(:assignee, user:) }
+    let(:task) { create(:task, time_tracker:) }
 
     let(:form) do
       {
@@ -72,7 +72,7 @@ module Decidim::TimeTracker
         end
 
         context "and questionnaire have questions" do
-          let!(:question) { create :questionnaire_question, question_type: :short_answer, body: Decidim::Faker::Localized.word, questionnaire: questionnaire }
+          let!(:question) { create(:questionnaire_question, question_type: :short_answer, body: Decidim::Faker::Localized.word, questionnaire:) }
 
           it_behaves_like "renders the form"
         end
@@ -80,11 +80,11 @@ module Decidim::TimeTracker
     end
 
     describe "POST #answer" do
-      let!(:question) { create :questionnaire_question, question_type: :short_answer, body: Decidim::Faker::Localized.word, questionnaire: questionnaire }
+      let!(:question) { create(:questionnaire_question, question_type: :short_answer, body: Decidim::Faker::Localized.word, questionnaire:) }
       let(:tos_agreement) { "0" }
       let(:form) do
         {
-          tos_agreement: tos_agreement,
+          tos_agreement:,
           responses: {
             "0" => {
               body: "Tom",
@@ -106,7 +106,7 @@ module Decidim::TimeTracker
 
       context "and questionnaire is not valid" do
         it "do not update the form" do
-          post :answer, params: params
+          post(:answer, params:)
 
           expect(flash[:alert]).to be_present
           expect(questionnaire).not_to be_answered_by(user)
@@ -119,7 +119,7 @@ module Decidim::TimeTracker
         let(:tos_agreement) { "1" }
 
         it "updates the form" do
-          post :answer, params: params
+          post(:answer, params:)
 
           expect(flash[:notice]).to be_present
           expect(questionnaire).to be_answered_by(user)

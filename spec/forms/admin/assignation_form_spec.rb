@@ -11,8 +11,8 @@ module Decidim::TimeTracker
 
     let(:attributes) do
       {
-        name: name,
-        email: email
+        name:,
+        email:
       }
     end
 
@@ -21,7 +21,7 @@ module Decidim::TimeTracker
     context "when user exists" do
       subject(:form) { described_class.from_model(assignation).with_context(context) }
 
-      let(:assignation) { create :assignation }
+      let(:assignation) { create(:assignation) }
       let(:context) do
         {
           current_organization: assignation.user.organization

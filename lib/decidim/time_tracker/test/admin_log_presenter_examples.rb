@@ -6,13 +6,13 @@ shared_examples "present admin log entry" do
   subject(:presenter) { described_class.new(action_log, helper) }
 
   let(:organization) { create(:organization) }
-  let(:user) { create(:user, organization: organization) }
+  let(:user) { create(:user, organization:) }
   let(:action) { "create" }
   let(:action_log) do
     create(
       :action_log,
-      user: user,
-      action: action,
+      user:,
+      action:,
       resource: admin_log_resource
     )
   end

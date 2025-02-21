@@ -36,17 +36,6 @@ module Decidim
           end
         end
 
-        def destroy
-          enforce_permission_to :destroy, :assignation, assignation: current_assignation
-
-          DestroyAssignation.call(current_assignation, current_user) do
-            on(:ok) do
-              flash[:notice] = I18n.t("assignations.destroy.success", scope: "decidim.time_tracker.admin")
-              redirect_to EngineRouter.admin_proxy(current_component).task_activity_assignations_path(current_task, current_activity)
-            end
-          end
-        end
-
         def update
           enforce_permission_to :update, :assignation, assignation: current_assignation
 
@@ -58,6 +47,17 @@ module Decidim
               else
                 redirect_to EngineRouter.admin_proxy(current_component).task_activity_assignations_path(current_task, current_activity)
               end
+            end
+          end
+        end
+
+        def destroy
+          enforce_permission_to :destroy, :assignation, assignation: current_assignation
+
+          DestroyAssignation.call(current_assignation, current_user) do
+            on(:ok) do
+              flash[:notice] = I18n.t("assignations.destroy.success", scope: "decidim.time_tracker.admin")
+              redirect_to EngineRouter.admin_proxy(current_component).task_activity_assignations_path(current_task, current_activity)
             end
           end
         end

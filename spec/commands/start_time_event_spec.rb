@@ -6,11 +6,11 @@ module Decidim::TimeTracker
   describe StartTimeEvent do
     subject { described_class.new(form) }
 
-    let(:activity) { create :activity, max_minutes_per_day: 60 }
-    let(:user) { create :user, :confirmed, organization: organization }
-    let(:assignation) { create :assignation, user: user, activity: activity, status: status }
+    let(:activity) { create(:activity, max_minutes_per_day: 60) }
+    let(:user) { create(:user, :confirmed, organization:) }
+    let(:assignation) { create(:assignation, user:, activity:, status:) }
     let(:status) { :accepted }
-    let(:organization) { create :organization }
+    let(:organization) { create(:organization) }
     let(:start_time) { Date.current + 12.hours - 30.minutes }
     let(:stop_time) { Date.current + 12.hours - 15.minutes }
 
@@ -20,8 +20,8 @@ module Decidim::TimeTracker
 
     let(:attributes) do
       {
-        activity: activity,
-        assignation: assignation
+        activity:,
+        assignation:
       }
     end
 
@@ -63,7 +63,7 @@ module Decidim::TimeTracker
       let(:attributes) do
         {
           activity: create(:activity),
-          assignation: assignation
+          assignation:
         }
       end
 
@@ -77,32 +77,32 @@ module Decidim::TimeTracker
     end
 
     context "when activity is not active" do
-      let(:activity) { create :activity, active: false }
+      let(:activity) { create(:activity, active: false) }
 
       it_behaves_like "returns error", :activity
     end
 
     context "when activity has not started yet" do
-      let(:activity) { create :activity, start_date: 1.day.from_now }
+      let(:activity) { create(:activity, start_date: 1.day.from_now) }
 
       it_behaves_like "returns error", :activity
     end
 
     context "when activity has finished already" do
-      let(:activity) { create :activity, end_date: 1.day.ago }
+      let(:activity) { create(:activity, end_date: 1.day.ago) }
 
       it_behaves_like "returns error", :activity
     end
 
     context "when user is tracking another activity" do
-      let!(:prev_entry) { create(:time_event, start: start_time, assignation: assignation) }
+      let!(:prev_entry) { create(:time_event, start: start_time, assignation:) }
 
       it_behaves_like "returns ok"
 
       it "stops the previous activity" do
         subject.call
         prev = Decidim::TimeTracker::TimeEvent.where(activity: prev_entry.activity).last_for(user)
-        last = Decidim::TimeTracker::TimeEvent.where(activity: activity).last_for(user)
+        last = Decidim::TimeTracker::TimeEvent.where(activity:).last_for(user)
 
         expect(prev.stopped?).to be(true)
         expect(prev.stop).not_to be_nil
@@ -114,7 +114,7 @@ module Decidim::TimeTracker
 
     context "when last entry is still running" do
       let(:last_assignation) { assignation }
-      let!(:last_entry) { create(:time_event, start: start_time, assignation: last_assignation, activity: activity) }
+      let!(:last_entry) { create(:time_event, start: start_time, assignation: last_assignation, activity:) }
 
       context "and last assignation is not the same user" do
         let(:last_assignation) { create(:assignation) }
@@ -123,7 +123,7 @@ module Decidim::TimeTracker
       end
 
       context "and there's previous stopped events" do
-        let!(:last_entry) { create(:time_event, start: start_time, stop: stop_time, assignation: last_assignation, activity: activity) }
+        let!(:last_entry) { create(:time_event, start: start_time, stop: stop_time, assignation: last_assignation, activity:) }
 
         it_behaves_like "returns ok"
       end
@@ -141,14 +141,14 @@ module Decidim::TimeTracker
       context "and there are more time accumulated than the allowed" do
         let(:start) { 2.hours.ago }
         let(:stop) { 59.minutes.ago }
-        let!(:older_entry) { create(:time_event, start: start, stop: stop, total_seconds: stop - start, assignation: assignation, activity: activity) }
+        let!(:older_entry) { create(:time_event, start:, stop:, total_seconds: stop - start, assignation:, activity:) }
 
         it_behaves_like "returns error", :activity
       end
     end
 
     context "when start and stop are in different days" do
-      let!(:older_entry) { create(:time_event, start: start, stop: stop, total_seconds: stop - start, assignation: assignation, activity: activity) }
+      let!(:older_entry) { create(:time_event, start:, stop:, total_seconds: stop - start, assignation:, activity:) }
 
       context "and start is in the previous day" do
         let(:start) { Date.current - 30.minutes }

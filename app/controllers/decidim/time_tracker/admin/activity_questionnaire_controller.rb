@@ -20,11 +20,11 @@ module Decidim
         end
 
         def questionnaire_participant_answers_url(session_token)
-          show_activity_questionnaire_url(session_token: session_token)
+          show_activity_questionnaire_url(session_token:)
         end
 
         def questionnaire_export_response_url(session_token)
-          export_response_activity_questionnaire_url(session_token: session_token, format: "pdf")
+          export_response_activity_questionnaire_url(session_token:, format: "pdf")
         end
 
         def update_url

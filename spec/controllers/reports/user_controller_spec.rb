@@ -3,17 +3,17 @@
 require "spec_helper"
 
 module Decidim::TimeTracker::Reports
-  describe UserController, type: :controller do
+  describe UserController do
     routes { Decidim::TimeTracker::ReportsEngine.routes }
 
-    let(:organization) { create :organization }
-    let(:user) { create(:user, :confirmed, organization: organization) }
-    let(:participatory_space) { create(:participatory_process, organization: organization) }
-    let(:component) { create :time_tracker_component, participatory_space: participatory_space }
-    let(:time_tracker) { create :time_tracker, component: component }
-    let!(:activity) { create :activity, task: task }
-    let!(:task) { create :task, time_tracker: time_tracker }
-    let!(:assignation) { create :assignation, activity: activity, user: user }
+    let(:organization) { create(:organization) }
+    let(:user) { create(:user, :confirmed, organization:) }
+    let(:participatory_space) { create(:participatory_process, organization:) }
+    let(:component) { create(:time_tracker_component, participatory_space:) }
+    let(:time_tracker) { create(:time_tracker, component:) }
+    let!(:activity) { create(:activity, task:) }
+    let!(:task) { create(:task, time_tracker:) }
+    let!(:assignation) { create(:assignation, activity:, user:) }
 
     before do
       request.env["decidim.current_organization"] = organization

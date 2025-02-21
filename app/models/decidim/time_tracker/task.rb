@@ -33,7 +33,7 @@ module Decidim
       end
 
       def user_is_assignation?(user, filter: :accepted)
-        Assignation.where(user: user, activity: activities).send(filter).any?
+        Assignation.where(user:, activity: activities).send(filter).any?
       end
 
       def self.log_presenter_class_for(_log)

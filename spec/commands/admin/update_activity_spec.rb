@@ -6,10 +6,10 @@ module Decidim::TimeTracker::Admin
   describe UpdateActivity do
     subject { described_class.new(activity, form, user) }
 
-    let(:organization) { create :organization }
-    let(:task) { create :task }
-    let(:activity) { create :activity, task: task }
-    let(:user) { create(:user, :confirmed, :admin, organization: organization) }
+    let(:organization) { create(:organization) }
+    let(:task) { create(:task) }
+    let(:activity) { create(:activity, task:) }
+    let(:user) { create(:user, :confirmed, :admin, organization:) }
     let(:form) do
       double(
         # activityForm,
@@ -44,7 +44,7 @@ module Decidim::TimeTracker::Admin
         expect(activity.description).to eq(form.description)
       end
 
-      it "traces the action", versioning: true do
+      it "traces the action", :versioning do
         expect(Decidim.traceability)
           .to receive(:update!)
           .with(activity, user, hash_including(description: form.description))

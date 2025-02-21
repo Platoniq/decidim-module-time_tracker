@@ -3,17 +3,17 @@
 require "spec_helper"
 
 module Decidim::TimeTracker
-  describe MilestonesController, type: :controller do
+  describe MilestonesController do
     routes { Decidim::TimeTracker::Engine.routes }
 
     include_context "with a time_tracker"
 
-    let(:user) { create :user, :confirmed, organization: organization }
+    let(:user) { create(:user, :confirmed, organization:) }
 
-    let(:task) { create :task, time_tracker: time_tracker }
-    let(:activity) { create :activity, task: task }
-    let(:milestone) { create :milestone, user: user }
-    let!(:assigne) { create :assignation, user: user, activity: milestone.activity }
+    let(:task) { create(:task, time_tracker:) }
+    let(:activity) { create(:activity, task:) }
+    let(:milestone) { create(:milestone, user:) }
+    let!(:assigne) { create(:assignation, user:, activity: milestone.activity) }
 
     before do
       request.env["decidim.current_organization"] = organization
@@ -25,9 +25,9 @@ module Decidim::TimeTracker
       let(:params) do
         {
           milestone: {
-            activity_id: activity_id,
-            title: title,
-            description: description,
+            activity_id:,
+            title:,
+            description:,
             attachment: {
               title: ""
             }
@@ -44,7 +44,7 @@ module Decidim::TimeTracker
         end
 
         it "creates a new milestone" do
-          post :create, params: params
+          post(:create, params:)
           expect(flash[:notice]).not_to be_blank
           expect(response).to have_http_status(:redirect)
         end
@@ -53,7 +53,7 @@ module Decidim::TimeTracker
           let(:title) { "" }
 
           it "does not create a new milestone" do
-            post :create, params: params
+            post(:create, params:)
             expect(flash[:alert]).not_to be_blank
             expect(response).to have_http_status(:redirect)
           end
@@ -62,7 +62,7 @@ module Decidim::TimeTracker
 
       context "when user is not signed in" do
         it "redirects" do
-          post :create, params: params
+          post(:create, params:)
           expect(response).to redirect_to("/users/sign_in")
         end
       end

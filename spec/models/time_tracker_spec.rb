@@ -7,7 +7,7 @@ module Decidim::TimeTracker
     subject { time_tracker }
 
     let(:component) { create(:time_tracker_component) }
-    let(:time_tracker) { create(:time_tracker, component: component, questionnaire: questionnaire) }
+    let(:time_tracker) { create(:time_tracker, component:, questionnaire:) }
     let(:questionnaire) { create(:questionnaire) }
 
     it { is_expected.to be_valid }

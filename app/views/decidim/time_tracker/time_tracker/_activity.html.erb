@@ -14,28 +14,28 @@
 
     <div class="top pt-2">
       <% if activity.status != :open %>
-        <%= render partial: "callout_status", locals: { activity: activity } %>
+        <%= render partial: "callout_status", locals: { activity: } %>
       <% else %>
         <div class="tracker-buttons">
           <button class="danger button__lg time-tracker-activity-stop hidden">
-            <img src="<%= asset_pack_path('media/images/stop_icon.svg') %>" alt="Stop">
+            <img src="<%= asset_pack_path("media/images/stop_icon.svg") %>" alt="Stop">
           </button>
           <button class="secondary button__lg time-tracker-activity-pause hidden">
-            <img src="<%= asset_pack_path('media/images/pause_icon.svg') %>" alt="Pause">
+            <img src="<%= asset_pack_path("media/images/pause_icon.svg") %>" alt="Pause">
           </button>
           <button class="success button__lg time-tracker-activity-start">
-            <img src="<%= asset_pack_path('media/images/play_icon.svg') %>" alt="Play">
+            <img src="<%= asset_pack_path("media/images/play_icon.svg") %>" alt="Play">
           </button>
         </div>
       <% end %>
     </div>
     <div class="bottom">
       <% if activity.allow_answers_for?(current_user) %>
-        <%= render partial: "answer_questionnaire", locals: { activity: activity } %>
+        <%= render partial: "answer_questionnaire", locals: { activity: } %>
       <% end %>
     </div>
   </div>
   <div class="callout alert hidden"></div>
 
-  <%= render partial: "milestone_form", locals: { activity: activity } %>
+  <%= render partial: "milestone_form", locals: { activity: } %>
 </div>

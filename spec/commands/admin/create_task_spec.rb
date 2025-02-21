@@ -13,15 +13,15 @@ module Decidim::TimeTracker::Admin
         invalid?: invalid,
         current_user: user,
         current_component: component,
-        time_tracker: time_tracker
+        time_tracker:
       )
     end
 
-    let(:organization) { create :organization }
-    let(:user) { create :user, :admin, :confirmed, organization: organization }
-    let(:participatory_process) { create :participatory_process, organization: organization }
-    let(:component) { create :time_tracker_component, participatory_space: participatory_process }
-    let(:time_tracker) { create :time_tracker, component: component }
+    let(:organization) { create(:organization) }
+    let(:user) { create(:user, :admin, :confirmed, organization:) }
+    let(:participatory_process) { create(:participatory_process, organization:) }
+    let(:component) { create(:time_tracker_component, participatory_space: participatory_process) }
+    let(:time_tracker) { create(:time_tracker, component:) }
 
     let(:invalid) { false }
 
@@ -42,7 +42,7 @@ module Decidim::TimeTracker::Admin
         expect { subject.call }.to change(Decidim::TimeTracker::Task, :count).by(1)
       end
 
-      it "traces the action", versioning: true do
+      it "traces the action", :versioning do
         expect(Decidim.traceability)
           .to receive(:create!)
           .with(Decidim::TimeTracker::Task, user, hash_including(:name))

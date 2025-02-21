@@ -17,10 +17,10 @@ module Decidim
                class_name: "Decidim::TimeTracker::Assignation",
                dependent: :destroy
 
-      has_many :time_events,
+      has_many :time_events, # rubocop:disable Rails/HasManyOrHasOneDependent
                class_name: "Decidim::TimeTracker::TimeEvent"
 
-      has_many :milestones,
+      has_many :milestones, # rubocop:disable Rails/HasManyOrHasOneDependent
                class_name: "Decidim::TimeTracker::Milestone"
 
       scope :active, -> { where(active: true) }
@@ -30,11 +30,11 @@ module Decidim
       # total number of seconds spent by the user
       # not counting current counters
       def user_total_seconds(user)
-        time_events.where(user: user).sum(&:total_seconds).to_i
+        time_events.where(user:).sum(&:total_seconds).to_i
       end
 
       def user_total_seconds_for_date(user, date)
-        time_events.started_between(date.beginning_of_day, date.end_of_day).where(user: user).sum(&:total_seconds).to_i
+        time_events.started_between(date.beginning_of_day, date.end_of_day).where(user:).sum(&:total_seconds).to_i
       end
 
       # Total number of seconds spent by the user
@@ -71,19 +71,19 @@ module Decidim
       end
 
       def assignation_pending?(user)
-        assignations.pending.where(user: user).count.positive?
+        assignations.pending.where(user:).count.positive?
       end
 
       def assignation_accepted?(user)
-        assignations.accepted.where(user: user).count.positive?
+        assignations.accepted.where(user:).count.positive?
       end
 
       def assignation_rejected?(user)
-        assignations.rejected.where(user: user).count.positive?
+        assignations.rejected.where(user:).count.positive?
       end
 
       def has_assignation?(user)
-        assignations.where(user: user).count.positive?
+        assignations.where(user:).count.positive?
       end
 
       def has_questions?

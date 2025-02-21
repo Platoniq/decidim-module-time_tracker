@@ -8,7 +8,7 @@ module Decidim::TimeTracker
 
     subject { described_class.new(activity_id, self) }
 
-    let(:activity) { create :activity, description: description }
+    let(:activity) { create(:activity, description:) }
     let(:activity_id) { activity.id }
     let(:description) do
       {

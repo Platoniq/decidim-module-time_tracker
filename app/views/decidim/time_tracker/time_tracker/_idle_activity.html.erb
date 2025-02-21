@@ -6,7 +6,7 @@
     <% if user_signed_in? %>
       <div class="top">
         <% if activity.status != :open %>
-          <%= render partial: "callout_status", locals: { activity: activity } %>
+          <%= render partial: "callout_status", locals: { activity: } %>
         <% else %>
           <% if activity.assignation_pending? current_user %>
             <div class="callout warning"><%= t ".assignation_pending" %></div>
@@ -17,7 +17,7 @@
       </div>
       <div class="bottom">
         <% if activity.allow_answers_for?(current_user) %>
-          <%= render partial: "answer_questionnaire", locals: { activity: activity } %>
+          <%= render partial: "answer_questionnaire", locals: { activity: } %>
         <% end %>
       </div>
     <% end %>

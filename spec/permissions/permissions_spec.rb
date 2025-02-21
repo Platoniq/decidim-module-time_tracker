@@ -6,8 +6,8 @@ module Decidim::TimeTracker
   describe Permissions do
     subject { described_class.new(user, permission_action, context).permissions.allowed? }
 
-    let(:organization) { create :organization }
-    let(:user) { create :user, organization: organization }
+    let(:organization) { create(:organization) }
+    let(:user) { create(:user, organization:) }
     let(:context) do
       {
         current_organization: organization
@@ -70,11 +70,11 @@ module Decidim::TimeTracker
       end
 
       context "and there activity is defined" do
-        let(:activity) { create :activity }
+        let(:activity) { create(:activity) }
         let(:context) do
           {
             current_organization: organization,
-            activity: activity
+            activity:
           }
         end
         let(:action) do
@@ -91,18 +91,18 @@ module Decidim::TimeTracker
 
         context "and action is create" do
           context "and user is assigned" do
-            let!(:assignation) { create :assignation, activity: activity, user: user }
+            let!(:assignation) { create(:assignation, activity:, user:) }
 
             it_behaves_like "permission is not set"
           end
 
           context "and user is not assigned" do
-            let!(:assignation) { create :assignation, user: user }
+            let!(:assignation) { create(:assignation, user:) }
 
             it { is_expected.to be true }
 
             context "and activity is not open" do
-              let(:activity) { create :activity, :closed }
+              let(:activity) { create(:activity, :closed) }
 
               it_behaves_like "permission is not set"
             end
@@ -129,11 +129,11 @@ module Decidim::TimeTracker
       end
 
       context "and there activity is defined" do
-        let(:activity) { create :activity }
+        let(:activity) { create(:activity) }
         let(:context) do
           {
             current_organization: organization,
-            activity: activity
+            activity:
           }
         end
         let(:action) do
@@ -150,18 +150,18 @@ module Decidim::TimeTracker
 
         context "and action is create" do
           context "and user is assigned" do
-            let!(:assignation) { create :assignation, activity: activity, user: user }
+            let!(:assignation) { create(:assignation, activity:, user:) }
 
             it { is_expected.to be true }
           end
 
           context "and user is not assigned" do
-            let!(:assignation) { create :assignation, user: user }
+            let!(:assignation) { create(:assignation, user:) }
 
             it_behaves_like "permission is not set"
 
             context "and activity is inactive" do
-              let(:activity) { create :activity, :inactive }
+              let(:activity) { create(:activity, :inactive) }
 
               it_behaves_like "permission is not set"
             end

@@ -6,10 +6,10 @@ module Decidim::TimeTracker::Admin
   describe DestroyActivity do
     subject { described_class.new(activity, user) }
 
-    let(:organization) { create :organization }
-    let(:activity) { create :activity, task: task }
-    let(:task) { create :task }
-    let(:user) { create(:user, :confirmed, :admin, organization: organization) }
+    let(:organization) { create(:organization) }
+    let(:activity) { create(:activity, task:) }
+    let(:task) { create(:task) }
+    let(:user) { create(:user, :confirmed, :admin, organization:) }
 
     context "when everything is ok" do
       it "destroys the activity" do
@@ -17,7 +17,7 @@ module Decidim::TimeTracker::Admin
         expect { activity.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
-      it "traces the action", versioning: true do
+      it "traces the action", :versioning do
         expect(Decidim.traceability)
           .to receive(:perform_action!)
           .with(:delete, activity, user)

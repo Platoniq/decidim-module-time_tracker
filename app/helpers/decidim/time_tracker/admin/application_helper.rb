@@ -7,8 +7,8 @@ module Decidim
       #
       module ApplicationHelper
         def change_assignation_status_button(assignation, success_path: nil)
-          path_reject = task_activity_assignation_path(assignation.task, assignation.activity, assignation, assignation_status: :rejected, success_path: success_path)
-          path_accept = task_activity_assignation_path(assignation.task, assignation.activity, assignation, assignation_status: :accepted, success_path: success_path)
+          path_reject = task_activity_assignation_path(assignation.task, assignation.activity, assignation, assignation_status: :rejected, success_path:)
+          path_accept = task_activity_assignation_path(assignation.task, assignation.activity, assignation, assignation_status: :accepted, success_path:)
           label_reject = t("assignations.actions.reject", scope: "decidim.time_tracker.admin")
           label_accept = t("assignations.actions.accept", scope: "decidim.time_tracker.admin")
 

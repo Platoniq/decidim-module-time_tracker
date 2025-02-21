@@ -11,7 +11,7 @@ module Decidim::TimeTracker
     let(:middle_activity) { create(:activity, :with_assignations, start_date: Time.zone.now, end_date: 2.days.from_now) }
     let(:last_activity) { create(:activity, :with_assignations, start_date: 1.day.from_now, end_date: 2.days.from_now) }
     let(:activities) { [first_activity, middle_activity, last_activity] }
-    let(:task) { create(:task, activities: activities, time_tracker: time_tracker) }
+    let(:task) { create(:task, activities:, time_tracker:) }
 
     it { is_expected.to be_valid }
 
@@ -28,7 +28,7 @@ module Decidim::TimeTracker
     end
 
     context "when adding a new activity" do
-      let!(:new_activity) { create(:activity, task: task) }
+      let!(:new_activity) { create(:activity, task:) }
 
       it "updates the activities" do
         expect(task.activities.count).to eq 4

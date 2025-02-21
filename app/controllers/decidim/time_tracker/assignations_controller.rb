@@ -6,7 +6,7 @@ module Decidim
       helper_method :assignation
 
       def create
-        enforce_permission_to :create, :assignation, activity: activity
+        enforce_permission_to(:create, :assignation, activity:)
 
         CreateRequestAssignation.call(activity, current_user) do
           on(:ok) do |activity|

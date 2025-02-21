@@ -3,17 +3,17 @@
 require "spec_helper"
 
 module Decidim::TimeTracker::Admin
-  describe AssignationsController, type: :controller do
+  describe AssignationsController do
     routes { Decidim::TimeTracker::AdminEngine.routes }
 
-    let(:organization) { create :organization }
-    let(:user) { create(:user, :confirmed, :admin, organization: organization) }
-    let(:participatory_space) { create(:participatory_process, organization: organization) }
-    let(:component) { create :time_tracker_component, participatory_space: participatory_space }
-    let(:time_tracker) { create :time_tracker, component: component }
-    let!(:task) { create :task, time_tracker: time_tracker }
-    let!(:activity) { create :activity, task: task }
-    let!(:assignation) { create :assignation, :pending, activity: activity }
+    let(:organization) { create(:organization) }
+    let(:user) { create(:user, :confirmed, :admin, organization:) }
+    let(:participatory_space) { create(:participatory_process, organization:) }
+    let(:component) { create(:time_tracker_component, participatory_space:) }
+    let(:time_tracker) { create(:time_tracker, component:) }
+    let!(:task) { create(:task, time_tracker:) }
+    let!(:activity) { create(:activity, task:) }
+    let!(:assignation) { create(:assignation, :pending, activity:) }
 
     let(:form) do
       {
@@ -40,7 +40,7 @@ module Decidim::TimeTracker::Admin
       end
 
       it "renders the index listing" do
-        get :index, params: params
+        get(:index, params:)
         expect(response).to have_http_status(:ok)
         expect(subject).to render_template(:index)
       end
@@ -57,7 +57,7 @@ module Decidim::TimeTracker::Admin
       end
 
       it "renders the empty form" do
-        get :new, params: params
+        get(:new, params:)
         expect(response).to have_http_status(:ok)
         expect(subject).to render_template(:new)
       end
@@ -74,13 +74,13 @@ module Decidim::TimeTracker::Admin
 
       context "when there is permission" do
         it "returns ok" do
-          post :create, params: params
+          post(:create, params:)
           expect(flash[:notice]).not_to be_empty
           expect(response).to have_http_status(:found)
         end
 
         it "creates the new assignation" do
-          post :create, params: params
+          post(:create, params:)
           expect(Decidim::TimeTracker::Assignation.last.user.name).to eq(form[:name])
           expect(Decidim::TimeTracker::Assignation.last.status).to eq("accepted")
         end
@@ -102,12 +102,12 @@ module Decidim::TimeTracker::Admin
 
       context "when there is permission" do
         it "returns ok" do
-          post :update, params: params
+          post(:update, params:)
           expect(response).to have_http_status(:redirect)
         end
 
         it "updates the new assignation" do
-          post :update, params: params
+          post(:update, params:)
           expect(Decidim::TimeTracker::Assignation.first.status).to eq(status)
         end
       end
@@ -126,13 +126,13 @@ module Decidim::TimeTracker::Admin
 
       context "when there is permission" do
         it "returns ok" do
-          delete :destroy, params: params
+          delete(:destroy, params:)
           expect(flash[:notice]).not_to be_empty
           expect(response).to have_http_status(:found)
         end
 
         it "removes the assignation" do
-          delete :destroy, params: params
+          delete(:destroy, params:)
           expect { assignation.reload }.to raise_error(ActiveRecord::RecordNotFound)
         end
       end

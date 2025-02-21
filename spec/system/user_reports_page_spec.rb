@@ -2,9 +2,9 @@
 
 require "spec_helper"
 
-describe "User reports page", type: :system do
+describe "User reports page" do
   include_context "with a time_tracker"
-  let(:user) { create :user, :confirmed, organization: organization }
+  let(:user) { create(:user, :confirmed, organization:) }
 
   before do
     switch_to_host(user.organization.host)
@@ -33,11 +33,11 @@ describe "User reports page", type: :system do
     end
 
     context "when user has assignations" do
-      let!(:task) { create :task, time_tracker: time_tracker }
-      let!(:activity) { create :activity, task: task }
-      let!(:assignation) { create :assignation, :accepted, activity: activity, user: user }
-      let!(:assignation_pending) { create :assignation, :pending, activity: activity, user: user }
-      let!(:assignation_rejected) { create :assignation, :rejected, activity: activity, user: user }
+      let!(:task) { create(:task, time_tracker:) }
+      let!(:activity) { create(:activity, task:) }
+      let!(:assignation) { create(:assignation, :accepted, activity:, user:) }
+      let!(:assignation_pending) { create(:assignation, :pending, activity:, user:) }
+      let!(:assignation_rejected) { create(:assignation, :rejected, activity:, user:) }
 
       it "shows the list of assignations and the time dedicated" do
         visit decidim_time_tracker.root_path

@@ -10,19 +10,19 @@ module Decidim
                  foreign_key: "decidim_user_id",
                  class_name: "Decidim::User"
 
-      has_many :tos_acceptances,
+      has_many :tos_acceptances, # rubocop:disable Rails/HasManyOrHasOneDependent
                class_name: "Decidim::TimeTracker::TosAcceptance"
 
       def self.for(user)
-        find_or_create_by(user: user)
+        find_or_create_by(user:)
       end
 
       def tos_accepted_at(time_tracker)
-        tos_acceptances.find_by(time_tracker: time_tracker)&.created_at
+        tos_acceptances.find_by(time_tracker:)&.created_at
       end
 
       def tos_accepted?(time_tracker)
-        tos_acceptances.exists?(time_tracker: time_tracker)
+        tos_acceptances.exists?(time_tracker:)
       end
     end
   end

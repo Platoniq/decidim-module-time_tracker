@@ -1,2 +1,4 @@
 app/packs/stylesheets/vendor/*
 vendor/*
+**/*.js
+**/*.svg

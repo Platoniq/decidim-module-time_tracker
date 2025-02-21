@@ -25,7 +25,7 @@ module Decidim
         if user.is_a?(Assignation)
           where(assignation: user).first
         else
-          where(user: user).first
+          where(user:).first
         end
       end
 
