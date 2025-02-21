@@ -1,22 +1,19 @@
 <div class="time-tracker-request" data-activity-id="<%= activity.id %>">
   <div class="content">
-    <div class="left">
-      <h4><%= translated_attribute activity.description %></h4>
-    </div>
-    <div class="right">
-      <% if user_signed_in? %>
-        <% if must_fill_in_data? %>
-          <div class="callout warning"><%== t ".assignee_questionnaire", path: assignee_questionnaire_path %></div>
-        <% elsif activity.assignation_pending? current_user %>
-          <div class="callout warning"><%= t ".assignation_pending" %></div>
-        <% elsif activity.assignation_rejected? current_user %>
-          <div class="callout warning"><%= t ".assignation_rejected" %></div>
-        <% else %>
-          <%= button_to requests_path(activity), method: :create, remote: true, data: { activity_id: activity.id }, class: "button large" do %>
-            <%= t("index.request", scope: "decidim.components.time_tracker.views") %>
-          <% end %>
+    <h4 class="h4 pb-4"><%= translated_attribute activity.description %></h4>
+
+    <% if user_signed_in? %>
+      <% if must_fill_in_data? %>
+        <div class="callout warning"><%== t ".assignee_questionnaire", path: assignee_questionnaire_path %></div>
+      <% elsif activity.assignation_pending? current_user %>
+        <div class="callout warning"><%= t ".assignation_pending" %></div>
+      <% elsif activity.assignation_rejected? current_user %>
+        <div class="callout warning"><%= t ".assignation_rejected" %></div>
+      <% else %>
+        <%= button_to requests_path(activity), method: :create, remote: true, data: { activity_id: activity.id }, class: "button button__lg button__secondary" do %>
+          <%= t("index.request", scope: "decidim.components.time_tracker.views") %>
         <% end %>
       <% end %>
-    </div>
+    <% end %>
   </div>
 </div>

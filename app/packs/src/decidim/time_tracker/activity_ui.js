@@ -39,28 +39,28 @@ export default class ActivityUI { // eslint-disable-line no-unused-vars
   }
 
   showStart() {
-    this.$startButton.removeClass("hide");
-    this.$pauseButton.addClass("hide");
-    this.$stopButton.addClass("hide");
+    this.$startButton.removeClass("hidden");
+    this.$pauseButton.addClass("hidden");
+    this.$stopButton.addClass("hidden");
     return this;
   }
 
   showPauseStop() {
-    this.$startButton.addClass("hide");
-    this.$pauseButton.removeClass("hide");
-    this.$stopButton.removeClass("hide");
+    this.$startButton.addClass("hidden");
+    this.$pauseButton.removeClass("hidden");
+    this.$stopButton.removeClass("hidden");
     return this;
   }
 
   showPlayStop() {
-    this.$startButton.removeClass("hide");
-    this.$pauseButton.addClass("hide");
-    this.$stopButton.removeClass("hide");
+    this.$startButton.removeClass("hidden");
+    this.$pauseButton.addClass("hidden");
+    this.$stopButton.removeClass("hidden");
     return this;
   }
 
   showError(error) {
-    this.$activity.find(".callout.alert").html(error).removeClass("hide");
+    this.$activity.find(".callout.alert").html(error).removeClass("hidden");
     this.showStart(this.$activity);
     return this;
   }

@@ -1,42 +1,36 @@
-<div class="column">
-  <article class="card card--milestone">
+<div class="card__grid milestone-card">
+  <div class="card__grid-img">
     <%= image %>
-    <div class="card__content">
-      <div class="card__header">
-        <%= title %>
-      </div>
+  </div>
+  <div class="card__grid-text">
 
-      <div class="card__text">
-        <div class="card__text--paragraph">
-          <% if list? %>
-            <h5>
-              <%= model.title %>
-            </h5>
-          <% end %>
+    <%= title %>
 
-          <div class="text-ellipsis">
-            <%= model.description %>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="card__text">
 
-    <div class="card__footer">
-      <div class="card__support">
         <% if list? %>
-          <div class="text"> <%= t(".time_dedicated") %></div>
-          <div class="text">
-            <strong><%= clockify_seconds(seconds_elapsed) %></strong>
-          </div>
-        <% else %>
-          <div class="text">
-            <%= model.created_at.strftime("%d %b %Y") %>
-          </div>
-          <div class="text">
-            <%= model.created_at.strftime("%H:%M") %>
-          </div>
+            <b><%= model.title %></b>
         <% end %>
-      </div>
+
+        <div class="text-ellipsis">
+          <%= model.description %>
+        </div>
     </div>
-  </article>
+
+    <div class="card__grid-metadata">
+      <% if list? %>
+        <div class="text"> <%= t(".time_dedicated") %></div>
+        <div class="text">
+          <strong><%= clockify_seconds(seconds_elapsed) %></strong>
+        </div>
+      <% else %>
+        <div class="text">
+          <%= model.created_at.strftime("%d %b %Y") %>
+        </div>
+        <div class="text">
+          <%= model.created_at.strftime("%H:%M") %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>

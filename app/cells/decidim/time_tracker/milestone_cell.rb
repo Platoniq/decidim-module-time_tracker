@@ -22,7 +22,7 @@ module Decidim
         return content_tag :strong, model.title unless list?
 
         link_to milestones_path do
-          content_tag :h4, class: "card__title" do
+          content_tag :h3, class: "h4 text-secondary" do
             t("title", user_name: model.user.name, scope: "decidim.time_tracker.milestone")
           end
         end
@@ -37,7 +37,7 @@ module Decidim
           end
         else
           content_tag :div, class: "card__image empty" do
-            icon "timer"
+            icon "timer-line"
           end
         end
       end

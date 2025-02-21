@@ -70,7 +70,7 @@ $(() => {
         done((data) => { 
           activity.stopCounter(data);
           console.log("show milestone creator");
-          $milestone.removeClass("hide");
+          $milestone.removeClass("hidden");
         }).
         fail(activity.showError.bind(activity));
     });
