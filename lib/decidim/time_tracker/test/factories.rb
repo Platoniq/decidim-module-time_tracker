@@ -7,7 +7,7 @@ FactoryBot.define do
   factory :time_tracker_component, parent: :component do
     name { Decidim::Components::Namer.new(participatory_space.organization.available_locales, :time_tracker).i18n_name }
     manifest_name { :time_tracker }
-    participatory_space
+    participatory_space { create(:participatory_process, :with_steps) }
   end
 
   factory :time_tracker, class: "Decidim::TimeTracker::TimeTracker" do
@@ -21,7 +21,7 @@ FactoryBot.define do
   end
 
   factory :activity, class: "Decidim::TimeTracker::Activity" do
-    task
+    task { create(:task) }
     description { Decidim::Faker::Localized.sentence(word_count: 3) }
     active { true }
     start_date { 1.day.ago }
@@ -49,11 +49,11 @@ FactoryBot.define do
   end
 
   factory :assignation, class: "Decidim::TimeTracker::Assignation" do
-    user
-    activity
+    user { create(:user) }
+    activity { create(:activity) }
     status { :accepted }
     invited_at { 1.month.ago }
-    invited_by_user
+    invited_by_user { create(:user) }
     requested_at { 2.months.ago }
 
     trait :pending do
@@ -70,8 +70,8 @@ FactoryBot.define do
   end
 
   factory :milestone, class: "Decidim::TimeTracker::Milestone" do
-    activity
-    user
+    activity { create(:activity) }
+    user { create(:user) }
     title { Faker::Lorem.word }
     description { Faker::Lorem.sentence(word_count: 3) }
   end
@@ -82,8 +82,8 @@ FactoryBot.define do
   end
 
   factory :time_event, class: "Decidim::TimeTracker::TimeEvent" do
-    assignation
-    activity
+    assignation { create(:assignation) }
+    activity { create(:activity) }
     start { Time.current }
     stop { nil }
     total_seconds { stop.present? ? (stop - start) : 0 }
