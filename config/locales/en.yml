@@ -14,23 +14,25 @@ en:
       task:
         name: Name
     errors:
-        time_event:
-          attributes:
-            activity:
-              finished: Activity has finished already
-              inactive: Activity is not active
-              no_time_available: User has reached the maximum amount of time available
-                for the day
-              not_started: Activity has not started yet
-            assignation:
-              unassigned: User is not assigned to the task
-            start:
-              date_format: Start time is not a date
-            stop:
-              date_format: Stop time is not a date
-              stop_before_start: Stop is before start
+      time_event:
+        attributes:
+          activity:
+            finished: Activity has finished already
+            inactive: Activity is not active
+            no_time_available: User has reached the maximum amount of time available
+              for the day
+            not_started: Activity has not started yet
+          assignation:
+            unassigned: User is not assigned to the task
+          start:
+            date_format: Start time is not a date
+          stop:
+            date_format: Stop time is not a date
+            stop_before_start: Stop is before start
   decidim:
     admin:
+      actions:
+        manage: Manage
       filters:
         activity_id_eq:
           label: Activity
@@ -39,8 +41,6 @@ en:
         search_placeholder:
           user_name_or_user_nickname_or_user_email_cont: Search for a user's name,
             nickname or email
-      actions:
-        manage: Manage
     components:
       time_tracker:
         name: Time Tracker
