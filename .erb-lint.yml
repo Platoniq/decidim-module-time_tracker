@@ -119,3 +119,6 @@ linters:
 
       Layout/MultilineAssignmentLayout:
         Enabled: false
+
+      Style/HashSyntax:
+        Enabled: false

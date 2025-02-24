@@ -14,7 +14,7 @@
 
     <div class="top pt-2">
       <% if activity.status != :open %>
-        <%= render partial: "callout_status", locals: { activity: } %>
+        <%= render partial: "callout_status", locals: { activity: activity } %>
       <% else %>
         <div class="tracker-buttons">
           <button class="danger button__lg time-tracker-activity-stop hidden">
@@ -31,11 +31,11 @@
     </div>
     <div class="bottom">
       <% if activity.allow_answers_for?(current_user) %>
-        <%= render partial: "answer_questionnaire", locals: { activity: } %>
+        <%= render partial: "answer_questionnaire", locals: { activity: activity } %>
       <% end %>
     </div>
   </div>
   <div class="callout alert hidden"></div>
 
-  <%= render partial: "milestone_form", locals: { activity: } %>
+  <%= render partial: "milestone_form", locals: { activity: activity } %>
 </div>
