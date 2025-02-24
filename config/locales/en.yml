@@ -14,11 +14,6 @@ en:
       task:
         name: Name
     errors:
-      models:
-        milestone:
-          attributes:
-            attachment:
-              needs_to_be_reattached: Needs to be reattached
         time_event:
           attributes:
             activity:

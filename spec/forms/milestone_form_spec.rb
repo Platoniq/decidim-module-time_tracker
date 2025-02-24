@@ -48,11 +48,11 @@ module Decidim::TimeTracker
       context "when the form has some errors" do
         let(:title) { nil }
 
-        it "adds an error to the `:attachment` field" do
+        it "adds an error" do
           expect(subject).not_to be_valid
 
-          expect(subject.errors.full_messages).to contain_exactly("Attachment Needs to be reattached", "What have you done? can't be blank")
-          expect(subject.errors.attribute_names).to contain_exactly(:title, :attachment)
+          expect(subject.errors.full_messages).to contain_exactly("What have you done? cannot be blank")
+          expect(subject.errors.attribute_names).to contain_exactly(:title)
         end
       end
     end
