@@ -45,6 +45,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: Install JS dependencies
+        run: npm ci
+
       - name: Setup Database
         run: bundle exec rake test_app
 
