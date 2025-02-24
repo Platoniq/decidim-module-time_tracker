@@ -12,31 +12,30 @@ module Decidim::TimeTracker
     let(:model) { create(:milestone) }
     let(:type) { nil }
     # For some reason "within" does not work well in cells, so using "find"
-    let(:card_header) { subject.find(".card__header") }
-    let(:card_footer) { subject.find(".card__footer") }
+    let(:card_info) { subject.find(".card__grid-text") }
     let(:card_link) { subject.find(".card__link") }
 
     it "renders the cell" do
-      expect(subject).to have_css(".card--milestone")
+      expect(subject).to have_css(".milestone-card")
     end
 
     it "has common classes" do
-      expect(subject).to have_css(".card__header")
-      expect(subject).to have_css(".card__footer")
+      expect(subject).to have_css(".card__grid-img")
+      expect(subject).to have_css(".card__grid-text")
     end
 
     context "when the cell is called with no options" do
       it "shows the milestone title as card title" do
-        expect(card_header).to have_text(model.title)
+        expect(card_info).to have_text(model.title)
       end
 
       it "doesn't link to the user milestones" do
-        expect(card_header).to have_no_link(my_cell.milestones_path)
+        expect(card_info).to have_no_link(my_cell.milestones_path)
       end
 
       it "shows the milestone created_at date in the footer" do
-        expect(card_footer).to have_text(model.created_at.strftime("%H:%M"))
-        expect(card_footer).to have_text(model.created_at.strftime("%d %b %Y"))
+        expect(card_info).to have_text(model.created_at.strftime("%H:%M"))
+        expect(card_info).to have_text(model.created_at.strftime("%d %b %Y"))
       end
     end
 
@@ -44,23 +43,23 @@ module Decidim::TimeTracker
       let(:type) { :list }
 
       it "shows the user title as card title" do
-        expect(card_header).to have_css("h4")
-        expect(card_header).to have_text(model.user.name)
-        expect(card_header).to have_text("activity")
+        expect(card_info).to have_css("b")
+        expect(card_info).to have_text(model.user.name)
+        expect(card_info).to have_text("activity")
       end
 
       it "links to the user milestones" do
-        expect(card_header).to have_link(href: my_cell.milestones_path)
+        expect(card_info).to have_link(href: my_cell.milestones_path)
       end
 
       it "shows the elapsed time for the user in the footer" do
-        expect(card_footer).to have_text(model.activity.user_seconds_elapsed(model.user))
+        expect(card_info).to have_text(model.activity.user_seconds_elapsed(model.user))
       end
     end
 
     context "when the model doesn't have an image" do
       it "uses the generic icon" do
-        expect(subject).to have_css(".icon--timer")
+        expect(subject).to have_css(".empty")
       end
     end
 

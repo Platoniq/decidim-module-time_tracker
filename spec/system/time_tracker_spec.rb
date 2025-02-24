@@ -27,7 +27,7 @@ describe "Time tracker page" do
     end
 
     it "shows task name" do
-      expect(page).to have_content(time_tracker.tasks.first.name["en"].upcase)
+      expect(page).to have_content(time_tracker.tasks.first.name["en"])
     end
 
     it "shows activity description" do

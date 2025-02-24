@@ -41,20 +41,20 @@ describe "Admin manages Time tracker" do
     end
 
     it "shows pendig assignees section" do
-      within ".card-title", match: :first do
+      within ".item_show__header", match: :first do
         expect(page).to have_content("Pending assignations")
       end
     end
 
     it "show pending assignees first" do
-      within ".process-content" do
+      within ".table-list", match: :first do
         expect(page).to have_content(pending.user.name)
         expect(page).to have_content(pending.user.email)
       end
     end
 
     it "do not show accepted assignees" do
-      within ".process-content" do
+      within ".table-list", match: :first do
         expect(page).to have_no_content(assignation.user.name)
         expect(page).to have_no_content(assignation.user.email)
         expect(page).to have_no_content(rejected.user.name)
@@ -67,7 +67,7 @@ describe "Admin manages Time tracker" do
         click_on "Accept"
       end
 
-      within ".process-content" do
+      within ".table-list" do
         pending.reload
         expect(page).to have_no_content(pending.user.name)
         expect(page).to have_no_content(pending.user.email)
@@ -80,7 +80,7 @@ describe "Admin manages Time tracker" do
         click_on "Reject"
       end
 
-      within ".process-content" do
+      within ".table-list" do
         pending.reload
         expect(page).to have_no_content(pending.user.name)
         expect(page).to have_no_content(pending.user.email)
@@ -94,7 +94,7 @@ describe "Admin manages Time tracker" do
         expect(page).to have_no_content("Pending assignations")
       end
 
-      within ".process-content" do
+      within ".table-list" do
         pending.reload
         expect(page).to have_no_content(pending.user.name)
         expect(page).to have_no_content(pending.user.email)

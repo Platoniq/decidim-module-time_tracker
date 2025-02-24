@@ -32,9 +32,9 @@ describe "Milestones page" do
     it "shows milestones" do
       expect(page).to have_content("#{user.name}'s activity")
       expect(page).to have_link(user.name, href: decidim.profile_path(nickname: "timmy"))
-      expect(page).to have_css(".card.card--milestone", count: 3)
+      expect(page).to have_css(".milestone-card", count: 3)
 
-      within ".card.card--milestone", match: :first do
+      within ".milestone-card", match: :first do
         expect(page).to have_content(milestones.first.title)
         expect(page).to have_content(milestones.first.description)
       end
@@ -52,7 +52,7 @@ describe "Milestones page" do
     end
 
     it "does not allow to see page" do
-      within ".callout.alert" do
+      within ".flash.alert" do
         expect(page).to have_content "not authorized"
       end
     end
