@@ -4,9 +4,9 @@ require "spec_helper"
 
 module Decidim::TimeTracker
   describe StopCounterJob do
-    let(:activity) { create :activity, max_minutes_per_day: 60 }
-    let(:assignation) { create(:assignation, activity: activity) }
-    let!(:time_event) { create :time_event, assignation: assignation, activity: activity, start: start_time.to_i }
+    let(:activity) { create(:activity, max_minutes_per_day: 60) }
+    let(:assignation) { create(:assignation, activity:) }
+    let!(:time_event) { create(:time_event, assignation:, activity:, start: start_time.to_i) }
 
     let(:start_time) { Date.current + 12.hours - 30.minutes }
 
@@ -51,7 +51,7 @@ module Decidim::TimeTracker
     end
 
     context "when there are several events on the same day" do
-      let!(:time_event1) { create :time_event, assignation: assignation, activity: activity, start: (start_time.to_i - 2.hours.to_i), stop: (start_time.to_i - 2.hours.to_i + 15.minutes.to_i) }
+      let!(:time_event1) { create(:time_event, assignation:, activity:, start: (start_time.to_i - 2.hours.to_i), stop: (start_time.to_i - 2.hours.to_i + 15.minutes.to_i)) }
 
       context "and there's still time" do
         it "do not stop the counter" do
@@ -63,7 +63,7 @@ module Decidim::TimeTracker
       end
 
       context "and time's up" do
-        let!(:time_event2) { create :time_event, assignation: assignation, activity: activity, start: (start_time.to_i - 1.hour.to_i), stop: (start_time.to_i - 1.hour.to_i + 15.minutes.to_i) }
+        let!(:time_event2) { create(:time_event, assignation:, activity:, start: (start_time.to_i - 1.hour.to_i), stop: (start_time.to_i - 1.hour.to_i + 15.minutes.to_i)) }
 
         it "stops the counter" do
           StopCounterJob.perform_now(time_event)

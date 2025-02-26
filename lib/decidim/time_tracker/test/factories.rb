@@ -31,9 +31,9 @@ FactoryBot.define do
 
     trait :with_assignations do
       after(:create) do |activity, _evaluator|
-        create_list(:assignation, 2, :pending, activity: activity)
-        create_list(:assignation, 3, :accepted, activity: activity)
-        create_list(:assignation, 1, :rejected, activity: activity)
+        create_list(:assignation, 2, :pending, activity:)
+        create_list(:assignation, 3, :accepted, activity:)
+        create_list(:assignation, 1, :rejected, activity:)
       end
     end
 

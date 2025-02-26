@@ -24,7 +24,7 @@ module Decidim
                class_name: "Decidim::TimeTracker::Assignation",
                through: :activities
 
-      has_one :assignee_data,
+      has_one :assignee_data, # rubocop:disable Rails/HasManyOrHasOneDependent
               class_name: "Decidim::TimeTracker::AssigneeData"
 
       has_one :assignee_questionnaire,

@@ -17,12 +17,12 @@ module Decidim
       def answer
         enforce_permission_to :answer, :questionnaire
 
-        @form = form(Decidim::Forms::QuestionnaireForm).from_params(params, session_token: session_token, ip_hash: ip_hash)
+        @form = form(Decidim::Forms::QuestionnaireForm).from_params(params, session_token:, ip_hash:)
 
         Decidim::Forms::AnswerQuestionnaire.call(@form, current_user, questionnaire) do
           on(:ok) do
             # i18n-tasks-use t("decidim.forms.questionnaires.answer.success")
-            TosAcceptance.create!(assignee: Assignee.for(current_user), time_tracker: time_tracker)
+            TosAcceptance.create!(assignee: Assignee.for(current_user), time_tracker:)
             flash[:notice] = I18n.t("answer.success", scope: i18n_flashes_scope)
             redirect_to after_answer_path
           end

@@ -8,7 +8,7 @@ module Decidim
         def initialize(component)
           @questionnaire = Decidim::Forms::Questionnaire.new
           @assignee_questionnaire = Decidim::Forms::Questionnaire.new
-          @time_tracker = Decidim::TimeTracker::TimeTracker.new(component: component, questionnaire: @questionnaire)
+          @time_tracker = Decidim::TimeTracker::TimeTracker.new(component:, questionnaire: @questionnaire)
         end
 
         def call
@@ -55,7 +55,7 @@ module Decidim
           question.merge(
             body: i18nize(question[:body]),
             description: i18nize(question[:description]),
-            questionnaire: questionnaire
+            questionnaire:
           )
         end
 

@@ -2,17 +2,17 @@
 
 require "spec_helper"
 
-describe "Milestones page", type: :system do
+describe "Milestones page" do
   include_context "with a time_tracker"
 
-  let!(:user) { create :user, :confirmed, organization: organization, nickname: "timmy" }
-  let!(:visitor) { create :user, :confirmed, organization: organization }
-  let(:task) { create :task, time_tracker: time_tracker }
-  let(:activity) { create :activity, task: task }
-  let!(:assignation) { create :assignation, activity: activity, user: user }
-  let!(:milestones) { create_list :milestone, 3, activity: activity, user: user }
-  let!(:tos_acceptance) { create :tos_acceptance, assignee: Decidim::TimeTracker::Assignee.for(user), time_tracker: time_tracker }
-  let!(:time_events) { create_list(:time_event, 2, activity: activity, assignation: assignation, total_seconds: 10) }
+  let!(:user) { create(:user, :confirmed, organization:, nickname: "timmy") }
+  let!(:visitor) { create(:user, :confirmed, organization:) }
+  let(:task) { create(:task, time_tracker:) }
+  let(:activity) { create(:activity, task:) }
+  let!(:assignation) { create(:assignation, activity:, user:) }
+  let!(:milestones) { create_list(:milestone, 3, activity:, user:) }
+  let!(:tos_acceptance) { create(:tos_acceptance, assignee: Decidim::TimeTracker::Assignee.for(user), time_tracker:) }
+  let!(:time_events) { create_list(:time_event, 2, activity:, assignation:, total_seconds: 10) }
 
   shared_examples_for "milestones page is rendered correctly" do
     it "shows total time dedicated" do
@@ -32,9 +32,9 @@ describe "Milestones page", type: :system do
     it "shows milestones" do
       expect(page).to have_content("#{user.name}'s activity")
       expect(page).to have_link(user.name, href: decidim.profile_path(nickname: "timmy"))
-      expect(page).to have_selector(".card.card--milestone", count: 3)
+      expect(page).to have_css(".milestone-card", count: 3)
 
-      within ".card.card--milestone", match: :first do
+      within ".milestone-card", match: :first do
         expect(page).to have_content(milestones.first.title)
         expect(page).to have_content(milestones.first.description)
       end
@@ -52,7 +52,7 @@ describe "Milestones page", type: :system do
     end
 
     it "does not allow to see page" do
-      within ".callout.alert" do
+      within ".flash.alert" do
         expect(page).to have_content "not authorized"
       end
     end

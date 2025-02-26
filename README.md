@@ -5,7 +5,7 @@
 [![Integration Tests](https://github.com/Platoniq/decidim-module-time_tracker/actions/workflows/system_tests.yml/badge.svg)](https://github.com/Platoniq/decidim-module-time_tracker/actions/workflows/system_tests.yml)
 [![Admin Questionnaire Tests](https://github.com/Platoniq/decidim-module-time_tracker/actions/workflows/system_questionnaire_tests.yml/badge.svg)](https://github.com/Platoniq/decidim-module-time_tracker/actions/workflows/system_questionnaire_tests.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9372a7def91c50d04e8c/maintainability)](https://codeclimate.com/github/Platoniq/decidim-module-time_tracker/maintainability)
-[![codecov](https://codecov.io/gh/Platoniq/decidim-module-time_tracker/branch/master/graph/badge.svg)](https://codecov.io/gh/Platoniq/decidim-module-time_tracker)
+[![Coverage Status](https://coveralls.io/repos/github/Platoniq/decidim-module-time_tracker/badge.svg?branch=main)](https://coveralls.io/github/Platoniq/decidim-module-time_tracker?branch=main)
 
 > **WARNING** This is not ready for production usage yet (though soon will be).
 

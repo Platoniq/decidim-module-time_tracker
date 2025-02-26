@@ -14,28 +14,25 @@ en:
       task:
         name: Name
     errors:
-      models:
-        milestone:
-          attributes:
-            attachment:
-              needs_to_be_reattached: Needs to be reattached
-        time_event:
-          attributes:
-            activity:
-              finished: Activity has finished already
-              inactive: Activity is not active
-              no_time_available: User has reached the maximum amount of time available
-                for the day
-              not_started: Activity has not started yet
-            assignation:
-              unassigned: User is not assigned to the task
-            start:
-              date_format: Start time is not a date
-            stop:
-              date_format: Stop time is not a date
-              stop_before_start: Stop is before start
+      time_event:
+        attributes:
+          activity:
+            finished: Activity has finished already
+            inactive: Activity is not active
+            no_time_available: User has reached the maximum amount of time available
+              for the day
+            not_started: Activity has not started yet
+          assignation:
+            unassigned: User is not assigned to the task
+          start:
+            date_format: Start time is not a date
+          stop:
+            date_format: Stop time is not a date
+            stop_before_start: Stop is before start
   decidim:
     admin:
+      actions:
+        manage: Manage
       filters:
         activity_id_eq:
           label: Activity
@@ -301,9 +298,9 @@ en:
         index:
           assignations_activity: "%{user_name}'s activity"
           back_to_list: Back to activities
-          joined_on: Joined on
-          last_worked_on: Last worked on
-          total_time: Total time dedicated
+          joined_on: Joined
+          last_worked_on: Last worked
+          total_time: Total time
         milestone:
           time_dedicated: Time dedicated
       models:

@@ -11,16 +11,16 @@ module Decidim::TimeTracker::Admin
         # AssignationForm,
         name: Faker::Name.name,
         email: "user@example.org",
-        existing_user: existing_user,
+        existing_user:,
         invalid?: invalid,
         current_user: user
       )
     end
 
-    let(:activity) { create :activity, task: task }
-    let(:task) { create :task }
-    let(:user) { create :user, :admin, :confirmed, organization: organization }
-    let(:organization) { create :organization }
+    let(:activity) { create(:activity, task:) }
+    let(:task) { create(:task) }
+    let(:user) { create(:user, :admin, :confirmed, organization:) }
+    let(:organization) { create(:organization) }
     let(:invalid) { false }
     let(:existing_user) { false }
 
@@ -41,7 +41,7 @@ module Decidim::TimeTracker::Admin
         expect { subject.call }.to change(Decidim::TimeTracker::Assignation, :count).by(1)
       end
 
-      it "traces the action", versioning: true do
+      it "traces the action", :versioning do
         expect(Decidim.traceability)
           .to receive(:create!)
           .with(Decidim::TimeTracker::Assignation, user, hash_including(:user, :activity, :status, :invited_at, :invited_by_user))
@@ -55,17 +55,17 @@ module Decidim::TimeTracker::Admin
 
     context "when the form has an existing user" do
       let(:existing_user) { true }
-      let(:user) { create :user, organization: organization }
+      let(:user) { create(:user, organization:) }
 
       let(:form) do
         double(
           # AssignationForm,
           name: user.name,
           email: user.email,
-          existing_user: existing_user,
+          existing_user:,
           invalid?: false,
           current_user: user,
-          user: user
+          user:
         )
       end
 
@@ -77,7 +77,7 @@ module Decidim::TimeTracker::Admin
         expect { subject.call }.to change(Decidim::TimeTracker::Assignation, :count).by(1)
       end
 
-      it "traces the action", versioning: true do
+      it "traces the action", :versioning do
         expect(Decidim.traceability)
           .to receive(:create!)
           .with(Decidim::TimeTracker::Assignation, user, hash_including(:user, :activity, :status, :invited_at, :invited_by_user))

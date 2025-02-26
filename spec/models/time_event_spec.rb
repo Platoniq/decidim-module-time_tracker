@@ -7,7 +7,7 @@ module Decidim
     describe TimeEvent do
       subject { time_event }
 
-      let(:time_event) { create(:time_event, assignation: assignation, activity: activity, user: assignation.user) }
+      let(:time_event) { create(:time_event, assignation:, activity:, user: assignation.user) }
       let!(:assignation) { create(:assignation) }
       let!(:activity) { create(:activity) }
 

@@ -2,10 +2,10 @@
 
 require "spec_helper"
 
-describe "Time tracker page", type: :system do
+describe "Time tracker page" do
   include_context "with a time_tracker"
 
-  let(:user) { create :user, :confirmed, organization: organization }
+  let(:user) { create(:user, :confirmed, organization:) }
 
   before do
     switch_to_host(user.organization.host)
@@ -27,7 +27,7 @@ describe "Time tracker page", type: :system do
     end
 
     it "shows task name" do
-      expect(page).to have_content(time_tracker.tasks.first.name["en"].upcase)
+      expect(page).to have_content(time_tracker.tasks.first.name["en"])
     end
 
     it "shows activity description" do
@@ -61,12 +61,12 @@ describe "Time tracker page", type: :system do
     end
 
     it "does not render 'let's start' callout" do
-      expect(page).not_to have_selector ".time-tracker--assignee-data"
-      expect(page).not_to have_link "Let's start!", href: assignee_questionnaire_path
+      expect(page).to have_no_css ".time-tracker--assignee-data"
+      expect(page).to have_no_link "Let's start!", href: assignee_questionnaire_path
     end
 
     it "does not render any link to assignee questionnaire" do
-      expect(page).not_to have_selector("[href=\"#{assignee_questionnaire_path}\"]")
+      expect(page).to have_no_css("[href=\"#{assignee_questionnaire_path}\"]")
     end
   end
 
@@ -78,8 +78,8 @@ describe "Time tracker page", type: :system do
       end
 
       context "when there are activities" do
-        let!(:task) { create(:task, time_tracker: time_tracker) }
-        let!(:activity) { create(:activity, task: task) }
+        let!(:task) { create(:task, time_tracker:) }
+        let!(:activity) { create(:activity, task:) }
 
         it_behaves_like "renders activity list"
         it_behaves_like "does not render links to fill in demographic data"
@@ -97,8 +97,8 @@ describe "Time tracker page", type: :system do
       end
 
       context "when there are activities" do
-        let!(:task) { create(:task, time_tracker: time_tracker) }
-        let!(:activity) { create(:activity, task: task) }
+        let!(:task) { create(:task, time_tracker:) }
+        let!(:activity) { create(:activity, task:) }
 
         it_behaves_like "renders activity list"
 
@@ -108,7 +108,7 @@ describe "Time tracker page", type: :system do
 
         context "when user has accepted terms" do
           before do
-            Decidim::TimeTracker::TosAcceptance.create!(assignee: Decidim::TimeTracker::Assignee.for(user), time_tracker: time_tracker)
+            Decidim::TimeTracker::TosAcceptance.create!(assignee: Decidim::TimeTracker::Assignee.for(user), time_tracker:)
             login_as user, scope: :user
             visit_time_tracker
           end
@@ -119,7 +119,7 @@ describe "Time tracker page", type: :system do
             it "allows joining activity" do
               expect(page).to have_button "Request to join activity"
 
-              click_button "Request to join activity"
+              click_on "Request to join activity"
 
               within "#activities .time-tracker-request" do
                 within ".callout.success" do
@@ -130,7 +130,7 @@ describe "Time tracker page", type: :system do
           end
 
           context "when user is signed up for activity" do
-            let!(:assignation) { create(:assignation, user: user, activity: activity, status: status) }
+            let!(:assignation) { create(:assignation, user:, activity:, status:) }
 
             before do
               visit_time_tracker

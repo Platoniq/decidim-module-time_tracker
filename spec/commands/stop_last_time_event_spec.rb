@@ -6,11 +6,11 @@ module Decidim::TimeTracker
   describe StopLastTimeEvent do
     subject { described_class.new(user) }
 
-    let(:activity) { create :activity, max_minutes_per_day: 60 }
-    let(:user) { create :user, :confirmed }
-    let(:assignation) { create :assignation, user: user, activity: activity, status: status }
+    let(:activity) { create(:activity, max_minutes_per_day: 60) }
+    let(:user) { create(:user, :confirmed) }
+    let(:assignation) { create(:assignation, user:, activity:, status:) }
 
-    let!(:time_event) { create :time_event, user: user, activity: activity, start: start_time.to_i }
+    let!(:time_event) { create(:time_event, user:, activity:, start: start_time.to_i) }
 
     let(:start_time) { Date.current + 12.hours - 30.minutes }
     let(:stop_time) { Date.current + 12.hours - 15.minutes }
@@ -57,13 +57,13 @@ module Decidim::TimeTracker
     end
 
     context "when the user has not started the counter" do
-      let!(:time_event) { create :time_event, user: user, activity: activity, start: start_time.to_i, stop: stop_time.to_i }
+      let!(:time_event) { create(:time_event, user:, activity:, start: start_time.to_i, stop: stop_time.to_i) }
 
       it_behaves_like "returns already_stopped"
 
       context "when the last entry is not the user" do
-        let!(:time_event) { create :time_event, user: user, activity: activity, start: start_time.to_i, stop: stop_time.to_i }
-        let!(:another_time_event) { create :time_event, activity: activity, start: (start_time.to_i + 1), stop: (stop_time.to_i + 1) }
+        let!(:time_event) { create(:time_event, user:, activity:, start: start_time.to_i, stop: stop_time.to_i) }
+        let!(:another_time_event) { create(:time_event, activity:, start: (start_time.to_i + 1), stop: (stop_time.to_i + 1)) }
 
         it_behaves_like "returns already_stopped"
       end

@@ -1,3 +1,13 @@
-**/*{.,-}min.js
-app/packs/src/vendor/**/*.js
-vendor/*
+**/*{.,-}min.js.csslintrc
+spec/decidim_dummy_app/**/*.js
+development_app
+**/node_modules/**
+bundle.js
+karma.conf.js
+webpack.config.js
+webpack.config.babel.js
+entry.test.js
+entry.js
+*_manifest.js
+coverage
+vendor/bundle

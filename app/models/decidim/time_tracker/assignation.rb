@@ -43,7 +43,7 @@ module Decidim
       end
 
       def time_dedicated_to(activity)
-        time_events.where(activity: activity).sum(&:total_seconds)
+        time_events.where(activity:).sum(&:total_seconds)
       end
 
       def can_change_status?

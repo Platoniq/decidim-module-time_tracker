@@ -11,12 +11,12 @@ module Decidim
       def index
         return redirect_to root_path if user.blank?
 
-        enforce_permission_to :index, :milestones, user: user
+        enforce_permission_to :index, :milestones, user:
       end
 
       # creates a milestone
       def create
-        enforce_permission_to :create, :milestone, activity: activity
+        enforce_permission_to(:create, :milestone, activity:)
 
         @form = form(MilestoneForm).from_params(milestone_params)
 
@@ -51,7 +51,7 @@ module Decidim
 
       def activities
         @activities ||= Activity.select("DISTINCT ON (id) *")
-                                .where(id: Milestone.where(user: user).select(:activity_id))
+                                .where(id: Milestone.where(user:).select(:activity_id))
       end
 
       def user

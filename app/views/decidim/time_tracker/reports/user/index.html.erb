@@ -1,21 +1,18 @@
-<div class="row column time-tracker--report">
+<%= render layout: "layouts/decidim/shared/layout_user_profile" do %>
   <section class="section">
     <% if assignations.any? %>
-      <div class="card__extra card--list__data">
-        <div class="card--list__data__number">
-          <%== t(".dedicated_time", time: clockify_seconds(total_time)) %>
-        </div>
-      </div>
-      <div class="card card--list">
+
+      <h3 class="h3"><%== t("reports.user.index.dedicated_time", scope: "decidim.time_tracker", time: clockify_seconds(total_time)) %></h3>
+      <div class="card__list-list pt-8">
         <% assignations.each do |assignation| %>
-          <%= link_to activity_path(assignation), class: "time-tracker--activity", target: :blank do %>
+          <%= link_to activity_path(assignation), class: "card__list time-tracker--activity", target: :blank do %>
             <div class="card--list__item">
               <div class="card--list__text">
                 <div>
-                  <h5 class="card--list__heading">
+                  <h5 class="h5 pb-2">
                     <%= translated_attribute(assignation.activity.description) %>
                   </h5>
-                  <span class="text-small">
+                  <span class="text-xs">
                     <%= assignation_status_label assignation.status %>
                     <span class="assignation--date"><%= assignation_date(assignation) %></span>
                   </span>
@@ -31,11 +28,11 @@
     <% else %>
       <div class="card--list__item">
         <div class="card--list__text">
-          <%= t(".empty") %>
+          <%= t("empty", scope: "decidim.time_tracker.reports.user.index") %>
         </div>
       </div>
     <% end %>
   </section>
-</div>
+<% end %>
 
-<%= javascript_pack_tag "decidim_time_tracker" %>
+<%= append_javascript_pack_tag "decidim_time_tracker" %>

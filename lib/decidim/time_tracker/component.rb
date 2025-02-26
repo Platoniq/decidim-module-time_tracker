@@ -30,7 +30,7 @@ Decidim.register_component(:time_tracker) do |component|
     time_tracker = Decidim::TimeTracker::TimeTracker.find_by(decidim_component_id: instance.id)
 
     answers = Decidim::Forms::Answer.where(questionnaire: time_tracker.questionnaire)
-    tasks = Decidim::TimeTracker::Task.where(time_tracker: time_tracker)
+    tasks = Decidim::TimeTracker::Task.where(time_tracker:)
 
     raise StandardError, "Can't remove this component, there are resources associated" if [answers, assignation_answers, tasks].any?(&:any?)
   end
@@ -122,7 +122,7 @@ Decidim.register_component(:time_tracker) do |component|
       name: Decidim::Components::Namer.new(participatory_space.organization.available_locales, :time_tracker).i18n_name,
       manifest_name: :time_tracker,
       published_at: Time.current,
-      participatory_space: participatory_space
+      participatory_space:
     }
 
     component = Decidim.traceability.perform_action!(
@@ -135,7 +135,7 @@ Decidim.register_component(:time_tracker) do |component|
     end
 
     time_tracker = Decidim::TimeTracker::TimeTracker.create!(
-      component: component,
+      component:,
       questionnaire: Decidim::Forms::Questionnaire.new(
         tos: Decidim::Faker::Localized.sentence(word_count: 10),
         title: Decidim::Faker::Localized.sentence(word_count: 4),
@@ -144,7 +144,7 @@ Decidim.register_component(:time_tracker) do |component|
     )
 
     assignee_data = Decidim::TimeTracker::AssigneeData.create!(
-      time_tracker: time_tracker,
+      time_tracker:,
       questionnaire: Decidim::Forms::Questionnaire.new(
         tos: Decidim::Faker::Localized.sentence(word_count: 10),
         title: Decidim::Faker::Localized.sentence(word_count: 4),
@@ -178,7 +178,7 @@ Decidim.register_component(:time_tracker) do |component|
         Decidim::TimeTracker::Task,
         admin_user,
         name: Decidim::Faker::Localized.sentence(word_count: 2),
-        time_tracker: time_tracker
+        time_tracker:
       )
 
       # Create activites for these tasks
@@ -192,7 +192,7 @@ Decidim.register_component(:time_tracker) do |component|
           end_date: 1.week.from_now + (index * 1.week),
           max_minutes_per_day: [15, 30, 45, 60].sample,
           requests_start_at: 1.week.ago + (index * 3.days),
-          task: task
+          task:
         )
 
         # Add assignations
@@ -200,21 +200,21 @@ Decidim.register_component(:time_tracker) do |component|
           assignee = Decidim.traceability.create!(
             Decidim::TimeTracker::Assignee,
             admin_user,
-            user: user
+            user:
           )
 
           Decidim.traceability.create!(
             Decidim::TimeTracker::TosAcceptance,
             admin_user,
-            assignee: assignee,
-            time_tracker: time_tracker
+            assignee:,
+            time_tracker:
           )
 
           Decidim.traceability.create!(
             Decidim::TimeTracker::Assignation,
             admin_user,
-            activity: activity,
-            user: user,
+            activity:,
+            user:,
             status: [:accepted, :rejected, :pending].sample,
             invited_at: 1.week.ago,
             invited_by_user: admin_user
@@ -224,7 +224,7 @@ Decidim.register_component(:time_tracker) do |component|
             resource.questionnaire.questions.each do |question|
               answer = Decidim::Forms::Answer.new(
                 questionnaire: resource.questionnaire,
-                question: question,
+                question:,
                 session_token: activity.session_token(user)
               )
 
@@ -235,7 +235,7 @@ Decidim.register_component(:time_tracker) do |component|
               next unless question.question_type == "single_option"
 
               Decidim::Forms::AnswerChoice.create(
-                answer: answer,
+                answer:,
                 answer_option: question.answer_options.sample,
                 body: question.body["en"]
               )

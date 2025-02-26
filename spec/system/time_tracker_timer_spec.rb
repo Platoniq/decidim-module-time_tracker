@@ -2,10 +2,10 @@
 
 require "spec_helper"
 
-describe "Time tracker page", type: :system do
+describe "Time tracker page" do
   include_context "with a full time_tracker"
 
-  let(:user) { create :user, :confirmed, organization: organization }
+  let(:user) { create(:user, :confirmed, organization:) }
 
   before do
     switch_to_host(user.organization.host)
@@ -24,17 +24,17 @@ describe "Time tracker page", type: :system do
     end
 
     it "starts the timer" do
-      expect(page).not_to have_selector ".time-tracker-activity-start"
-      expect(page).to have_selector ".time-tracker-activity-stop"
-      expect(page).to have_selector ".time-tracker-activity-pause"
+      expect(page).to have_no_css ".time-tracker-activity-start"
+      expect(page).to have_css ".time-tracker-activity-stop"
+      expect(page).to have_css ".time-tracker-activity-pause"
     end
 
     it "pauses the timer" do
-      expect(page).not_to have_content "0h0m0s"
+      expect(page).to have_no_content "0h0m0s"
       page.find(".time-tracker-activity-pause").click
-      expect(page).not_to have_selector ".time-tracker-activity-pause"
-      expect(page).to have_selector ".time-tracker-activity-stop"
-      expect(page).to have_selector ".time-tracker-activity-start"
+      expect(page).to have_no_css ".time-tracker-activity-pause"
+      expect(page).to have_css ".time-tracker-activity-stop"
+      expect(page).to have_css ".time-tracker-activity-start"
     end
 
     context "when stopping the timer" do
@@ -43,9 +43,9 @@ describe "Time tracker page", type: :system do
       end
 
       it "stops the timer" do
-        expect(page).not_to have_selector ".time-tracker-activity-stop"
-        expect(page).not_to have_selector ".time-tracker-activity-pause"
-        expect(page).to have_selector ".time-tracker-activity-start"
+        expect(page).to have_no_css ".time-tracker-activity-stop"
+        expect(page).to have_no_css ".time-tracker-activity-pause"
+        expect(page).to have_css ".time-tracker-activity-start"
         expect(page).to have_content "Leave your mark"
 
         within ".milestone" do
@@ -60,7 +60,7 @@ describe "Time tracker page", type: :system do
         end
         dynamically_attach_file(:milestone_attachment_file, Decidim::Dev.asset("city.jpeg"))
         within ".new_milestone" do
-          click_button "Save"
+          click_on "Save"
         end
 
         expect(page).to have_current_path milestones_path(user)
@@ -70,8 +70,8 @@ describe "Time tracker page", type: :system do
     end
 
     context "when starts another timer" do
-      let!(:activity2) { create(:activity, task: task) }
-      let!(:assignation2) { create(:assignation, user: user, activity: activity2) }
+      let!(:activity2) { create(:activity, task:) }
+      let!(:assignation2) { create(:assignation, user:, activity: activity2) }
 
       before do
         # renew page
@@ -79,27 +79,27 @@ describe "Time tracker page", type: :system do
       end
 
       it "has different counters" do
-        expect(page).to have_selector(".time-tracker-activity-start", count: 1)
-        expect(page).to have_selector(".time-tracker-activity-stop", count: 1)
-        expect(page).to have_selector(".time-tracker-activity-pause", count: 1)
+        expect(page).to have_css(".time-tracker-activity-start", count: 1)
+        expect(page).to have_css(".time-tracker-activity-stop", count: 1)
+        expect(page).to have_css(".time-tracker-activity-pause", count: 1)
       end
 
       it "has one counter started, one stopped" do
         expect(page).to have_content("0h0m0s", count: 1)
         expect(page).to have_content("0h0m", count: 2)
         within ".time-tracker-activity", match: :first do
-          expect(page).not_to have_content("0h0m0s")
+          expect(page).to have_no_content("0h0m0s")
         end
       end
 
       it "stops runninng counters" do
         page.find(".time-tracker-activity-start").click
         sleep 1
-        expect(page).not_to have_content("0h0m0s")
+        expect(page).to have_no_content("0h0m0s")
         within ".time-tracker-activity", match: :first do
-          expect(page).to have_selector(".time-tracker-activity-start")
-          expect(page).to have_selector(".time-tracker-activity-stop")
-          expect(page).not_to have_selector(".time-tracker-activity-pause")
+          expect(page).to have_css(".time-tracker-activity-start")
+          expect(page).to have_css(".time-tracker-activity-stop")
+          expect(page).to have_no_css(".time-tracker-activity-pause")
         end
       end
     end

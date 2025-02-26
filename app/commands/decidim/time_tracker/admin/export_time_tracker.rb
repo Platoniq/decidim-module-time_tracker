@@ -97,7 +97,7 @@ module Decidim
             params_task = {
               component: @accountability_component,
               title: task.name,
-              category: category,
+              category:,
               status: @not_started
             }
 
@@ -119,8 +119,8 @@ module Decidim
                 title: activity.description,
                 start_date: activity.start_date,
                 end_date: activity.end_date,
-                category: category,
-                status: status
+                category:,
+                status:
               }
 
               Decidim.traceability.create!(
@@ -138,11 +138,11 @@ module Decidim
         end
 
         def task_activities(task)
-          Decidim::TimeTracker::Activity.where(task: task)
+          Decidim::TimeTracker::Activity.where(task:)
         end
 
         def activities_assignations(activity)
-          Decidim::TimeTracker::Assignation.where(activity: activity)
+          Decidim::TimeTracker::Assignation.where(activity:)
         end
       end
     end

@@ -3,16 +3,16 @@
 require "spec_helper"
 
 module Decidim::TimeTracker::Admin
-  describe ActivitiesController, type: :controller do
+  describe ActivitiesController do
     routes { Decidim::TimeTracker::AdminEngine.routes }
 
-    let(:organization) { create :organization }
-    let(:user) { create(:user, :confirmed, :admin, organization: organization) }
-    let(:participatory_space) { create(:participatory_process, organization: organization) }
-    let(:component) { create :time_tracker_component, participatory_space: participatory_space }
-    let(:time_tracker) { create :time_tracker, component: component }
-    let!(:task) { create :task, time_tracker: time_tracker }
-    let!(:activity) { create :activity, task: task }
+    let(:organization) { create(:organization) }
+    let(:user) { create(:user, :confirmed, :admin, organization:) }
+    let(:participatory_space) { create(:participatory_process, organization:) }
+    let(:component) { create(:time_tracker_component, participatory_space:) }
+    let(:time_tracker) { create(:time_tracker, component:) }
+    let!(:task) { create(:task, time_tracker:) }
+    let!(:activity) { create(:activity, task:) }
 
     let(:activity_params) do
       {
@@ -43,7 +43,7 @@ module Decidim::TimeTracker::Admin
       end
 
       it "renders the empty form" do
-        get :new, params: params
+        get(:new, params:)
         expect(response).to have_http_status(:ok)
         expect(subject).to render_template(:new)
       end
@@ -60,7 +60,7 @@ module Decidim::TimeTracker::Admin
       end
 
       it "renders the empty form" do
-        get :edit, params: params
+        get(:edit, params:)
         expect(response).to have_http_status(:ok)
         expect(subject).to render_template(:edit)
       end
@@ -76,13 +76,13 @@ module Decidim::TimeTracker::Admin
 
       context "when there is permission" do
         it "returns ok" do
-          post :create, params: params
+          post(:create, params:)
           expect(flash[:notice]).to be_present
           expect(response).to have_http_status(:found)
         end
 
         it "creates the new activity" do
-          post :create, params: params
+          post(:create, params:)
           expect(Decidim::TimeTracker::Activity.last.description).to eq(activity_params[:description])
         end
       end
@@ -95,13 +95,13 @@ module Decidim::TimeTracker::Admin
         end
 
         it "returns invalid" do
-          post :create, params: params
+          post(:create, params:)
           expect(flash.now[:alert]).not_to be_blank
           expect(response).to have_http_status(:ok)
         end
 
         it "does not create the new activity" do
-          post :create, params: params
+          post(:create, params:)
           expect(Decidim::TimeTracker::Activity.count).to eq(1)
         end
       end
@@ -116,7 +116,7 @@ module Decidim::TimeTracker::Admin
           end_date: 1.month.from_now.strftime("%d/%m/%Y %H:%M"),
           max_minutes_per_day: 60,
           requests_start_at: 2.months.ago.strftime("%d/%m/%Y %H:%M"),
-          task: task
+          task:
         }
       end
 
@@ -130,13 +130,13 @@ module Decidim::TimeTracker::Admin
 
       context "when there is permission" do
         it "returns ok" do
-          patch :update, params: params
+          patch(:update, params:)
           expect(flash[:notice]).to be_present
           expect(response).to have_http_status(:found)
         end
 
         it "updates the activity" do
-          patch :update, params: params
+          patch(:update, params:)
           expect(Decidim::TimeTracker::Activity.first.description).to eq(activity_params[:description])
         end
       end
@@ -149,13 +149,13 @@ module Decidim::TimeTracker::Admin
         end
 
         it "returns invalid" do
-          post :update, params: params
+          post(:update, params:)
           expect(flash.now[:alert]).not_to be_blank
           expect(response).to have_http_status(:ok)
         end
 
         it "does not create the new activity" do
-          post :update, params: params
+          post(:update, params:)
           expect(Decidim::TimeTracker::Activity.first.description).to eq(activity[:description])
         end
       end
@@ -173,13 +173,13 @@ module Decidim::TimeTracker::Admin
 
       context "when there is permission" do
         it "returns ok" do
-          delete :destroy, params: params
+          delete(:destroy, params:)
           expect(flash[:notice]).to be_present
           expect(response).to have_http_status(:found)
         end
 
         it "destroys the activity" do
-          delete :destroy, params: params
+          delete(:destroy, params:)
           expect { activity.reload }.to raise_error(ActiveRecord::RecordNotFound)
         end
       end

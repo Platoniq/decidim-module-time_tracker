@@ -6,12 +6,12 @@ module Decidim::TimeTracker::Admin
   describe UpdateAssignation do
     subject { described_class.new(assignation, user, status) }
 
-    let(:organization) { create :organization }
-    let(:task) { create :task }
-    let(:activity) { create :activity, task: task }
-    let(:user) { create(:user, :confirmed, :admin, organization: organization) }
-    let(:other_user) { create :user, :confirmed, organization: organization }
-    let(:assignation) { create :assignation, activity: activity, user: other_user, status: :pending }
+    let(:organization) { create(:organization) }
+    let(:task) { create(:task) }
+    let(:activity) { create(:activity, task:) }
+    let(:user) { create(:user, :confirmed, :admin, organization:) }
+    let(:other_user) { create(:user, :confirmed, organization:) }
+    let(:assignation) { create(:assignation, activity:, user: other_user, status: :pending) }
     let(:status) { :accepted }
 
     context "when the admin accepts the assignation" do
@@ -24,7 +24,7 @@ module Decidim::TimeTracker::Admin
         expect(assignation.status.to_sym).to eq(status)
       end
 
-      it "traces the action", versioning: true do
+      it "traces the action", :versioning do
         expect(Decidim.traceability)
           .to receive(:update!)
           .with(assignation, user, hash_including(status: :accepted))

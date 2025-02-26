@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "decidim-core", Decidim::TimeTracker::COMPAT_DECIDIM_VERSION
   s.add_dependency "decidim-forms", Decidim::TimeTracker::COMPAT_DECIDIM_VERSION
 
+  s.add_dependency "concurrent-ruby", "= 1.3.4"
   s.add_dependency "wicked_pdf", "~> 2.1"
   s.add_dependency "wkhtmltopdf-binary", "~> 0.12"
 

@@ -12,7 +12,7 @@ module Decidim
         helper_method :activities, :assignations, :total_time, :activity_path
 
         def index
-          enforce_permission_to :read, :user, current_user: current_user
+          enforce_permission_to :read, :user, current_user:
         end
 
         private

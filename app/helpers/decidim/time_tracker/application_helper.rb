@@ -72,7 +72,7 @@ module Decidim
       end
 
       def user_total_time_dedicated(user)
-        Assignation.where(user: user).sum(&:time_dedicated)
+        Assignation.where(user:).sum(&:time_dedicated)
       end
 
       def user_joined_at(user)
@@ -80,7 +80,7 @@ module Decidim
       end
 
       def user_last_milestone(user)
-        Milestone.where(user: user).order(created_at: :desc).first
+        Milestone.where(user:).order(created_at: :desc).first
       end
 
       def must_fill_in_data?

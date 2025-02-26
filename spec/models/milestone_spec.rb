@@ -7,7 +7,7 @@ module Decidim
     describe Milestone do
       subject { milestone }
 
-      let(:milestone) { create(:milestone, activity: activity, user: user) }
+      let(:milestone) { create(:milestone, activity:, user:) }
       let(:activity) { create(:activity) }
       let(:user) { create(:user) }
 

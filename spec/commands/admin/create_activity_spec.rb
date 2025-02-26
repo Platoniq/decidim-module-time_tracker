@@ -20,9 +20,9 @@ module Decidim::TimeTracker::Admin
       )
     end
 
-    let(:task) { create :task }
-    let(:user) { create :user, :admin, :confirmed, organization: organization }
-    let(:organization) { create :organization }
+    let(:task) { create(:task) }
+    let(:user) { create(:user, :admin, :confirmed, organization:) }
+    let(:organization) { create(:organization) }
     let(:invalid) { false }
 
     context "when the form is not valid" do
@@ -42,7 +42,7 @@ module Decidim::TimeTracker::Admin
         expect { subject.call }.to change(Decidim::TimeTracker::Activity, :count).by(1)
       end
 
-      it "traces the action", versioning: true do
+      it "traces the action", :versioning do
         expect(Decidim.traceability)
           .to receive(:create!)
           .with(Decidim::TimeTracker::Activity, user, hash_including(:description, :active, :start_date, :end_date, :max_minutes_per_day, :requests_start_at))

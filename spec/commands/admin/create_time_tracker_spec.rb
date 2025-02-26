@@ -6,10 +6,10 @@ module Decidim::TimeTracker::Admin
   describe CreateTimeTracker do
     subject { described_class.new(component) }
 
-    let(:organization) { create :organization }
-    let(:user) { create :user, :admin, :confirmed, organization: organization }
-    let(:participatory_process) { create :participatory_process, organization: organization }
-    let(:component) { create :time_tracker_component, participatory_space: participatory_process }
+    let(:organization) { create(:organization) }
+    let(:user) { create(:user, :admin, :confirmed, organization:) }
+    let(:participatory_process) { create(:participatory_process, organization:) }
+    let(:component) { create(:time_tracker_component, participatory_space: participatory_process) }
 
     context "when the save command is not successful" do
       let(:component) { nil }

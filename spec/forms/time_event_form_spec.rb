@@ -7,18 +7,18 @@ module Decidim::TimeTracker
     subject(:form) { described_class.from_params(attributes) }
 
     let(:user) { create(:user) }
-    let(:assignation) { create(:assignation, activity: activity) }
+    let(:assignation) { create(:assignation, activity:) }
     let(:activity) { create(:activity) }
     let(:start) { Time.current.to_date }
     let(:stop) { nil }
 
     let(:attributes) do
       {
-        activity: activity,
+        activity:,
         user_id: user.id,
-        assignation: assignation,
-        start: start,
-        stop: stop
+        assignation:,
+        start:,
+        stop:
       }
     end
 
@@ -27,33 +27,33 @@ module Decidim::TimeTracker
     context "when user is not assgined to activity" do
       let(:assignation) { create(:assignation) }
 
-      it { is_expected.to be_invalid }
+      it { is_expected.not_to be_valid }
     end
 
     context "when start is not a Time" do
       let(:start) { 2134 }
 
-      it { is_expected.to be_invalid }
+      it { is_expected.not_to be_valid }
     end
 
     context "when stop is not a Time" do
       let(:stop) { 1234 }
 
-      it { is_expected.to be_invalid }
+      it { is_expected.not_to be_valid }
     end
 
     context "when stop is lower than start" do
       let(:stop) { 10.minutes.ago }
 
-      it { is_expected.to be_invalid }
+      it { is_expected.not_to be_valid }
     end
 
     context "when no user is assigned" do
       let(:attributes) do
         {
-          activity: activity,
-          assignation: assignation,
-          start: start
+          activity:,
+          assignation:,
+          start:
         }
       end
 

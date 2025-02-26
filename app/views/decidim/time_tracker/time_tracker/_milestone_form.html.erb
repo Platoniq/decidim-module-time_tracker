@@ -1,24 +1,30 @@
-<div class="row milestone hide">
+<div class="row milestone pt-2 hidden">
     <div class="column large-4 card-grid">
-      <h3 class="title">
+      <h3 class="h3 title">
         <%= t("title", scope: "decidim.time_tracker.milestone_form") %>
       </h3>
 
-      <div class="description">
+      <div class="description pt-2">
         <%= t("description", scope: "decidim.time_tracker.milestone_form") %>
       </div>
     </div>
-    <div class="column large-8 card-grid">
+    <div class="form__wrapper">
 
-    <%= decidim_form_for(@form, url: milestones_path) do |form| %>
-      <%= form.text_field :title %>
-      <%= form.text_area :description %>
+      <%= decidim_form_for(@form, url: milestones_path) do |form| %>
+        <div class="row column">
+          <%= form.text_field :title %>
+        </div>
 
-      <%= form.hidden_field :activity_id, value: activity.id %>
+        <div class="row column">
+          <%= form.text_area :description %>
+        </div>
 
-      <%= form.fields_for :attachment, @form.attachment do |nested_form| %>
-        <div class="field">
-          <%= nested_form.upload :file, optional: false %>
+        <%= form.hidden_field :activity_id, value: activity.id %>
+
+        <%= form.fields_for :attachment, @form.attachment do |nested_form| %>
+          <div class="row column">
+            <%= nested_form.upload :file, required: true, button_class: "button button__sm button__transparent-secondary" %>
+          </div>
           <% if @form.errors[:attachment].present? %>
             <% @form.errors[:attachment].each do |message| %>
               <small class="form-error is-visible">
@@ -26,10 +32,11 @@
               </small>
             <% end %>
           <% end %>
+        <% end %>
+
+        <div class="pt-4">
+          <%= form.submit t( "button_submit", scope: "decidim.time_tracker.milestone_form"), class: "button button__lg button__secondary" %>
         </div>
       <% end %>
-
-      <%= form.submit  t("button_submit", scope: "decidim.time_tracker.milestone_form") %>
-    <% end %>
     </div>
   </div>

@@ -10,7 +10,7 @@ module Decidim
       def start
         enforce_permission_to :start, :time_events
 
-        form = form(TimeEventForm).from_params(activity: activity, assignation: assignation)
+        form = form(TimeEventForm).from_params(activity:, assignation:)
         StartTimeEvent.call(form) do
           on(:ok) do |time_event|
             render json: { message: I18n.t("time_events.start.success", scope: "decidim.time_tracker"),
@@ -61,7 +61,7 @@ module Decidim
       end
 
       def assignation
-        Assignation.find_by(user: current_user, activity: activity)
+        Assignation.find_by(user: current_user, activity:)
       end
     end
   end

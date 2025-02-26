@@ -6,6 +6,7 @@ module Decidim
       # This class holds a Form to create/update task from Decidim's admin panel.
       class TaskForm < Decidim::Form
         include TranslatableAttributes
+        include TranslationsHelper
 
         mimic :task
 

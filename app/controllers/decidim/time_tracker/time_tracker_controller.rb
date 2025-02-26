@@ -20,7 +20,7 @@ module Decidim
       end
 
       def assignation_milestones(activity)
-        Milestone.where(activity: activity).order(created_at: :desc).select("DISTINCT ON (decidim_user_id, created_at) *")
+        Milestone.where(activity:).order(created_at: :desc).select("DISTINCT ON (decidim_user_id, created_at) *")
       end
 
       def start_endpoint(activity)

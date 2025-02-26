@@ -10,12 +10,12 @@ module Decidim::TimeTracker
     let(:context) do
       {
         current_organization: organization,
-        current_component: current_component,
+        current_component:,
         current_participatory_space: participatory_process
       }
     end
-    let(:participatory_process) { create :participatory_process, organization: organization }
-    let(:current_component) { create :time_tracker_component, participatory_space: participatory_process }
+    let(:participatory_process) { create(:participatory_process, organization:) }
+    let(:current_component) { create(:time_tracker_component, participatory_space: participatory_process) }
 
     let(:description) do
       Decidim::Faker::Localized.sentence(word_count: 3)
@@ -26,12 +26,12 @@ module Decidim::TimeTracker
 
     let(:attributes) do
       {
-        description: description,
+        description:,
         active: true,
-        start_date: start_date,
-        end_date: end_date,
+        start_date:,
+        end_date:,
         max_minutes_per_day: 3600,
-        requests_start_at: requests_start_at
+        requests_start_at:
       }
     end
 

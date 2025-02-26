@@ -3,17 +3,17 @@
 require "spec_helper"
 
 module Decidim::TimeTracker
-  describe TimeTrackerController, type: :controller do
+  describe TimeTrackerController do
     routes { Decidim::TimeTracker::Engine.routes }
 
     include_context "with a time_tracker"
 
-    let(:user) { create :user, :confirmed, organization: organization }
+    let(:user) { create(:user, :confirmed, organization:) }
 
-    let!(:milestone) { create :milestone, activity: activity, user: assignations.first.user }
-    let!(:activity) { create :activity, task: task }
-    let!(:task) { create :task, time_tracker: time_tracker }
-    let!(:assignations) { create_list :assignation, 3, :accepted, activity: activity }
+    let!(:milestone) { create(:milestone, activity:, user: assignations.first.user) }
+    let!(:activity) { create(:activity, task:) }
+    let!(:task) { create(:task, time_tracker:) }
+    let!(:assignations) { create_list(:assignation, 3, :accepted, activity:) }
 
     before do
       request.env["decidim.current_organization"] = organization

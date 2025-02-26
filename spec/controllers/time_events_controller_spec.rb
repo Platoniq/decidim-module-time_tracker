@@ -3,16 +3,16 @@
 require "spec_helper"
 
 module Decidim::TimeTracker
-  describe TimeEventsController, type: :controller do
+  describe TimeEventsController do
     routes { Decidim::TimeTracker::Engine.routes }
 
     include_context "with a time_tracker"
 
-    let(:user) { create :user, :confirmed, organization: organization }
+    let(:user) { create(:user, :confirmed, organization:) }
 
-    let(:task) { create :task, time_tracker: time_tracker }
-    let(:activity) { create :activity, task: task }
-    let!(:assignation) { create :assignation, activity: activity, user: user }
+    let(:task) { create(:task, time_tracker:) }
+    let(:activity) { create(:activity, task:) }
+    let!(:assignation) { create(:assignation, activity:, user:) }
 
     let(:params) do
       {
@@ -34,10 +34,10 @@ module Decidim::TimeTracker
     describe "post #start" do
       context "when is a new entry" do
         it "creates a new time event" do
-          get :start, params: params
+          get(:start, params:)
           expect(response).to have_http_status(:success)
 
-          resp = JSON.parse(response.body)
+          resp = response.parsed_body
           last = Decidim::TimeTracker::TimeEvent.first # default scope is order by :desc
 
           expect(resp["id"]).to eq(last.id)
@@ -47,43 +47,43 @@ module Decidim::TimeTracker
       end
 
       context "when a previous counter exists" do
-        let!(:time_event) { create(:time_event, start: 15.minutes.ago, assignation: assignation, activity: activity) }
+        let!(:time_event) { create(:time_event, start: 15.minutes.ago, assignation:, activity:) }
 
         it "returns already active" do
-          get :start, params: params
+          get(:start, params:)
           expect(response).to have_http_status(:success)
 
-          resp = JSON.parse(response.body)
+          resp = response.parsed_body
           expect(resp["id"]).to eq(time_event.id)
           expect(resp["error"]).to eq("Counter already started")
         end
       end
 
       context "when the assignation is not in the activity" do
-        let(:assignation) { create(:assignation, user: user) }
+        let(:assignation) { create(:assignation, user:) }
 
         it "returns error" do
-          get :start, params: params
+          get(:start, params:)
 
           expect(response).to have_http_status(:unprocessable_entity)
         end
       end
 
       context "when the assignation is not accepted in the activity" do
-        let(:assignation) { create(:assignation, :pending, activity: activity, user: user) }
+        let(:assignation) { create(:assignation, :pending, activity:, user:) }
 
         it "returns error" do
-          get :start, params: params
+          get(:start, params:)
 
           expect(response).to have_http_status(:unprocessable_entity)
         end
       end
 
       context "when the assignation is not in the time window for the activity" do
-        let(:activity) { create :activity, task: task, start_date: 1.day.from_now }
+        let(:activity) { create(:activity, task:, start_date: 1.day.from_now) }
 
         it "returns error" do
-          get :start, params: params
+          get(:start, params:)
 
           expect(response).to have_http_status(:unprocessable_entity)
         end
@@ -91,12 +91,12 @@ module Decidim::TimeTracker
     end
 
     describe "post #stop" do
-      let!(:time_event) { create :time_event, start: 1.hour.ago, activity: activity, assignation: assignation }
+      let!(:time_event) { create(:time_event, start: 1.hour.ago, activity:, assignation:) }
 
       context "when counter is active" do
         it "stops the time entry" do
-          get :stop, params: params
-          resp = JSON.parse(response.body)
+          get(:stop, params:)
+          resp = response.parsed_body
           entry = JSON.parse(resp["timeEvent"])
 
           expect(response).to have_http_status(:success)
@@ -108,13 +108,13 @@ module Decidim::TimeTracker
       end
 
       context "when counter is stopped" do
-        let!(:time_event) { create :time_event, start: 1.hour.ago, stop: 15.minutes.ago, activity: activity, assignation: assignation }
+        let!(:time_event) { create(:time_event, start: 1.hour.ago, stop: 15.minutes.ago, activity:, assignation:) }
 
         it "returns already stopped" do
-          get :stop, params: params
+          get(:stop, params:)
           expect(response).to have_http_status(:success)
 
-          resp = JSON.parse(response.body)
+          resp = response.parsed_body
           expect(resp["error"]).to eq("Counter already stopped")
         end
       end

@@ -4,20 +4,20 @@ shared_examples "export time tracker questionnaire answers" do
   let!(:questionnaire) { create(:questionnaire, :with_questions) }
   let!(:answers) do
     questionnaire.questions.map do |question|
-      create_list :answer, 3, questionnaire: questionnaire, question: question, session_token: "#{rand(100)}-#{activity.id}"
+      create_list(:answer, 3, questionnaire:, question:, session_token: "#{rand(100)}-#{activity.id}")
     end.flatten
   end
 
   let(:component) { create(:time_tracker_component) }
-  let(:time_tracker) { create(:time_tracker, component: component) }
-  let(:task) { create(:task, time_tracker: time_tracker) }
-  let!(:activity) { create(:activity, task: task) }
+  let(:time_tracker) { create(:time_tracker, component:) }
+  let(:task) { create(:task, time_tracker:) }
+  let!(:activity) { create(:activity, task:) }
 
   it "exports a CSV" do
     visit_component_admin
 
     find(".exports.dropdown").click
-    perform_enqueued_jobs { click_link "CSV" }
+    perform_enqueued_jobs { click_on "CSV" }
 
     within ".callout.success" do
       expect(page).to have_content("in progress")
@@ -32,7 +32,7 @@ shared_examples "export time tracker questionnaire answers" do
     visit_component_admin
 
     find(".exports.dropdown").click
-    perform_enqueued_jobs { click_link "JSON" }
+    perform_enqueued_jobs { click_on "JSON" }
 
     within ".callout.success" do
       expect(page).to have_content("in progress")

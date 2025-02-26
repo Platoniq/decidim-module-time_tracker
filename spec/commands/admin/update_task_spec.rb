@@ -6,11 +6,11 @@ module Decidim::TimeTracker::Admin
   describe UpdateTask do
     subject { described_class.new(task, form, user) }
 
-    let(:organization) { create :organization }
-    let(:component) { create :time_tracker_component }
-    let(:time_tracker) { create(:time_tracker, component: component) }
-    let(:task) { create(:task, time_tracker: time_tracker) }
-    let(:user) { create(:user, :confirmed, :admin, organization: organization) }
+    let(:organization) { create(:organization) }
+    let(:component) { create(:time_tracker_component) }
+    let(:time_tracker) { create(:time_tracker, component:) }
+    let(:task) { create(:task, time_tracker:) }
+    let(:user) { create(:user, :confirmed, :admin, organization:) }
     let(:form) do
       double(
         # taskForm,
@@ -40,7 +40,7 @@ module Decidim::TimeTracker::Admin
         expect(task.name).to eq(form.name)
       end
 
-      it "traces the action", versioning: true do
+      it "traces the action", :versioning do
         expect(Decidim.traceability)
           .to receive(:update!)
           .with(task, user, hash_including(name: form.name))
