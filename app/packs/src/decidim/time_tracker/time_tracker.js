@@ -2,78 +2,123 @@ import TimerApi from "src/decidim/time_tracker/timer_api"
 import ActivityUI from "src/decidim/time_tracker/activity_ui"
 import updateReports from "src/decidim/time_tracker/updateReports"
 
-$(() => {
-  $(document).ready(updateReports);
+document.addEventListener("DOMContentLoaded", () => {
+  updateReports();
   // For each request track ajax responses
-  $(document).on("ajax:success", ".time-tracker-request", (event) => {
-    const detail = event.detail;
-    const data = detail[0];
-    $(event.target).replaceWith(`<div class="callout success">${data.message}</div>`);
-  })
-  $(document).on("ajax:error", ".time-tracker-request", (event) => {
-    const detail = event.detail;
-    const data = detail[0];
-    const $form = $(event.target);
-    const $callout = $(`<div class="callout alert">${data.message}</div>`).insertAfter($form);
-    $form.hide();
-    setTimeout(() => $callout.fadeOut(() => { $callout.remove(); $form.show(); }), 2000);  // eslint-disable-line max-statements-per-line
+  const timeTrackerRequests = document.querySelectorAll(".time-tracker-request");
+  
+  timeTrackerRequests.forEach((element) => {
+    element.addEventListener("ajax:success", (event) => {
+      const detail = event.detail;
+      const data = detail[0];
+
+      const newElement = document.createElement("div");
+      newElement.classList.add("callout", "success", "m-4");
+      newElement.textContent = data.message;
+
+      element.replaceWith(newElement);
+    });
+  });
+
+  timeTrackerRequests.forEach((form) => {
+    form.addEventListener("ajax:error", (event) => {
+      const detail = event.detail;
+      const data = detail[0];
+
+      const callout = document.createElement("div");
+      callout.classList.add("callout", "alert", "m-4");
+      callout.textContent = data.message;
+
+      form.parentNode.insertBefore(callout, form.nextSibling);
+      form.style.display = "none";
+
+      setTimeout(() => {
+        callout.style.transition = "opacity 1s";
+        callout.style.opacity = 0;
+
+        callout.addEventListener("transitionend", () => {
+          callout.remove();
+          form.style.display = "block";
+        });
+      }, 2000);
+    });
   });
 
   // For each activity set up the counters
-  $(".time-tracker-activity").each(function() {
-    const $activity = $(this); // eslint-disable-line no-invalid-this
-    const $milestone = $activity.find(".milestone");
-    const activity = new ActivityUI($activity);
+  const activities = document.querySelectorAll(".time-tracker-activity");
+
+  activities.forEach((activityElement) => {
+    const milestone = activityElement.querySelector(".milestone");
+    const activity = new ActivityUI(activityElement);
     const api = new TimerApi(activity.startEndpoint, activity.stopEndpoint);
+
     // store api
-    $activity.data("_activity", activity);
-    $activity.data("_api", api);
-    if ($activity.data("counter-active")) {
+    activityElement._activity = activity;
+    activityElement._api = api;
+
+    if (activityElement.dataset.counterActive === "true") {
       activity.showPauseStop();
       activity.startCounter();
     }
 
     activity.onStop = () => {
       console.log("automatic stop");
-      activity.showError($activity.data("text-counter-stopped"));
+      activity.showError(activityElement.dataset.textCounterStopped);
       activity.showStart();
       // Unnecessary if the job is working well
       api.stop();
     };
 
-    $activity.find(".time-tracker-activity-start").on("click", () => {
-      activity.showPauseStop();
-      api.start().
-        done((data) => {
-          // stop others
-          $(".time-tracker-activity").each(function() {
-            const activityData = $(this).data("_activity"); // eslint-disable-line no-invalid-this
-            if (activityData.isRunning()) {
-              activityData.showPlayStop().stopCounter();
-            }
-          });
-          activity.startCounter(data)
-        }).
-        fail(activity.showError.bind(activity));
-    });
+    const startButton = activityElement.querySelector(".time-tracker-activity-start");
+    const pauseButton = activityElement.querySelector(".time-tracker-activity-pause");
+    const stopButton = activityElement.querySelector(".time-tracker-activity-stop");
 
-    $activity.find(".time-tracker-activity-pause").on("click", () => {
-      activity.showPlayStop();
-      api.stop().
-        done((data) => activity.stopCounter(data)).
-        fail(activity.showError.bind(activity));
-    });
+    // Start button click
+    if (startButton) {
+      startButton.addEventListener("click", () => {
+        api.start().
+          then((data) => {
+            // select all counters except the clicked one
+            activity.activity.classList.add("current")
+            const otherActivities = document.querySelectorAll('div[class="time-tracker-activity"]');
+            // stop all these counters
+            otherActivities.forEach((otherActivityElement) => {
+              const activityData = otherActivityElement._activity;
+              if (activityData.isRunning()) {
+                activityData.showPlayStop();
+                activityData.stopCounter();
+              }
+            });
+            // start only the clicked counter
+            activity.showPauseStop();
+            activity.startCounter(data);
+            activity.activity.classList.remove("current")
+          }).
+          catch(activity.showError.bind(activity));
+      });
+    }
 
-    $activity.find(".time-tracker-activity-stop").on("click", () => {
-      activity.showStart();
-      api.stop().
-        done((data) => { 
-          activity.stopCounter(data);
-          console.log("show milestone creator");
-          $milestone.removeClass("hidden");
-        }).
-        fail(activity.showError.bind(activity));
-    });
+    if (pauseButton) {
+      pauseButton.addEventListener("click", () => {
+        activity.showPlayStop();
+        api.stop().
+          then((data) => activity.stopCounter(data)).
+          catch(activity.showError.bind(activity));
+      });
+    }
+
+    if (stopButton) {
+      stopButton.addEventListener("click", () => {
+        activity.showStart();
+        api.stop().
+          then((data) => {
+            activity.stopCounter(data);
+            console.log("show milestone creator");
+            milestone.classList.remove("hidden");
+          }).
+          catch(activity.showError.bind(activity));
+      });
+    }
   });
 });
 

@@ -1,21 +1,21 @@
 export default class ActivityUI { // eslint-disable-line no-unused-vars
   constructor(target) {
-    this.$activity = $(target);
-    this.$elapsed = this.$activity.find(".elapsed-time-clock");
-    this.$startButton = this.$activity.find(".time-tracker-activity-start");
-    this.$pauseButton = this.$activity.find(".time-tracker-activity-pause");
-    this.$stopButton = this.$activity.find(".time-tracker-activity-stop");
+    this.activity = target;
+    this.elapsedElement = this.activity.querySelector(".elapsed-time-clock");
+    this.startButton = this.activity.querySelector(".time-tracker-activity-start");
+    this.pauseButton = this.activity.querySelector(".time-tracker-activity-pause");
+    this.stopButton = this.activity.querySelector(".time-tracker-activity-stop");
     this.interval = null;
     this.initTime = this.now;
-    this.onStop = $.noop;
+    this.onStop = () => {};
   }
 
   get startEndpoint() {
-    return this.$activity.data("start-endpoint");
+    return this.activity.dataset.startEndpoint;
   }
 
   get stopEndpoint() {
-    return this.$activity.data("stop-endpoint");
+    return this.activity.dataset.stopEndpoint;
   }
 
   get now() {
@@ -23,45 +23,67 @@ export default class ActivityUI { // eslint-disable-line no-unused-vars
   }
 
   get elapsed() {
-    return parseInt(this.$activity.data("elapsed-time") || 0, 10);
+    return parseInt(this.activity.dataset.elapsedTime || 0, 10);
   }
 
   set elapsed(seconds) {
-    this.$activity.data("elapsed-time", seconds); 
+    this.activity.dataset.elapsedTime = seconds;
   }
 
   get remaining() {
-    return parseInt(this.$activity.data("remaining-time") || 0, 10);
+    return parseInt(this.activity.dataset.remainingTime || 0, 10);
   }
 
   set remaining(seconds) {
-    this.$activity.data("remaining-time", seconds); 
+    this.activity.dataset.remainingTime = seconds;
   }
 
   showStart() {
-    this.$startButton.removeClass("hidden");
-    this.$pauseButton.addClass("hidden");
-    this.$stopButton.addClass("hidden");
+    if (this.startButton) {
+      this.startButton.classList.remove("hidden");
+    }
+    if (this.pauseButton) {
+      this.pauseButton.classList.add("hidden");
+    }
+    if (this.stopButton) {
+      this.stopButton.classList.add("hidden");
+    }
     return this;
   }
 
   showPauseStop() {
-    this.$startButton.addClass("hidden");
-    this.$pauseButton.removeClass("hidden");
-    this.$stopButton.removeClass("hidden");
+    if (this.startButton) {
+      this.startButton.classList.add("hidden");
+    }
+    if (this.pauseButton) {
+      this.pauseButton.classList.remove("hidden");
+    }
+    if (this.stopButton) {
+      this.stopButton.classList.remove("hidden");
+    }
     return this;
   }
 
   showPlayStop() {
-    this.$startButton.removeClass("hidden");
-    this.$pauseButton.addClass("hidden");
-    this.$stopButton.removeClass("hidden");
+    if (this.startButton) {
+      this.startButton.classList.remove("hidden");
+    }
+    if (this.pauseButton) {
+      this.pauseButton.classList.add("hidden");
+    }
+    if (this.stopButton) {
+      this.stopButton.classList.add("hidden");
+    }
     return this;
   }
 
   showError(error) {
-    this.$activity.find(".callout.alert").html(error).removeClass("hidden");
-    this.showStart(this.$activity);
+    const calloutAlert = this.activity.querySelector(".callout.alert");
+    if (calloutAlert) {
+      calloutAlert.innerHTML = error;
+      calloutAlert.classList.remove("hidden");
+    }
+    this.showStart();
     return this;
   }
 
@@ -74,12 +96,12 @@ export default class ActivityUI { // eslint-disable-line no-unused-vars
   }
 
   updateElapsedTime() {
-    const diff = this.now - this.initTime
+    const diff = this.now - this.initTime;
     if (this.remaining <= diff) {
-      this.stopCounter()
+      this.stopCounter();
       return this.onStop();
     }
-    this.$elapsed.html(this.clockifySeconds(this.elapsed + diff));
+    this.elapsedElement.innerHTML = this.clockifySeconds(this.elapsed + diff);
 
     return null;
   }
@@ -88,6 +110,7 @@ export default class ActivityUI { // eslint-disable-line no-unused-vars
     console.log("starting counter", data)
     clearInterval(this.interval);
     this.initTime = this.now;
+    this.running = true;
     this.interval = setInterval(() => {
       this.updateElapsedTime();
     }, 1000);
@@ -99,12 +122,13 @@ export default class ActivityUI { // eslint-disable-line no-unused-vars
     console.log("stopping counter", data)
     this.elapsed += diff;
     this.remaining -= diff;
+    this.running = false;
     clearInterval(this.interval);
     return this;
   }
 
   isRunning() {
-    return Boolean(this.interval);
+    return this.running;
   }
 
   showMilestone() {

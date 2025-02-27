@@ -1,6 +1,6 @@
 import createFieldDependentInputs from "src/decidim/admin/field_dependent_inputs.component"
 
-$(() => { 
+document.addEventListener("DOMContentLoaded", () => {
   const $assignationType = $("#assignation_existing_user");
 
   createFieldDependentInputs({

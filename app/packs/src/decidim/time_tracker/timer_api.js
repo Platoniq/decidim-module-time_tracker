@@ -4,52 +4,58 @@ export default class TimerApi {
   constructor(startEndpoint, stopEndpoint) {
     this.startEndpoint = startEndpoint;
     this.stopEndpoint = stopEndpoint;
-    this.csrfToken = $("meta[name=csrf-token]").attr("content");
-  }
+    this.csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+  }  
 
   start() {
-    const promise = $.Deferred(); // eslint-disable-line new-cap
-
-    $.ajax({
-      method: "POST",
-      url: this.startEndpoint,
-      contentType: "application/json",
-      headers: {
-        "X-CSRF-Token": this.csrfToken
-      },
-      success: (data) => {
-        promise.resolve(data);
-      },
-      error: (jq) => {
-        const error = (jq.responseJSON && jq.responseJSON.error) || "Unkown error starting timer";
-        console.error("error starting time", error);
-        promise.reject(error);
-      }
+    return new Promise((resolve, reject) => {
+      fetch(this.startEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": this.csrfToken
+        },
+        body: JSON.stringify({})
+      }).
+        then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to start timer");
+          }
+          return response.json();
+        }).
+        then((data) => {
+          resolve(data);
+        }).
+        catch((error) => {
+          console.error("Error starting timer", error);
+          reject(error.message || "Unknown error starting timer");
+        });
     });
-
-    return promise;
   }
-  
+
   stop() {
-    const promise = $.Deferred(); // eslint-disable-line new-cap
-
-    $.ajax({
-      method: "POST",
-      url: this.stopEndpoint,
-      contentType: "application/json",
-      headers: {
-        "X-CSRF-Token": this.csrfToken
-      },
-      success: (data) => {
-        promise.resolve(data);
-      },
-      error: (jq) => {
-        const error = (jq.responseJSON && jq.responseJSON.error) || "Unkown error stopping timer";
-        console.error("error stopping time", error);
-        promise.reject(error);
-      }
+    return new Promise((resolve, reject) => {
+      fetch(this.stopEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": this.csrfToken
+        },
+        body: JSON.stringify({})
+      }).
+        then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to stop timer");
+          }
+          return response.json();
+        }).
+        then((data) => {
+          resolve(data);
+        }).
+        catch((error) => {
+          console.error("Error stopping timer", error);
+          reject(error.message || "Unknown error stopping timer");
+        });
     });
-
-    return promise;
-  }
+  }  
 }
