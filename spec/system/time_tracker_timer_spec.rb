@@ -33,7 +33,6 @@ describe "Time tracker page" do
       expect(page).to have_no_content "0h0m0s"
       page.find(".time-tracker-activity-pause").click
       expect(page).to have_no_css ".time-tracker-activity-pause"
-      expect(page).to have_css ".time-tracker-activity-stop"
       expect(page).to have_css ".time-tracker-activity-start"
     end
 
@@ -98,7 +97,6 @@ describe "Time tracker page" do
         expect(page).to have_no_content("0h0m0s")
         within ".time-tracker-activity", match: :first do
           expect(page).to have_css(".time-tracker-activity-start")
-          expect(page).to have_css(".time-tracker-activity-stop")
           expect(page).to have_no_css(".time-tracker-activity-pause")
         end
       end

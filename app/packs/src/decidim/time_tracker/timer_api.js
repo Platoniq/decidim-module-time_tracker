@@ -4,8 +4,8 @@ export default class TimerApi {
   constructor(startEndpoint, stopEndpoint) {
     this.startEndpoint = startEndpoint;
     this.stopEndpoint = stopEndpoint;
-    this.csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-  }  
+    this.csrfToken = $("meta[name=csrf-token]").attr("content");
+  }
 
   start() {
     return new Promise((resolve, reject) => {

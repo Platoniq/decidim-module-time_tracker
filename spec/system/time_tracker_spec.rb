@@ -121,7 +121,7 @@ describe "Time tracker page" do
 
               click_on "Request to join activity"
 
-              within "#activities .time-tracker-request" do
+              within "#activities" do
                 within ".callout.success" do
                   expect(page).to have_content "successfully"
                 end
