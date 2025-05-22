@@ -1,6 +1,6 @@
 {
   "name": "decidim-module-time_tracker",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A tool for Decidim that allows to track time dedicated by volunteers doing any arbitrary task",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -29,13 +29,13 @@
     }
   },
   "devDependencies": {
-    "@decidim/dev": "0.28.4",
-    "@decidim/eslint-config": "0.28.4",
-    "@decidim/prettier-config": "^0.28.4",
-    "@decidim/stylelint-config": "0.28.4"
+    "@decidim/dev": "0.29.0",
+    "@decidim/eslint-config": "0.29.0",
+    "@decidim/prettier-config": "^0.29.0",
+    "@decidim/stylelint-config": "0.29.0"
   },
   "dependencies": {
-    "@decidim/browserslist-config": "^0.28.4",
-    "@decidim/webpacker": "^0.28.4"
+    "@decidim/browserslist-config": "^0.29.0",
+    "@decidim/webpacker": "^0.29.0"
   }
 }

@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email = ["ivan@platoniq.net"]
   s.license = "AGPL-3.0"
   s.homepage = "https://github.com/decidim/decidim-module-time_tracker"
-  s.required_ruby_version = ">= 2.7"
+  s.required_ruby_version = ">= 3.2"
 
   s.name = "decidim-time_tracker"
   s.summary = "A decidim time_tracker module"
