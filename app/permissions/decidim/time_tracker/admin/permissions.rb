@@ -16,7 +16,7 @@ module Decidim
         end
 
         def allowed_task_action?
-          return unless permission_action.subject.in? [:task, :tasks]
+          return false unless permission_action.subject.in? [:task, :tasks]
 
           case permission_action.action
           when :index, :create, :update, :destroy
@@ -25,7 +25,7 @@ module Decidim
         end
 
         def allowed_questionnaire_action?
-          return unless permission_action.subject.in? [:questionnaire, :questionnaire_answers]
+          return false unless permission_action.subject.in? [:questionnaire, :questionnaire_answers]
 
           case permission_action.subject
           when :questionnaire
@@ -42,7 +42,7 @@ module Decidim
         end
 
         def allowed_activity_action?
-          return unless permission_action.subject.in? [:activity, :activities]
+          return false unless permission_action.subject.in? [:activity, :activities]
 
           case permission_action.action
           when :index, :create, :update, :destroy
@@ -51,7 +51,7 @@ module Decidim
         end
 
         def allowed_assignation_action?
-          return unless permission_action.subject.in? [:assignation, :assignations]
+          return false unless permission_action.subject.in? [:assignation, :assignations]
 
           case permission_action.action
           when :update

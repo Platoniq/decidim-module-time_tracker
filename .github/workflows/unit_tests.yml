@@ -13,7 +13,7 @@ env:
 
 jobs:
   unit:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     services:
       postgres:
         image: postgres:11
