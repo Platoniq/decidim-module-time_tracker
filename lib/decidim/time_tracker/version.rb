@@ -3,8 +3,8 @@
 module Decidim
   # This holds the decidim-time_tracker version.
   module TimeTracker
-    VERSION = "0.6"
-    DECIDIM_VERSION = "0.28.0"
-    COMPAT_DECIDIM_VERSION = [">= 0.28.0", "< 0.29"].freeze
+    VERSION = "0.7"
+    DECIDIM_VERSION = "0.29.0"
+    COMPAT_DECIDIM_VERSION = [">= 0.29.0", "< 0.30"].freeze
   end
 end
