@@ -20,7 +20,6 @@ module Decidim::TimeTracker
     end
 
     it "has common classes" do
-
       expect(subject).to have_css(".card__grid-img")
       expect(subject).to have_css(".card__grid-text")
     end
