@@ -8,12 +8,12 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 3.1.1
+  RUBY_VERSION: 3.2.6
   NODE_VERSION: 18.17.1
 
 jobs:
   system:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     services:
       postgres:
         image: postgres:11
@@ -35,6 +35,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
+
+      - run: |
+          sudo apt install imagemagick
 
       - uses: ruby/setup-ruby@v1
         with:

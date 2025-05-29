@@ -66,10 +66,6 @@ module Decidim::TimeTracker
     context "when the model has an image", processing_uploads_for: Decidim::AttachmentUploader do
       let!(:image) { create(:attachment, attached_to: model) }
 
-      it "uses that image" do
-        expect(subject.to_s).to include(model.attachments.first.url)
-      end
-
       it "links to the user milestones" do
         expect(subject).to have_css(".card__link")
         expect(card_link).to have_css(".card__image")

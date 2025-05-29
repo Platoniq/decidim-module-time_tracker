@@ -26,7 +26,7 @@ module Decidim
       end
 
       def allow_answer?
-        return unless permission_action.action == :answer
+        return false unless permission_action.action == :answer
 
         allow! if current_component&.published?
       end
@@ -35,21 +35,21 @@ module Decidim
         return allow! unless activity
 
         if permission_action.action == :create
-          return if activity.has_assignation? user
+          return false if activity.has_assignation? user
 
-          return unless activity.status.in? [:open, :not_started]
+          return false unless activity.status.in? [:open, :not_started]
 
           allow!
         end
       end
 
       def allow_milestone?
-        return unless activity
+        return false unless activity
 
         if permission_action.action == :create
-          return unless activity.assignation_accepted? user
+          return false unless activity.assignation_accepted? user
 
-          return if activity.status.in? [:inactive]
+          return false if activity.status.in? [:inactive]
 
           allow!
         end
