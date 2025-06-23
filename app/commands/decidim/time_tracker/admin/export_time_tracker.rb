@@ -89,9 +89,7 @@ module Decidim
               @user,
               params_category
             )
-
-            status = @not_started
-            status = @work_in_progress unless task.activities.joins(:time_events).empty?
+            @work_in_progress unless task.activities.joins(:time_events).empty? # rubocop:disable Lint/Void
             status = @completed if task.activities.where("decidim_time_tracker_activities.end_date > ?", Time.zone.today).empty?
 
             params_task = {

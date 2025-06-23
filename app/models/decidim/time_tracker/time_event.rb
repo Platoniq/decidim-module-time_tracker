@@ -19,7 +19,7 @@ module Decidim
       # note that with the default order reversed
       # the "last" element needs to be found with .first
       default_scope { order(start: :desc) }
-      scope :started_between, ->(start_date, end_date) { where("start >= ? AND start <= ?", start_date.to_i, end_date.to_i) }
+      scope :started_between, ->(start_date, end_date) { where(start: start_date.to_i..end_date.to_i) }
 
       def self.last_for(user)
         if user.is_a?(Assignation)
