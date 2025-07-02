@@ -63,6 +63,14 @@ module Decidim
       def self.log_presenter_class_for(_log)
         Decidim::TimeTracker::AdminLog::AssignationPresenter
       end
+
+      def self.ransackable_attributes(_auth_object = nil)
+        %w(status)
+      end
+
+      def self.ransackable_associations(_auth_object = nil)
+        ["user"]
+      end
     end
   end
 end
