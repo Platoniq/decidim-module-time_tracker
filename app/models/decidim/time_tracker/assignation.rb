@@ -65,11 +65,11 @@ module Decidim
       end
 
       def self.ransackable_attributes(_auth_object = nil)
-        %w(status)
+        %w(id status)
       end
 
       def self.ransackable_associations(_auth_object = nil)
-        ["user"]
+        %w(user activity task)
       end
     end
   end

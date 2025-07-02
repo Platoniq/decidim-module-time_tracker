@@ -125,6 +125,14 @@ module Decidim
         Decidim::TimeTracker::AdminLog::ActivityPresenter
       end
 
+      def self.ransackable_attributes(_auth_object = nil)
+        %w(id description active)
+      end
+
+      def self.ransackable_associations(_auth_object = nil)
+        %w(task)
+      end
+
       private
 
       def last_event_for(user)

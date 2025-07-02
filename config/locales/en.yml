@@ -156,17 +156,17 @@ en:
             name: Assignation
           task:
             name: Task
+        questionnaire_answers:
+          index:
+            title: "%{total} total responses"
+          show:
+            title: 'Answer #%{number}'
         questionnaires:
           index:
             title: Questionnaires
           questionnaire:
             edit: Edit questionnaire
             manage_questions: Manage questions
-        questionnaire_answers:
-          index:
-            title: "%{total} total responses"
-          show:
-            title: 'Answer #%{number}'
         stats:
           index:
             title: Stats
