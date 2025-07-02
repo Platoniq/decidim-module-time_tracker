@@ -19,4 +19,12 @@ describe "Admin manages Time tracker activity questionnaire" do
   def questionnaire_public_path
     Decidim::EngineRouter.main_proxy(component).preview_task_activity_form_path(task_id: activity.task, activity_id: activity, id: activity.questionnaire)
   end
+
+  def manage_questions_path
+    Decidim::EngineRouter.admin_proxy(component).edit_questions_activity_questionnaire_path
+  end
+
+  def update_component_settings_or_attributes; end
+
+  def see_questionnaire_questions; end
 end

@@ -18,3 +18,6 @@ require "decidim/dev/test/base_spec_helper"
 
 require "decidim/forms/test"
 require "decidim/time_tracker/test/time_tracker_context"
+require "decidim/time_tracker/test/manage_questionnaires"
+require "decidim/time_tracker/test/manage_questionnaire_answers"
+require "decidim/time_tracker/test/update_questions"
