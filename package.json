@@ -3,6 +3,7 @@
   "version": "0.7.0",
   "description": "A tool for Decidim that allows to track time dedicated by volunteers doing any arbitrary task",
   "scripts": {
+    "shakapacker-dev-server": "./bin/shakapacker-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint -c .eslintrc.json --ext .js app/packs/",
     "lint-fix": "eslint -c .eslintrc.json --ext .js app/packs/ --fix",
