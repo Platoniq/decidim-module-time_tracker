@@ -5,30 +5,26 @@ module Decidim
     module Admin
       class ActivityQuestionnaireController < Admin::ApplicationController
         include Decidim::Forms::Admin::Concerns::HasQuestionnaire
-        include Decidim::Forms::Admin::Concerns::HasQuestionnaireAnswers
+        include Decidim::Forms::Admin::Concerns::HasQuestionnaireAnswersUrlHelper
 
         def questionnaire_for
           time_tracker
         end
 
         def questionnaire_participants_url
-          index_activity_questionnaire_url
+          Decidim::EngineRouter.admin_proxy(questionnaire_for.component).activity_questionnaire_answers_path(questionnaire_for)
         end
 
         def questionnaire_url
           activity_questionnaire_url
         end
 
-        def questionnaire_participant_answers_url(session_token)
-          show_activity_questionnaire_url(session_token:)
-        end
-
-        def questionnaire_export_response_url(session_token)
-          export_response_activity_questionnaire_url(session_token:, format: "pdf")
-        end
-
         def update_url
           EngineRouter.admin_proxy(current_component).activity_questionnaire_path
+        end
+
+        def edit_questions_template
+          "decidim/time_tracker/admin/activity_questionnaire/edit_questions"
         end
 
         # URL is a custom preview path so we can take control of the answer action

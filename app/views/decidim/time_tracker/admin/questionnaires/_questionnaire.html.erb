@@ -5,6 +5,7 @@
       <div class="button--title">
         <% if allowed_to? :update, :questionnaire, questionnaire: questionnaire %>
           <%= link_to t(".edit"), edit_path, class: "button button__sm button__secondary" %>
+          <%= link_to t(".manage_questions"), manage_questions_path, class: "button button__sm button__secondary" %>
         <% end %>
       </div>
     </h1>

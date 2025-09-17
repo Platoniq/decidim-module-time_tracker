@@ -22,10 +22,16 @@ module Decidim
 
         [:activity_questionnaire, :assignee_questionnaire].each do |questionnaire|
           resource questionnaire, controller: questionnaire, only: [:edit, :update] do
-            get "/answer/:session_token", to: "#{questionnaire}#show", as: :show
-            get "/answer/:session_token/export", to: "#{questionnaire}#export_response", as: :export_response
-            get "/answers", to: "#{questionnaire}#index", as: :index
             get "/answer_options", to: "#{questionnaire}#answer_options", as: :answer_options
+            member do
+              get :edit_questions
+              patch :update_questions
+            end
+            resources :answers, controller: "#{questionnaire}_answers", only: [:index, :show] do
+              member do
+                get :export_response
+              end
+            end
           end
         end
 

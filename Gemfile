@@ -20,6 +20,11 @@ gem "uglifier", "~> 4.1"
 group :development, :test do
   gem "byebug", ">= 11.1.3"
   gem "decidim-dev", Decidim::TimeTracker::DECIDIM_VERSION
+
+  gem "debug"
+  gem "ruby-lsp", require: false
+  gem "ruby-lsp-rails", require: false
+  gem "ruby-lsp-rspec", require: false
 end
 
 group :development do

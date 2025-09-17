@@ -19,4 +19,12 @@ describe "Admin manages Time tracker assignee questionnaire" do
   def questionnaire_public_path
     Decidim::EngineRouter.main_proxy(component).preview_assignee_questionnaire_path
   end
+
+  def manage_questions_path
+    Decidim::EngineRouter.admin_proxy(component).edit_questions_assignee_questionnaire_path
+  end
+
+  def update_component_settings_or_attributes; end
+
+  def see_questionnaire_questions; end
 end

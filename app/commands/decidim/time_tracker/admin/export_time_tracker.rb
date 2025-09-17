@@ -90,10 +90,6 @@ module Decidim
               params_category
             )
 
-            status = @not_started
-            status = @work_in_progress unless task.activities.joins(:time_events).empty?
-            status = @completed if task.activities.where("decidim_time_tracker_activities.end_date > ?", Time.zone.today).empty?
-
             params_task = {
               component: @accountability_component,
               title: task.name,

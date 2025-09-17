@@ -65,6 +65,12 @@ en:
               fill: Fill in data
               submit: Submit
             request: Request to join activity
+    forms:
+      admin:
+        questionnaires:
+          questions_form:
+            update:
+              success: Questions successfully saved
     log:
       value_types:
         activity_presenter:
@@ -150,11 +156,17 @@ en:
             name: Assignation
           task:
             name: Task
+        questionnaire_answers:
+          index:
+            title: "%{total} total responses"
+          show:
+            title: 'Answer #%{number}'
         questionnaires:
           index:
             title: Questionnaires
           questionnaire:
             edit: Edit questionnaire
+            manage_questions: Manage questions
         stats:
           index:
             title: Stats
