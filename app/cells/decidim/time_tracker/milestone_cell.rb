@@ -47,7 +47,17 @@ module Decidim
       end
 
       def milestones_path
-        Decidim::EngineRouter.main_proxy(model.activity.task.component).milestones_path(nickname: model.user.nickname)
+        return "#" unless model.component
+        
+        space = model.component.participatory_space
+        return "#" unless space
+        
+        Decidim::EngineRouter.main_proxy(space).decidim_time_tracker_milestones_path(
+          component_id: model.component.id
+        )
+      rescue StandardError => e
+        Rails.logger.error("Error generating milestones_path: #{e.message}")
+        "#"
       end
     end
   end
