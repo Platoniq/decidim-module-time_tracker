@@ -48,10 +48,10 @@ module Decidim
 
       def milestones_path
         return "#" unless model.component
-        
+
         space = model.component.participatory_space
         return "#" unless space
-        
+
         Decidim::EngineRouter.main_proxy(space).decidim_time_tracker_milestones_path(
           component_id: model.component.id
         )
