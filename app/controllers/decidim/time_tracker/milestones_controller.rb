@@ -46,12 +46,17 @@ module Decidim
       end
 
       def activity
-        @activity ||= Activity.active.find_by(id: params[:milestone][:activity_id])
+        @activity ||= Activity.active
+                            .joins(task: :time_tracker)
+                            .where(task: { time_tracker_id: TimeTracker.where(decidim_component_id: current_component.id).select(:id) })
+                            .find_by(id: params[:milestone][:activity_id])
       end
 
       def activities
-        @activities ||= Activity.select("DISTINCT ON (id) *")
-                                .where(id: Milestone.where(user:).select(:activity_id))
+        @activities ||= Activity.distinct
+                              .joins(task: :time_tracker)
+                              .where(task: { time_tracker_id: TimeTracker.where(decidim_component_id: current_component.id).select(:id) })
+                              .where(id: Milestone.where(user:).select(:activity_id))
       end
 
       def user
