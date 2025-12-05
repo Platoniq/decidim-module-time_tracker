@@ -47,16 +47,16 @@ module Decidim
 
       def activity
         @activity ||= Activity.active
-                            .joins(task: :time_tracker)
-                            .where(task: { time_tracker_id: TimeTracker.where(decidim_component_id: current_component.id).select(:id) })
-                            .find_by(id: params[:milestone][:activity_id])
+                              .joins(task: :time_tracker)
+                              .where(task: { time_tracker_id: TimeTracker.where(decidim_component_id: current_component.id).select(:id) })
+                              .find_by(id: params[:milestone][:activity_id])
       end
 
       def activities
         @activities ||= Activity.distinct
-                              .joins(task: :time_tracker)
-                              .where(task: { time_tracker_id: TimeTracker.where(decidim_component_id: current_component.id).select(:id) })
-                              .where(id: Milestone.where(user:).select(:activity_id))
+                                .joins(task: :time_tracker)
+                                .where(task: { time_tracker_id: TimeTracker.where(decidim_component_id: current_component.id).select(:id) })
+                                .where(id: Milestone.where(user:).select(:activity_id))
       end
 
       def user
