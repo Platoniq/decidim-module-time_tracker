@@ -12,7 +12,7 @@ module Decidim::TimeTracker
 
     let(:task) { create(:task, time_tracker:) }
     let(:activity) { create(:activity, task:) }
-    let(:milestone) { create(:milestone, user:) }
+    let(:milestone) { create(:milestone, user:, activity:) }  # Add activity: here
     let!(:assigne) { create(:assignation, user:, activity: milestone.activity) }
 
     before do
@@ -34,7 +34,7 @@ module Decidim::TimeTracker
           }
         }
       end
-      let(:activity_id) { milestone.activity.id }
+      let(:activity_id) { activity.id }  # Change from milestone.activity.id to activity.id
       let(:title) { "a new milestone" }
       let(:description) { "description" }
 
