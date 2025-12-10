@@ -46,12 +46,13 @@ module Decidim
       end
 
       def activity
-        @activity ||= Activity.active.find_by(id: params[:milestone][:activity_id])
+        @activity ||= time_tracker.activities.active.find_by(id: params[:milestone][:activity_id])
       end
 
       def activities
-        @activities ||= Activity.select("DISTINCT ON (id) *")
-                                .where(id: Milestone.where(user:).select(:activity_id))
+        @activities ||= time_tracker.activities
+                                    .where(id: Milestone.where(user:).select(:activity_id))
+                                    .distinct
       end
 
       def user
