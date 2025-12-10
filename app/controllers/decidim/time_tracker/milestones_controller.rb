@@ -45,15 +45,15 @@ module Decidim
         Decidim::EngineRouter.main_proxy(current_component).root_path
       end
 
-        def activity
-          @activity ||= time_tracker.activities.active.find_by(id: params[:milestone][:activity_id])
-        end
+      def activity
+        @activity ||= time_tracker.activities.active.find_by(id: params[:milestone][:activity_id])
+      end
 
-        def activities
-          @activities ||= time_tracker.activities
-                                      .where(id: Milestone.where(user:).select(:activity_id))
-                                      .distinct
-        end
+      def activities
+        @activities ||= time_tracker.activities
+                                    .where(id: Milestone.where(user:).select(:activity_id))
+                                    .distinct
+      end
 
       def user
         @user ||= Decidim::User.find_by(nickname: params[:nickname])
