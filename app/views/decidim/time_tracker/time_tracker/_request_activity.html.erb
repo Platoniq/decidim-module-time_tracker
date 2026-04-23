@@ -1,4 +1,4 @@
-<div class="card--list__item time-tracker-activity-card" data-activity-id="<%= activity.id %>">
+<div class="card--list__item time-tracker-activity-card time-tracker-request" data-activity-id="<%= activity.id %>">
   <div class="card--list__icon">
     <%= icon "checkbox-circle-line", class: "icon--small text-muted", role: "img", "aria-hidden": true %>
   </div>
@@ -30,7 +30,7 @@
           <% elsif activity.assignation_pending? current_user %>
             <div class="callout warning"><%= t ".assignation_pending" %></div>
           <% elsif activity.assignation_rejected? current_user %>
-            <div class="callout warning"><%= t ".assignation_rejected" %></div>
+            <div class="callout alert"><%= t ".assignation_rejected" %></div>
           <% else %>
             <%= button_to requests_path(activity), method: :create, remote: true, data: { activity_id: activity.id }, class: "button button__sm button__secondary" do %>
               <%= t("index.request", scope: "decidim.components.time_tracker.views") %>
