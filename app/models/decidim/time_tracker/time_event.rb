@@ -39,6 +39,7 @@ module Decidim
       end
 
       def stopped?
+        return true if start.blank?
         stop.to_i >= start
       end
 

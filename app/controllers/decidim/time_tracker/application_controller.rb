@@ -17,6 +17,7 @@ module Decidim
       end
 
       def current_assignee
+        return nil unless user_signed_in?
         @current_assignee ||= Decidim::TimeTracker::Assignee.for(current_user)
       end
     end

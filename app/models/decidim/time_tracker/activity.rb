@@ -56,13 +56,13 @@ module Decidim
       # Returns how many seconds are available for this task in the current day
       # this can be less than the activity is allowed due the change of date
       def remaining_seconds_for_today
-        @remaining_seconds_for_today ||= [max_minutes_per_day * 60, (Time.current.end_of_day - Time.current).to_i].min
+        @remaining_seconds_for_today ||= [max_minutes_per_day.to_i * 60, (Time.current.end_of_day - Time.current).to_i].min
       end
 
       # how many seconds ara available for this task and user for the current day
       def user_remaining_for_date(user, date)
         total_seconds = user_total_seconds_for_date(user, date)
-        remaining = max_minutes_per_day * 60
+        remaining = max_minutes_per_day.to_i * 60
         remaining = remaining_seconds_for_today if date.beginning_of_day == Date.current
 
         [remaining - total_seconds, 0].max
@@ -117,15 +117,15 @@ module Decidim
       # :inactive if current status is inactive
       def status
         return :inactive unless active?
-        return :not_started if start_date > Time.current.beginning_of_day
-        return :finished if end_date < Time.current.beginning_of_day
+        return :not_started if start_date.present? && start_date > Time.current.beginning_of_day
+        return :finished if end_date.present? && end_date < Time.current.beginning_of_day
 
         :open
       end
 
       def display_status
         return :inactive unless active?
-        return :completed if end_date < Time.zone.today
+        return :completed if end_date.present? && end_date < Time.zone.today
         return :work_in_progress if time_events.any?
 
         :not_started

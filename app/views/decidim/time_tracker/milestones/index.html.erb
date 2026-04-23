@@ -44,12 +44,12 @@
 
       <div class="statistic">
         <h3 class="statistic__title"><%= t(".joined_on") %></h3>
-        <b><%= user_joined_at(user).strftime("%d %b %Y") %></b>
+        <b><%= user_joined_at(user)&.strftime("%d %b %Y") || "-" %></b>
       </div>
 
       <div class="statistic">
         <h3 class="statistic__title"><%= t(".last_worked_on") %></h3>
-        <b><%= user_last_milestone(user).created_at.strftime("%d %b %Y") %></b>
+        <b><%= user_last_milestone(user)&.created_at&.strftime("%d %b %Y") || "-" %></b>
       </div>
     </div>
   </aside>
