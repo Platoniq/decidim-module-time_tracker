@@ -249,7 +249,7 @@
     border-radius: 4px;
     margin-bottom: 0;
     overflow: hidden;
-    
+
     .progress-meter {
       height: 100%;
       background-color: $secondary;
@@ -292,7 +292,7 @@
     background-color: #e2e3e5;
     color: #383d41;
   }
-  
+
   &.inactive {
     background-color: #f8d7da; // lighten($alert, 40%)
     color: #721c24; // $alert
