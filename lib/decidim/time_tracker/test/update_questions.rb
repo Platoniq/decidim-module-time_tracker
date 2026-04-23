@@ -525,6 +525,5 @@ shared_examples_for "time tracker update questions" do
     def look_like_last_question
       have_button("Up").and have_no_button("Down")
     end
-
   end
 end

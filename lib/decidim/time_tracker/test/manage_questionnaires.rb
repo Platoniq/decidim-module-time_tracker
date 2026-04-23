@@ -91,9 +91,7 @@ shared_examples_for "manage time tracker questionnaires" do
     page.has_css?(".callout", wait: 1)
     expect(page).to have_button(class: "expand-all")
     find(".button.expand-all").click
-    if page.has_css?(".questionnaire-question")
-      expect(page).to have_css(".collapsible", visible: :visible)
-    end
+    expect(page).to have_css(".collapsible", visible: :visible) if page.has_css?(".questionnaire-question")
   end
 
   def visit_manage_questions_and_expand_all
@@ -110,7 +108,7 @@ shared_examples_for "manage time tracker questionnaires" do
               "Terms and conditions questionnaire"
             end
 
-    within find(".card", text: title) do
+    within ".card", text: title do
       click_on "Manage questions"
     end
   end
