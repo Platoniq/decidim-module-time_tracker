@@ -1,5 +1,100 @@
 @import "stylesheets/decidim/legacy/variables";
 
+// ─── Task result count header ───────────────────────────────────────────────
+.task-results-count {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+  margin-bottom: 1rem;
+  color: $secondary;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &__number {
+    font-size: 1rem;
+  }
+}
+
+// ─── Activity card-list items ────────────────────────────────────────────────
+.time-tracker-activity-card {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.6rem 1.25rem;
+  border-bottom: 1px solid #e8e8e8;
+  background: white;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .card--list__icon {
+    flex-shrink: 0;
+    margin-right: 1rem;
+    margin-top: 0.2rem;
+    color: $secondary;
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+
+  .card--list__text {
+    flex: 1;
+  }
+
+  .card--list__heading {
+    display: block;
+    font-weight: 600;
+    color: $secondary;
+    font-size: 1rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .card--list__meta {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0;
+  }
+
+  .card--list__actions {
+    margin-top: 0.2rem;
+
+    .callout {
+      margin: 0;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .button {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// ─── Activity status badge ───────────────────────────────────────────────────
+.activity-status {
+  font-weight: 600;
+
+  &--open     { color: $success; }
+  &--finished { color: #cacaca; }
+  &--not_started { color: $warning; }
+  &--inactive { color: $alert; }
+}
+
+// ─── Card--list container for activities ────────────────────────────────────
+#activities.card--list {
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+// ─── Existing styles ─────────────────────────────────────────────────────────
 .time-tracker {
   &-activity,
   &-request {

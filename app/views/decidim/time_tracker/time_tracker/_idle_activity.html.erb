@@ -1,10 +1,27 @@
-<div class="time-tracker-request" data-activity-id="<%= activity.id %>">
-  <div class="content">
-
-    <h2><%= translated_attribute activity.description %></h2>
+<div class="card--list__item time-tracker-activity-card" data-activity-id="<%= activity.id %>">
+  <div class="card--list__icon">
+    <%= icon "checkbox-circle-line", class: "icon--small text-success", role: "img", "aria-hidden": true %>
+  </div>
+  <div class="card--list__text">
+    <span class="card--list__heading">
+      <%= translated_attribute activity.description %>
+    </span>
+    <span class="card--list__meta">
+      <% if activity.start_date.present? %>
+        <%= t("activemodel.attributes.activity.start_date") %> <%= l(activity.start_date, format: :short) %>
+      <% end %>
+      <% if activity.end_date.present? %>
+        &nbsp;&bull;&nbsp;
+        <%= t("activemodel.attributes.activity.end_date") %> <%= l(activity.end_date, format: :short) %>
+      <% end %>
+      &nbsp;&bull;&nbsp;
+      <span class="activity-status activity-status--<%= activity.status %>">
+        <%= t("decidim.time_tracker.models.activity.fields.statuses.#{activity.status}") %>
+      </span>
+    </span>
 
     <% if user_signed_in? %>
-      <div class="top">
+      <div class="card--list__actions">
         <% if activity.status != :open %>
           <%= render partial: "callout_status", locals: { activity: activity } %>
         <% else %>
@@ -15,12 +32,6 @@
           <% end %>
         <% end %>
       </div>
-      <div class="bottom">
-        <% if activity.allow_answers_for?(current_user) %>
-          <%= render partial: "answer_questionnaire", locals: { activity: activity } %>
-        <% end %>
-      </div>
     <% end %>
-
   </div>
 </div>
