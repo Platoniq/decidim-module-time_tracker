@@ -16,8 +16,12 @@ module Decidim
                class_name: "Decidim::TimeTracker::Activity",
                dependent: :destroy
 
+      scope :active, -> { where(active: true) }
+
       delegate :questionnaire, to: :time_tracker
       delegate :component, to: :time_tracker
+
+      validates :progress, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
 
       def starts_at
         activities.order(start_date: :asc).first&.start_date

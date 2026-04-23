@@ -36,23 +36,10 @@ module Decidim
         end
 
         def after_update_url
-          EngineRouter.admin_proxy(current_component).root_path
-        end
-
-        def update_questions
-          enforce_permission_to(:update, :questionnaire, questionnaire:)
-
-          @form = form(Decidim::Forms::Admin::QuestionsForm).from_params(params)
-          Decidim::Forms::Admin::UpdateQuestions.call(@form, questionnaire) do
-            on(:ok) do
-              flash[:notice] = I18n.t("update.success", scope: "decidim.forms.admin.questionnaires.questions_form")
-              redirect_to EngineRouter.admin_proxy(current_component).edit_questions_activity_questionnaire_path
-            end
-
-            on(:invalid) do
-              flash.now[:alert] = I18n.t("update.invalid", scope: "decidim.forms.admin.questionnaires")
-              render template: edit_questions_template
-            end
+          if action_name == "update_questions"
+            EngineRouter.admin_proxy(current_component).edit_questions_activity_questionnaire_path
+          else
+            EngineRouter.admin_proxy(current_component).root_path
           end
         end
 

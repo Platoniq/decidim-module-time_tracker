@@ -25,6 +25,7 @@ module Decidim
             Decidim::TimeTracker::Activity,
             @form.current_user,
             description: @form.description,
+            progress: @form.progress,
             active: @form.active,
             start_date: @form.start_date,
             end_date: @form.end_date,

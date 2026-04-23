@@ -2,6 +2,10 @@
   <%= form.translated :text_field, :name, autofocus: true %>
 </div>
 
+<div class="row column">
+  <%= form.number_field :progress, step: 0.1, min: 0, max: 100 %>
+</div>
+
 <div class="button button__sm button__secondary">
   <%= form.submit submit %>
 </div>

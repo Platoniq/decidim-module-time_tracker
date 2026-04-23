@@ -92,7 +92,7 @@ export default class ActivityUI { // eslint-disable-line no-unused-vars
     const minutes = Math.floor((totalSeconds / 60) % 60)
     const seconds = totalSeconds % 60
 
-    return `${hours}h ${minutes}m ${seconds}s`
+    return `${hours}h${minutes}m${seconds}s`
   }
 
   updateElapsedTime() {

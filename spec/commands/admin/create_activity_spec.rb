@@ -15,6 +15,7 @@ module Decidim::TimeTracker::Admin
         end_date: 1.month.from_now,
         max_minutes_per_day: 60,
         requests_start_at: Faker::Time.between(from: 10.days.ago, to: 1.day.ago),
+        progress: 0,
         invalid?: invalid,
         current_user: user
       )

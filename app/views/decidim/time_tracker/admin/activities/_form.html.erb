@@ -16,6 +16,10 @@
       </div>
 
       <div class="row column">
+        <%= form.number_field :progress, step: 0.1, min: 0, max: 100 %>
+      </div>
+
+      <div class="row column">
         <%= form.check_box :active %>
       </div>
 

@@ -10,6 +10,7 @@ module Decidim::TimeTracker::Admin
       double(
         # taskForm,
         name: Decidim::Faker::Localized.word,
+        progress: 0,
         invalid?: invalid,
         current_user: user,
         current_component: component,

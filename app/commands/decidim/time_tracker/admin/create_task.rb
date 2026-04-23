@@ -24,6 +24,7 @@ module Decidim
             Decidim::TimeTracker::Task,
             @form.current_user,
             name: @form.name,
+            progress: @form.progress,
             time_tracker: @form.time_tracker
           )
         end

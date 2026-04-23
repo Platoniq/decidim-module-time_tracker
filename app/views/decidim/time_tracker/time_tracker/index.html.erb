@@ -25,6 +25,15 @@
             <span class="task-results-count__label"><%= t("decidim.participatory_processes.statistics.activities_count").upcase %></span>
           </div>
 
+          <% if task.progress.present? %>
+            <div class="task-progress-container">
+              <span class="task-progress__label"><%= t(".global_execution") %> <%= task.progress %>%</span>
+              <div class="progress" role="progressbar" aria-valuenow="<%= task.progress %>" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-meter" style="width: <%= task.progress %>%"></div>
+              </div>
+            </div>
+          <% end %>
+
           <div id="activities" class="card--list">
             <% active_activities.each do |activity| %>
               <% if activity.assignation_accepted? current_user %>

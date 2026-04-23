@@ -230,3 +230,101 @@
 .success {
   background-color: $success;
 }
+
+// ─── Task Progress ──────────────────────────────────────────────────────────
+.task-progress-container {
+  margin-bottom: 1.5rem;
+  max-width: 400px;
+
+  .task-progress__label {
+    display: block;
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+
+  .progress {
+    height: 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 0;
+    overflow: hidden;
+    
+    .progress-meter {
+      height: 100%;
+      background-color: $secondary;
+      border-radius: 4px;
+    }
+  }
+}
+
+// ─── Activity Status & Progress ─────────────────────────────────────────────
+.activity-status-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.activity-status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: #f0f0f0;
+  color: #666;
+
+  &.work_in_progress {
+    background-color: #fff3cd; // lighten($warning, 40%)
+    color: #856404; // darken($warning, 10%)
+  }
+
+  &.completed {
+    background-color: #d4edda; // lighten($success, 45%)
+    color: #155724; // darken($success, 10%)
+  }
+
+  &.not_started {
+    background-color: #e2e3e5;
+    color: #383d41;
+  }
+  
+  &.inactive {
+    background-color: #f8d7da; // lighten($alert, 40%)
+    color: #721c24; // $alert
+  }
+}
+
+.activity-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 200px;
+  max-width: 300px;
+
+  .progress {
+    flex: 1;
+    height: 6px;
+    background-color: #f0f0f0;
+    border-radius: 3px;
+    margin-bottom: 0;
+    overflow: hidden;
+
+    .progress-meter {
+      height: 100%;
+      background-color: $success;
+      border-radius: 3px;
+    }
+  }
+
+  .activity-progress__label {
+    font-size: 0.8rem;
+    color: #666;
+    white-space: nowrap;
+  }
+}

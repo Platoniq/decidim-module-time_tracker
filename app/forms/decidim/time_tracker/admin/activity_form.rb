@@ -9,6 +9,8 @@ module Decidim
 
         translatable_attribute :description, String
 
+        attribute :progress, Decimal
+
         attribute :active, Boolean
         attribute :start_date, Decidim::Attributes::TimeWithZone
         attribute :end_date, Decidim::Attributes::TimeWithZone

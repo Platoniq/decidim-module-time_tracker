@@ -11,6 +11,7 @@ module Decidim
         mimic :task
 
         translatable_attribute :name, String
+        attribute :progress, Decimal
 
         validates :name, translatable_presence: true
 

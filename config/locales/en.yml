@@ -380,10 +380,16 @@ en:
           success: Counter stopped successfully
       time_tracker:
         activity:
+          completion: Completion
           counter_stopped: Counter has been stopped automatically
           questionnaire:
             answered: Thanks for answering the questionnaire!
             respond: What do you think about this task?
+          status:
+            completed: 'Status: Completed'
+            inactive: 'Status: Inactive'
+            not_started: 'Status: Not started'
+            work_in_progress: 'Status: Work in progress'
         assignee_data:
           answer: Let's start!
           description: To better understand our participants and their relationship
@@ -401,6 +407,7 @@ en:
           assignation_rejected: Sorry, you're application has been rejected.
         index:
           empty: There are no activities yet.
+          global_execution: Global execution
           milestones_list: People working in this activity
         questionnaire_in_preview_mode: This questionnaire cannot be answered in preview
           mode!

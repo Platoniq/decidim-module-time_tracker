@@ -25,6 +25,8 @@ module Decidim
 
       scope :active, -> { where(active: true) }
 
+      validates :progress, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
+
       delegate :questionnaire, to: :task
 
       # total number of seconds spent by the user
@@ -119,6 +121,14 @@ module Decidim
         return :finished if end_date < Time.current.beginning_of_day
 
         :open
+      end
+
+      def display_status
+        return :inactive unless active?
+        return :completed if end_date < Time.zone.today
+        return :work_in_progress if time_events.any?
+
+        :not_started
       end
 
       def self.log_presenter_class_for(_log)
