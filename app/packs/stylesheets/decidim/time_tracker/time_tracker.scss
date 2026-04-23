@@ -80,10 +80,21 @@
 .activity-status {
   font-weight: 600;
 
-  &--open     { color: $success; }
-  &--finished { color: #cacaca; }
-  &--not_started { color: $warning; }
-  &--inactive { color: $alert; }
+  &--open {
+    color: $success;
+  }
+
+  &--finished {
+    color: #cacaca;
+  }
+
+  &--not_started {
+    color: $warning;
+  }
+
+  &--inactive {
+    color: $alert;
+  }
 }
 
 // ─── Card--list container for activities ────────────────────────────────────
