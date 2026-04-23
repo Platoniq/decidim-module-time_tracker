@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-shared_examples_for "update questions" do
+shared_examples_for "time tracker update questions" do
   context "when a questionnaire has an existing question" do
     let!(:question) { create(:questionnaire_question, questionnaire:, body:) }
 
@@ -45,7 +45,7 @@ shared_examples_for "update questions" do
       end
 
       click_on "Save"
-      click_on "Expand all questions"
+      expand_all_questions
 
       expect(page).to have_admin_callout("There was a problem saving")
       expect(page).to have_content("cannot be blank", count: 5)
@@ -367,7 +367,7 @@ shared_examples_for "update questions" do
     describe "collapsible questions" do
       context "when clicking on Expand all button" do
         it "expands all questions" do
-          click_on "Expand all questions"
+          expand_all_questions
           expect(page).to have_css(".collapsible", visible: :all)
           expect(page).to have_css(".question--collapse .icon-collapse", count: questionnaire.questions.count)
         end
@@ -526,13 +526,5 @@ shared_examples_for "update questions" do
       have_button("Up").and have_no_button("Down")
     end
 
-    def select_questionnaire
-      # As there are two questionnaires on the same view, we need to specify which one we want to test
-      if self.class.name.include?("AdminManagesTimeTrackerActivityQuestionnaire")
-        all("a", text: "Manage questions")[0].click
-      else
-        all("a", text: "Manage questions")[1].click
-      end
-    end
   end
 end

@@ -7,7 +7,7 @@ require "decidim/forms/test/shared_examples/manage_questionnaires/update_questio
 require "decidim/forms/test/shared_examples/manage_questionnaires/add_display_conditions"
 require "decidim/forms/test/shared_examples/manage_questionnaires/update_display_conditions"
 
-shared_examples_for "manage questionnaires" do
+shared_examples_for "manage time tracker questionnaires" do
   let(:body) do
     {
       en: "This is the first question",
@@ -30,7 +30,7 @@ shared_examples_for "manage questionnaires" do
     end
 
     it_behaves_like "add questions"
-    it_behaves_like "update questions"
+    it_behaves_like "time tracker update questions"
     it_behaves_like "add display conditions"
     it_behaves_like "update display conditions"
   end
@@ -88,7 +88,12 @@ shared_examples_for "manage questionnaires" do
   end
 
   def expand_all_questions
+    page.has_css?(".callout", wait: 1)
+    expect(page).to have_button(class: "expand-all")
     find(".button.expand-all").click
+    if page.has_css?(".questionnaire-question")
+      expect(page).to have_css(".collapsible", visible: :visible)
+    end
   end
 
   def visit_manage_questions_and_expand_all
@@ -97,11 +102,16 @@ shared_examples_for "manage questionnaires" do
   end
 
   def select_questionnaire
-    # As there are two questionnaires on the same view, we need to specify which one we want to test
-    if self.class.name.include?("AdminManagesTimeTrackerActivityQuestionnaire")
-      all("a", text: "Manage questions")[0].click
-    else
-      all("a", text: "Manage questions")[1].click
+    return if current_path.include?(manage_questions_path)
+
+    title = if self.class.name.include?("AdminManagesTimeTrackerActivityQuestionnaire")
+              "Activity questionnaire"
+            else
+              "Terms and conditions questionnaire"
+            end
+
+    within find(".card", text: title) do
+      click_on "Manage questions"
     end
   end
 end
