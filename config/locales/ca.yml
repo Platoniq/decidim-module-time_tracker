@@ -351,10 +351,16 @@ ca:
           success: Comptador aturat correctament
       time_tracker:
         activity:
+          completion: Completesa
           counter_stopped: El comptador s'ha aturat automàticament
           questionnaire:
             answered: Gràcies per respondre al qüestionari!
             respond: Què en penses d'aquesta tasca?
+          status:
+            completed: 'Estat: Acabada'
+            inactive: 'Estat: Inactiva'
+            not_started: 'Estat: No començada'
+            work_in_progress: 'Estat: En curs'
         assignee_data:
           answer: Comencem!
           description: Per entendre millor les nostres participants i la seva relació amb aquestes tasques, et demanem que contestis un parell de preguntes sobre el vostre perfil demogràfic. També volem assegurar-nos que acceptes les condicions d’ús abans de registrar-te en qualsevol tasca. Gràcies!
@@ -369,6 +375,7 @@ ca:
           assignation_rejected: Malauradament, s'ha rebutjat la teva sol·licitud.
         index:
           empty: Encara no hi ha activitats.
+          global_execution: Execució global
           milestones_list: Persones que treballen en aquesta activitat
         questionnaire_in_preview_mode: El qüestionari no es pot respondre en el mode de previsualització!
         request_activity:

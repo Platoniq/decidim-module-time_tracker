@@ -351,10 +351,16 @@ es:
           success: Contador detenido correctamente
       time_tracker:
         activity:
-          counter_stopped: Contador se ha detenido automáticamente
+          completion: Completitud
+          counter_stopped: El contador se ha detenido automáticamente
           questionnaire:
             answered: '¡Gracias por responder al cuestionario!'
             respond: '¿Qué opinas sobre esta tarea?'
+          status:
+            completed: 'Estado: Completada'
+            inactive: 'Estado: Inactiva'
+            not_started: 'Estado: Sin comenzar'
+            work_in_progress: 'Estado: En curso'
         assignee_data:
           answer: '¡Empecemos!'
           description: Para comprender mejor a nuestras participantes y su relación con estas tareas, te pedimos que rellenes un par de preguntas sobre tu perfil demográfico. También queremos asegurarnos de que aceptas los términos de uso antes de registrarte en cualquier tarea. ¡Gracias!
@@ -369,6 +375,7 @@ es:
           assignation_rejected: Lo sentimos pero tu solicitud ha sido rechazada.
         index:
           empty: Todavía no hay actividades.
+          global_execution: Ejecución global
           milestones_list: Personas trabajando en esta actividad
         questionnaire_in_preview_mode: '¡Este cuestionario no puede ser respondido en modo de vista previa!'
         request_activity:

@@ -9,7 +9,7 @@ module Decidim
 
       def index
         @form = form(MilestoneForm).from_params(
-          attachment: form(AttachmentForm).instance
+          attachment: form(Decidim::AttachmentForm).instance
         )
       end
 
@@ -20,7 +20,7 @@ module Decidim
       end
 
       def assignation_milestones(activity)
-        Milestone.where(activity:).order(created_at: :desc).select("DISTINCT ON (decidim_user_id, created_at) *")
+        Milestone.where(activity:).order(Arel.sql("decidim_user_id, created_at DESC")).select("DISTINCT ON (decidim_user_id) *")
       end
 
       def start_endpoint(activity)
