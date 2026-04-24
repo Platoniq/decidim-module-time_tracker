@@ -96,6 +96,14 @@ module Decidim
 
         time_tracker.activities.active.empty?
       end
+
+      def stripped_translated_attribute(attribute)
+        text = translated_attribute(attribute)
+        return text if text.blank?
+
+        # Matches (75%), (75.0%), ( 75 % ), etc.
+        text.gsub(/\(\s*\d+(\.\d+)?\s*%\s*\)/, "").strip
+      end
     end
   end
 end

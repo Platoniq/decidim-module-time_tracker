@@ -18,7 +18,7 @@
           <% active_activities = task.activities.active %>
           <% next if active_activities.empty? %>
 
-          <h2 class="h2 decorator"><%= translated_attribute task.name %></h2>
+          <h2 class="h2 decorator text-primary"><%= stripped_translated_attribute task.name %></h2>
 
           <div class="task-results-count">
             <span class="task-results-count__number"><%= active_activities.count %></span>

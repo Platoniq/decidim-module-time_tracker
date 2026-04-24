@@ -1,8 +1,7 @@
 <div class="pt-2">
   <div class="callout warning">
-    <%= t ".#{activity.status}", 
-          end_date: (activity.end_date.present? ? l(activity.end_date, format: :short) : "-"), 
-          start_date: (activity.start_date.present? ? l(activity.start_date, format: :short) : "-") 
-    %>
+    <%= t ".#{activity.status}",
+          end_date: (activity.end_date.present? ? l(activity.end_date, format: :short) : "-"),
+          start_date: (activity.start_date.present? ? l(activity.start_date, format: :short) : "-") %>
   </div>
 </div>

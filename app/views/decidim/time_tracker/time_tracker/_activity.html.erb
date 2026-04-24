@@ -22,7 +22,7 @@
       <% end %>
     </div>
 
-    <h4 class="h4 pb-4"><%= translated_attribute activity.description %></h4>
+    <h4 class="h4 pb-4"><%= stripped_translated_attribute activity.description %></h4>
     <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
     <div class="elapsed-time pt-2"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div class="elapsed-time-clock pt-2"><%= clockify_seconds(activity.user_seconds_elapsed(current_user)) %></div></div>
 

@@ -4,7 +4,7 @@
   </div>
   <div class="card--list__text">
     <span class="card--list__heading">
-      <%= translated_attribute activity.description %>
+      <%= stripped_translated_attribute activity.description %>
     </span>
     <span class="card--list__meta">
       <% if activity.start_date.present? %>
@@ -19,6 +19,15 @@
         <%= t("decidim.time_tracker.models.activity.fields.statuses.#{activity.status}") %>
       </span>
     </span>
+
+    <% if activity.respond_to?(:progress) && activity.progress.present? %>
+      <div class="activity-progress" style="margin-top: 1rem;">
+        <div class="progress" role="progressbar" aria-valuenow="<%= activity.progress %>" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-meter" style="width: <%= activity.progress %>%"></div>
+        </div>
+        <span class="activity-progress__label"><%= activity.progress %>% <%= t("decidim.time_tracker.activity.completion") %></span>
+      </div>
+    <% end %>
 
     <% if user_signed_in? %>
       <div class="card--list__actions">
