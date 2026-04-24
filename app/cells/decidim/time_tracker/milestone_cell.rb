@@ -47,11 +47,13 @@ module Decidim
 
       def seconds_elapsed
         return 0 if model.user.blank? || model.activity.blank?
+
         @seconds_elapsed ||= model.activity.user_seconds_elapsed(model.user)
       end
 
       def milestones_path
         return "#" if model.user.blank? || model.activity.blank?
+
         Decidim::EngineRouter.main_proxy(model.activity.task.component).milestones_path(nickname: model.user.nickname)
       end
     end

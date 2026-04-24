@@ -24,8 +24,10 @@ module Decidim
       validates :progress, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
 
       def progress
-        return super if self.class.column_names.include?("progress")
-        nil
+        p = super if self.class.column_names.include?("progress")
+        return p if p.present?
+
+        progress_from_text || progress_from_activities
       end
 
       def starts_at
@@ -55,6 +57,29 @@ module Decidim
 
       def self.ransackable_associations(_auth_object = nil)
         %w(activity time_tracker)
+      end
+
+      private
+
+      def progress_from_text
+        return nil if name.blank?
+
+        texts = name.is_a?(Hash) ? name.values : [name]
+        texts.each do |text|
+          match = text.to_s.match(/\((\d+)%\)/)
+          return match[1].to_i if match
+        end
+        nil
+      end
+
+      def progress_from_activities
+        active_activities = activities.active
+        return nil if active_activities.empty?
+
+        valid_progresses = active_activities.map(&:progress).compact
+        return nil if valid_progresses.empty?
+
+        (valid_progresses.sum.to_f / valid_progresses.size).round(2)
       end
     end
   end

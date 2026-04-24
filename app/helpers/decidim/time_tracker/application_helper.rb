@@ -77,6 +77,7 @@ module Decidim
 
       def user_joined_at(user)
         return nil if user.blank?
+
         Assignee.for(user).tos_accepted_at(time_tracker)
       end
 
@@ -86,11 +87,13 @@ module Decidim
 
       def must_fill_in_data?
         return false if time_tracker.blank? || current_assignee.blank?
+
         !current_assignee.tos_accepted?(time_tracker) && !activities_empty?
       end
 
       def activities_empty?
         return true if time_tracker.blank?
+
         time_tracker.activities.active.empty?
       end
     end

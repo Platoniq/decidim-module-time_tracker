@@ -51,6 +51,7 @@ module Decidim
 
       def activities
         return [] if time_tracker.blank?
+
         @activities ||= time_tracker.activities
                                     .where(id: Milestone.where(user:).select(:activity_id))
                                     .distinct

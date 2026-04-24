@@ -16,6 +16,7 @@ module Decidim
 
       def tasks
         return [] if time_tracker.blank?
+
         time_tracker.tasks
       end
 

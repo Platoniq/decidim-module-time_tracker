@@ -28,8 +28,8 @@ module Decidim
       validates :progress, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
 
       def progress
-        return super if self.class.column_names.include?("progress")
-        nil
+        p = super if self.class.column_names.include?("progress")
+        p.presence || progress_from_text
       end
 
       delegate :questionnaire, to: :task
@@ -107,6 +107,7 @@ module Decidim
 
       def answered_by?(user)
         return false if user.blank?
+
         questionnaire.answered_by? session_token(user)
       end
 
@@ -150,6 +151,22 @@ module Decidim
       end
 
       private
+
+      def progress_from_text
+        [:description, :name].each do |attr|
+          next unless respond_to?(attr)
+
+          val = send(attr)
+          next if val.blank?
+
+          texts = val.is_a?(Hash) ? val.values : [val]
+          texts.each do |text|
+            match = text.to_s.match(/\((\d+)%\)/)
+            return match[1].to_i if match
+          end
+        end
+        nil
+      end
 
       def last_event_for(user)
         time_events.last_for(user)
