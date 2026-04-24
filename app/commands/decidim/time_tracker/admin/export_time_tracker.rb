@@ -106,8 +106,8 @@ module Decidim
 
             task_activities(task).each do |activity|
               status = @not_started
-              status = @work_in_progress unless activity.time_events.nil?
-              status = @completed if activity.end_date < Time.zone.today
+              status = @work_in_progress if activity.time_events.any?
+              status = @completed if activity.end_date.present? && activity.end_date < Time.zone.today
 
               params_activity = {
                 component: @accountability_component,

@@ -23,6 +23,11 @@ module Decidim
 
       validates :progress, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
 
+      def progress
+        return super if self.class.column_names.include?("progress")
+        nil
+      end
+
       def starts_at
         activities.order(start_date: :asc).first&.start_date
       end

@@ -12,7 +12,7 @@
       <span class="activity-status-badge <%= activity.display_status %>">
         <%= t(".status.#{activity.display_status}") %>
       </span>
-      <% if activity.progress.present? %>
+      <% if activity.respond_to?(:progress) && activity.progress.present? %>
         <div class="activity-progress">
           <div class="progress" role="progressbar" aria-valuenow="<%= activity.progress %>" aria-valuemin="0" aria-valuemax="100">
             <div class="progress-meter" style="width: <%= activity.progress %>%"></div>

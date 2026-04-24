@@ -27,6 +27,11 @@ module Decidim
 
       validates :progress, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
 
+      def progress
+        return super if self.class.column_names.include?("progress")
+        nil
+      end
+
       delegate :questionnaire, to: :task
 
       # total number of seconds spent by the user
@@ -101,6 +106,7 @@ module Decidim
       end
 
       def answered_by?(user)
+        return false if user.blank?
         questionnaire.answered_by? session_token(user)
       end
 

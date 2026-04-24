@@ -20,6 +20,7 @@ module Decidim
 
       def title
         return content_tag :strong, model.title unless list?
+        return content_tag :strong, model.title if model.user.blank?
 
         link_to milestones_path do
           content_tag :h3, class: "h4 text-secondary" do
@@ -31,10 +32,12 @@ module Decidim
       def image
         image_url = model.attachments&.first&.url
 
-        if image_url.present?
+        if image_url.present? && model.user.present?
           link_to milestones_path, class: "card__link" do
             image_tag image_url, class: "card__image"
           end
+        elsif image_url.present?
+          image_tag image_url, class: "card__image"
         else
           content_tag :div, class: "card__image empty" do
             icon "timer-line"
@@ -43,10 +46,12 @@ module Decidim
       end
 
       def seconds_elapsed
+        return 0 if model.user.blank? || model.activity.blank?
         @seconds_elapsed ||= model.activity.user_seconds_elapsed(model.user)
       end
 
       def milestones_path
+        return "#" if model.user.blank? || model.activity.blank?
         Decidim::EngineRouter.main_proxy(model.activity.task.component).milestones_path(nickname: model.user.nickname)
       end
     end

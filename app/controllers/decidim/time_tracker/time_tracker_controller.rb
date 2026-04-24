@@ -8,9 +8,8 @@ module Decidim
       helper_method :tasks, :assignation_milestones, :start_endpoint, :stop_endpoint, :requests_path, :questionnaire_path
 
       def index
-        @form = form(MilestoneForm).from_params(
-          attachment: form(Decidim::AttachmentForm).instance
-        )
+        @form = form(MilestoneForm).instance
+        @form.attachment = form(Decidim::AttachmentForm).instance
       end
 
       private

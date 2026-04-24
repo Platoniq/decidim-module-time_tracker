@@ -25,7 +25,7 @@
             <span class="task-results-count__label"><%= t("decidim.participatory_processes.statistics.activities_count").upcase %></span>
           </div>
 
-          <% if task.progress.present? %>
+          <% if task&.respond_to?(:progress) && task&.progress.present? %>
             <div class="task-progress-container">
               <span class="task-progress__label"><%= t(".global_execution") %> <%= task.progress %>%</span>
               <div class="progress" role="progressbar" aria-valuenow="<%= task.progress %>" aria-valuemin="0" aria-valuemax="100">
