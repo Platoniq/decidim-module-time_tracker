@@ -37,8 +37,8 @@
 
   <% if activity.respond_to?(:progress) && activity.progress.present? %>
     <div class="card--list__annotation ml-6 flex flex-col justify-center w-1/4 max-w-[250px]">
-      <div class="activity-progress">
-        <div class="progress" role="progressbar" aria-valuenow="<%= activity.progress %>" aria-valuemin="0" aria-valuemax="100">
+      <div class="activity-progress" style="flex-direction: column; align-items: flex-end; gap: 0.5rem; width: 100%;">
+        <div class="progress" style="width: 100%; flex: none; margin-bottom: 0;" role="progressbar" aria-valuenow="<%= activity.progress %>" aria-valuemin="0" aria-valuemax="100">
           <div class="progress-meter" style="width: <%= activity.progress %>%"></div>
         </div>
         <span class="activity-progress__label"><%= activity.progress %>% <%= t("decidim.time_tracker.activity.completion") %></span>
