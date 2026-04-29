@@ -18,50 +18,61 @@
           <% active_activities = task.activities.active %>
           <% next if active_activities.empty? %>
 
-          <h2 class="h2 decorator text-primary"><%= stripped_translated_attribute task.name %></h2>
+          <div class="row">
+            <div class="columns large-8">
+              <h2 class="h2 decorator text-primary"><%= stripped_translated_attribute task.name %></h2>
 
-          <div class="task-results-count">
-            <span class="task-results-count__number"><%= active_activities.count %></span>
-            <span class="task-results-count__label"><%= t("decidim.participatory_processes.statistics.activities_count").upcase %></span>
-          </div>
+              <div class="task-results-count">
+                <span class="task-results-count__number"><%= active_activities.count %></span>
+                <span class="task-results-count__label"><%= t("decidim.participatory_processes.statistics.activities_count").upcase %></span>
+              </div>
 
-          <% if task&.respond_to?(:progress) && task&.progress.present? %>
-            <div class="task-progress-container">
-              <span class="task-progress__label"><%= t(".global_execution") %> <%= task.progress %>%</span>
-              <div class="progress" role="progressbar" aria-valuenow="<%= task.progress %>" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-meter" style="width: <%= task.progress %>%"></div>
+              <div id="activities" class="card--list">
+                <% active_activities.each do |activity| %>
+                  <% if activity.assignation_accepted? current_user %>
+                    <%= render partial: "activity", locals: { activity: activity } %>
+                  <% elsif allowed_to? :create, :assignation, activity: activity %>
+                    <%= render partial: "request_activity", locals: { activity: activity } %>
+                  <% else %>
+                    <%= render partial: "idle_activity", locals: { activity: activity } %>
+                  <% end %>
+
+                  <% milestones_for_activity = assignation_milestones(activity) %>
+                  <% if milestones_for_activity.any? %>
+                    <div class="card--list__item milestones-section">
+                      <div class="milestone-link" data-toggle="milestones-collection-<%= activity.id %>">
+                        <%= icon "arrow-right-s-line", class: "icon--small" %>
+                        <span class="show-milestones">
+                          <%= t(".milestones_list") %>
+                        </span>
+                      </div>
+
+                      <div id="milestones-collection-<%= activity.id %>" data-toggler=".hidden" class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-12 pt-6 hidden" hidden>
+                        <% milestones_for_activity.each do |milestone| %>
+                          <%= card_for milestone, type: :list %>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
               </div>
             </div>
-          <% end %>
 
-          <div id="activities" class="card--list">
-            <% active_activities.each do |activity| %>
-              <% if activity.assignation_accepted? current_user %>
-                <%= render partial: "activity", locals: { activity: activity } %>
-              <% elsif allowed_to? :create, :assignation, activity: activity %>
-                <%= render partial: "request_activity", locals: { activity: activity } %>
-              <% else %>
-                <%= render partial: "idle_activity", locals: { activity: activity } %>
-              <% end %>
-
-              <% milestones_for_activity = assignation_milestones(activity) %>
-              <% if milestones_for_activity.any? %>
-                <div class="card--list__item milestones-section">
-                  <div class="milestone-link" data-toggle="milestones-collection-<%= activity.id %>">
-                    <%= icon "arrow-right-s-line", class: "icon--small" %>
-                    <span class="show-milestones">
-                      <%= t(".milestones_list") %>
-                    </span>
+            <div class="columns large-4 section">
+              <% if task&.respond_to?(:progress) && task&.progress.present? %>
+                <div class="card extra">
+                  <div class="definition-data">
+                    <div class="definition-data__item definition-data__item--double">
+                      <span class="definition-data__title"><%= t(".global_execution") %></span>
+                      <span class="definition-data__number"><%= task.progress %>%</span>
+                    </div>
                   </div>
-
-                  <div id="milestones-collection-<%= activity.id %>" data-toggler=".hidden" class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-12 pt-6 hidden" hidden>
-                    <% milestones_for_activity.each do |milestone| %>
-                      <%= card_for milestone, type: :list %>
-                    <% end %>
+                  <div class="progress" role="progressbar" aria-valuenow="<%= task.progress %>" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-meter" style="width: <%= task.progress %>%"></div>
                   </div>
                 </div>
               <% end %>
-            <% end %>
+            </div>
           </div>
         <% end %>
       </div>
