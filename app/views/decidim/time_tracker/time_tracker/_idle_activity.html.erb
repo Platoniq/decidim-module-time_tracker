@@ -2,7 +2,7 @@
   <div class="card--list__icon">
     <%= icon "checkbox-circle-line", class: "icon--small text-success", role: "img", "aria-hidden": true %>
   </div>
-  <div class="card--list__text">
+  <div class="card--list__text flex-1">
     <span class="card--list__heading">
       <%= stripped_translated_attribute activity.description %>
     </span>
@@ -20,17 +20,8 @@
       </span>
     </span>
 
-    <% if activity.respond_to?(:progress) && activity.progress.present? %>
-      <div class="activity-progress" style="margin-top: 1rem;">
-        <div class="progress" role="progressbar" aria-valuenow="<%= activity.progress %>" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-meter" style="width: <%= activity.progress %>%"></div>
-        </div>
-        <span class="activity-progress__label"><%= activity.progress %>% <%= t("decidim.time_tracker.activity.completion") %></span>
-      </div>
-    <% end %>
-
     <% if user_signed_in? %>
-      <div class="card--list__actions">
+      <div class="card--list__actions mt-2">
         <% if activity.status != :open %>
           <%= render partial: "callout_status", locals: { activity: activity } %>
         <% else %>
@@ -43,4 +34,16 @@
       </div>
     <% end %>
   </div>
+
+  <% if activity.respond_to?(:progress) && activity.progress.present? %>
+    <div class="card--list__annotation ml-6 flex flex-col justify-center w-1/4 max-w-[200px]">
+      <div class="flex justify-between text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+        <span><%= t("decidim.time_tracker.activity.completion") %></span>
+        <span><%= activity.progress %>%</span>
+      </div>
+      <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+        <div class="bg-green-500 h-full rounded-full" style="width: <%= activity.progress %>%"></div>
+      </div>
+    </div>
+  <% end %>
 </div>
