@@ -71,6 +71,20 @@ module Decidim
           end
         end
 
+        def reorder
+          enforce_permission_to :update, :task
+
+          ReorderTasks.call(tasks, params[:items_ids]) do
+            on(:ok) do
+              head :ok
+            end
+
+            on(:invalid) do
+              head :bad_request
+            end
+          end
+        end
+
         def accept_all_pending_assignations
           return redirect_to(tasks_path) if assignations.blank?
 

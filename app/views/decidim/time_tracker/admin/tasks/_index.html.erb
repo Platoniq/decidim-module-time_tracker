@@ -11,6 +11,7 @@
       <table class="table-list">
         <thead>
           <tr>
+            <th></th>
             <th><%= t("models.task.fields.name", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.task.fields.activities_count", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.task.fields.activities_start_at", scope: "decidim.time_tracker") %></th>
@@ -20,9 +21,12 @@
             <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker.admin") %></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="draggable-table" data-sort-url="<%= reorder_tasks_path %>" data-draggable-table>
           <% tasks.each do |task| %>
-            <tr data-id="<%= task.id %>">
+            <tr class="draggable-content task-<%= task.id %>" draggable="true" data-id="<%= task.id %>" data-record-id="<%= task.id %>">
+              <td class="text-center dragging-handle">
+                <%= icon("draggable", class: "dragger") %>
+              </td>
               <td>
                 <%= translated_attribute(task.name) %><br>
               </td>
