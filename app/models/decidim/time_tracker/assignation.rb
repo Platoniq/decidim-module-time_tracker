@@ -50,15 +50,15 @@ module Decidim
         time_events.empty?
       end
 
-      # rubocop:disable Lint/UselessAssignment
       def self.sorted_by_status(*statuses)
-        accepted = self.accepted.sort_by(&:time_dedicated).reverse
-        pending = self.pending
-        rejected = self.rejected
+        collections = {
+          "accepted" => accepted.sort_by(&:time_dedicated).reverse,
+          "pending" => pending.to_a,
+          "rejected" => rejected.to_a
+        }
 
-        statuses.map { |status| send(status) }.sum
+        statuses.flat_map { |status| collections[status.to_s] }.compact
       end
-      # rubocop:enable Lint/UselessAssignment
 
       def self.log_presenter_class_for(_log)
         Decidim::TimeTracker::AdminLog::AssignationPresenter

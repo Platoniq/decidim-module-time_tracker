@@ -1,29 +1,34 @@
 <%= render partial: "decidim/shared/component_announcement" %>
 
-<section id="sub_hero" class="home__section">
-  <div id="time_tracker" class="columns">
-    <% if activities_empty? %>
-      <div class="callout warning">
-        <%= t(".empty") %>
-      </div>
-    <% else %>
-      <% if !user_signed_in? %>
-        <%= render partial: "sign_in" %>
-      <% elsif must_fill_in_data? %>
-        <%= render partial: "assignee_data" %>
-      <% end %>
+<% content_for :aside do %>
+  <%= render partial: "aside" %>
+<% end %>
 
+<%= render layout: "layouts/decidim/shared/layout_two_col" do %>
+  <% if activities_empty? %>
+    <section class="layout-main__section">
+      <div class="callout warning">
+        <%= t("decidim.time_tracker.time_tracker.index.empty") %>
+      </div>
+    </section>
+  <% else %>
+    <% if !user_signed_in? %>
+      <section class="layout-main__section">
+        <%= render partial: "sign_in" %>
+      </section>
+    <% elsif must_fill_in_data? %>
+      <section class="layout-main__section">
+        <%= render partial: "assignee_data" %>
+      </section>
+    <% end %>
+
+    <section class="layout-main__section">
       <div id="tasks">
         <% tasks.each do |task| %>
           <% active_activities = task.activities.active %>
           <% next if active_activities.empty? %>
 
-          <h2 class="h2 decorator text-primary"><%= stripped_translated_attribute task.name %></h2>
-
-          <div class="task-results-count">
-            <span class="task-results-count__number"><%= active_activities.count %></span>
-            <span class="task-results-count__label"><%= t("decidim.participatory_processes.statistics.activities_count").upcase %></span>
-          </div>
+          <h2 class="h4 decorator text-primary"><%= stripped_translated_attribute task.name %></h2>
 
           <div id="activities" class="card--list">
             <% active_activities.each do |activity| %>
@@ -41,7 +46,7 @@
                   <div class="milestone-link" data-toggle="milestones-collection-<%= activity.id %>">
                     <%= icon "arrow-right-s-line", class: "icon--small" %>
                     <span class="show-milestones">
-                      <%= t(".milestones_list") %>
+                      <%= t("decidim.time_tracker.time_tracker.index.milestones_list") %>
                     </span>
                   </div>
 
@@ -56,8 +61,8 @@
           </div>
         <% end %>
       </div>
-    <% end %>
-  </div>
-</section>
+    </section>
+  <% end %>
+<% end %>
 
 <%= append_javascript_pack_tag "decidim_time_tracker" %>

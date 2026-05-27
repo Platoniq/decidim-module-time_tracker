@@ -1,5 +1,43 @@
 @import "stylesheets/decidim/legacy/variables";
 
+// ─── Aside status widget ─────────────────────────────────────────────────────
+.time-tracker__status {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+
+  &-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.75rem;
+  }
+
+  &-progress {
+    height: 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+
+    > div {
+      height: 100%;
+      background-color: $success;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+  }
+
+  &-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    line-height: 1;
+  }
+}
+
 // ─── Task result count header ───────────────────────────────────────────────
 .task-results-count {
   display: flex;

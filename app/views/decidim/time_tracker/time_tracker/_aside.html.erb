@@ -1,0 +1,23 @@
+<h1 class="title-decorator"><%= component_name %></h1>
+
+<div class="time-tracker__status time-tracker__status--home">
+  <p class="time-tracker__status-title"><%= t("decidim.time_tracker.time_tracker.index.global_execution_status") %></p>
+
+  <% if global_progress.present? %>
+    <div class="time-tracker__status-progress"
+         role="progressbar"
+         aria-label="<%= t("decidim.time_tracker.time_tracker.index.global_execution_status") %>"
+         aria-valuenow="<%= global_progress %>"
+         aria-valuemin="0"
+         aria-valuemax="100"
+         aria-valuetext="<%= number_to_percentage(global_progress, precision: 0) %>">
+      <div style="width: <%= global_progress %>%"></div>
+    </div>
+  <% end %>
+
+  <div class="time-tracker__status-value">
+    <% if global_progress.present? %>
+      <span><%= number_to_percentage(global_progress, precision: 0) %></span>
+    <% end %>
+  </div>
+</div>

@@ -376,6 +376,7 @@ ca:
         index:
           empty: Encara no hi ha activitats.
           global_execution: Execució global
+          global_execution_status: Estat d'execució global
           milestones_list: Persones que treballen en aquesta activitat
         questionnaire_in_preview_mode: El qüestionari no es pot respondre en el mode de previsualització!
         request_activity:

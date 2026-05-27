@@ -5,7 +5,7 @@ module Decidim
     class TimeTrackerController < Decidim::TimeTracker::ApplicationController
       include Decidim::FormFactory
 
-      helper_method :tasks, :assignation_milestones, :start_endpoint, :stop_endpoint, :requests_path, :questionnaire_path
+      helper_method :tasks, :assignation_milestones, :start_endpoint, :stop_endpoint, :requests_path, :questionnaire_path, :global_progress
 
       def index
         @form = form(MilestoneForm).instance
@@ -13,6 +13,16 @@ module Decidim
       end
 
       private
+
+      def global_progress
+        all_tasks = tasks
+        return nil if all_tasks.empty?
+
+        valid_progresses = all_tasks.map(&:progress).compact
+        return nil if valid_progresses.empty?
+
+        (valid_progresses.sum.to_f / valid_progresses.size).round
+      end
 
       def tasks
         return [] if time_tracker.blank?

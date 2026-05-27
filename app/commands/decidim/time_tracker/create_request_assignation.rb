@@ -15,6 +15,7 @@ module Decidim
       def call
         begin
           create_request_assignation
+          notify_admins
         rescue StandardError
           return broadcast(:invalid)
         end
@@ -25,6 +26,15 @@ module Decidim
       private
 
       attr_reader :activity
+
+      def notify_admins
+        Decidim::EventsManager.publish(
+          event: "decidim.events.time_tracker.assignation_requested_event",
+          event_class: Decidim::TimeTracker::AssignationRequestedEvent,
+          resource: activity,
+          followers: activity.task.component.participatory_space.admins
+        )
+      end
 
       def create_request_assignation
         Decidim::TimeTracker::Assignation.create!(

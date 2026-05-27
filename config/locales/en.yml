@@ -65,6 +65,13 @@ en:
               fill: Fill in data
               submit: Submit
             request: Request to join activity
+    events:
+      time_tracker:
+        assignation_requested_event:
+          email_intro: "A user has requested to join the activity \"%{resource_title}\" in %{participatory_space_title}."
+          email_outro: "You have received this notification because you are an admin of this participatory space."
+          email_subject: "New assignation request for %{resource_title}"
+          notification_title: "A user requested to join the activity <a href=\"%{resource_path}\">%{resource_title}</a>."
     forms:
       admin:
         questionnaires:
@@ -408,6 +415,7 @@ en:
         index:
           empty: There are no activities yet.
           global_execution: Global execution
+          global_execution_status: Global execution status
           milestones_list: People working in this activity
         questionnaire_in_preview_mode: This questionnaire cannot be answered in preview
           mode!

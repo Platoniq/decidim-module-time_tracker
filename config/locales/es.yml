@@ -376,6 +376,7 @@ es:
         index:
           empty: Todavía no hay actividades.
           global_execution: Ejecución global
+          global_execution_status: Estado de ejecución global
           milestones_list: Personas trabajando en esta actividad
         questionnaire_in_preview_mode: '¡Este cuestionario no puede ser respondido en modo de vista previa!'
         request_activity:
