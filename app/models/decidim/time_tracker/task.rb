@@ -13,6 +13,7 @@ module Decidim
                  class_name: "Decidim::TimeTracker::TimeTracker"
 
       has_many :activities,
+               -> { order("decidim_time_tracker_activities.weight" => :asc, "decidim_time_tracker_activities.id" => :asc) },
                class_name: "Decidim::TimeTracker::Activity",
                dependent: :destroy
 

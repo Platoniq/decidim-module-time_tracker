@@ -19,6 +19,9 @@ module Decidim
             post :accept_all_pending_assignations
           end
           resources :activities do
+            collection do
+              post :reorder
+            end
             resources :assignations
           end
         end
