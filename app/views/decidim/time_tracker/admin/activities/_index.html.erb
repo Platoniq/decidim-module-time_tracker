@@ -10,7 +10,7 @@
 
   <div class="card-section">
     <div class="table-scroll">
-      <table class="table-list" data-draggable-table="<%= reorder_task_activities_path(@current_task) %>">
+      <table class="table-list">
         <thead>
           <tr>
             <th></th>
@@ -25,11 +25,11 @@
             <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker.admin") %></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="draggable-table" data-sort-url="<%= reorder_task_activities_path(@current_task) %>" data-draggable-table>
           <% activities.each do |activity| %>
-            <tr data-id="<%= activity.id %>" class="<%= "activity--inactive" unless activity.active? %>">
-              <td class="table-list__drag">
-                <%= icon "drag-drop-line" %>
+            <tr class="draggable-content activity-<%= activity.id %> <%= "activity--inactive" unless activity.active? %>" draggable="true" data-id="<%= activity.id %>" data-record-id="<%= activity.id %>">
+              <td class="text-center dragging-handle">
+                <%= icon("draggable", class: "dragger") %>
               </td>
               <td>
                 <%= translated_attribute activity.description %>
