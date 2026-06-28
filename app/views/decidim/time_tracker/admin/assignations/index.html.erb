@@ -20,6 +20,7 @@
             <th><%= t("models.assignation.fields.tos_accepted_at", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignation.fields.time_dedicated", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.assignation.fields.status", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignation.fields.completed", scope: "decidim.time_tracker") %></th>
             <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker.admin") %></th>
           </tr>
         </thead>
@@ -47,9 +48,20 @@
               <td class="assignation--status">
                 <%= t("models.assignation.fields.statuses.#{assignation.status}", scope: "decidim.time_tracker") %>
               </td>
+              <td class="assignation--completed">
+                <% if assignation.completed? %>
+                  <%= l(assignation.completed_at, format: :decidim_short) %>
+                <% else %>
+                  &mdash;
+                <% end %>
+              </td>
               <td class="table-list__actions">
                 <% if allowed_to? :update, :assignation, assignation: assignation %>
                   <%= change_assignation_status_button assignation %>
+                <% end %>
+
+                <% if allowed_to? :complete, :assignation, assignation: assignation %>
+                  <%= complete_assignation_button assignation %>
                 <% end %>
 
                 <% if allowed_to? :destroy, :assignation, assignation: assignation %>

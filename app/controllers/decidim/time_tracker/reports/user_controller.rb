@@ -9,7 +9,7 @@ module Decidim
         include Decidim::UserProfile
 
         helper Decidim::TimeTracker::ApplicationHelper
-        helper_method :activities, :assignations, :total_time, :activity_path
+        helper_method :activities, :assignations, :total_time, :activity_path, :skill_certifications
 
         def index
           enforce_permission_to :read, :user, current_user:
@@ -23,6 +23,10 @@ module Decidim
 
         def assignations
           Assignation.where(user: current_user).sorted_by_status(:accepted, :pending, :rejected)
+        end
+
+        def skill_certifications
+          SkillCertification.where(user: current_user).includes(:task).order(earned_at: :desc)
         end
 
         def activity_path(assignation)

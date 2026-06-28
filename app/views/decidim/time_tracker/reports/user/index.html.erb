@@ -1,5 +1,29 @@
 <%= render layout: "layouts/decidim/shared/layout_user_profile" do %>
   <section class="section">
+    <h3 class="h3"><%= t("reports.user.index.skills_title", scope: "decidim.time_tracker") %></h3>
+    <% if skill_certifications.any? %>
+      <div class="card__list-list pt-2 pb-8">
+        <% skill_certifications.each do |certification| %>
+          <div class="card__list time-tracker--skill">
+            <div class="card--list__item">
+              <div class="card--list__text">
+                <h5 class="h5 pb-2">
+                  <%= translated_attribute(certification.skill_name) %>
+                </h5>
+                <span class="text-xs">
+                  <%= t("reports.user.index.earned_on", scope: "decidim.time_tracker", date: l(certification.earned_at, format: :decidim_short)) %>
+                </span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="pt-2 pb-8"><%= t("reports.user.index.skills_empty", scope: "decidim.time_tracker") %></p>
+    <% end %>
+  </section>
+
+  <section class="section">
     <% if assignations.any? %>
 
       <h3 class="h3"><%== t("reports.user.index.dedicated_time", scope: "decidim.time_tracker", time: clockify_seconds(total_time)) %></h3>

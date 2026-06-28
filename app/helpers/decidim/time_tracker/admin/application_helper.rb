@@ -20,6 +20,30 @@ module Decidim
           safe_join(icons)
         end
 
+        def complete_assignation_button(assignation, success_path: nil)
+          return unless assignation.accepted?
+
+          path = complete_task_activity_assignation_path(assignation.task, assignation.activity, assignation, success_path:)
+
+          if assignation.completed?
+            icon_link_to(
+              "checkbox-circle-line",
+              path,
+              t("assignations.actions.uncomplete", scope: "decidim.time_tracker.admin"),
+              method: :patch,
+              class: "action-icon--completed"
+            )
+          else
+            icon_link_to(
+              "check-double-line",
+              path,
+              t("assignations.actions.complete", scope: "decidim.time_tracker.admin"),
+              method: :patch,
+              class: "action-icon--complete"
+            )
+          end
+        end
+
         def empty_icon
           content_tag :a, class: "action-icon" do
             content_tag :span do

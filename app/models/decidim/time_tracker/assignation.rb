@@ -34,8 +34,14 @@ module Decidim
 
       enum :status, { pending: 0, accepted: 1, rejected: 2 }
 
+      scope :completed, -> { where.not(completed_at: nil) }
+
       def assignee
         Assignee.for(user)
+      end
+
+      def completed?
+        completed_at.present?
       end
 
       def time_dedicated

@@ -67,6 +67,17 @@ FactoryBot.define do
     trait :rejected do
       status { :rejected }
     end
+
+    trait :completed do
+      status { :accepted }
+      completed_at { Time.current }
+    end
+  end
+
+  factory :skill_certification, class: "Decidim::TimeTracker::SkillCertification" do
+    user { create(:user) }
+    task { create(:task) }
+    earned_at { Time.current }
   end
 
   factory :milestone, class: "Decidim::TimeTracker::Milestone" do

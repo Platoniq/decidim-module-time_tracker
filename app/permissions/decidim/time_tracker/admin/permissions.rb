@@ -56,6 +56,8 @@ module Decidim
           case permission_action.action
           when :update
             permission_action.allow! if assignation.can_change_status?
+          when :complete
+            permission_action.allow! if assignation.accepted?
           when :index, :create, :destroy
             permission_action.allow!
           end

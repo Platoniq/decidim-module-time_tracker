@@ -17,6 +17,11 @@ module Decidim
                class_name: "Decidim::TimeTracker::Activity",
                dependent: :destroy
 
+      has_many :skill_certifications,
+               class_name: "Decidim::TimeTracker::SkillCertification",
+               foreign_key: "decidim_time_tracker_task_id",
+               dependent: :destroy
+
       scope :active, -> { where(active: true) }
 
       delegate :questionnaire, to: :time_tracker
@@ -46,6 +51,21 @@ module Decidim
 
       def user_is_assignation?(user, filter: :accepted)
         Assignation.where(user:, activity: activities).send(filter).any?
+      end
+
+      # Whether the given user has completed this task, i.e. every active
+      # activity of the task has a completed assignation for that user. A task
+      # with no active activities is never considered completed.
+      def completed_by?(user)
+        active_activities = activities.active
+        return false if active_activities.empty?
+
+        completed_activity_ids = Assignation.completed
+                                            .where(user:, activity: active_activities)
+                                            .distinct
+                                            .count("decidim_time_tracker_assignations.activity_id")
+
+        completed_activity_ids == active_activities.count
       end
 
       def self.log_presenter_class_for(_log)

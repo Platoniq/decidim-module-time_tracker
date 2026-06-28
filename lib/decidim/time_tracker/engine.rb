@@ -51,8 +51,47 @@ module Decidim
         Decidim.register_assets_path File.expand_path("app/packs", root)
       end
 
+      initializer "decidim_time_tracker.add_badges" do
+        Decidim::Gamification.register_badge(:time_tracker_activities) do |badge|
+          badge.levels = [1, 5, 15, 30, 50]
+
+          badge.valid_for = [:user]
+
+          badge.reset = lambda { |user|
+            Decidim::TimeTracker::Assignation.completed.where(user:).count
+          }
+        end
+
+        Decidim::Gamification.register_badge(:time_tracker_skills) do |badge|
+          badge.levels = [1, 3, 5, 10]
+
+          badge.valid_for = [:user]
+
+          badge.reset = lambda { |user|
+            Decidim::TimeTracker::SkillCertification.where(user:).count
+          }
+        end
+      end
+
+      # Public naming: we surface badges/skills to participants as "Skills & badges"
+      # and never expose the word "gamification" in a public URL. The core badges
+      # page lives at /gamification/badges; here we serve it at the word-free
+      # /badges and redirect the old path so existing links keep working.
+      initializer "decidim_time_tracker.public_badges_path" do
+        Decidim::Core::Engine.routes.prepend do
+          # Inside the isolated Decidim namespace, controllers are referenced
+          # without the leading "decidim/".
+          get "/badges", to: "gamification/badges#index", as: :public_badges
+          get "/gamification/badges", to: redirect("/badges")
+        end
+      end
+
       initializer "decidim.time_tracker.add_cells_view_paths" do
-        Cell::ViewModel.view_paths << File.expand_path("#{Decidim::TimeTracker::Engine.root}/app/cells")
+        # Prepend so our overrides (e.g. decidim/badges/show, which fixes the
+        # "all badges" link to the word-free /badges path) take precedence over
+        # the core cell templates. Our other cells are namespaced under
+        # decidim/time_tracker, so no unintended core cell is shadowed.
+        Cell::ViewModel.view_paths.unshift(File.expand_path("#{Decidim::TimeTracker::Engine.root}/app/cells"))
         Cell::ViewModel.view_paths << File.expand_path("#{Decidim::TimeTracker::Engine.root}/app/views") # for partials
       end
     end
