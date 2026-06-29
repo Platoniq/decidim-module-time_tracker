@@ -31,6 +31,8 @@ module Decidim
             end_date: @form.end_date,
             max_minutes_per_day: @form.max_minutes_per_day,
             requests_start_at: @form.requests_start_at,
+            min_events: @form.min_events,
+            min_duration_minutes_per_event: @form.min_duration_minutes_per_event,
             task: @task
           )
         end

@@ -8,7 +8,7 @@ module Decidim
     # Note that it inherits from `Decidim::Components::BaseController`, which
     # override its layout and provide all kinds of useful methods.
     class ApplicationController < Decidim::Components::BaseController
-      helper_method :time_tracker, :current_assignee
+      helper_method :time_tracker, :current_assignee, :tasks, :global_progress
 
       private
 
@@ -20,6 +20,22 @@ module Decidim
         return nil unless user_signed_in?
 
         @current_assignee ||= Decidim::TimeTracker::Assignee.for(current_user)
+      end
+
+      def global_progress
+        all_tasks = tasks
+        return nil if all_tasks.empty?
+
+        valid_progresses = all_tasks.map(&:progress).compact
+        return nil if valid_progresses.empty?
+
+        (valid_progresses.sum.to_f / valid_progresses.size).round
+      end
+
+      def tasks
+        return [] if time_tracker.blank?
+
+        time_tracker.tasks
       end
     end
   end

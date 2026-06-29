@@ -1,4 +1,9 @@
-<%= render layout: "layouts/decidim/shared/layout_user_profile" do %>
+<% content_for :aside do %>
+  <%= render partial: "decidim/time_tracker/time_tracker/aside" %>
+<% end %>
+
+<%= render layout: "layouts/decidim/shared/layout_two_col" do %>
+  <%= link_to t("decidim.time_tracker.time_tracker.index.back_to_tasks", default: "Back to tasks"), root_path, class: "button button__sm button__secondary mb-4" %>
   <section class="section">
     <h3 class="h3"><%= t("reports.user.index.skills_title", scope: "decidim.time_tracker") %></h3>
     <% if skill_certifications.any? %>
@@ -10,7 +15,22 @@
                 <h5 class="h5 pb-2">
                   <%= translated_attribute(certification.skill_name) %>
                 </h5>
-                <span class="text-xs">
+                <ul class="text-sm pb-2 pl-4" style="list-style-type: disc;">
+                  <% certification.task.activities.active.each do |activity| %>
+                    <% assignation = activity.assignations.find_by(user: current_user) %>
+                    <li>
+                      <% if assignation %>
+                        <%= link_to activity_path(assignation), target: :blank, class: "hover:underline" do %>
+                          <%= translated_attribute(activity.description) %> 
+                          <span class="text-muted">(<%= clockify_seconds(assignation.time_dedicated) %>)</span>
+                        <% end %>
+                      <% else %>
+                        <%= translated_attribute(activity.description) %>
+                      <% end %>
+                    </li>
+                  <% end %>
+                </ul>
+                <span class="text-xs text-muted">
                   <%= t("reports.user.index.earned_on", scope: "decidim.time_tracker", date: l(certification.earned_at, format: :decidim_short)) %>
                 </span>
               </div>

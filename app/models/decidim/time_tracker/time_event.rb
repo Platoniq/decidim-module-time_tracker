@@ -56,6 +56,18 @@ module Decidim
         self.stop = Time.current.to_i
         self.total_seconds = stop - start
         save!
+
+        check_completion_criteria!
+      end
+
+      private
+
+      def check_completion_criteria!
+        return if assignation.completed?
+
+        if activity.satisfies_completion_criteria?(user)
+          Decidim::TimeTracker::Admin::CompleteAssignation.new(assignation, user, complete: true).call
+        end
       end
     end
   end

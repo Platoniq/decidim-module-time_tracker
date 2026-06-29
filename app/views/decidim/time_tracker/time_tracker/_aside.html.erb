@@ -21,3 +21,9 @@
     <% end %>
   </div>
 </div>
+
+<% if user_signed_in? %>
+  <div class="time-tracker__user-progress mt-8">
+    <%= link_to t("decidim.time_tracker.time_tracker.aside.my_progress_and_skills", default: "My Progress & Skills"), user_report_path, class: "button button__sm button__secondary w-full" %>
+  </div>
+<% end %>

@@ -16,12 +16,16 @@ module Decidim
         attribute :end_date, Decidim::Attributes::TimeWithZone
         attribute :max_minutes_per_day, Integer
         attribute :requests_start_at, Decidim::Attributes::TimeWithZone
+        attribute :min_events, Integer, default: 0
+        attribute :min_duration_minutes_per_event, Integer, default: 0
 
         validates :start_date, presence: true
         validates :end_date, presence: true, date: { after: :start_date }
         validates :requests_start_at, presence: true, date: { before: :start_date }
 
         validates :max_minutes_per_day, presence: true
+        validates :min_events, numericality: { greater_than_or_equal_to: 0 }
+        validates :min_duration_minutes_per_event, numericality: { greater_than_or_equal_to: 0 }
         validates :description, translatable_presence: true
       end
     end

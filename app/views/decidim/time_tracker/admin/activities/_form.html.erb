@@ -39,6 +39,14 @@
         <%= form.number_field :max_minutes_per_day %>
       </div>
 
+      <div class="row column">
+        <%= form.number_field :min_events %>
+      </div>
+
+      <div class="row column">
+        <%= form.number_field :min_duration_minutes_per_event %>
+      </div>
+
       <div class="button button__sm button__secondary pt-4">
         <%= form.submit submit %>
       </div>

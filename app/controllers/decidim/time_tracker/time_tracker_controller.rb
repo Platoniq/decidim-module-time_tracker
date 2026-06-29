@@ -5,7 +5,7 @@ module Decidim
     class TimeTrackerController < Decidim::TimeTracker::ApplicationController
       include Decidim::FormFactory
 
-      helper_method :tasks, :assignation_milestones, :start_endpoint, :stop_endpoint, :requests_path, :questionnaire_path, :global_progress
+      helper_method :assignation_milestones, :start_endpoint, :stop_endpoint, :requests_path, :questionnaire_path
 
       def index
         @form = form(MilestoneForm).instance
@@ -14,21 +14,7 @@ module Decidim
 
       private
 
-      def global_progress
-        all_tasks = tasks
-        return nil if all_tasks.empty?
 
-        valid_progresses = all_tasks.map(&:progress).compact
-        return nil if valid_progresses.empty?
-
-        (valid_progresses.sum.to_f / valid_progresses.size).round
-      end
-
-      def tasks
-        return [] if time_tracker.blank?
-
-        time_tracker.tasks
-      end
 
       def assignation_milestones(activity)
         Milestone.where(activity:).order(Arel.sql("decidim_user_id, created_at DESC")).select("DISTINCT ON (decidim_user_id) *")

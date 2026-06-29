@@ -44,6 +44,8 @@ module Decidim
         resources :assignations, only: [:create]
         get "activities/:activity_id/assignation_status", to: "assignation_status#show", as: :activity_assignation_status
 
+        resource :user_report, only: [:show], controller: "user_report"
+
         root to: "time_tracker#index"
       end
 

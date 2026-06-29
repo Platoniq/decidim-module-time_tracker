@@ -93,6 +93,18 @@ module Decidim
         assignations.where(user:).count.positive?
       end
 
+      def satisfies_completion_criteria?(user)
+        return false if min_events.blank? || min_events <= 0
+        return false if min_duration_minutes_per_event.blank? || min_duration_minutes_per_event <= 0
+
+        # Check user's time events for this activity
+        events_count = time_events.where(user:)
+                                  .where("total_seconds >= ?", min_duration_minutes_per_event * 60)
+                                  .count
+
+        events_count >= min_events
+      end
+
       def has_questions?
         questionnaire.questions.any?
       end
