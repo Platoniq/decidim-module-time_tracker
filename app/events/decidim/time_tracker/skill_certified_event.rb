@@ -24,7 +24,7 @@ module Decidim
       private
 
       def report_path
-        Decidim::TimeTracker::ReportsEngine.routes.url_helpers.root_path
+        Decidim::TimeTracker::Engine.routes.url_helpers.user_report_path
       end
     end
   end

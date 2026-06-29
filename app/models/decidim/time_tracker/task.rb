@@ -37,11 +37,13 @@ module Decidim
       end
 
       def starts_at
-        activities.order(start_date: :asc).first&.start_date
+        # reorder (not order) so the association's default weight/id ordering
+        # doesn't take precedence over the date sort.
+        activities.reorder(start_date: :asc).first&.start_date
       end
 
       def ends_at
-        activities.order(end_date: :desc).first&.end_date
+        activities.reorder(end_date: :desc).first&.end_date
       end
 
       def assignations_count(filter: :accepted)

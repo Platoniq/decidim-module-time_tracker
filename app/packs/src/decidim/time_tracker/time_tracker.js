@@ -6,15 +6,15 @@ document.addEventListener("DOMContentLoaded", () => {
   updateReports();
   const startPolling = (activityId) => {
     const interval = setInterval(() => {
-      fetch(`/timetracker/activities/${activityId}/assignation_status`)
-        .then(response => response.json())
-        .then(data => {
+      fetch(`/timetracker/activities/${activityId}/assignation_status`).
+        then((response) => response.json()).
+        then((data) => {
           if (data.status === "accepted") {
             clearInterval(interval);
             window.location.reload();
           }
-        })
-        .catch(error => console.error("Error polling assignation status:", error));
+        }).
+        catch((error) => console.error("Error polling assignation status:", error));
     }, 5000);
   };
 

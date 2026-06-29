@@ -38,11 +38,15 @@ module Decidim::TimeTracker
       end
 
       it "notifies the user" do
-        expect(Decidim::EventsManager)
-          .to receive(:publish)
-          .with(hash_including(event: "decidim.events.time_tracker.skill_certified_event", affected_users: [user]))
+        # Allow every publish (awarding the badge also publishes a
+        # gamification badge_earned event) and assert the certification one.
+        allow(Decidim::EventsManager).to receive(:publish)
 
         subject.refresh
+
+        expect(Decidim::EventsManager)
+          .to have_received(:publish)
+          .with(hash_including(event: "decidim.events.time_tracker.skill_certified_event", affected_users: [user]))
       end
 
       it "is idempotent" do

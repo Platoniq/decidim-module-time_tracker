@@ -327,7 +327,7 @@ namespace :time_tracker do
   def random_date_in_range(start_date, end_date)
     return start_date unless end_date && end_date > start_date
 
-    days_between = ((end_date.to_date - start_date.to_date).to_i)
+    days_between = (end_date.to_date - start_date.to_date).to_i
     start_date + rand(0..days_between).days
   end
 

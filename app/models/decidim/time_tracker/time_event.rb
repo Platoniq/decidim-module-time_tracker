@@ -65,9 +65,7 @@ module Decidim
       def check_completion_criteria!
         return if assignation.completed?
 
-        if activity.satisfies_completion_criteria?(user)
-          Decidim::TimeTracker::Admin::CompleteAssignation.new(assignation, user, complete: true).call
-        end
+        Decidim::TimeTracker::Admin::CompleteAssignation.new(assignation, user, complete: true).call if activity.satisfies_completion_criteria?(user)
       end
     end
   end

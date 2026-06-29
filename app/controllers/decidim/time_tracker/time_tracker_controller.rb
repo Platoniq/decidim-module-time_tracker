@@ -14,8 +14,6 @@ module Decidim
 
       private
 
-
-
       def assignation_milestones(activity)
         Milestone.where(activity:).order(Arel.sql("decidim_user_id, created_at DESC")).select("DISTINCT ON (decidim_user_id) *")
       end

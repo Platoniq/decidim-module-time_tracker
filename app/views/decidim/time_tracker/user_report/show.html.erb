@@ -21,7 +21,7 @@
                     <li>
                       <% if assignation %>
                         <%= link_to activity_path(assignation), target: :blank, class: "hover:underline" do %>
-                          <%= translated_attribute(activity.description) %> 
+                          <%= translated_attribute(activity.description) %>
                           <span class="text-muted">(<%= clockify_seconds(assignation.time_dedicated) %>)</span>
                         <% end %>
                       <% else %>

@@ -99,7 +99,7 @@ module Decidim
 
         # Check user's time events for this activity
         events_count = time_events.where(user:)
-                                  .where("total_seconds >= ?", min_duration_minutes_per_event * 60)
+                                  .where(total_seconds: (min_duration_minutes_per_event * 60)..)
                                   .count
 
         events_count >= min_events
