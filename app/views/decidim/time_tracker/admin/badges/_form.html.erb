@@ -16,7 +16,8 @@
       </div>
 
       <div class="row column">
-        <%= form.select :metric, Decidim::TimeTracker::Badge::METRICS.map { |metric| [t("models.badge.metrics.#{metric}", scope: "decidim.time_tracker"), metric] } %>
+        <% metric_options = Decidim::TimeTracker::Badge::METRICS.map { |metric| [t("models.badge.metrics.#{metric}", scope: "decidim.time_tracker"), metric] } %>
+        <%= form.select :metric, metric_options %>
         <p class="help-text"><%= t("badges.form.metric_help", scope: "decidim.time_tracker.admin") %></p>
       </div>
 
