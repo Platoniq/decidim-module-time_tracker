@@ -7,6 +7,11 @@
   data-counter-active="<%= activity.counter_active_for?(current_user) %>"
   data-remaining-time="<%= activity.user_remaining_for_today(current_user) %>">
   <div class="content">
+    <% if activity.image.attached? %>
+      <img src="<%= activity.attached_uploader(:image).variant_url(:card) %>"
+           alt="<%= stripped_translated_attribute activity.description %>"
+           class="time-tracker-activity__image rounded mb-4 w-full object-cover" loading="lazy">
+    <% end %>
 
     <div class="activity-status-container">
       <span class="activity-status-badge <%= activity.display_status %>">
@@ -17,13 +22,14 @@
           <div class="progress" role="progressbar" aria-valuenow="<%= activity.progress %>" aria-valuemin="0" aria-valuemax="100">
             <div class="progress-meter" style="width: <%= activity.progress %>%"></div>
           </div>
-          <span class="activity-progress__label"><%= activity.progress %>% <%= t(".completion") %></span>
+          <span class="activity-progress__label"><%= number_to_percentage(activity.progress, precision: 0) %> <%= t(".completion") %></span>
         </div>
       <% end %>
     </div>
 
     <h4 class="h4 pb-4"><%= stripped_translated_attribute activity.description %></h4>
     <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
+    <%= render partial: "activity_participants", locals: { activity: activity } %>
     <div class="elapsed-time pt-2"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div class="elapsed-time-clock pt-2"><%= clockify_seconds(activity.user_seconds_elapsed(current_user)) %></div></div>
 
     <div class="top pt-2">

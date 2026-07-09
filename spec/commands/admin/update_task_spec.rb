@@ -16,6 +16,7 @@ module Decidim::TimeTracker::Admin
         # taskForm,
         name: Decidim::Faker::Localized.word,
         progress: 0,
+        skills: [],
         invalid?: invalid,
         current_user: user
       )

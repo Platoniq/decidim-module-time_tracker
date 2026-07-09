@@ -13,6 +13,9 @@ module Decidim
         # Add admin engine routes here
         get :stats, to: "stats#index"
 
+        resources :skills, except: [:show]
+        resources :badges, except: [:show]
+
         resources :tasks do
           collection do
             post :reorder

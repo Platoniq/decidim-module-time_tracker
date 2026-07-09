@@ -36,7 +36,8 @@ module Decidim
             @task,
             @user,
             name: form.name,
-            progress: form.progress
+            progress: form.progress,
+            skills: form.skills
           )
         end
       end

@@ -6,11 +6,11 @@ module Decidim
     # completing every active activity of a task.
     class SkillCertifiedEvent < Decidim::Events::SimpleEvent
       def resource_url
-        report_path
+        router.user_report_url
       end
 
       def resource_path
-        report_path
+        router.user_report_path
       end
 
       def task
@@ -23,8 +23,10 @@ module Decidim
 
       private
 
-      def report_path
-        Decidim::TimeTracker::Engine.routes.url_helpers.user_report_path
+      # The engine is mounted once per component, so routes must be resolved
+      # through the component's router or they lack the mount prefix.
+      def router
+        @router ||= Decidim::EngineRouter.main_proxy(task.component)
       end
     end
   end

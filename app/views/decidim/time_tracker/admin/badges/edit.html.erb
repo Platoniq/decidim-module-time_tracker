@@ -1,0 +1,5 @@
+<%= render partial: "decidim/time_tracker/admin/breadcrumbs" %>
+
+<%= decidim_form_for(@form, url: badge_path(current_badge), html: { class: "form edit_badge" }) do |form| %>
+  <%= render partial: "form", locals: { form: form, title: t("badges.edit.title", scope: "decidim.time_tracker.admin"), submit: t("badges.edit.submit", scope: "decidim.time_tracker.admin") } %>
+<% end %>

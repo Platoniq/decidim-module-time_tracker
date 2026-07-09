@@ -7,8 +7,12 @@ module Decidim
     class Activity < ApplicationRecord
       include Decidim::Traceable
       include Decidim::Loggable
+      include Decidim::HasUploadValidations
 
       self.table_name = :decidim_time_tracker_activities
+
+      has_one_attached :image
+      validates_upload :image, uploader: Decidim::TimeTracker::ActivityImageUploader
 
       belongs_to :task,
                  class_name: "Decidim::TimeTracker::Task"
@@ -33,6 +37,15 @@ module Decidim
       end
 
       delegate :questionnaire, to: :task
+      delegate :component, to: :task, allow_nil: true
+
+      # The writer lets upload validations run on unsaved records where the
+      # task association is not set (e.g. the passthru validator's dummy).
+      attr_writer :organization
+
+      def organization
+        @organization || component&.organization
+      end
 
       # total number of seconds spent by the user
       # not counting current counters

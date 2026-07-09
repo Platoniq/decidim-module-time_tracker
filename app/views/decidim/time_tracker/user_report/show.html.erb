@@ -4,6 +4,20 @@
 
 <%= render layout: "layouts/decidim/shared/layout_two_col" do %>
   <%= link_to t("decidim.time_tracker.time_tracker.index.back_to_tasks", default: "Back to tasks"), root_path, class: "button button__sm button__secondary mb-4" %>
+
+  <% presented_user = present(current_user) %>
+  <section class="section time-tracker--report-header flex items-center gap-4 pb-6">
+    <%= link_to presented_user.profile_path do %>
+      <%= image_tag presented_user.avatar_url(:big),
+                    alt: t("reports.user.index.avatar_alt", scope: "decidim.time_tracker", name: presented_user.name),
+                    class: "time-tracker--report-avatar rounded-full w-16 h-16 object-cover" %>
+    <% end %>
+    <div>
+      <h2 class="h2"><%= presented_user.name %></h2>
+      <%= link_to "@#{presented_user.nickname}", presented_user.profile_path, class: "text-sm text-secondary hover:underline" %>
+    </div>
+  </section>
+
   <section class="section">
     <h3 class="h3"><%= t("reports.user.index.skills_title", scope: "decidim.time_tracker") %></h3>
     <% if skill_certifications.any? %>
@@ -13,9 +27,9 @@
             <div class="card--list__item">
               <div class="card--list__text">
                 <h5 class="h5 pb-2">
-                  <%= translated_attribute(certification.skill_name) %>
+                  <%= certification.skill_names.map { |name| translated_attribute(name) }.join(", ") %>
                 </h5>
-                <ul class="text-sm pb-2 pl-4" style="list-style-type: disc;">
+                <ul class="list-disc text-sm pb-2 pl-4">
                   <% certification.task.activities.active.each do |activity| %>
                     <% assignation = activity.assignations.find_by(user: current_user) %>
                     <li>
@@ -42,6 +56,8 @@
       <p class="pt-2 pb-8"><%= t("reports.user.index.skills_empty", scope: "decidim.time_tracker") %></p>
     <% end %>
   </section>
+
+  <%= render partial: "decidim/time_tracker/shared/earned_badges" %>
 
   <section class="section">
     <% if assignations.any? %>

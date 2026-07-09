@@ -1,0 +1,34 @@
+<% badges = Decidim::TimeTracker::Badge.where(organization: current_organization).active.sorted %>
+<% if badges.any? %>
+  <% metrics = Decidim::TimeTracker::BadgeMetrics.new(current_user) %>
+  <section class="section pb-8">
+    <h3 class="h3"><%= t("decidim.time_tracker.badges.title") %></h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+      <% badges.each do |badge| %>
+        <% value = metrics.value_for(badge.metric) %>
+        <% level = badge.level_for(value) %>
+        <% next_threshold = badge.next_level_threshold(value) %>
+        <div class="card p-4 time-tracker--badge<%= " time-tracker--badge-locked" if level.zero? %>">
+          <h5 class="h5"><%= translated_attribute(badge.name) %></h5>
+          <% if badge.description.present? %>
+            <p class="text-sm text-muted"><%= translated_attribute(badge.description) %></p>
+          <% end %>
+          <p class="text-sm pt-2">
+            <strong><%= t("decidim.time_tracker.badges.level", level: level, max: badge.max_level) %></strong>
+          </p>
+          <% if next_threshold %>
+            <div class="progress" role="progressbar"
+                 aria-valuenow="<%= value %>" aria-valuemin="0" aria-valuemax="<%= next_threshold %>">
+              <div class="progress-meter" style="width: <%= [(value * 100 / next_threshold), 100].min %>%"></div>
+            </div>
+            <span class="text-xs text-muted">
+              <%= t("decidim.time_tracker.badges.progress.#{badge.metric}", value: value, next: next_threshold) %>
+            </span>
+          <% else %>
+            <span class="text-xs"><%= t("decidim.time_tracker.badges.max_level") %></span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+<% end %>

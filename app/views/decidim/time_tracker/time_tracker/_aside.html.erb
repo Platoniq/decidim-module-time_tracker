@@ -13,13 +13,11 @@
          aria-valuetext="<%= number_to_percentage(global_progress, precision: 0) %>">
       <div style="width: <%= global_progress %>%"></div>
     </div>
-  <% end %>
 
-  <div class="time-tracker__status-value">
-    <% if global_progress.present? %>
+    <div class="time-tracker__status-value">
       <span><%= number_to_percentage(global_progress, precision: 0) %></span>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </div>
 
 <% if user_signed_in? %>

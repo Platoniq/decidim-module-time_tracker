@@ -6,13 +6,25 @@ en:
         active: Active
         description: Description
         end_date: End date
+        image: Image
         max_minutes_per_day: Maximum minutes per day
         requests_start_at: Requests start at
         start_date: Start date
+      badge:
+        active: Active
+        description: Description
+        levels_list: Levels
+        metric: Rule
+        name: Name
+        weight: Order position
       milestone:
         title: What have you done?
+      skill:
+        description: Description
+        name: Name
       task:
         name: Name
+        skill_ids: Skills
     errors:
       time_event:
         attributes:
@@ -135,6 +147,9 @@ en:
       assignees_count: Volunteers
       tasks_count: Tasks
     time_tracker:
+      activity_questionnaire:
+        show:
+          about_activity: You are answering the follow-up questions for this activity
       admin:
         actions:
           title: Actions
@@ -194,6 +209,37 @@ en:
           update:
             error: Error updating assignation
             success: Assignee updated successfully
+        badges:
+          actions:
+            confirm_destroy: Are you sure you want to delete this badge?
+            destroy: Delete badge
+            edit: Edit badge
+            manage: Manage badges
+            new: New badge
+          create:
+            error: Error creating the badge
+            success: Badge created successfully
+          destroy:
+            success: Badge deleted successfully
+          edit:
+            submit: Update badge
+            title: Edit badge
+          form:
+            levels_help: 'Comma-separated thresholds, from lowest to highest. Example:
+              "1, 5, 15, 30" awards level 1 at 1, level 2 at 5, and so on.'
+            metric_help: What is counted to level up this badge.
+          index:
+            description: Badges are shared across all time tracker components of the
+              platform. Define the rule (what is counted) and the level thresholds;
+              participants level up automatically.
+            empty: There are no badges yet.
+            title: Badges
+          new:
+            submit: Create badge
+            title: New badge
+          update:
+            error: Error updating the badge
+            success: Badge updated successfully
         breadcrumbs:
           assignations: Assignations
           global: All tasks
@@ -219,6 +265,34 @@ en:
           questionnaire:
             edit: Edit questionnaire
             manage_questions: Manage questions
+        skills:
+          actions:
+            confirm_destroy: Are you sure you want to delete this skill? It will be
+              unassigned from every task.
+            destroy: Delete skill
+            edit: Edit skill
+            manage: Manage skills
+            new: New skill
+          create:
+            error: Error creating the skill
+            success: Skill created successfully
+          destroy:
+            success: Skill deleted successfully
+          edit:
+            submit: Update skill
+            title: Edit skill
+          index:
+            description: Skills are shared across all time tracker components of the
+              platform. Assign them to tasks; participants earn them by completing
+              every activity of a task.
+            empty: There are no skills yet.
+            title: Skills
+          new:
+            submit: Create skill
+            title: New skill
+          update:
+            error: Error updating the skill
+            success: Skill updated successfully
         stats:
           index:
             title: Stats
@@ -244,6 +318,10 @@ en:
           edit:
             submit: Update
             title: Update task
+          form:
+            manage_skills: Manage skills
+            skills_help: Participants earn the selected skills when they complete
+              every activity of this task.
           index:
             title: Tasks
           new:
@@ -276,6 +354,18 @@ en:
         show:
           assignations_activity: "%{user_name}'s activity"
           milestones_list: List of milestones
+      badges:
+        level: Level %{level} of %{max}
+        max_level: Maximum level reached!
+        progress:
+          completed_activities: "%{value} of %{next} activities completed to reach
+            the next level"
+          milestones_created: "%{value} of %{next} milestones posted to reach the
+            next level"
+          skills_earned: "%{value} of %{next} skills earned to reach the next level"
+          time_dedicated_hours: "%{value} of %{next} hours dedicated to reach the
+            next level"
+        title: My badges
       clock:
         hours: "%{n}h"
         minutes: "%{n}m"
@@ -402,10 +492,28 @@ en:
             time_dedicated: Time dedicated
             tos_accepted_at: Joined at
           name: Assignation
+        badge:
+          fields:
+            active: Active
+            levels: Levels
+            metric: Rule
+            name: Name
+          metrics:
+            completed_activities: Completed activities
+            milestones_created: Milestones posted
+            skills_earned: Skills earned
+            time_dedicated_hours: Hours dedicated
+          name: Badge
         questionnaire:
           fields:
             name: Name
             title: Title
+        skill:
+          fields:
+            description: Description
+            name: Name
+            tasks_count: Assigned tasks
+          name: Skill
         task:
           fields:
             activities_count: Number of activities
@@ -415,10 +523,16 @@ en:
             assignations_pending: Pending assignations
             name: Name
           name: Task
+      my_activities:
+        show:
+          component_report: View my full report for this space
+          empty: You are not signed up for any activity yet.
+          total_time: 'Total time dedicated: %{time}'
       reports:
         user:
           index:
             accepted: Accepted
+            avatar_alt: Avatar of %{name}
             dedicated_time: 'Time dedicated so far: %{time}'
             earned_on: Earned on %{date}
             empty: You don't have any activity assignations
@@ -441,7 +555,7 @@ en:
           counter_stopped: Counter has been stopped automatically
           questionnaire:
             answered: Thanks for answering the questionnaire!
-            respond: What do you think about this task?
+            respond: Answer the follow-up questions about this activity
           status:
             completed: 'Status: Completed'
             inactive: 'Status: Inactive'
@@ -467,6 +581,10 @@ en:
           global_execution: Global execution
           global_execution_status: Global execution status
           milestones_list: People working in this activity
+        participants:
+          working_here:
+            one: 1 person working on this activity
+            other: "%{count} people working on this activity"
         questionnaire_in_preview_mode: This questionnaire cannot be answered in preview
           mode!
         request_activity:

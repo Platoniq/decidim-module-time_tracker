@@ -35,6 +35,15 @@ module Decidim
         translated_attribute(component_settings.milestones_label).presence || t("models.milestone.name", scope: "decidim.time_tracker")
       end
 
+      # Users with an accepted assignation on the activity, presented for
+      # rendering with author cells. Optionally excludes a user (typically the
+      # current one, so the list reads as "other people working on this").
+      def activity_participants(activity, except: nil)
+        users = Decidim::User.where(id: activity.assignations.accepted.select(:decidim_user_id))
+        users = users.where.not(id: except.id) if except.present?
+        users.map { |user| present(user) }
+      end
+
       # turns a number of seconds to a string 0h 0m 0s
       def clockify_seconds(total_seconds, padded: false)
         total_seconds = total_seconds.to_i

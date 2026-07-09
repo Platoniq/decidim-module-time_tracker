@@ -1,0 +1,5 @@
+<%= render partial: "decidim/time_tracker/admin/breadcrumbs" %>
+
+<%= decidim_form_for(@form, url: skills_path, html: { class: "form new_skill" }) do |form| %>
+  <%= render partial: "form", locals: { form: form, title: t("skills.new.title", scope: "decidim.time_tracker.admin"), submit: t("skills.new.submit", scope: "decidim.time_tracker.admin") } %>
+<% end %>

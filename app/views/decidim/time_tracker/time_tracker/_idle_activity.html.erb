@@ -1,6 +1,11 @@
 <div class="card--list__item time-tracker-activity-card time-tracker-request" data-activity-id="<%= activity.id %>">
   <div class="card--list__icon">
-    <%= icon "checkbox-circle-line", class: "icon--small text-success", role: "img", "aria-hidden": true %>
+    <% if activity.image.attached? %>
+      <img src="<%= activity.attached_uploader(:image).variant_url(:thumb) %>" alt="" aria-hidden="true"
+           class="time-tracker-activity__thumb rounded object-cover" loading="lazy">
+    <% else %>
+      <%= icon "checkbox-circle-line", class: "icon--small text-success", role: "img", "aria-hidden": true %>
+    <% end %>
   </div>
   <div class="card--list__text flex-1">
     <span class="card--list__heading">
@@ -20,6 +25,8 @@
       </span>
     </span>
 
+    <%= render partial: "activity_participants", locals: { activity: activity } %>
+
     <% if user_signed_in? %>
       <div class="card--list__actions mt-2">
         <% if activity.status != :open %>
@@ -36,13 +43,8 @@
   </div>
 
   <% if activity.respond_to?(:progress) && activity.progress.present? %>
-    <div class="card--list__annotation ml-6 flex flex-col justify-center w-1/4 max-w-[250px]">
-      <div class="activity-progress" style="flex-direction: column; align-items: flex-start; gap: 0.5rem; width: 100%;">
-        <div class="progress" style="width: 100%; flex: none; margin-bottom: 0;" role="progressbar" aria-valuenow="<%= activity.progress %>" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-meter" style="width: <%= activity.progress %>%"></div>
-        </div>
-        <span class="activity-progress__label"><%= activity.progress %>% <%= t("decidim.time_tracker.time_tracker.activity.completion") %></span>
-      </div>
+    <div class="time-tracker__progress" aria-label="<%= t("decidim.time_tracker.time_tracker.activity.completion") %>">
+      <%= number_to_percentage(activity.progress, precision: 0) %>
     </div>
   <% end %>
 </div>

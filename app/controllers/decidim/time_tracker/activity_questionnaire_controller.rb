@@ -5,6 +5,35 @@ module Decidim
     class ActivityQuestionnaireController < Decidim::TimeTracker::ApplicationController
       include Decidim::Forms::Concerns::HasQuestionnaire
 
+      helper Decidim::TimeTracker::ApplicationHelper
+      helper_method :activity
+
+      # Renders our own template instead of the stock questionnaire page so
+      # participants see which activity they are answering about (the
+      # questionnaire itself is shared by every activity of the component).
+      def show
+        @form = form(Decidim::Forms::QuestionnaireForm).from_model(questionnaire)
+        render template: "decidim/time_tracker/activity_questionnaire/show"
+      end
+
+      def answer
+        enforce_permission_to_answer_questionnaire
+
+        @form = form(Decidim::Forms::QuestionnaireForm).from_params(params, session_token:, ip_hash:)
+
+        Decidim::Forms::AnswerQuestionnaire.call(@form, questionnaire, allow_editing_answers: allow_editing_answers?) do
+          on(:ok) do
+            flash[:notice] = I18n.t("answer.success", scope: i18n_flashes_scope)
+            redirect_to after_answer_path
+          end
+
+          on(:invalid) do
+            flash.now[:alert] = I18n.t("answer.invalid", scope: i18n_flashes_scope)
+            render template: "decidim/time_tracker/activity_questionnaire/show"
+          end
+        end
+      end
+
       # only allows answers if not in preview mode
       def preview
         return show if request.method == "GET"

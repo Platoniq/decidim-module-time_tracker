@@ -6,6 +6,7 @@ module Decidim
       # This class holds a Form to create/update activity from Decidim's admin panel
       class ActivityForm < Decidim::Form
         include TranslatableAttributes
+        include Decidim::HasUploadValidations
 
         translatable_attribute :description, String
 
@@ -18,6 +19,11 @@ module Decidim
         attribute :requests_start_at, Decidim::Attributes::TimeWithZone
         attribute :min_events, Integer, default: 0
         attribute :min_duration_minutes_per_event, Integer, default: 0
+
+        attribute :image
+        attribute :remove_image, Boolean, default: false
+
+        validates :image, passthru: { to: Decidim::TimeTracker::Activity }
 
         validates :start_date, presence: true
         validates :end_date, presence: true, date: { after: :start_date }

@@ -1,0 +1,41 @@
+<div class="form__wrapper">
+  <div class="card pt-4">
+    <div class="card-section">
+      <div class="item_show__header">
+        <h1 class="item_show__header-title">
+          <%= title %>
+        </h1>
+      </div>
+
+      <div class="row column">
+        <%= form.translated :text_field, :name, autofocus: true %>
+      </div>
+
+      <div class="row column">
+        <%= form.translated :text_field, :description %>
+      </div>
+
+      <div class="row column">
+        <%= form.select :metric, Decidim::TimeTracker::Badge::METRICS.map { |metric| [t("models.badge.metrics.#{metric}", scope: "decidim.time_tracker"), metric] } %>
+        <p class="help-text"><%= t("badges.form.metric_help", scope: "decidim.time_tracker.admin") %></p>
+      </div>
+
+      <div class="row column">
+        <%= form.text_field :levels_list %>
+        <p class="help-text"><%= t("badges.form.levels_help", scope: "decidim.time_tracker.admin") %></p>
+      </div>
+
+      <div class="row column">
+        <%= form.number_field :weight %>
+      </div>
+
+      <div class="row column">
+        <%= form.check_box :active %>
+      </div>
+
+      <div class="button button__sm button__secondary pt-4">
+        <%= form.submit submit %>
+      </div>
+    </div>
+  </div>
+</div>

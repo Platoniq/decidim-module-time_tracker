@@ -18,6 +18,8 @@ module Decidim::TimeTracker::Admin
         progress: 0,
         min_events: 0,
         min_duration_minutes_per_event: 0,
+        image: nil,
+        remove_image: false,
         invalid?: invalid,
         current_user: user
       )

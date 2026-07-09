@@ -1,173 +1,142 @@
-@import "stylesheets/decidim/legacy/variables";
+// Styles follow the recipes of decidim-accountability (the closest core
+// module: statuses + progress over a list of items) so the component reads
+// as native Decidim. Recipes are copied rather than importing that module's
+// stylesheet to avoid coupling our markup to its class names.
 
-// ─── Aside status widget ─────────────────────────────────────────────────────
+// ─── Aside status widget (from accountability__status) ──────────────────────
 .time-tracker__status {
-  background: #fff;
-  border: 1px solid #e8e8e8;
-  border-radius: 4px;
-  padding: 1.25rem;
-  margin-bottom: 1.5rem;
+  @apply flex flex-col gap-3 w-full;
 
   &-title {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 0.75rem;
+    @apply font-semibold text-secondary text-lg [&+*]:mt-auto;
   }
 
   &-progress {
-    height: 8px;
-    background-color: #f0f0f0;
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
-    overflow: hidden;
-
-    > div {
-      height: 100%;
-      background-color: $success;
-      border-radius: 4px;
-      transition: width 0.3s ease;
-    }
+    @apply w-full h-4 rounded overflow-hidden bg-white [&>*]:bg-success [&>*]:h-full;
   }
 
   &-value {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #333;
-    line-height: 1;
+    @apply flex justify-between items-baseline gap-1 text-gray-2;
+
+    > :first-child {
+      @apply text-4xl font-bold;
+    }
+  }
+
+  &--home {
+    @apply gap-4 p-6 bg-white drop-shadow-[0_4px_6px_rgba(211,211,211,0.25)];
+
+    .time-tracker__status-title {
+      @apply text-xl text-gray-2;
+    }
+
+    .time-tracker__status-progress {
+      @apply bg-background;
+    }
+
+    .time-tracker__status-value > :first-child {
+      @apply text-[48px];
+    }
   }
 }
 
-// ─── Task result count header ───────────────────────────────────────────────
-.task-results-count {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-  margin-top: 0.75rem;
-  margin-bottom: 1rem;
-  color: $secondary;
-  font-size: 0.875rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+// ─── Progress chip on list cards (from accountability__progress) ────────────
+.time-tracker__progress {
+  @apply ml-auto self-center shrink-0 rounded px-3 md:px-6 py-4 bg-background font-bold text-gray-2 text-xl min-w-[120px] grid place-items-center;
+}
 
-  &__number {
-    font-size: 1rem;
+// ─── Activity images ─────────────────────────────────────────────────────────
+.time-tracker-activity__image {
+  @apply max-h-[250px];
+}
+
+.time-tracker-activity__thumb {
+  @apply w-10 h-10;
+}
+
+// ─── Activity participants (avatar stack) ────────────────────────────────────
+.time-tracker--participants {
+  .author__avatar-container img {
+    @apply w-7 h-7 rounded-full;
   }
+}
+
+// ─── Earned badges ───────────────────────────────────────────────────────────
+.time-tracker--badge-locked {
+  @apply opacity-60;
 }
 
 // ─── Activity card-list items ────────────────────────────────────────────────
 .time-tracker-activity-card {
-  display: flex;
-  align-items: flex-start;
-  padding: 0.6rem 1.25rem;
-  border-bottom: 1px solid #e8e8e8;
-  background: white;
-
-  &:last-child {
-    border-bottom: none;
-  }
+  @apply flex items-start gap-4 px-5 py-3 bg-white border-b border-gray-3 last:border-b-0;
 
   .card--list__icon {
-    flex-shrink: 0;
-    margin-right: 1rem;
-    margin-top: 0.2rem;
-    color: $secondary;
-
-    svg {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
+    @apply shrink-0 mt-1 text-secondary [&>svg]:w-5 [&>svg]:h-5;
   }
 
   .card--list__text {
-    flex: 1;
+    @apply flex-1;
   }
 
   .card--list__heading {
-    display: block;
-    font-weight: 600;
-    color: $secondary;
-    font-size: 1rem;
-    margin-bottom: 0.1rem;
+    @apply block font-semibold text-secondary;
   }
 
   .card--list__meta {
-    display: block;
-    font-size: 0.8rem;
-    color: #666;
-    margin-bottom: 0;
+    @apply block text-sm text-gray mb-0;
   }
 
   .card--list__actions {
-    margin-top: 0.2rem;
+    @apply mt-2;
 
     .callout {
-      margin: 0;
-      padding: 0.4rem 0.75rem;
-      font-size: 0.8rem;
+      @apply m-0 px-3 py-2 text-sm;
     }
 
     .button {
-      margin-bottom: 0;
+      @apply mb-0;
     }
   }
 }
 
-// ─── Activity status badge ───────────────────────────────────────────────────
+// ─── Activity status (inline text on list cards) ────────────────────────────
 .activity-status {
-  font-weight: 600;
+  @apply font-semibold;
 
   &--open {
-    color: $success;
+    @apply text-success;
   }
 
   &--finished {
-    color: #cacaca;
+    @apply text-gray;
   }
 
   &--not_started {
-    color: $warning;
+    @apply text-warning;
   }
 
   &--inactive {
-    color: $alert;
+    @apply text-alert;
   }
 }
 
 // ─── Card--list container for activities ────────────────────────────────────
 #activities.card--list {
-  border: 1px solid #e8e8e8;
-  border-radius: 4px;
-  margin-bottom: 2rem;
-  overflow: hidden;
+  @apply border border-gray-3 rounded mb-8 overflow-hidden;
 }
 
-// ─── Existing styles ─────────────────────────────────────────────────────────
+// ─── Activity & request cards ────────────────────────────────────────────────
 .time-tracker {
   &-activity,
   &-request {
-    background-color: white;
-    padding: 2rem;
-    margin-bottom: 1rem;
+    @apply bg-white p-8 mb-4;
 
     .callout {
-      margin: 0;
-    }
-
-    .elapsed-time {
-      .elapsed-time-clock {
-        font-size: 1rem;
-      }
+      @apply m-0;
     }
 
     .milestone {
-      padding-top: 1em;
-      border-top: 1px solid #eee;
-    }
-
-    .form__wrapper {
-      width: 50%;
+      @apply pt-4 border-t border-gray-3;
     }
   }
 
@@ -177,63 +146,51 @@
     }
 
     .text-muted {
-      opacity: 0.5;
+      @apply opacity-50;
     }
   }
 
   &--activity {
     .card--list__item {
-      display: flex;
-      align-items: center;
-      width: 100%;
+      @apply flex items-center w-full;
 
       .card--list__text {
-        width: 70%;
+        @apply w-[70%];
       }
 
       .card--list__annotation {
-        width: 30%;
-        text-align: right;
+        @apply w-[30%] text-right;
       }
     }
   }
 
   &--assignee-data {
-    margin-bottom: 3rem;
+    @apply mb-12;
   }
 
   &--start-button {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+    @apply mt-8 mb-4;
 
     &-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @apply flex justify-center items-center;
     }
   }
 }
 
 .breadcrumb-link {
-  color: rgb(var(--secondary-rgb));
+  @apply text-secondary;
 }
 
 .comment-link {
-  display: flex;
-  color: #39747f;
-
-  svg {
-    margin-right: 0.4rem;
-  }
+  @apply flex text-secondary [&>svg]:mr-2;
 }
 
 .danger {
-  background-color: #cb3c29;
+  @apply bg-alert;
 }
 
 .milestones-section {
-  padding: 2rem;
-  margin-bottom: 1rem;
+  @apply p-8 mb-4;
 }
 
 .milestone-card {
@@ -241,128 +198,58 @@
 }
 
 .milestone-link {
-  display: flex;
-  color: #39747f;
-
-  svg {
-    margin-top: 0.1rem;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
+  @apply flex text-secondary hover:cursor-pointer [&>svg]:mt-0.5;
 }
 
 .secondary {
-  background-color: rgb(var(--secondary-rgb));
+  @apply bg-secondary;
 }
 
 .show-milestones {
-  color: $secondary;
-
-  &:hover {
-    text-decoration: underline;
-  }
+  @apply text-secondary hover:underline;
 }
 
 .success {
-  background-color: $success;
+  @apply bg-success;
 }
 
-// ─── Task Progress ──────────────────────────────────────────────────────────
-.task-progress-container {
-  margin-bottom: 1.5rem;
-  max-width: 400px;
-
-  .task-progress__label {
-    display: block;
-    font-size: 0.875rem;
-    color: #666;
-    margin-bottom: 0.5rem;
-  }
-
-  .progress {
-    height: 8px;
-    background-color: #f0f0f0;
-    border-radius: 4px;
-    margin-bottom: 0;
-    overflow: hidden;
-
-    .progress-meter {
-      height: 100%;
-      background-color: $secondary;
-      border-radius: 4px;
-    }
-  }
-}
-
-// ─── Activity Status & Progress ─────────────────────────────────────────────
+// ─── Activity status & progress (active activity card) ──────────────────────
 .activity-status-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-  gap: 1rem;
+  @apply flex justify-between items-center flex-wrap gap-4 mb-6;
 }
 
 .activity-status-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  background-color: #f0f0f0;
-  color: #666;
+  @apply inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase bg-background text-gray-2;
 
   &.work_in_progress {
-    background-color: #fff3cd; // lighten($warning, 40%)
-    color: #856404; // darken($warning, 10%)
+    @apply bg-warning/20;
   }
 
   &.completed {
-    background-color: #d4edda; // lighten($success, 45%)
-    color: #155724; // darken($success, 10%)
+    @apply bg-success/20 text-success;
   }
 
   &.not_started {
-    background-color: #e2e3e5;
-    color: #383d41;
+    @apply bg-background-5;
   }
 
   &.inactive {
-    background-color: #f8d7da; // lighten($alert, 40%)
-    color: #721c24; // $alert
+    @apply bg-alert/10 text-alert;
   }
 }
 
 .activity-progress {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex: 1;
-  min-width: 200px;
-  max-width: 300px;
+  @apply flex items-center gap-3 flex-1 min-w-[200px] max-w-[300px];
 
   .progress {
-    flex: 1;
-    height: 6px;
-    background-color: #f0f0f0;
-    border-radius: 3px;
-    margin-bottom: 0;
-    overflow: hidden;
-
-    .progress-meter {
-      height: 100%;
-      background-color: $success;
-      border-radius: 3px;
-    }
+    @apply flex-1 h-2 rounded overflow-hidden bg-background mb-0;
   }
 
-  .activity-progress__label {
-    font-size: 0.8rem;
-    color: #666;
-    white-space: nowrap;
+  .progress-meter {
+    @apply block h-full bg-success rounded;
+  }
+
+  &__label {
+    @apply text-sm text-gray-2 whitespace-nowrap;
   }
 }

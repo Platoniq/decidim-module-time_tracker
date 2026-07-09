@@ -80,6 +80,21 @@ FactoryBot.define do
     earned_at { Time.current }
   end
 
+  factory :skill, class: "Decidim::TimeTracker::Skill" do
+    organization { create(:organization) }
+    name { Decidim::Faker::Localized.word }
+    description { Decidim::Faker::Localized.sentence(word_count: 3) }
+  end
+
+  factory :time_tracker_badge, class: "Decidim::TimeTracker::Badge" do
+    organization { create(:organization) }
+    name { Decidim::Faker::Localized.word }
+    description { Decidim::Faker::Localized.sentence(word_count: 3) }
+    metric { "completed_activities" }
+    levels { [1, 5, 15, 30] }
+    active { true }
+  end
+
   factory :milestone, class: "Decidim::TimeTracker::Milestone" do
     activity { create(:activity) }
     user { create(:user) }

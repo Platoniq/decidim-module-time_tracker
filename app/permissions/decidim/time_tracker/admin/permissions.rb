@@ -8,11 +8,31 @@ module Decidim
           return permission_action if permission_action.scope != :admin
 
           allowed_task_action?
+          allowed_skill_action?
+          allowed_badge_action?
           allowed_questionnaire_action?
           allowed_activity_action?
           allowed_assignation_action?
 
           permission_action
+        end
+
+        def allowed_skill_action?
+          return false unless permission_action.subject.in? [:skill, :skills]
+
+          case permission_action.action
+          when :index, :create, :update, :destroy
+            permission_action.allow!
+          end
+        end
+
+        def allowed_badge_action?
+          return false unless permission_action.subject == :time_tracker_badge
+
+          case permission_action.action
+          when :index, :create, :update, :destroy
+            permission_action.allow!
+          end
         end
 
         def allowed_task_action?

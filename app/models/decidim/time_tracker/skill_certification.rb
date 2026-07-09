@@ -25,6 +25,14 @@ module Decidim
       def skill_name
         task.name
       end
+
+      # Names of the explicit skills the admin assigned to the task, falling
+      # back to the task's own name when none are defined.
+      def skill_names
+        return [task.name] if task.skills.empty?
+
+        task.skills.map(&:name)
+      end
     end
   end
 end

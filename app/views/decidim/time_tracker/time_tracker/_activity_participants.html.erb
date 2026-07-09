@@ -1,0 +1,9 @@
+<% participants = activity_participants(activity, except: current_user) %>
+<% if participants.any? %>
+  <div class="time-tracker--participants flex items-center gap-2 mt-2">
+    <%= cell "decidim/collapsible_authors", participants, stack: true %>
+    <span class="text-sm text-muted">
+      <%= t("decidim.time_tracker.time_tracker.participants.working_here", count: participants.size) %>
+    </span>
+  </div>
+<% end %>

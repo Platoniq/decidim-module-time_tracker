@@ -22,6 +22,15 @@ module Decidim
                foreign_key: "decidim_time_tracker_task_id",
                dependent: :destroy
 
+      has_many :task_skills,
+               class_name: "Decidim::TimeTracker::TaskSkill",
+               foreign_key: "decidim_time_tracker_task_id",
+               dependent: :destroy
+
+      has_many :skills,
+               through: :task_skills,
+               class_name: "Decidim::TimeTracker::Skill"
+
       scope :active, -> { where(active: true) }
 
       delegate :questionnaire, to: :time_tracker

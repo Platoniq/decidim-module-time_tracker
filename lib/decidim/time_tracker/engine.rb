@@ -85,6 +85,19 @@ module Decidim
           # without the leading "decidim/".
           get "/badges", to: "gamification/badges#index", as: :public_badges
           get "/gamification/badges", to: redirect("/badges")
+
+          # Organization-level page aggregating the user's activities across
+          # every time tracker component ("My voluntary work").
+          get "/my_voluntary_work", to: "time_tracker/my_activities#show", as: :my_voluntary_work
+        end
+      end
+
+      initializer "decidim_time_tracker.user_menu" do
+        Decidim.menu :user_menu do |menu|
+          menu.add_item :time_tracker,
+                        I18n.t("time_tracker", scope: "layouts.decidim.user_profile"),
+                        decidim.my_voluntary_work_path,
+                        position: 1.4
         end
       end
 

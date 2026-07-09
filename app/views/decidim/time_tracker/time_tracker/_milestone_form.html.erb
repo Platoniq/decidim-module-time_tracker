@@ -1,28 +1,30 @@
-<div class="row milestone pt-2 hidden">
-    <div class="column large-4 card-grid">
-      <h3 class="h3 title">
+<%# The "milestone" and "hidden" classes are toggled from time_tracker.js %>
+<div class="milestone pt-2 hidden">
+  <div class="md:grid md:grid-cols-3 md:gap-8">
+    <div>
+      <h3 class="h3">
         <%= t("title", scope: "decidim.time_tracker.milestone_form") %>
       </h3>
 
-      <div class="description pt-2">
+      <div class="pt-2 text-gray-2">
         <%= t("description", scope: "decidim.time_tracker.milestone_form") %>
       </div>
     </div>
-    <div class="form__wrapper">
 
+    <div class="form__wrapper md:col-span-2">
       <%= decidim_form_for(@form, url: milestones_path) do |form| %>
-        <div class="row column">
+        <div>
           <%= form.text_field :title %>
         </div>
 
-        <div class="row column">
+        <div>
           <%= form.text_area :description %>
         </div>
 
         <%= form.hidden_field :activity_id, value: activity.id %>
 
         <%= form.fields_for :attachment, @form.attachment do |nested_form| %>
-          <div class="row column">
+          <div>
             <%= nested_form.upload :file, required: true, button_class: "button button__sm button__transparent-secondary" %>
           </div>
           <% if @form.errors[:attachment].present? %>
@@ -35,8 +37,9 @@
         <% end %>
 
         <div class="pt-4">
-          <%= form.submit t( "button_submit", scope: "decidim.time_tracker.milestone_form"), class: "button button__lg button__secondary" %>
+          <%= form.submit t("button_submit", scope: "decidim.time_tracker.milestone_form"), class: "button button__lg button__secondary" %>
         </div>
       <% end %>
     </div>
   </div>
+</div>
