@@ -61,12 +61,13 @@ module Decidim::TimeTracker
         end
       end
 
-      context "when tasks share an explicit skill" do
+      context "when certifications share an explicit skill" do
         let(:skill) { create(:skill, organization:) }
 
         before do
-          task.skills << skill
-          other_task.skills << skill
+          SkillCertification.destroy_all
+          create(:skill_certification, user:, task:, skill:)
+          create(:skill_certification, user:, task: other_task, skill:)
         end
 
         it "counts distinct skills" do

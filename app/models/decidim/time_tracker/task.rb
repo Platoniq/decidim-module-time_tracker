@@ -25,11 +25,18 @@ module Decidim
       has_many :task_skills,
                class_name: "Decidim::TimeTracker::TaskSkill",
                foreign_key: "decidim_time_tracker_task_id",
+               inverse_of: :task,
                dependent: :destroy
 
       has_many :skills,
                through: :task_skills,
                class_name: "Decidim::TimeTracker::Skill"
+
+      has_many :badge_tasks,
+               class_name: "Decidim::TimeTracker::BadgeTask",
+               foreign_key: "decidim_time_tracker_task_id",
+               inverse_of: :task,
+               dependent: :destroy
 
       scope :active, -> { where(active: true) }
 
@@ -65,18 +72,20 @@ module Decidim
       end
 
       # Whether the given user has completed this task, i.e. every active
-      # activity of the task has a completed assignation for that user. A task
-      # with no active activities is never considered completed.
-      def completed_by?(user)
+      # activity of the task has at least `required_completions` admin-verified
+      # completions for that user. A task with no active activities is never
+      # considered completed.
+      def completed_by?(user, required_completions: 1)
         active_activities = activities.active
         return false if active_activities.empty?
 
-        completed_activity_ids = Assignation.completed
-                                            .where(user:, activity: active_activities)
-                                            .distinct
-                                            .count("decidim_time_tracker_assignations.activity_id")
+        verified_counts = ActivityCompletion.verified
+                                            .joins(:assignation)
+                                            .where(decidim_time_tracker_assignations: { decidim_user_id: user.id, activity_id: active_activities.ids })
+                                            .group("decidim_time_tracker_assignations.activity_id")
+                                            .count
 
-        completed_activity_ids == active_activities.count
+        active_activities.ids.all? { |activity_id| verified_counts.fetch(activity_id, 0) >= required_completions }
       end
 
       def self.log_presenter_class_for(_log)

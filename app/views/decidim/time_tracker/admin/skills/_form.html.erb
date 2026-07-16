@@ -23,6 +23,11 @@
         <p class="help-text"><%= t("skills.form.tasks_help", scope: "decidim.time_tracker.admin") %></p>
       </div>
 
+      <div class="row column">
+        <%= form.number_field :required_completions_per_activity, min: 1 %>
+        <p class="help-text"><%= t("skills.form.required_completions_help", scope: "decidim.time_tracker.admin") %></p>
+      </div>
+
       <div class="button button__sm button__secondary pt-4">
         <%= form.submit submit %>
       </div>

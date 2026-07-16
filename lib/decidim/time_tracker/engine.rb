@@ -60,7 +60,10 @@ module Decidim
           badge.valid_for = [:user]
 
           badge.reset = lambda { |user|
-            Decidim::TimeTracker::Assignation.completed.where(user:).count
+            Decidim::TimeTracker::ActivityCompletion.verified
+                                                    .joins(:assignation)
+                                                    .where(decidim_time_tracker_assignations: { decidim_user_id: user.id })
+                                                    .count
           }
         end
 

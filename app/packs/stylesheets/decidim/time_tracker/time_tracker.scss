@@ -56,8 +56,32 @@
 
 // ─── Activity participants (avatar stack) ────────────────────────────────────
 .time-tracker--participants {
-  .author__avatar-container img {
-    @apply w-7 h-7 rounded-full;
+  @apply flex items-center gap-2;
+
+  &__avatars {
+    @apply inline-flex items-center;
+
+    .author {
+      @apply inline-flex;
+    }
+
+    // Overlap each avatar over the previous one, with a white ring so they
+    // read as a stack.
+    .author + .author {
+      @apply -ml-2;
+    }
+
+    .author__avatar-container img {
+      @apply block w-7 h-7 rounded-full border-2 border-white bg-background;
+    }
+  }
+
+  &__more {
+    @apply inline-flex items-center justify-center w-7 h-7 -ml-2 rounded-full border-2 border-white bg-gray text-gray-2 text-xs font-semibold;
+  }
+
+  &__label {
+    @apply text-sm text-gray-2;
   }
 }
 

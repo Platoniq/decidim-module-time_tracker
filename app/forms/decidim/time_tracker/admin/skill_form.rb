@@ -13,7 +13,10 @@ module Decidim
         translatable_attribute :name, String
         translatable_attribute :description, String
 
+        attribute :required_completions_per_activity, Integer, default: 1
+
         validates :name, translatable_presence: true
+        validates :required_completions_per_activity, numericality: { only_integer: true, greater_than: 0 }
 
         def map_model(model)
           self.task_ids = model.task_ids

@@ -9,11 +9,13 @@ module Decidim
 
       belongs_to :badge,
                  foreign_key: "decidim_time_tracker_badge_id",
-                 class_name: "Decidim::TimeTracker::Badge"
+                 class_name: "Decidim::TimeTracker::Badge",
+                 inverse_of: :badge_tasks
 
       belongs_to :task,
                  foreign_key: "decidim_time_tracker_task_id",
-                 class_name: "Decidim::TimeTracker::Task"
+                 class_name: "Decidim::TimeTracker::Task",
+                 inverse_of: :badge_tasks
     end
   end
 end

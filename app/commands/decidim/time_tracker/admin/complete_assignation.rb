@@ -3,16 +3,18 @@
 module Decidim
   module TimeTracker
     module Admin
-      # A command with all the business logic when an admin marks (or unmarks) a
-      # user's assignation to an activity as completed. Completing an assignation
-      # awards the generic `:time_tracker_activities` badge and may certify the
-      # related task's skill once all its activities are completed.
+      # A command with all the business logic when an admin manually adds a
+      # verified completion to a user's assignation (complete: true) or
+      # reverts the latest verified one (complete: false). Verified
+      # completions feed the `:time_tracker_activities` badge and skill
+      # certifications.
       class CompleteAssignation < Decidim::Command
         # Public: Initializes the command.
         #
         # assignation - The Assignation to update.
         # user        - The admin performing the action.
-        # complete    - Boolean, whether to mark as completed (true) or revert (false).
+        # complete    - Boolean, whether to add a verified completion (true)
+        #               or revert the latest one (false).
         def initialize(assignation, user, complete: true)
           @assignation = assignation
           @user = user
@@ -22,14 +24,15 @@ module Decidim
         # Executes the command. Broadcasts these events:
         #
         # - :ok when everything is valid.
-        # - :invalid if the assignation cannot be completed.
+        # - :invalid if the assignation cannot be updated.
         #
         # Returns nothing.
         def call
           return broadcast(:invalid) unless @assignation.accepted?
-          return broadcast(:invalid) if @complete == @assignation.completed?
+          return broadcast(:invalid) if !@complete && @assignation.completions.verified.empty?
 
-          update_assignation!
+          @complete ? add_completion! : revert_completion!
+          @assignation.sync_completed_at!
           update_score!
           refresh_skill_certification!
 
@@ -38,12 +41,31 @@ module Decidim
 
         private
 
-        def update_assignation!
-          Decidim.traceability.update!(
-            @assignation,
-            @user,
-            completed_at: @complete ? Time.current : nil
-          )
+        def add_completion!
+          # Verifies the oldest pending completion when there is one, so a
+          # manual completion does not double-count the participant's work.
+          pending = @assignation.completions.pending.order(:requested_at).first
+
+          if pending
+            Decidim.traceability.update!(pending, @user, verified_at: Time.current, verified_by: @user)
+          else
+            Decidim.traceability.create!(
+              Decidim::TimeTracker::ActivityCompletion,
+              @user,
+              assignation: @assignation,
+              requested_at: Time.current,
+              verified_at: Time.current,
+              verified_by: @user
+            )
+          end
+        end
+
+        def revert_completion!
+          completion = @assignation.completions.verified.order(:verified_at).last
+
+          Decidim.traceability.perform_action!(:delete, completion, @user) do
+            completion.destroy!
+          end
         end
 
         def update_score!

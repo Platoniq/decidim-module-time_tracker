@@ -54,7 +54,7 @@ module Decidim
         def complete
           enforce_permission_to :complete, :assignation, assignation: current_assignation
 
-          CompleteAssignation.call(current_assignation, current_user, complete: !current_assignation.completed?) do
+          CompleteAssignation.call(current_assignation, current_user, complete: params[:revert].blank?) do
             on(:ok) do
               flash[:notice] = I18n.t("assignations.complete.success", scope: "decidim.time_tracker.admin")
               redirect_back_to_assignations

@@ -18,6 +18,7 @@ module Decidim
       has_many :task_skills,
                class_name: "Decidim::TimeTracker::TaskSkill",
                foreign_key: "decidim_time_tracker_skill_id",
+               inverse_of: :skill,
                dependent: :destroy
 
       has_many :tasks,
@@ -25,6 +26,7 @@ module Decidim
                class_name: "Decidim::TimeTracker::Task"
 
       validates :name, presence: true
+      validates :required_completions_per_activity, numericality: { only_integer: true, greater_than: 0 }
     end
   end
 end

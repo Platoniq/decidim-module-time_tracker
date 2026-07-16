@@ -23,6 +23,7 @@ module Decidim
       has_many :badge_tasks,
                class_name: "Decidim::TimeTracker::BadgeTask",
                foreign_key: "decidim_time_tracker_badge_id",
+               inverse_of: :badge,
                dependent: :destroy
 
       # The tasks this badge's rule is restricted to; empty means the rule

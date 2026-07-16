@@ -80,8 +80,29 @@ module Decidim::TimeTracker::Admin
     context "when completing an already completed assignation" do
       let(:assignation) { create(:assignation, :completed, activity:, user: assignee) }
 
+      it "adds another verified completion" do
+        expect { subject.call }.to broadcast(:ok)
+        expect(assignation.reload.verified_completions_count).to eq(2)
+      end
+    end
+
+    context "when reverting an assignation without verified completions" do
+      let(:complete) { false }
+      let(:assignation) { create(:assignation, :accepted, activity:, user: assignee) }
+
       it "broadcasts invalid" do
         expect { subject.call }.to broadcast(:invalid)
+      end
+    end
+
+    context "when a pending completion exists" do
+      let(:assignation) { create(:assignation, :accepted, activity:, user: assignee) }
+      let!(:pending_completion) { create(:activity_completion, assignation:) }
+
+      it "verifies it instead of creating a new record" do
+        expect { subject.call }.not_to change(Decidim::TimeTracker::ActivityCompletion, :count)
+        expect(pending_completion.reload).to be_verified
+        expect(assignation.reload.completed_at).to be_present
       end
     end
   end

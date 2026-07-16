@@ -26,6 +26,7 @@ module Decidim
             name: @form.name,
             description: @form.description,
             tasks: @form.tasks,
+            required_completions_per_activity: @form.required_completions_per_activity,
             organization: @form.current_organization
           )
         end

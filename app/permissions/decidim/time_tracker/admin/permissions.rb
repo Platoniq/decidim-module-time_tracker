@@ -13,6 +13,7 @@ module Decidim
           allowed_questionnaire_action?
           allowed_activity_action?
           allowed_assignation_action?
+          allowed_completion_action?
 
           permission_action
         end
@@ -66,6 +67,15 @@ module Decidim
 
           case permission_action.action
           when :index, :create, :update, :destroy
+            permission_action.allow!
+          end
+        end
+
+        def allowed_completion_action?
+          return false unless permission_action.subject == :completion
+
+          case permission_action.action
+          when :verify, :dismiss
             permission_action.allow!
           end
         end

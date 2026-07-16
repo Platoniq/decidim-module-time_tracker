@@ -71,6 +71,20 @@ FactoryBot.define do
     trait :completed do
       status { :accepted }
       completed_at { Time.current }
+
+      after(:create) do |assignation|
+        create(:activity_completion, :verified, assignation:, verified_at: assignation.completed_at)
+      end
+    end
+  end
+
+  factory :activity_completion, class: "Decidim::TimeTracker::ActivityCompletion" do
+    assignation { create(:assignation) }
+    requested_at { Time.current }
+
+    trait :verified do
+      verified_at { Time.current }
+      verified_by { create(:user, :admin) }
     end
   end
 

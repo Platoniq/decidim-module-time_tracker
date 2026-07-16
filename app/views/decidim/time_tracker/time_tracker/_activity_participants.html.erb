@@ -1,8 +1,15 @@
 <% participants = activity_participants(activity, except: current_user) %>
 <% if participants.any? %>
-  <div class="time-tracker--participants flex items-center gap-2 mt-2">
-    <%= cell "decidim/collapsible_authors", participants, stack: true %>
-    <span class="text-sm text-muted">
+  <div class="time-tracker--participants pb-3">
+    <span class="time-tracker--participants__avatars">
+      <% participants.take(3).each do |participant| %>
+        <%= cell "decidim/author", participant, layout: :avatar, skip_profile_link: true %>
+      <% end %>
+      <% if participants.size > 3 %>
+        <span class="time-tracker--participants__more">+<%= participants.size - 3 %></span>
+      <% end %>
+    </span>
+    <span class="time-tracker--participants__label">
       <%= t("decidim.time_tracker.time_tracker.participants.working_here", count: participants.size) %>
     </span>
   </div>

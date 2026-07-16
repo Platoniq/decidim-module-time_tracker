@@ -32,8 +32,15 @@ module Decidim
                class_name: "Decidim::TimeTracker::Milestone",
                through: :user
 
+      has_many :completions,
+               class_name: "Decidim::TimeTracker::ActivityCompletion",
+               foreign_key: "decidim_time_tracker_assignation_id",
+               dependent: :destroy
+
       enum :status, { pending: 0, accepted: 1, rejected: 2 }
 
+      # An assignation counts as completed once it has at least one verified
+      # completion; completed_at mirrors the first verification.
       scope :completed, -> { where.not(completed_at: nil) }
 
       def assignee
@@ -42,6 +49,20 @@ module Decidim
 
       def completed?
         completed_at.present?
+      end
+
+      def verified_completions_count
+        completions.verified.count
+      end
+
+      def pending_completions
+        completions.pending
+      end
+
+      # Keeps completed_at (used by scopes and legacy UI) in sync with the
+      # verified completion records.
+      def sync_completed_at!
+        update!(completed_at: completions.verified.minimum(:verified_at))
       end
 
       def time_dedicated

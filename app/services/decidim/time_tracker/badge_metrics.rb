@@ -22,24 +22,26 @@ module Decidim
 
       attr_reader :user
 
+      # Counts admin-verified completions, so completing the same activity
+      # several times counts several times.
       def completed_activities(task_ids)
-        scope = Assignation.completed.where(user:)
-        scope = scope.joins(:activity).where(decidim_time_tracker_activities: { task_id: task_ids }) if task_ids.any?
+        scope = ActivityCompletion.verified
+                                  .joins(assignation: :activity)
+                                  .where(decidim_time_tracker_assignations: { decidim_user_id: user.id })
+        scope = scope.where(decidim_time_tracker_activities: { task_id: task_ids }) if task_ids.any?
         scope.count
       end
 
-      # Counts distinct explicit skills across the user's certified tasks;
-      # tasks without explicit skills count as one skill each (the task name
-      # acts as the skill, mirroring SkillCertification#skill_names).
+      # Counts distinct explicit skills certified to the user; certifications
+      # of tasks without explicit skills count as one skill each (the task
+      # name acts as the skill).
       def skills_earned(task_ids)
         certifications = SkillCertification.where(user:)
         certifications = certifications.where(decidim_time_tracker_task_id: task_ids) if task_ids.any?
 
-        certified_task_ids = certifications.select(:decidim_time_tracker_task_id)
-        task_skills = TaskSkill.where(decidim_time_tracker_task_id: certified_task_ids)
-        explicit_skills = task_skills.distinct.count(:decidim_time_tracker_skill_id)
-        tasks_with_skills = task_skills.distinct.count(:decidim_time_tracker_task_id)
-        explicit_skills + (certifications.count - tasks_with_skills)
+        explicit_skills = certifications.where.not(decidim_time_tracker_skill_id: nil).distinct.count(:decidim_time_tracker_skill_id)
+        fallback_skills = certifications.where(decidim_time_tracker_skill_id: nil).count
+        explicit_skills + fallback_skills
       end
 
       def time_dedicated_hours(task_ids)

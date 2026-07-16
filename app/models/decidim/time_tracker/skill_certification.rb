@@ -2,9 +2,10 @@
 
 module Decidim
   module TimeTracker
-    # A SkillCertification is awarded to a user when they complete every active
-    # activity of a Task. Each Task represents a "skill", so the certification
-    # certifies that the user has acquired that skill.
+    # A SkillCertification is awarded to a user when every active activity of
+    # a Task has enough admin-verified completions. It certifies one explicit
+    # Skill of the task, or — when the task has no explicit skills — the task
+    # itself (skill is NULL and the task's name acts as the skill).
     class SkillCertification < ApplicationRecord
       self.table_name = :decidim_time_tracker_skill_certifications
 
@@ -16,22 +17,26 @@ module Decidim
                  foreign_key: "decidim_time_tracker_task_id",
                  class_name: "Decidim::TimeTracker::Task"
 
-      validates :decidim_time_tracker_task_id, uniqueness: { scope: :decidim_user_id }
+      belongs_to :skill,
+                 foreign_key: "decidim_time_tracker_skill_id",
+                 class_name: "Decidim::TimeTracker::Skill",
+                 optional: true
+
+      validates :decidim_time_tracker_task_id, uniqueness: { scope: [:decidim_user_id, :decidim_time_tracker_skill_id] }
 
       delegate :component, to: :task
       delegate :organization, to: :user
 
-      # The name of the certified skill (the task's name multiloc).
+      # The name of the certified skill (the skill's name, or the task's name
+      # for the NULL-skill fallback).
       def skill_name
-        task.name
+        skill&.name || task.name
       end
 
-      # Names of the explicit skills the admin assigned to the task, falling
-      # back to the task's own name when none are defined.
+      # Kept for callers that render a list; a certification now certifies a
+      # single skill.
       def skill_names
-        return [task.name] if task.skills.empty?
-
-        task.skills.map(&:name)
+        [skill_name]
       end
     end
   end

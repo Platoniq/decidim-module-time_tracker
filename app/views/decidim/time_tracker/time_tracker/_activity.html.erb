@@ -27,10 +27,26 @@
       <% end %>
     </div>
 
-    <h4 class="h4 pb-4"><%= stripped_translated_attribute activity.description %></h4>
-    <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
+    <h4 class="h4 pb-1"><%= stripped_translated_attribute activity.description %></h4>
     <%= render partial: "activity_participants", locals: { activity: activity } %>
+    <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
     <div class="elapsed-time pt-2"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div class="elapsed-time-clock pt-2"><%= clockify_seconds(activity.user_seconds_elapsed(current_user)) %></div></div>
+
+    <% assignation = activity.assignations.accepted.find_by(user: current_user) %>
+    <% if assignation %>
+      <% verified = assignation.verified_completions_count %>
+      <% pending_completions = assignation.pending_completions.count %>
+      <% if verified.positive? || pending_completions.positive? %>
+        <div class="time-tracker--completions pt-2">
+          <% if verified.positive? %>
+            <span class="label success"><%= t("activity.completions.verified", scope: "decidim.time_tracker.time_tracker", count: verified) %></span>
+          <% end %>
+          <% if pending_completions.positive? %>
+            <span class="label warning"><%= t("activity.completions.awaiting_verification", scope: "decidim.time_tracker.time_tracker") %></span>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
 
     <div class="top pt-2">
       <% if activity.status != :open %>

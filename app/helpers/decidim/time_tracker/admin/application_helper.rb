@@ -20,28 +20,62 @@ module Decidim
           safe_join(icons)
         end
 
+        # Add a verified completion, and revert the latest one when there is
+        # any. With per-activity repetition rules an assignation can hold any
+        # number of verified completions.
         def complete_assignation_button(assignation, success_path: nil)
           return unless assignation.accepted?
 
-          path = complete_task_activity_assignation_path(assignation.task, assignation.activity, assignation, success_path:)
+          add_path = complete_task_activity_assignation_path(assignation.task, assignation.activity, assignation, success_path:)
+          revert_path = complete_task_activity_assignation_path(assignation.task, assignation.activity, assignation, success_path:, revert: true)
 
-          if assignation.completed?
-            icon_link_to(
-              "checkbox-circle-line",
-              path,
-              t("assignations.actions.uncomplete", scope: "decidim.time_tracker.admin"),
-              method: :patch,
-              class: "action-icon--completed"
-            )
-          else
+          icons = [
             icon_link_to(
               "check-double-line",
-              path,
+              add_path,
               t("assignations.actions.complete", scope: "decidim.time_tracker.admin"),
               method: :patch,
               class: "action-icon--complete"
             )
+          ]
+
+          if assignation.verified_completions_count.positive?
+            icons << icon_link_to(
+              "arrow-go-back-line",
+              revert_path,
+              t("assignations.actions.uncomplete", scope: "decidim.time_tracker.admin"),
+              method: :patch,
+              class: "action-icon--completed"
+            )
           end
+
+          safe_join(icons)
+        end
+
+        # Verify or dismiss the oldest pending completion of an assignation.
+        def pending_completion_buttons(assignation, success_path: nil)
+          completion = assignation.pending_completions.order(:requested_at).first
+          return if completion.blank?
+
+          safe_join(
+            [
+              icon_link_to(
+                "checkbox-circle-line",
+                verify_task_activity_assignation_completion_path(assignation.task, assignation.activity, assignation, completion, success_path:),
+                t("completions.actions.verify", scope: "decidim.time_tracker.admin"),
+                method: :patch,
+                class: "action-icon--complete"
+              ),
+              icon_link_to(
+                "close-circle-line",
+                dismiss_task_activity_assignation_completion_path(assignation.task, assignation.activity, assignation, completion, success_path:),
+                t("completions.actions.dismiss", scope: "decidim.time_tracker.admin"),
+                method: :delete,
+                class: "action-icon--remove",
+                data: { confirm: t("completions.actions.confirm_dismiss", scope: "decidim.time_tracker.admin") }
+              )
+            ]
+          )
         end
 
         def empty_icon

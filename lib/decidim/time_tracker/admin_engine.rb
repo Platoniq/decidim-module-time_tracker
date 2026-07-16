@@ -20,6 +20,7 @@ module Decidim
           collection do
             post :reorder
             post :accept_all_pending_assignations
+            post :verify_all_pending_completions
           end
           resources :activities do
             collection do
@@ -28,6 +29,12 @@ module Decidim
             resources :assignations do
               member do
                 patch :complete
+              end
+              resources :completions, only: [] do
+                member do
+                  patch :verify
+                  delete :dismiss
+                end
               end
             end
           end

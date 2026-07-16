@@ -49,15 +49,25 @@
                 <%= t("models.assignation.fields.statuses.#{assignation.status}", scope: "decidim.time_tracker") %>
               </td>
               <td class="assignation--completed">
-                <% if assignation.completed? %>
-                  <%= l(assignation.completed_at, format: :decidim_short) %>
-                <% else %>
+                <% verified = assignation.verified_completions_count %>
+                <% pending_count = assignation.pending_completions.count %>
+                <% if verified.positive? %>
+                  <span class="label success"><%= t("models.completion.fields.verified_count", scope: "decidim.time_tracker", count: verified) %></span>
+                <% end %>
+                <% if pending_count.positive? %>
+                  <span class="label warning"><%= t("models.completion.fields.pending_count", scope: "decidim.time_tracker", count: pending_count) %></span>
+                <% end %>
+                <% if verified.zero? && pending_count.zero? %>
                   &mdash;
                 <% end %>
               </td>
               <td class="table-list__actions">
                 <% if allowed_to? :update, :assignation, assignation: assignation %>
                   <%= change_assignation_status_button assignation %>
+                <% end %>
+
+                <% if allowed_to? :verify, :completion %>
+                  <%= pending_completion_buttons assignation %>
                 <% end %>
 
                 <% if allowed_to? :complete, :assignation, assignation: assignation %>

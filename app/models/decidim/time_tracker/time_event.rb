@@ -62,10 +62,24 @@ module Decidim
 
       private
 
+      # Meeting the activity's completion criteria no longer completes the
+      # assignation directly: it files a pending completion that an admin has
+      # to verify before it counts towards badges and skills. Every further
+      # batch of `min_events` qualifying sessions files another one.
       def check_completion_criteria!
-        return if assignation.completed?
+        min_events = activity.min_events
+        min_duration = activity.min_duration_minutes_per_event
+        return if min_events.blank? || min_events <= 0
+        return if min_duration.blank? || min_duration <= 0
 
-        Decidim::TimeTracker::Admin::CompleteAssignation.new(assignation, user, complete: true).call if activity.satisfies_completion_criteria?(user)
+        qualifying_events = activity.time_events
+                                    .where(user:)
+                                    .where(total_seconds: (min_duration * 60)..)
+                                    .count
+
+        achievable = qualifying_events / min_events
+        recorded = assignation.completions.count
+        assignation.completions.create!(requested_at: Time.current) if achievable > recorded
       end
     end
   end
