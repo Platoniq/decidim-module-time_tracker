@@ -31,6 +31,21 @@ module Decidim::TimeTracker
       expect(subject).not_to be_valid
     end
 
+    context "with the required_skills metric" do
+      let(:skill) { create(:skill, organization:) }
+
+      it "is invalid without skills" do
+        subject.metric = "required_skills"
+        expect(subject).not_to be_valid
+      end
+
+      it "is valid with skills" do
+        subject.metric = "required_skills"
+        subject.skills << skill
+        expect(subject).to be_valid
+      end
+    end
+
     it "is invalid with unsorted levels" do
       subject.levels = [5, 1]
       expect(subject).not_to be_valid

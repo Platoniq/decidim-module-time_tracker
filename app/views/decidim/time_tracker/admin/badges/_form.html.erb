@@ -27,6 +27,15 @@
       </div>
 
       <div class="row column">
+        <% skill_options = form.object.available_skills.map { |skill| [translated_attribute(skill.name), skill.id] } %>
+        <%= form.select :skill_ids,
+                        options_for_select(skill_options, form.object.skill_ids),
+                        { include_hidden: false },
+                        multiple: true %>
+        <p class="help-text"><%= t("badges.form.skills_help", scope: "decidim.time_tracker.admin") %></p>
+      </div>
+
+      <div class="row column">
         <%= form.select :task_ids,
                         grouped_options_for_select(form.object.grouped_task_options, form.object.task_ids),
                         { include_hidden: false },

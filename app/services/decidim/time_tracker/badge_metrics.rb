@@ -10,17 +10,31 @@ module Decidim
         @user = user
       end
 
-      def value_for(metric, task_ids: [])
+      def value_for(metric, task_ids: [], skill_ids: [])
         raise ArgumentError, "Unknown metric: #{metric}" unless Badge::METRICS.include?(metric.to_s)
 
         task_ids = Array(task_ids)
+        skill_ids = Array(skill_ids)
         @values ||= {}
-        @values[[metric.to_s, task_ids]] ||= send(metric.to_s, task_ids)
+        @values[[metric.to_s, task_ids, skill_ids]] ||= if metric.to_s == "required_skills"
+                                                          required_skills(skill_ids)
+                                                        else
+                                                          send(metric.to_s, task_ids)
+                                                        end
       end
 
       private
 
       attr_reader :user
+
+      # How many of the given skills the user has been certified for.
+      def required_skills(skill_ids)
+        return 0 if skill_ids.empty?
+
+        SkillCertification.where(user:, decidim_time_tracker_skill_id: skill_ids)
+                          .distinct
+                          .count(:decidim_time_tracker_skill_id)
+      end
 
       # Counts admin-verified completions, so completing the same activity
       # several times counts several times.

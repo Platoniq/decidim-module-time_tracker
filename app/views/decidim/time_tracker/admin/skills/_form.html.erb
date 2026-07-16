@@ -24,8 +24,24 @@
       </div>
 
       <div class="row column">
+        <% mode_options = Decidim::TimeTracker::Skill::EARNING_MODES.map { |mode| [t("models.skill.earning_modes.#{mode}", scope: "decidim.time_tracker"), mode] } %>
+        <%= form.select :earning_mode, mode_options %>
+        <p class="help-text"><%= t("skills.form.earning_mode_help", scope: "decidim.time_tracker.admin") %></p>
+      </div>
+
+      <div class="row column">
+        <%= form.number_field :required_activities_count, min: 1 %>
+        <p class="help-text"><%= t("skills.form.required_activities_help", scope: "decidim.time_tracker.admin") %></p>
+      </div>
+
+      <div class="row column">
         <%= form.number_field :required_completions_per_activity, min: 1 %>
         <p class="help-text"><%= t("skills.form.required_completions_help", scope: "decidim.time_tracker.admin") %></p>
+      </div>
+
+      <div class="row column">
+        <%= form.number_field :required_hours, min: 0, step: 0.5 %>
+        <p class="help-text"><%= t("skills.form.required_hours_help", scope: "decidim.time_tracker.admin") %></p>
       </div>
 
       <div class="button button__sm button__secondary pt-4">

@@ -76,6 +76,23 @@ module Decidim::TimeTracker
       end
     end
 
+    describe "required_skills" do
+      let(:skill_one) { create(:skill, organization:) }
+      let(:skill_two) { create(:skill, organization:) }
+
+      before do
+        create(:skill_certification, user:, task:, skill: skill_one)
+        # Same skill certified through a second task counts once.
+        create(:skill_certification, user:, task: create(:task, time_tracker:), skill: skill_one)
+      end
+
+      it "counts how many of the given skills are certified" do
+        expect(subject.value_for("required_skills", skill_ids: [skill_one.id, skill_two.id])).to eq(1)
+        expect(subject.value_for("required_skills", skill_ids: [skill_two.id])).to eq(0)
+        expect(subject.value_for("required_skills")).to eq(0)
+      end
+    end
+
     describe "milestones_created" do
       before { create(:milestone, activity:, user:) }
 

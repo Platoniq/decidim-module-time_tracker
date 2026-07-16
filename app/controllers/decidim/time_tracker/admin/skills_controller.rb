@@ -6,7 +6,7 @@ module Decidim
       # Manages the organization-wide pool of skills that can be assigned to
       # tasks. Skills are shared by every time tracker component.
       class SkillsController < Admin::ApplicationController
-        helper_method :skills, :current_skill
+        helper_method :skills, :current_skill, :badges
 
         def index
           enforce_permission_to :index, :skill
@@ -75,6 +75,10 @@ module Decidim
 
         def skills
           @skills ||= Skill.where(organization: current_organization).order(:id)
+        end
+
+        def badges
+          @badges ||= Badge.where(organization: current_organization).sorted
         end
 
         def current_skill

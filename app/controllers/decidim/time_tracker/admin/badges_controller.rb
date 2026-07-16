@@ -32,7 +32,7 @@ module Decidim
           CreateBadge.call(@form) do
             on(:ok) do
               flash[:notice] = I18n.t("badges.create.success", scope: "decidim.time_tracker.admin")
-              redirect_to badges_path
+              redirect_to skills_path
             end
 
             on(:invalid) do
@@ -50,7 +50,7 @@ module Decidim
           UpdateBadge.call(current_badge, @form, current_user) do
             on(:ok) do
               flash[:notice] = I18n.t("badges.update.success", scope: "decidim.time_tracker.admin")
-              redirect_to badges_path
+              redirect_to skills_path
             end
 
             on(:invalid) do
@@ -66,7 +66,7 @@ module Decidim
           DestroyBadge.call(current_badge, current_user) do
             on(:ok) do
               flash[:notice] = I18n.t("badges.destroy.success", scope: "decidim.time_tracker.admin")
-              redirect_to badges_path
+              redirect_to skills_path
             end
           end
         end

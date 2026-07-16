@@ -55,6 +55,16 @@ module Decidim
           expect(assignation.reload.completed_at).to be_nil
           expect(Decidim::Gamification.status_for(user, :time_tracker_activities).score).to eq(0)
         end
+
+        context "when the task has a time-based skill" do
+          let!(:skill) { create(:skill, :time_based, organization: create(:organization), tasks: [activity.task]) }
+
+          it "certifies the skill from tracked time" do
+            expect { track!(30) }.not_to change(SkillCertification, :count)
+            expect { track!(40) }.to change(SkillCertification, :count).by(1)
+            expect(SkillCertification.last.skill).to eq(skill)
+          end
+        end
       end
     end
   end

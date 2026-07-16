@@ -1,11 +1,13 @@
-<% badges = Decidim::TimeTracker::Badge.where(organization: current_organization).active.sorted.includes(:badge_tasks) %>
+<% badges = Decidim::TimeTracker::Badge.where(organization: current_organization).active.sorted.includes(:badge_tasks, :badge_skills) %>
 <% if badges.any? %>
   <% metrics = Decidim::TimeTracker::BadgeMetrics.new(current_user) %>
   <section class="section pb-8">
     <h3 class="h3"><%= t("decidim.time_tracker.badges.title") %></h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
       <% badges.each do |badge| %>
-        <% value = metrics.value_for(badge.metric, task_ids: badge.badge_tasks.map(&:decidim_time_tracker_task_id)) %>
+        <% value = metrics.value_for(badge.metric,
+                                     task_ids: badge.badge_tasks.map(&:decidim_time_tracker_task_id),
+                                     skill_ids: badge.badge_skills.map(&:decidim_time_tracker_skill_id)) %>
         <% level = badge.level_for(value) %>
         <% next_threshold = badge.next_level_threshold(value) %>
         <div class="card p-4 time-tracker--badge<%= " time-tracker--badge-locked" if level.zero? %>">

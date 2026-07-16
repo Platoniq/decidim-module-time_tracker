@@ -98,6 +98,12 @@ FactoryBot.define do
     organization { create(:organization) }
     name { Decidim::Faker::Localized.word }
     description { Decidim::Faker::Localized.sentence(word_count: 3) }
+    earning_mode { "completed_activities" }
+
+    trait :time_based do
+      earning_mode { "time_spent" }
+      required_minutes { 60 }
+    end
   end
 
   factory :time_tracker_badge, class: "Decidim::TimeTracker::Badge" do

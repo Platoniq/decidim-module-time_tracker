@@ -26,6 +26,7 @@ module Decidim
             metric: @form.metric,
             levels: @form.levels,
             tasks: @form.tasks,
+            skills: @form.skills,
             active: @form.active,
             weight: @form.weight,
             organization: @form.current_organization

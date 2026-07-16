@@ -16,15 +16,19 @@ en:
         levels_list: Levels
         metric: Rule
         name: Name
+        skill_ids: Required skills
         task_ids: Restrict to tasks
         weight: Order position
       milestone:
         title: What have you done?
       skill:
         description: Description
+        earning_mode: Earned by
         name: Name
+        required_activities_count: Activities required (leave empty for all)
         required_completions_per_activity: Completions required per activity
-        task_ids: Earned by completing
+        required_hours: Required time (hours)
+        task_ids: Earned by working on
       task:
         name: Name
         skill_ids: Skills
@@ -235,10 +239,15 @@ en:
             title: Edit badge
           form:
             levels_help: 'Comma-separated thresholds, from lowest to highest. Example:
-              "1, 5, 15, 30" awards level 1 at 1, level 2 at 5, and so on.'
+              "1, 5, 15, 30" awards level 1 at 1, level 2 at 5, and so on. For the
+              "Required skills" rule the thresholds count earned skills: with skills
+              A, B and C and levels "3", the badge is earned when all three are achieved.'
             metric_help: What is counted to level up this badge.
+            skills_help: Only used by the "Required skills" rule. The badge levels
+              up as the participant earns these specific skills.
             tasks_help: Optionally restrict the rule to specific tasks. Leave empty
-              to count progress in every task of the platform.
+              to count progress in every task of the platform. Not used by the "Required
+              skills" rule.
           index:
             description: Badges are shared across all time tracker components of the
               platform. Define the rule (what is counted) and the level thresholds;
@@ -297,7 +306,7 @@ en:
               unassigned from every task.
             destroy: Delete skill
             edit: Edit skill
-            manage: Manage skills
+            manage: Skills & badges
             new: New skill
           create:
             error: Error creating the skill
@@ -308,11 +317,19 @@ en:
             submit: Update skill
             title: Edit skill
           form:
-            required_completions_help: How many verified completions of each activity
-              are needed. For example, 3 means each activity of the task must be completed
-              (and verified by an admin) three times.
-            tasks_help: Completing every active activity of any of the selected tasks
-              earns this skill. You can also assign skills from the task form.
+            earning_mode_help: How the skill is earned within a task. "Completed activities"
+              counts admin-verified activity completions; "Time spent" counts tracked
+              hours across the task's activities and does not require admin verification.
+            required_activities_help: 'Only for "Completed activities": how many of
+              the task''s activities must be completed. Leave empty to require all
+              of them.'
+            required_completions_help: 'Only for "Completed activities": how many
+              verified completions of each activity are needed. For example, 3 means
+              an activity must be completed (and verified by an admin) three times.'
+            required_hours_help: 'Only for "Time spent": total tracked hours across
+              the task''s activities needed to earn the skill.'
+            tasks_help: Working on any of the selected tasks can earn this skill.
+              You can also assign skills from the task form.
           index:
             description: Skills are shared across all time tracker components of the
               platform. Assign them to tasks; participants earn them by completing
@@ -400,6 +417,8 @@ en:
           completed_activities: "%{value} of %{next} activities completed to reach
             the next level"
           milestones_created: "%{value} of %{next} milestones posted to reach the
+            next level"
+          required_skills: "%{value} of %{next} required skills earned to reach the
             next level"
           skills_earned: "%{value} of %{next} skills earned to reach the next level"
           time_dedicated_hours: "%{value} of %{next} hours dedicated to reach the
@@ -542,6 +561,7 @@ en:
           metrics:
             completed_activities: Verified activity completions
             milestones_created: Milestones posted
+            required_skills: Required skills
             skills_earned: Skills earned
             time_dedicated_hours: Hours dedicated
           name: Badge
@@ -561,8 +581,16 @@ en:
             name: Name
             title: Title
         skill:
+          earning_modes:
+            completed_activities: Completed activities
+            time_spent: Time spent
+          earning_summary:
+            all_activities: all
+            completed_activities: "%{activities} activities, %{times}× each"
+            time_spent: "%{hours}h tracked"
           fields:
             description: Description
+            earning_mode: Earned by
             name: Name
             tasks_count: Assigned tasks
           name: Skill
@@ -660,6 +688,9 @@ en:
         task_name: Task
         unregistered: Unregistered
         user_status: User status
+  errors:
+    messages:
+      skills_missing: requires at least one skill to be selected
   layouts:
     decidim:
       user_profile:

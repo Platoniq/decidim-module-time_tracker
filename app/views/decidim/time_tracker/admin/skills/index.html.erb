@@ -18,6 +18,7 @@
             <tr>
               <th><%= t("models.skill.fields.name", scope: "decidim.time_tracker") %></th>
               <th><%= t("models.skill.fields.description", scope: "decidim.time_tracker") %></th>
+              <th><%= t("models.skill.fields.earning_mode", scope: "decidim.time_tracker") %></th>
               <th><%= t("models.skill.fields.tasks_count", scope: "decidim.time_tracker") %></th>
               <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker.admin") %></th>
             </tr>
@@ -27,6 +28,15 @@
               <tr>
                 <td><%= translated_attribute(skill.name) %></td>
                 <td><%= translated_attribute(skill.description) %></td>
+                <td>
+                  <% if skill.time_spent? %>
+                    <%= t("models.skill.earning_summary.time_spent", scope: "decidim.time_tracker", hours: (skill.required_minutes.to_i / 60.0).round(1)) %>
+                  <% else %>
+                    <%= t("models.skill.earning_summary.completed_activities", scope: "decidim.time_tracker",
+                          activities: skill.required_activities_count || t("models.skill.earning_summary.all_activities", scope: "decidim.time_tracker"),
+                          times: skill.required_completions_per_activity) %>
+                  <% end %>
+                </td>
                 <td><%= skill.tasks.count %></td>
                 <td class="table-list__actions">
                   <% if allowed_to? :update, :skill, skill: skill %>
@@ -47,3 +57,5 @@
     <% end %>
   </div>
 </div>
+
+<%= render partial: "decidim/time_tracker/admin/badges/table" %>

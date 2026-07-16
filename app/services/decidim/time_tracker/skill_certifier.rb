@@ -34,7 +34,11 @@ module Decidim
       attr_reader :user, :task
 
       def reconcile(skill, required_completions)
-        earned = task.completed_by?(user, required_completions:)
+        earned = if skill
+                   skill.earned_by?(user, task)
+                 else
+                   task.completed_by?(user, required_completions:)
+                 end
         certification = SkillCertification.find_by(user:, task:, skill:)
 
         if earned && certification.nil?

@@ -58,6 +58,7 @@ module Decidim
         save!
 
         check_completion_criteria!
+        refresh_time_based_skills!
       end
 
       private
@@ -80,6 +81,15 @@ module Decidim
         achievable = qualifying_events / min_events
         recorded = assignation.completions.count
         assignation.completions.create!(requested_at: Time.current) if achievable > recorded
+      end
+
+      # Time-based skills certify from tracked time directly, so they must
+      # be re-evaluated whenever a counter stops.
+      def refresh_time_based_skills!
+        task = activity.task
+        return unless task.skills.where(earning_mode: "time_spent").any?
+
+        Decidim::TimeTracker::SkillCertifier.new(user, task).refresh
       end
     end
   end

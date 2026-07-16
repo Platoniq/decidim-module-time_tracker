@@ -26,7 +26,10 @@ module Decidim
             name: @form.name,
             description: @form.description,
             tasks: @form.tasks,
+            earning_mode: @form.earning_mode,
             required_completions_per_activity: @form.required_completions_per_activity,
+            required_activities_count: @form.required_activities_count,
+            required_minutes: @form.required_minutes,
             organization: @form.current_organization
           )
         end

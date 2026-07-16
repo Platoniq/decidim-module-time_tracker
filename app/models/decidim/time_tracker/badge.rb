@@ -13,8 +13,9 @@ module Decidim
       self.table_name = :decidim_time_tracker_badges
 
       # The metrics a badge can be based on. Each one maps to a calculation
-      # in Decidim::TimeTracker::BadgeMetrics.
-      METRICS = %w(completed_activities skills_earned time_dedicated_hours milestones_created).freeze
+      # in Decidim::TimeTracker::BadgeMetrics. The required_skills metric
+      # counts how many of the badge's own required skills are certified.
+      METRICS = %w(completed_activities skills_earned required_skills time_dedicated_hours milestones_created).freeze
 
       belongs_to :organization,
                  foreign_key: "decidim_organization_id",
@@ -32,6 +33,17 @@ module Decidim
                through: :badge_tasks,
                class_name: "Decidim::TimeTracker::Task"
 
+      has_many :badge_skills,
+               class_name: "Decidim::TimeTracker::BadgeSkill",
+               foreign_key: "decidim_time_tracker_badge_id",
+               inverse_of: :badge,
+               dependent: :destroy
+
+      # The skills required by the required_skills rule.
+      has_many :skills,
+               through: :badge_skills,
+               class_name: "Decidim::TimeTracker::Skill"
+
       scope :active, -> { where(active: true) }
       scope :sorted, -> { order(weight: :asc, id: :asc) }
 
@@ -39,6 +51,11 @@ module Decidim
       validates :metric, inclusion: { in: METRICS }
       validates :levels, presence: true
       validate :levels_are_sorted_positive_integers
+      validate :skills_selected_for_required_skills
+
+      def required_skills?
+        metric == "required_skills"
+      end
 
       # The level (1-based) reached with the given metric value; 0 when the
       # first threshold has not been reached yet.
@@ -61,6 +78,10 @@ module Decidim
         return if levels.blank?
 
         errors.add(:levels, :invalid) unless levels.all? { |level| level.is_a?(Integer) && level.positive? } && levels == levels.sort && levels == levels.uniq
+      end
+
+      def skills_selected_for_required_skills
+        errors.add(:metric, :skills_missing) if required_skills? && badge_skills.empty? && skills.empty?
       end
     end
   end
