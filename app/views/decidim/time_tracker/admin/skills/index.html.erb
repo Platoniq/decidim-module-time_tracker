@@ -32,7 +32,8 @@
                   <% if skill.time_spent? %>
                     <%= t("models.skill.earning_summary.time_spent", scope: "decidim.time_tracker", hours: (skill.required_minutes.to_i / 60.0).round(1)) %>
                   <% else %>
-                    <%= t("models.skill.earning_summary.completed_activities", scope: "decidim.time_tracker",
+                    <%= t("models.skill.earning_summary.completed_activities",
+                          scope: "decidim.time_tracker",
                           activities: skill.required_activities_count || t("models.skill.earning_summary.all_activities", scope: "decidim.time_tracker"),
                           times: skill.required_completions_per_activity) %>
                   <% end %>
