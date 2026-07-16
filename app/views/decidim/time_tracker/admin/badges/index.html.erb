@@ -18,6 +18,7 @@
             <tr>
               <th><%= t("models.badge.fields.name", scope: "decidim.time_tracker") %></th>
               <th><%= t("models.badge.fields.metric", scope: "decidim.time_tracker") %></th>
+              <th><%= t("models.badge.fields.tasks", scope: "decidim.time_tracker") %></th>
               <th><%= t("models.badge.fields.levels", scope: "decidim.time_tracker") %></th>
               <th><%= t("models.badge.fields.active", scope: "decidim.time_tracker") %></th>
               <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker.admin") %></th>
@@ -28,6 +29,13 @@
               <tr>
                 <td><%= translated_attribute(badge.name) %></td>
                 <td><%= t("models.badge.metrics.#{badge.metric}", scope: "decidim.time_tracker") %></td>
+                <td>
+                  <% if badge.tasks.any? %>
+                    <%= badge.tasks.map { |task| translated_attribute(task.name) }.join(", ") %>
+                  <% else %>
+                    <%= t("models.badge.fields.all_tasks", scope: "decidim.time_tracker") %>
+                  <% end %>
+                </td>
                 <td><%= badge.levels.join(", ") %></td>
                 <td><%= badge.active? ? "✓" : "✗" %></td>
                 <td class="table-list__actions">

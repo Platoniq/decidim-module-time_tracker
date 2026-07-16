@@ -25,6 +25,7 @@ module Decidim
             @form.current_user,
             name: @form.name,
             description: @form.description,
+            tasks: @form.tasks,
             organization: @form.current_organization
           )
         end

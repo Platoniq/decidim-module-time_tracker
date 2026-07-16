@@ -7,6 +7,8 @@ module Decidim
       class BadgeForm < Decidim::Form
         include TranslatableAttributes
 
+        include TaskSelectable
+
         mimic :badge
 
         translatable_attribute :name, String
@@ -25,6 +27,7 @@ module Decidim
 
         def map_model(model)
           self.levels_list = model.levels.join(", ")
+          self.task_ids = model.task_ids
         end
 
         def levels

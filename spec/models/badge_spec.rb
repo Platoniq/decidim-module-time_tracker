@@ -12,6 +12,20 @@ module Decidim::TimeTracker
 
     it { is_expected.to be_valid }
 
+    context "when restricted to tasks" do
+      let(:task) { create(:task) }
+
+      before { badge.tasks << task }
+
+      it "is associated with the tasks" do
+        expect(subject.reload.tasks).to eq([task])
+      end
+
+      it "removes the restriction when destroyed" do
+        expect { subject.destroy! }.to change(BadgeTask, :count).by(-1)
+      end
+    end
+
     it "is invalid with an unknown metric" do
       subject.metric = "nonsense"
       expect(subject).not_to be_valid

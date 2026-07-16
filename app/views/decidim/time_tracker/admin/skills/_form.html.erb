@@ -15,6 +15,14 @@
         <%= form.translated :text_field, :description %>
       </div>
 
+      <div class="row column">
+        <%= form.select :task_ids,
+                        grouped_options_for_select(form.object.grouped_task_options, form.object.task_ids),
+                        { include_hidden: false },
+                        multiple: true %>
+        <p class="help-text"><%= t("skills.form.tasks_help", scope: "decidim.time_tracker.admin") %></p>
+      </div>
+
       <div class="button button__sm button__secondary pt-4">
         <%= form.submit submit %>
       </div>

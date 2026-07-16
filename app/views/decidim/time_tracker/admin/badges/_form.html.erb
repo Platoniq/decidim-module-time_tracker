@@ -27,6 +27,14 @@
       </div>
 
       <div class="row column">
+        <%= form.select :task_ids,
+                        grouped_options_for_select(form.object.grouped_task_options, form.object.task_ids),
+                        { include_hidden: false },
+                        multiple: true %>
+        <p class="help-text"><%= t("badges.form.tasks_help", scope: "decidim.time_tracker.admin") %></p>
+      </div>
+
+      <div class="row column">
         <%= form.number_field :weight %>
       </div>
 

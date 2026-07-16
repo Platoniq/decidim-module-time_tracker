@@ -16,12 +16,14 @@ en:
         levels_list: Levels
         metric: Rule
         name: Name
+        task_ids: Restrict to tasks
         weight: Order position
       milestone:
         title: What have you done?
       skill:
         description: Description
         name: Name
+        task_ids: Earned by completing
       task:
         name: Name
         skill_ids: Skills
@@ -228,6 +230,8 @@ en:
             levels_help: 'Comma-separated thresholds, from lowest to highest. Example:
               "1, 5, 15, 30" awards level 1 at 1, level 2 at 5, and so on.'
             metric_help: What is counted to level up this badge.
+            tasks_help: Optionally restrict the rule to specific tasks. Leave empty
+              to count progress in every task of the platform.
           index:
             description: Badges are shared across all time tracker components of the
               platform. Define the rule (what is counted) and the level thresholds;
@@ -281,6 +285,9 @@ en:
           edit:
             submit: Update skill
             title: Edit skill
+          form:
+            tasks_help: Completing every active activity of any of the selected tasks
+              earns this skill. You can also assign skills from the task form.
           index:
             description: Skills are shared across all time tracker components of the
               platform. Assign them to tasks; participants earn them by completing
@@ -495,9 +502,11 @@ en:
         badge:
           fields:
             active: Active
+            all_tasks: All tasks
             levels: Levels
             metric: Rule
             name: Name
+            tasks: Tasks
           metrics:
             completed_activities: Completed activities
             milestones_created: Milestones posted

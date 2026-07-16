@@ -25,6 +25,20 @@ module Decidim::TimeTracker
       it "counts only completed assignations" do
         expect(subject.value_for("completed_activities")).to eq(1)
       end
+
+      context "when scoped to tasks" do
+        let(:other_task) { create(:task, time_tracker:) }
+
+        before do
+          create(:assignation, :completed, activity: create(:activity, task: other_task), user:)
+        end
+
+        it "counts only completions within the given tasks" do
+          expect(subject.value_for("completed_activities")).to eq(2)
+          expect(subject.value_for("completed_activities", task_ids: [other_task.id])).to eq(1)
+          expect(subject.value_for("completed_activities", task_ids: [task.id, other_task.id])).to eq(2)
+        end
+      end
     end
 
     describe "skills_earned" do
@@ -38,6 +52,12 @@ module Decidim::TimeTracker
       context "when tasks have no explicit skills" do
         it "counts one skill per certified task" do
           expect(subject.value_for("skills_earned")).to eq(2)
+        end
+      end
+
+      context "when scoped to tasks" do
+        it "counts only certifications within the given tasks" do
+          expect(subject.value_for("skills_earned", task_ids: [other_task.id])).to eq(1)
         end
       end
 

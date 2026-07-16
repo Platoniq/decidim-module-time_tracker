@@ -28,7 +28,8 @@ module Decidim
             @skill,
             @user,
             name: form.name,
-            description: form.description
+            description: form.description,
+            tasks: form.tasks
           )
         end
       end

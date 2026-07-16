@@ -20,6 +20,17 @@ module Decidim
                  foreign_key: "decidim_organization_id",
                  class_name: "Decidim::Organization"
 
+      has_many :badge_tasks,
+               class_name: "Decidim::TimeTracker::BadgeTask",
+               foreign_key: "decidim_time_tracker_badge_id",
+               dependent: :destroy
+
+      # The tasks this badge's rule is restricted to; empty means the rule
+      # counts progress over every task.
+      has_many :tasks,
+               through: :badge_tasks,
+               class_name: "Decidim::TimeTracker::Task"
+
       scope :active, -> { where(active: true) }
       scope :sorted, -> { order(weight: :asc, id: :asc) }
 
