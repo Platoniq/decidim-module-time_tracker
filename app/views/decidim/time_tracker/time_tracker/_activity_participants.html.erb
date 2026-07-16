@@ -3,7 +3,7 @@
   <div class="time-tracker--participants pb-3">
     <span class="time-tracker--participants__avatars">
       <% participants.take(3).each do |participant| %>
-        <%= cell "decidim/author", participant, layout: :avatar, skip_profile_link: true %>
+        <%= cell "decidim/author", participant, layout: :avatar %>
       <% end %>
       <% if participants.size > 3 %>
         <span class="time-tracker--participants__more">+<%= participants.size - 3 %></span>

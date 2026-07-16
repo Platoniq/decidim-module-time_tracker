@@ -27,7 +27,9 @@
       <% end %>
     </div>
 
-    <h4 class="h4 pb-1"><%= stripped_translated_attribute activity.description %></h4>
+    <h4 class="h4 pb-1">
+      <%= link_to stripped_translated_attribute(activity.description), task_activity_path(activity.task, activity), class: "hover:underline" %>
+    </h4>
     <%= render partial: "activity_participants", locals: { activity: activity } %>
     <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
     <div class="elapsed-time pt-2"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div class="elapsed-time-clock pt-2"><%= clockify_seconds(activity.user_seconds_elapsed(current_user)) %></div></div>

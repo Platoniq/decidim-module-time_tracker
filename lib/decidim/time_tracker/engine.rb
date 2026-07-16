@@ -12,8 +12,8 @@ module Decidim
       routes do
         # Add engine routes here
         # resources :time_tracker
-        resources :tasks do
-          resources :activities do
+        resources :tasks, only: [] do
+          resources :activities, only: [:show] do
             post :start, controller: "time_events"
             post :stop, controller: "time_events"
 

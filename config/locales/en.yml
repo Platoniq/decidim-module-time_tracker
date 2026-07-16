@@ -150,6 +150,12 @@ en:
       assignees_count: Volunteers
       tasks_count: Tasks
     time_tracker:
+      activities:
+        show:
+          participants_title:
+            one: 1 participant
+            other: "%{count} participants"
+          track_time: Track your time on the tasks page
       activity_questionnaire:
         show:
           about_activity: You are answering the follow-up questions for this activity

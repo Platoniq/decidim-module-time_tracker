@@ -9,7 +9,7 @@
   </div>
   <div class="card--list__text flex-1">
     <span class="card--list__heading">
-      <%= stripped_translated_attribute activity.description %>
+      <%= link_to stripped_translated_attribute(activity.description), task_activity_path(activity.task, activity), class: "hover:underline" %>
     </span>
     <span class="card--list__meta">
       <% if activity.start_date.present? %>
