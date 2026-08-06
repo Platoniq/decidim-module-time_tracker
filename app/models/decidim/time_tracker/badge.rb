@@ -17,6 +17,28 @@ module Decidim
       # counts how many of the badge's own required skills are certified.
       METRICS = %w(completed_activities skills_earned required_skills time_dedicated_hours milestones_created).freeze
 
+      # Admins choose how many levels a badge has; the thresholds for each one
+      # are prefilled from these curves so a badge can be set up without
+      # thinking about numbers at all. They stay editable afterwards.
+      MAX_LEVELS = 10
+
+      DEFAULT_LEVEL_CURVES = {
+        "completed_activities" => [1, 3, 5, 10, 15, 20, 30, 40, 50, 75],
+        "skills_earned" => [1, 2, 3, 5, 8, 10, 12, 15, 20, 25],
+        # One level per required skill: any more would be unreachable.
+        "required_skills" => (1..MAX_LEVELS).to_a,
+        "time_dedicated_hours" => [1, 5, 10, 25, 50, 75, 100, 150, 200, 300],
+        "milestones_created" => [1, 3, 5, 10, 15, 20, 30, 40, 50, 75]
+      }.freeze
+
+      DEFAULT_LEVEL_COUNT = 3
+
+      # The suggested thresholds for a metric at a given number of levels.
+      def self.default_levels(metric, count)
+        curve = DEFAULT_LEVEL_CURVES.fetch(metric.to_s, DEFAULT_LEVEL_CURVES["completed_activities"])
+        curve.first(count.to_i.clamp(1, MAX_LEVELS))
+      end
+
       belongs_to :organization,
                  foreign_key: "decidim_organization_id",
                  class_name: "Decidim::Organization"
@@ -52,6 +74,7 @@ module Decidim
       validates :levels, presence: true
       validate :levels_are_sorted_positive_integers
       validate :skills_selected_for_required_skills
+      validate :levels_are_reachable
 
       def required_skills?
         metric == "required_skills"
@@ -82,6 +105,19 @@ module Decidim
 
       def skills_selected_for_required_skills
         errors.add(:metric, :skills_missing) if required_skills? && badge_skills.empty? && skills.empty?
+      end
+
+      # A required_skills badge counts certified skills, so a threshold above
+      # the number of skills it names can never be met — the level would sit
+      # there permanently out of reach.
+      def levels_are_reachable
+        return unless required_skills?
+        return if levels.blank?
+
+        available = [badge_skills.size, skills.size].max
+        return if available.zero? || levels.max <= available
+
+        errors.add(:levels, :unreachable, count: available)
       end
     end
   end

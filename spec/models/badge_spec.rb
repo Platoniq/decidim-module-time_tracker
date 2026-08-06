@@ -42,7 +42,46 @@ module Decidim::TimeTracker
       it "is valid with skills" do
         subject.metric = "required_skills"
         subject.skills << skill
+        # One named skill, so only a threshold of 1 can ever be reached.
+        subject.levels = [1]
         expect(subject).to be_valid
+      end
+
+      it "is invalid when a threshold exceeds the number of required skills" do
+        subject.metric = "required_skills"
+        subject.skills << skill
+        subject.levels = [1, 2]
+
+        expect(subject).not_to be_valid
+        expect(subject.errors[:levels]).to be_present
+      end
+
+      it "allows a threshold for every named skill" do
+        subject.metric = "required_skills"
+        subject.skills << skill
+        subject.skills << create(:skill, organization:)
+        subject.levels = [1, 2]
+
+        expect(subject).to be_valid
+      end
+    end
+
+    describe ".default_levels" do
+      it "returns as many thresholds as levels asked for" do
+        expect(described_class.default_levels("completed_activities", 3)).to eq([1, 3, 5])
+      end
+
+      it "steps one skill at a time for the required_skills metric" do
+        expect(described_class.default_levels("required_skills", 4)).to eq([1, 2, 3, 4])
+      end
+
+      it "clamps to the supported range" do
+        expect(described_class.default_levels("time_dedicated_hours", 0).size).to eq(1)
+        expect(described_class.default_levels("time_dedicated_hours", 99).size).to eq(described_class::MAX_LEVELS)
+      end
+
+      it "falls back to a usable curve for an unknown metric" do
+        expect(described_class.default_levels("nonsense", 2)).to eq([1, 3])
       end
     end
 

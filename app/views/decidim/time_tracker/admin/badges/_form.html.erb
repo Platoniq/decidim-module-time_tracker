@@ -21,9 +21,44 @@
         <p class="help-text"><%= t("badges.form.metric_help", scope: "decidim.time_tracker.admin") %></p>
       </div>
 
-      <div class="row column">
-        <%= form.text_field :levels_list %>
-        <p class="help-text"><%= t("badges.form.levels_help", scope: "decidim.time_tracker.admin") %></p>
+      <%# The thresholds are prefilled from the metric's default curve by the
+          admin script, so picking a number of levels is enough on its own. %>
+      <div class="row column" id="badge-levels"
+           data-default-curves="<%= form.object.default_curves.to_json %>"
+           data-metric-units="<%= Decidim::TimeTracker::Badge::METRICS.index_with { |metric| t("badges.form.units.#{metric}", scope: "decidim.time_tracker.admin") }.to_json %>">
+        <% level_options = (1..Decidim::TimeTracker::Badge::MAX_LEVELS).map { |count| [t("badges.form.levels_count_option", scope: "decidim.time_tracker.admin", count: count), count] } %>
+        <%= form.select :levels_count, level_options %>
+        <p class="help-text"><%= t("badges.form.levels_count_help", scope: "decidim.time_tracker.admin") %></p>
+
+        <div class="card-section pt-2" id="badge-level-thresholds">
+          <p class="help-text pb-2"><%= t("badges.form.thresholds_help", scope: "decidim.time_tracker.admin") %></p>
+
+          <%# Rows past the chosen count are rendered hidden and disabled rather
+              than left to the script, so the form does not flash all ten rows on
+              load and still submits the right thresholds without JavaScript. %>
+          <% current_levels = form.object.levels %>
+          <% chosen_count = current_levels.size %>
+          <% unit = t("badges.form.units.#{form.object.metric}", scope: "decidim.time_tracker.admin", default: "") %>
+          <% (1..Decidim::TimeTracker::Badge::MAX_LEVELS).each do |level| %>
+            <% beyond_count = level > chosen_count %>
+            <%# `hidden` is a boolean attribute — the tag helper drops it when
+                false, where hidden="false" would still hide the row. %>
+            <%= tag.div class: "badge-level-row", data: { level: }, hidden: beyond_count do %>
+              <label for="badge_level_thresholds_<%= level %>">
+                <%= t("badges.form.level_reached_at", scope: "decidim.time_tracker.admin", level: level) %>
+              </label>
+              <div class="badge-level-row__input">
+                <%= number_field_tag "badge[level_thresholds][]",
+                                     current_levels[level - 1],
+                                     id: "badge_level_thresholds_#{level}",
+                                     min: 1,
+                                     disabled: beyond_count,
+                                     class: "badge-level-threshold" %>
+                <span class="badge-level-row__unit"><%= unit %></span>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
       </div>
 
       <div class="row column">

@@ -238,20 +238,31 @@ en:
             submit: Update badge
             title: Edit badge
           form:
-            levels_help: 'Comma-separated thresholds, from lowest to highest. Example:
-              "1, 5, 15, 30" awards level 1 at 1, level 2 at 5, and so on. For the
-              "Required skills" rule the thresholds count earned skills: with skills
-              A, B and C and levels "3", the badge is earned when all three are achieved.'
+            level_reached_at: Level %{level} is reached at
+            levels_count_help: A level is a step on the way to earning the badge in
+              full. Three is a good default — participants see progress early without
+              the badge feeling out of reach.
+            levels_count_option:
+              one: 1 level
+              other: "%{count} levels"
             metric_help: What is counted to level up this badge.
             skills_help: Only used by the "Required skills" rule. The badge levels
               up as the participant earns these specific skills.
             tasks_help: Optionally restrict the rule to specific tasks. Leave empty
               to count progress in every task of the platform. Not used by the "Required
               skills" rule.
+            thresholds_help: These are filled in for you and are usually fine as they
+              are. Change a number only if you want a level to arrive sooner or later.
+            units:
+              completed_activities: verified completions
+              milestones_created: milestones posted
+              required_skills: of the required skills
+              skills_earned: skills certified
+              time_dedicated_hours: hours tracked
           index:
             description: Badges are shared across all time tracker components of the
-              platform. Define the rule (what is counted) and the level thresholds;
-              participants level up automatically.
+              platform. Choose what a badge counts and how many levels it has; participants
+              level up automatically as they work.
             empty: There are no badges yet.
             title: Badges
           new:
@@ -748,6 +759,10 @@ en:
   errors:
     messages:
       skills_missing: requires at least one skill to be selected
+      unreachable:
+        one: cannot go above 1, because the badge requires only 1 skill
+        other: cannot go above %{count}, because the badge requires only %{count}
+          skills
   layouts:
     decidim:
       user_profile:

@@ -61,3 +61,39 @@
     }
   }
 }
+
+// Badge form: one row per level, so the thresholds read as a list of
+// statements rather than a comma-separated string in a single box.
+.badge-level-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.35rem 0;
+
+  &[hidden] {
+    display: none;
+  }
+
+  label {
+    margin: 0;
+    flex: 1 1 auto;
+  }
+
+  &__input {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 0 0 auto;
+  }
+
+  &__input input {
+    margin: 0;
+    width: 7rem;
+  }
+
+  &__unit {
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+}
