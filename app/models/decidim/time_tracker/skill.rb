@@ -39,6 +39,15 @@ module Decidim
                inverse_of: :skill,
                dependent: :destroy
 
+      # Certifications reference the skill with a foreign key, so deleting a
+      # skill that anyone has already earned would raise unless they are
+      # destroyed with it (which also unwinds the gamification score).
+      has_many :skill_certifications,
+               class_name: "Decidim::TimeTracker::SkillCertification",
+               foreign_key: "decidim_time_tracker_skill_id",
+               inverse_of: :skill,
+               dependent: :destroy
+
       validates :name, presence: true
       validates :earning_mode, inclusion: { in: EARNING_MODES }
       validates :required_completions_per_activity, numericality: { only_integer: true, greater_than: 0 }

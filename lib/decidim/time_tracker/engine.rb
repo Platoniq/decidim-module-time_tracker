@@ -80,13 +80,16 @@ module Decidim
 
       # Public naming: we surface badges/skills to participants as "Skills & badges"
       # and never expose the word "gamification" in a public URL. The core badges
-      # page lives at /gamification/badges; here we serve it at the word-free
-      # /badges and redirect the old path so existing links keep working.
+      # page lives at /gamification/badges and can only describe the badges
+      # registered in code, so we serve our own explainer at the word-free
+      # /badges — it covers the organization's skills and admin-defined badges
+      # as well as Decidim's own — and redirect the old path so existing links
+      # keep working.
       initializer "decidim_time_tracker.public_badges_path" do
         Decidim::Core::Engine.routes.prepend do
           # Inside the isolated Decidim namespace, controllers are referenced
           # without the leading "decidim/".
-          get "/badges", to: "gamification/badges#index", as: :public_badges
+          get "/badges", to: "time_tracker/badges#index", as: :public_badges
           get "/gamification/badges", to: redirect("/badges")
 
           # Organization-level page aggregating the user's activities across

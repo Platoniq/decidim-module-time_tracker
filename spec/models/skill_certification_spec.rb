@@ -45,5 +45,36 @@ module Decidim::TimeTracker
         expect(other).to be_valid
       end
     end
+
+    describe "the gamification score" do
+      def skill_score
+        Decidim::Gamification.status_for(user, :time_tracker_skills).score
+      end
+
+      it "goes up when a certification is created" do
+        expect { create(:skill_certification, user:, task:) }.to change { skill_score }.by(1)
+      end
+
+      it "comes back down when a certification is destroyed" do
+        certification = create(:skill_certification, user:, task:)
+
+        expect { certification.destroy! }.to change { skill_score }.by(-1)
+      end
+    end
+
+    context "when the certified skill is deleted" do
+      let(:skill) { create(:skill, organization:, tasks: [task]) }
+      let!(:certification) { create(:skill_certification, user:, task:, skill:) }
+
+      it "takes the certification with it rather than raising on the foreign key" do
+        expect { skill.destroy! }.to change(described_class, :count).by(-1)
+        expect { certification.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it "unwinds the gamification score" do
+        expect { skill.destroy! }
+          .to change { Decidim::Gamification.status_for(user, :time_tracker_skills).score }.by(-1)
+      end
+    end
   end
 end

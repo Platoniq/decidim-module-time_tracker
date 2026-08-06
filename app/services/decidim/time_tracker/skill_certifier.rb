@@ -19,25 +19,32 @@ module Decidim
       # Reconciles every certification of the task with the user's current
       # verified completions.
       def refresh
-        if task.skills.any?
-          task.skills.each do |skill|
-            reconcile(skill, skill.required_completions_per_activity)
-          end
-          revoke_fallback_certification
+        if applicable_skills.any?
+          applicable_skills.each { |skill| reconcile(skill) }
         else
-          reconcile(nil, 1)
+          reconcile(nil)
         end
+
+        revoke_stale_certifications
       end
 
       private
 
       attr_reader :user, :task
 
-      def reconcile(skill, required_completions)
+      # Reloaded rather than read from the association cache: callers hand us a
+      # task whose skills they have just changed (UpdateTask) or whose rules
+      # were edited after the object was loaded, and a stale cache would have
+      # us reconcile against the previous configuration.
+      def applicable_skills
+        @applicable_skills ||= task.skills.reload.to_a
+      end
+
+      def reconcile(skill)
         earned = if skill
                    skill.earned_by?(user, task)
                  else
-                   task.completed_by?(user, required_completions:)
+                   task.completed_by?(user)
                  end
         certification = SkillCertification.find_by(user:, task:, skill:)
 
@@ -48,26 +55,31 @@ module Decidim
         end
       end
 
-      # A task that gained explicit skills later should not keep certifying
-      # under its own name.
-      def revoke_fallback_certification
-        certification = SkillCertification.find_by(user:, task:, skill: nil)
-        revoke!(certification) if certification
+      # Certifications the task can no longer grant: skills that have been
+      # detached from it, and the task's own fallback certification once it
+      # has explicit skills. Without this they would survive forever, since
+      # `reconcile` only ever visits the skills currently attached.
+      def revoke_stale_certifications
+        valid_skill_ids = applicable_skills.map(&:id)
+
+        SkillCertification.where(user:, task:).find_each do |certification|
+          skill_id = certification.decidim_time_tracker_skill_id
+          still_granted = applicable_skills.any? ? valid_skill_ids.include?(skill_id) : skill_id.nil?
+
+          revoke!(certification) unless still_granted
+        end
       end
 
+      # The `:time_tracker_skills` gamification score is kept in sync by
+      # SkillCertification's own callbacks, so award/revoke only touch the
+      # certification itself.
       def award!(skill)
-        SkillCertification.transaction do
-          SkillCertification.create!(user:, task:, skill:, earned_at: Time.current)
-          Decidim::Gamification.increment_score(user, :time_tracker_skills)
-        end
+        SkillCertification.create!(user:, task:, skill:, earned_at: Time.current)
         notify_user
       end
 
       def revoke!(certification)
-        SkillCertification.transaction do
-          certification.destroy!
-          Decidim::Gamification.decrement_score(user, :time_tracker_skills)
-        end
+        certification.destroy!
       end
 
       def notify_user

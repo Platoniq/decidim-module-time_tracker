@@ -15,7 +15,12 @@ module Decidim
         def call
           return broadcast(:invalid) if @form.invalid?
 
-          create_skill
+          skill = create_skill
+          # Participants may already satisfy the new skill with work they did
+          # before it existed; certify them now instead of waiting for their
+          # next verified completion.
+          skill.tasks.each { |task| RefreshCertificationsJob.perform_later(task) }
+
           broadcast(:ok)
         end
 

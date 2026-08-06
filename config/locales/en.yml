@@ -411,6 +411,63 @@ en:
           assignations_activity: "%{user_name}'s activity"
           milestones_list: List of milestones
       badges:
+        how_it_works: How skills and badges work
+        index:
+          badge_rules:
+            all_tasks: Counts your %{metric} across every task.
+            required_skills: 'Earned by being certified in these skills: %{skills}.'
+            restricted_to: Counts your %{metric} on %{tasks} only.
+          badges_empty: No badges have been set up yet.
+          badges_intro: Badges have levels, and each level has a threshold you reach
+            by getting the counted thing up to that number. A badge based on required
+            skills can be set to need a single skill or several.
+          badges_title: Badges
+          counts:
+            completed_activities: verified activity completions
+            milestones_created: milestones posted
+            required_skills: specific certified skills
+            skills_earned: certified skills
+            time_dedicated_hours: hours tracked
+          earned: Earned
+          granted_by: 'Earned by working on: %{tasks}'
+          intro: Skills recognise what you have learned by volunteering here, and badges
+            recognise how much you have done. Both are earned by taking part — you
+            never have to apply for them.
+          levels: 'Levels: %{levels}'
+          my_progress: See my progress
+          not_started: Not started yet
+          platform_badges_intro: These badges come with Decidim itself and are shared
+            by the whole platform.
+          platform_badges_title: Platform badges
+          skill_rules:
+            completed_activities_all:
+              one: Complete every activity of the task, verified by an administrator.
+              other: Complete every activity of the task %{count} times over, each
+                verified by an administrator.
+            completed_activities_some:
+              one: Complete %{activities} of the task's activities, verified by an
+                administrator.
+              other: Complete %{activities} of the task's activities %{count} times
+                over, each verified by an administrator.
+            time_spent: Track %{hours} hours across the task's activities.
+          skills_empty: No skills have been set up yet.
+          skills_intro: Each skill is certified by working on the tasks listed under
+            it. Only work an administrator has verified counts towards it.
+          skills_title: Skills you can earn here
+          steps:
+            badges: Badges level up on their own as your verified completions, certified
+              skills, tracked hours and milestones add up.
+            certify: Once enough of a task's activities are verified, the skills attached
+              to that task are certified to you.
+            join: Join an activity in a time tracker and wait for an administrator
+              to accept you.
+            track: Track the time you spend on it with the timer, and record a milestone
+              when you stop.
+            verify: When your work meets the activity's completion rules it is submitted
+              to an administrator, who verifies it.
+          steps_title: How you earn them
+          title: Skills & badges
+          your_level: 'Your level: %{level} of %{max}'
         level: Level %{level} of %{max}
         max_level: Maximum level reached!
         progress:

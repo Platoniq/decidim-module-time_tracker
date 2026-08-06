@@ -66,6 +66,24 @@ module Decidim::TimeTracker
       end
     end
 
+    context "when a skill is detached from the task after being certified" do
+      let(:skill) { create(:skill, organization:, tasks: [task]) }
+      let!(:certification) { create(:skill_certification, user:, task:, skill:) }
+
+      before do
+        Decidim::Gamification.set_score(user, :time_tracker_skills, 1)
+        task.skills.destroy(skill)
+      end
+
+      it "revokes the certification the task can no longer grant" do
+        expect { subject.refresh }.to change(SkillCertification, :count).by(-1)
+      end
+
+      it "decrements the skills badge score" do
+        expect { subject.refresh }.to change { skill_score }.by(-1)
+      end
+    end
+
     context "when a certification exists but the task is no longer complete" do
       let!(:certification) { create(:skill_certification, user:, task:) }
 

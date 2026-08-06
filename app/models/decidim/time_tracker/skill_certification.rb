@@ -15,14 +15,24 @@ module Decidim
 
       belongs_to :task,
                  foreign_key: "decidim_time_tracker_task_id",
-                 class_name: "Decidim::TimeTracker::Task"
+                 class_name: "Decidim::TimeTracker::Task",
+                 inverse_of: :skill_certifications
 
       belongs_to :skill,
                  foreign_key: "decidim_time_tracker_skill_id",
                  class_name: "Decidim::TimeTracker::Skill",
+                 inverse_of: :skill_certifications,
                  optional: true
 
       validates :decidim_time_tracker_task_id, uniqueness: { scope: [:decidim_user_id, :decidim_time_tracker_skill_id] }
+
+      # The `:time_tracker_skills` gamification score mirrors the number of
+      # certifications, so it is kept in sync here rather than in the callers:
+      # certifications also disappear through `dependent: :destroy` when a task
+      # or a skill is deleted, and those paths would otherwise leave the score
+      # permanently inflated.
+      after_create :increment_gamification_score
+      after_destroy :decrement_gamification_score
 
       delegate :component, to: :task
       delegate :organization, to: :user
@@ -37,6 +47,16 @@ module Decidim
       # single skill.
       def skill_names
         [skill_name]
+      end
+
+      private
+
+      def increment_gamification_score
+        Decidim::Gamification.increment_score(user, :time_tracker_skills)
+      end
+
+      def decrement_gamification_score
+        Decidim::Gamification.decrement_score(user, :time_tracker_skills)
       end
     end
   end

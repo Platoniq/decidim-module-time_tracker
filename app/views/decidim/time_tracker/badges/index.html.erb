@@ -1,0 +1,136 @@
+<% add_decidim_meta_tags(title: t(".title"), description: t(".intro")) %>
+
+<main class="layout-1col cols-10" role="main">
+  <header class="text-center py-10">
+    <h1 class="title-decorator inline-block text-left mb-12">
+      <%= t ".title" %>
+    </h1>
+    <p class="text-lg text-gray-2"><%= t ".intro" %></p>
+  </header>
+
+  <section class="mb-12">
+    <h2 class="h4 mb-4"><%= t ".steps_title" %></h2>
+    <ol class="list-decimal ml-6 text-gray-2 leading-relaxed">
+      <li><%= t ".steps.join" %></li>
+      <li><%= t ".steps.track" %></li>
+      <li><%= t ".steps.verify" %></li>
+      <li><%= t ".steps.certify" %></li>
+      <li><%= t ".steps.badges" %></li>
+    </ol>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="h4 mb-4"><%= t ".skills_title" %></h2>
+
+    <% if skills.any? %>
+      <p class="text-gray-2 mb-4"><%= t ".skills_intro" %></p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <% skills.each do |skill| %>
+          <div class="card p-4 time-tracker--skill">
+            <h3 class="h5">
+              <%= translated_attribute(skill.name) %>
+              <% if certified_skill_ids.include?(skill.id) %>
+                <span class="success label"><%= t ".earned" %></span>
+              <% end %>
+            </h3>
+
+            <% if skill.description.present? %>
+              <p class="text-sm text-muted"><%= translated_attribute(skill.description) %></p>
+            <% end %>
+
+            <p class="text-sm pt-2"><%= skill_rule_sentence(skill) %></p>
+
+            <p class="text-xs text-muted pt-2">
+              <%= t ".granted_by", tasks: skill_task_labels(skill).to_sentence %>
+            </p>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-2"><%= t ".skills_empty" %></p>
+    <% end %>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="h4 mb-4"><%= t ".badges_title" %></h2>
+
+    <% if badge_progress.any? %>
+      <p class="text-gray-2 mb-4"><%= t ".badges_intro" %></p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <% badge_progress.statuses.each do |status| %>
+          <div class="card p-4 time-tracker--badge<%= " time-tracker--badge-locked" unless status.earned? %>">
+            <h3 class="h5"><%= translated_attribute(status.badge.name) %></h3>
+
+            <% if status.badge.description.present? %>
+              <p class="text-sm text-muted"><%= translated_attribute(status.badge.description) %></p>
+            <% end %>
+
+            <p class="text-sm pt-2"><%= badge_rule_sentence(status.badge) %></p>
+
+            <p class="text-xs text-muted pt-2">
+              <%= t ".levels", levels: badge_levels_sentence(status.badge) %>
+            </p>
+
+            <% if current_user %>
+              <p class="text-sm pt-2">
+                <% if status.earned? %>
+                  <strong><%= t ".your_level", level: status.level, max: status.badge.max_level %></strong>
+                <% else %>
+                  <span class="text-muted"><%= t ".not_started" %></span>
+                <% end %>
+              </p>
+
+              <% unless status.maxed? %>
+                <div class="progress" role="progressbar"
+                     aria-valuenow="<%= status.value %>" aria-valuemin="0" aria-valuemax="<%= status.next_threshold %>">
+                  <div class="progress-meter" style="width: <%= status.percent %>%"></div>
+                </div>
+                <span class="text-xs text-muted">
+                  <%= t("decidim.time_tracker.badges.progress.#{status.badge.metric}", value: status.value, next: status.next_threshold) %>
+                </span>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-2"><%= t ".badges_empty" %></p>
+    <% end %>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="h4 mb-4"><%= t ".platform_badges_title" %></h2>
+    <p class="text-gray-2 mb-4"><%= t ".platform_badges_intro" %></p>
+
+    <%# Decidim's own badges, described the way the core page described them. %>
+    <% platform_badges.each do |badge| %>
+      <div class="mb-8">
+        <h3 class="h5 mb-4"><%= badge.translated_name %></h3>
+        <div class="grid grid-cols-10 text-gray-2 leading-relaxed">
+          <div class="col-span-2">
+            <div class="flex justify-center items-center">
+              <%= image_tag badge.image, class: "w-32", alt: badge.translated_name %>
+            </div>
+          </div>
+          <div class="col-span-7 ml-2">
+            <p><%= badge.description(current_organization_name) %></p>
+            <p class="mt-4"><strong><%= t "decidim.gamification.badges.index.how" %></strong></p>
+            <ol class="list-decimal ml-6">
+              <% badge.conditions.each do |condition| %>
+                <li><%= condition %></li>
+              <% end %>
+            </ol>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </section>
+
+  <% if current_user %>
+    <p class="text-center pb-10">
+      <%= link_to t(".my_progress"), decidim.my_voluntary_work_path, class: "button button__sm button__secondary" %>
+    </p>
+  <% end %>
+</main>

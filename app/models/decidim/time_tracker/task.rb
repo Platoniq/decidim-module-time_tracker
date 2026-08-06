@@ -20,6 +20,7 @@ module Decidim
       has_many :skill_certifications,
                class_name: "Decidim::TimeTracker::SkillCertification",
                foreign_key: "decidim_time_tracker_task_id",
+               inverse_of: :task,
                dependent: :destroy
 
       has_many :task_skills,
