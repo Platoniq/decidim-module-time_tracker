@@ -2,22 +2,97 @@
 
 module Decidim
   module TimeTracker
-    # Builds a self-contained demonstration of the skills and badges system.
+    # Builds a full worked example of the skills and badges system.
     #
-    # It creates its own participatory process so it can be run against a real
-    # instance without touching anything already there, and populates it with a
-    # cast of participants at deliberately different stages — one who has only
-    # just joined, one waiting on admin verification, one certified in a single
-    # skill, one holding every skill and maxing out a badge — so that all the
-    # states the public pages can render are visible at once.
+    # The programme it seeds — a youth-led legislative theatre season — is
+    # deliberately shaped like a real one: sixteen tasks grouped into six
+    # strands, where each strand's tasks all certify the same skill. That is
+    # the pattern the module is meant to be used with, and the opposite of
+    # the common mistake of leaving every task without a skill, which makes
+    # each task name become its own "competence" on a volunteer's profile.
     #
-    # Run it with `rake decidim_time_tracker:demo_seed`. It refuses to run twice
-    # unless the caller asks for the previous demo to be replaced.
+    # It creates its own participatory space, so it can be run against a live
+    # instance without touching anything already there, and every record it
+    # makes is tagged so it can be removed again.
+    #
+    # Run with `rake decidim_time_tracker:demo_seed`.
     class DemoSeeder
       SLUG = "volunteer-skills-demo"
+      TAG = "[Demo]"
 
-      # Enough to trip the smaller thresholds without needing a huge cast.
-      SESSION_SECONDS = 45 * 60
+      # One tracked session. Long enough to satisfy an activity's completion
+      # rule on its own, so the arithmetic in the cast below stays readable.
+      SESSION_MINUTES = 45
+
+      # ---------------------------------------------------------------- shape
+      #
+      # Six strands. Every task in a strand certifies that strand's skill, so
+      # a volunteer who works across a strand ends up with one meaningful
+      # competence rather than a list of task names.
+      STRANDS = {
+        facilitation: {
+          skill: "Group facilitation",
+          skill_description: "Holding a room: opening a session, keeping a group in dialogue and closing well.",
+          tasks: {
+            "Trust-building workshops" => ["Run the opening circle", "Lead a trust exercise", "Close and debrief"],
+            "Experience mapping sessions" => ["Set up the mapping wall", "Facilitate the mapping session"],
+            "Moderating deliberation" => ["Prepare the deliberation format", "Moderate the session"]
+          }
+        },
+        performance: {
+          skill: "Devising and performance",
+          skill_description: "Building scenes from lived experience and performing them to an audience.",
+          tasks: {
+            "Scene development rehearsals" => ["Devise the opening scene", "Rehearse the forum scene"],
+            "Performance: matinee" => ["Warm up and dress run", "Perform the matinee"],
+            "Performance: evening show" => ["Warm up and notes", "Perform the evening show"]
+          }
+        },
+        production: {
+          skill: "Stage production",
+          skill_description: "Making the room work: setup, accessibility, sound and a clean get-out.",
+          tasks: {
+            "Room setup and accessibility" => ["Lay out the space", "Check step-free access and sightlines"],
+            "Stage tech and sound" => ["Rig and sound check", "Operate sound during the show"],
+            "Get-out and cleanup" => ["Strike the set", "Return the venue to the caretaker"]
+          }
+        },
+        documentation: {
+          skill: "Documentation and media",
+          skill_description: "Keeping a record the programme can actually use afterwards.",
+          tasks: {
+            "Photography and filming" => ["Shoot the rehearsal", "Shoot the performance"],
+            "Session note-taking" => ["Take notes in the session", "Write up and circulate"],
+            "Social media coverage" => ["Draft the posts", "Publish and respond"]
+          }
+        },
+        wellbeing: {
+          skill: "Peer wellbeing support",
+          skill_description: "Looking after people working with difficult material, and knowing when to escalate.",
+          tasks: {
+            "Wellbeing check-ins" => ["Run pre-session check-ins", "Run post-session check-outs"],
+            "Peer support during rehearsals" => ["Be on call during rehearsal", "Follow up afterwards"]
+          }
+        },
+        policy: {
+          skill: "Policy advocacy",
+          skill_description: "Turning what the room surfaced into something a decision-maker can act on.",
+          tasks: {
+            "Structural injustice analysis" => ["Map the barriers raised", "Test the analysis with the group"],
+            "Policy proposal drafting" => ["Draft the proposal", "Redraft with the group's feedback"]
+          }
+        }
+      }.freeze
+
+      # A seventh skill that is not tied to a strand: it rewards showing up
+      # over time rather than finishing anything, so the time_spent earning
+      # mode is visible in the demo too.
+      COMMITMENT_SKILL = {
+        name: "Sustained commitment",
+        description: "Turning up across the season, whatever the job that week.",
+        required_hours: 6,
+        strands: [:facilitation, :performance, :production]
+      }.freeze
 
       def initialize(organization: nil, replace: false, logger: nil)
         @organization = organization || Decidim::Organization.first
@@ -30,13 +105,13 @@ module Decidim
 
         handle_existing_demo
 
-        log "Seeding the skills & badges demo into #{organization.name}…"
+        log "Seeding the skills & badges demo into #{organization_name}…"
         # All or nothing: a failure part-way through would otherwise leave a
         # half-built demo behind on whatever instance this was pointed at.
         ActiveRecord::Base.transaction do
           build_process
           build_component
-          build_tasks_and_activities
+          build_tasks
           build_skills
           build_badges
           build_participants
@@ -46,10 +121,7 @@ module Decidim
         log_summary
       end
 
-      # Removes everything the demo created, and nothing else: the demo process
-      # and its component, the skills and badges tagged "[Demo]", and the demo
-      # participants. Certifications and gamification scores unwind through the
-      # models' own callbacks.
+      # Removes everything the demo created, and nothing else.
       def destroy_demo
         raise "No organization found" if organization.blank?
 
@@ -65,10 +137,19 @@ module Decidim
         @logger.call(message)
       end
 
+      def organization_name
+        name = organization.name
+        return name unless name.is_a?(Hash)
+
+        name["en"].presence || name.values.find(&:present?)
+      end
+
       def admin
         @admin ||= Decidim::User.where(organization:, admin: true).not_deleted.first ||
-                   raise("No admin user found in #{organization.name}; the demo needs one to attribute admin actions to")
+                   raise("No admin user found in #{organization_name}; the demo needs one to attribute admin actions to")
       end
+
+      # ------------------------------------------------------------- teardown
 
       def handle_existing_demo
         return unless demo_present?
@@ -83,9 +164,7 @@ module Decidim
       # interrupted run can leave participants or skills behind on their own,
       # and those collide on the next attempt.
       def demo_present?
-        find_demo_process.present? ||
-          demo_users.exists? ||
-          demo_skills.exists?
+        find_demo_process.present? || demo_users.exists? || demo_skills.exists?
       end
 
       def demo_users
@@ -93,7 +172,7 @@ module Decidim
       end
 
       def demo_skills
-        Decidim::TimeTracker::Skill.where(organization:).where("name->>'en' LIKE ?", "[Demo]%")
+        Decidim::TimeTracker::Skill.where(organization:).where("name->>'en' LIKE ?", "#{TAG}%")
       end
 
       # Participatory processes are soft-deleted, and a trashed one still holds
@@ -104,12 +183,10 @@ module Decidim
         Decidim::ParticipatoryProcess.with_deleted.find_by(organization:, slug: SLUG)
       end
 
-      # Removes the demo in dependency order, deepest first.
-      #
-      # None of this can be left to cascades: destroying a participatory space
-      # does not reach into the time tracker's tables, and time events and
-      # milestones hold foreign keys straight to decidim_users, so anything
-      # skipped here surfaces later as a foreign key violation.
+      # Removes the demo in dependency order, deepest first. None of this can
+      # be left to cascades: destroying a participatory space does not reach
+      # into the time tracker's tables, and time events and milestones hold
+      # foreign keys straight to decidim_users.
       def purge_demo!
         Decidim::TimeTracker::TimeEvent.where(user: demo_users).delete_all
         Decidim::TimeTracker::Milestone.where(user: demo_users).destroy_all
@@ -126,9 +203,7 @@ module Decidim
         assignees.destroy_all
 
         destroy_demo_tasks
-        # Skills and badges belong to the organization, not to the process, so
-        # they are matched by the "[Demo]" prefix the seed gives them.
-        Decidim::TimeTracker::Badge.where(organization:).where("name->>'en' LIKE ?", "[Demo]%").destroy_all
+        Decidim::TimeTracker::Badge.where(organization:).where("name->>'en' LIKE ?", "#{TAG}%").destroy_all
         demo_skills.destroy_all
 
         demo_users.find_each(&:destroy!)
@@ -143,19 +218,37 @@ module Decidim
         trackers = Decidim::TimeTracker::TimeTracker.where(component: components)
 
         Decidim::TimeTracker::Task.where(time_tracker: trackers).destroy_all
+
+        # AssigneeData keeps a foreign key to the tracker and the association
+        # deliberately has no `dependent:`, so it has to go by hand or the
+        # tracker cannot be destroyed. Its questionnaire points back at it
+        # polymorphically, so that is cleared first.
+        assignee_data = Decidim::TimeTracker::AssigneeData.where(time_tracker: trackers)
+        Decidim::Forms::Questionnaire.where(
+          questionnaire_for_type: "Decidim::TimeTracker::AssigneeData",
+          questionnaire_for_id: assignee_data.select(:id)
+        ).destroy_all
+        assignee_data.destroy_all
+
         trackers.destroy_all
       end
+
+      # ---------------------------------------------------------------- build
 
       def build_process
         @process = Decidim::ParticipatoryProcess.create!(
           organization:,
           slug: SLUG,
-          title: localized("[Demo] Neighbourhood volunteer programme"),
-          subtitle: localized("Seeing how skills and badges are earned"),
-          short_description: localized("<p>A worked example of the time tracker's skills and badges.</p>"),
+          title: localized("#{TAG} Community Stage: a youth-led theatre season"),
+          subtitle: localized("A worked example of volunteer skills and badges"),
+          short_description: localized(
+            "<p>A demonstration programme showing how tracked volunteer time becomes certified skills and badges.</p>"
+          ),
           description: localized(
-            "<p>This process exists to demonstrate how volunteers earn skills and badges by tracking " \
-            "their time and having their work verified by an administrator.</p>"
+            "<p>Every task in this programme belongs to a strand, and every task in a strand certifies the same " \
+            "skill. A volunteer who works across the facilitation strand ends up certified in <em>Group " \
+            "facilitation</em> — not in three separate task names.</p>" \
+            "<p>This process exists to demonstrate the time tracker. The people and the work in it are invented.</p>"
           ),
           published_at: Time.current
         )
@@ -173,7 +266,7 @@ module Decidim
         @time_tracker = Decidim::TimeTracker::TimeTracker.create!(
           component:,
           questionnaire: Decidim::Forms::Questionnaire.new(
-            tos: localized("I agree to take part in this volunteer programme."),
+            tos: localized("I agree to take part in this programme and to the terms of participation."),
             title: localized("Before you start"),
             description: localized("A couple of questions so we know who is volunteering.")
           )
@@ -182,39 +275,38 @@ module Decidim
         Decidim::TimeTracker::AssigneeData.create!(
           time_tracker:,
           questionnaire: Decidim::Forms::Questionnaire.new(
-            tos: localized("I agree to take part in this volunteer programme."),
+            tos: localized("I agree to take part in this programme and to the terms of participation."),
             title: localized("About you"),
             description: localized("Optional background questions.")
           )
         )
+        log "  component: #{component.id}"
       end
 
-      # Two tasks: one that certifies skills through completed activities, one
-      # that certifies through hours tracked, so both earning modes are shown.
-      def build_tasks_and_activities
+      def build_tasks
         @tasks = {}
+        weight = 0
 
-        @tasks[:garden] = create_task("Community garden", [
-                                        "Prepare the raised beds",
-                                        "Plant the spring vegetables",
-                                        "Run the Saturday watering shift"
-                                      ])
+        STRANDS.each do |strand_key, strand|
+          @tasks[strand_key] = strand[:tasks].map do |task_name, activity_names|
+            weight += 1
+            create_task(task_name, activity_names, weight)
+          end
+        end
 
-        @tasks[:kitchen] = create_task("Community kitchen", [
-                                         "Cook the Wednesday meal",
-                                         "Serve and clear up"
-                                       ])
+        log "  tasks: #{@tasks.values.flatten.size} across #{STRANDS.size} strands"
       end
 
-      def create_task(name, activity_descriptions)
+      def create_task(name, activity_names, weight)
         task = Decidim.traceability.create!(
           Decidim::TimeTracker::Task,
           admin,
-          name: localized("[Demo] #{name}"),
-          time_tracker:
+          name: localized("#{TAG} #{name}"),
+          time_tracker:,
+          weight:
         )
 
-        activity_descriptions.each_with_index do |description, index|
+        activity_names.each_with_index do |description, index|
           Decidim.traceability.create!(
             Decidim::TimeTracker::Activity,
             admin,
@@ -222,10 +314,10 @@ module Decidim
             description: localized(description),
             active: true,
             weight: index,
-            start_date: 1.month.ago,
-            end_date: 1.month.from_now,
-            requests_start_at: 1.month.ago,
-            max_minutes_per_day: 120,
+            start_date: 2.months.ago,
+            end_date: 2.months.from_now,
+            requests_start_at: 2.months.ago,
+            max_minutes_per_day: 180,
             # One qualifying session of 30 minutes or more files a completion
             # for an admin to verify.
             min_events: 1,
@@ -239,31 +331,27 @@ module Decidim
       def build_skills
         @skills = {}
 
-        @skills[:growing] = create_skill(
-          "Growing food",
-          "Preparing beds, planting and keeping a plot watered.",
-          tasks: [tasks[:garden]],
-          earning_mode: "completed_activities",
-          required_activities_count: 2,
-          required_completions_per_activity: 1
-        )
+        STRANDS.each do |strand_key, strand|
+          @skills[strand_key] = create_skill(
+            strand[:skill],
+            strand[:skill_description],
+            tasks: tasks[strand_key],
+            earning_mode: "completed_activities",
+            # Any two activities of any one task in the strand.
+            required_activities_count: 2,
+            required_completions_per_activity: 1
+          )
+        end
 
-        @skills[:reliability] = create_skill(
-          "Reliable shift work",
-          "Turning up week after week — earned on hours tracked, not on finishing anything.",
-          tasks: [tasks[:garden]],
+        @skills[:commitment] = create_skill(
+          COMMITMENT_SKILL[:name],
+          COMMITMENT_SKILL[:description],
+          tasks: COMMITMENT_SKILL[:strands].flat_map { |key| tasks[key] },
           earning_mode: "time_spent",
-          required_minutes: 6 * 60
+          required_minutes: COMMITMENT_SKILL[:required_hours] * 60
         )
 
-        @skills[:catering] = create_skill(
-          "Cooking for a crowd",
-          "Cooking and serving a meal for the neighbourhood.",
-          tasks: [tasks[:kitchen]],
-          earning_mode: "completed_activities",
-          required_activities_count: nil, # every activity of the task
-          required_completions_per_activity: 1
-        )
+        log "  skills: #{@skills.size}"
       end
 
       def create_skill(name, description, tasks:, **rules)
@@ -271,7 +359,7 @@ module Decidim
           Decidim::TimeTracker::Skill,
           admin,
           organization:,
-          name: localized("[Demo] #{name}"),
+          name: localized("#{TAG} #{name}"),
           description: localized(description),
           tasks:,
           required_completions_per_activity: 1,
@@ -279,51 +367,71 @@ module Decidim
         )
       end
 
-      # Four badges covering every metric a badge can be built on, including
-      # one earned by holding specific skills — the case where a single badge
-      # can be set to need one skill or several.
+      # Badges are built so that each one answers a different question about a
+      # volunteer: did they start, did they go deep in one craft, did they
+      # spread across the programme, did they keep showing up.
       def build_badges
         create_badge(
-          "Volunteer",
-          "Levels up with every piece of work an administrator verifies.",
+          "Getting started",
+          "The first pieces of work an administrator signs off.",
           metric: "completed_activities",
-          levels: [1, 3, 5, 10],
+          levels: [1, 5, 20],
           weight: 0
         )
 
         create_badge(
-          "All-rounder",
-          "Earned by being certified in both of the garden skills — one skill gets you to level 1, both to level 2.",
+          "Company member",
+          "Awarded for the three crafts that put a show on: facilitation, performance and production. " \
+          "One of them earns level 1; all three earn level 3.",
           metric: "required_skills",
-          levels: [1, 2],
-          skills: [skills[:growing], skills[:reliability]],
+          levels: [1, 2, 3],
+          skills: [skills[:facilitation], skills[:performance], skills[:production]],
           weight: 1
         )
 
         create_badge(
-          "Kitchen hand",
-          "A badge that needs a single skill.",
+          "Care team",
+          "For the people who look after everyone else.",
           metric: "required_skills",
           levels: [1],
-          skills: [skills[:catering]],
+          skills: [skills[:wellbeing]],
           weight: 2
         )
 
         create_badge(
-          "Time given",
-          "Counts the hours tracked across every task.",
-          metric: "time_dedicated_hours",
-          levels: [1, 3, 8],
+          "Policy voice",
+          "For turning what the room surfaced into a proposal.",
+          metric: "required_skills",
+          levels: [1],
+          skills: [skills[:policy]],
           weight: 3
         )
 
         create_badge(
-          "Chronicler",
-          "For posting milestones about the work.",
-          metric: "milestones_created",
-          levels: [1, 3],
+          "All-rounder",
+          "Counts every skill certified anywhere in the programme.",
+          metric: "skills_earned",
+          levels: [1, 3, 5],
           weight: 4
         )
+
+        create_badge(
+          "Hours on the floor",
+          "Time tracked across the whole season.",
+          metric: "time_dedicated_hours",
+          levels: [2, 6, 15],
+          weight: 5
+        )
+
+        create_badge(
+          "Chronicler",
+          "For leaving a record of the work behind.",
+          metric: "milestones_created",
+          levels: [1, 4, 8],
+          weight: 6
+        )
+
+        log "  badges: #{Decidim::TimeTracker::Badge.where(organization:).where("name->>'en' LIKE ?", "#{TAG}%").count}"
       end
 
       def create_badge(name, description, skills: [], **attributes)
@@ -331,7 +439,7 @@ module Decidim
           Decidim::TimeTracker::Badge,
           admin,
           organization:,
-          name: localized("[Demo] #{name}"),
+          name: localized("#{TAG} #{name}"),
           description: localized(description),
           skills:,
           active: true,
@@ -339,45 +447,88 @@ module Decidim
         )
       end
 
-      # The cast. `sessions` is how many 45-minute sessions the participant
-      # tracked on each activity of the task and `verified` how many of those
-      # an admin signed off, which between them place each participant at a
-      # different point in the journey. A nil task means they never joined it.
+      # ----------------------------------------------------------------- cast
+      #
+      # Ten volunteers spread deliberately across the states the public pages
+      # can render: nobody, waiting on an admin, one craft, several crafts,
+      # and everything. `work` maps a strand to how many 45-minute sessions
+      # were tracked on each of its tasks' activities and how many an admin
+      # verified.
       def participant_plan
         [
-          { name: "Ada Newcomer", story: "accepted, has not tracked anything yet",
-            garden: { sessions: 0, verified: 0 }, kitchen: nil, milestones: 0 },
-          { name: "Ben Waiting", story: "tracked time, still waiting on verification — no skills yet",
-            garden: { sessions: 1, verified: 0 }, kitchen: nil, milestones: 1 },
-          { name: "Carla Grower", story: "certified in Growing food",
-            garden: { sessions: 2, verified: 2 }, kitchen: nil, milestones: 1 },
-          { name: "Dan Regular", story: "Growing food plus Reliable shift work, so All-rounder is maxed",
-            garden: { sessions: 3, verified: 3 }, kitchen: nil, milestones: 2 },
-          { name: "Eva Everything", story: "all three skills, every badge earned",
-            garden: { sessions: 3, verified: 3 }, kitchen: { sessions: 2, verified: 2 }, milestones: 4 }
+          { name: "Ama Boateng", story: "accepted onto facilitation, has not started the timer",
+            work: { facilitation: { sessions: 0, verified: 0 } }, milestones: 0 },
+
+          { name: "Bilal Haddad", story: "tracked two sessions, nothing verified yet — no skills",
+            work: { production: { sessions: 2, verified: 0 } }, milestones: 1 },
+
+          { name: "Cerys Morgan", story: "certified in Group facilitation",
+            work: { facilitation: { sessions: 2, verified: 2 } }, milestones: 2 },
+
+          { name: "Dmitri Volkov", story: "certified in Devising and performance",
+            work: { performance: { sessions: 2, verified: 2 } }, milestones: 1 },
+
+          { name: "Efua Mensah", story: "certified in Stage production",
+            work: { production: { sessions: 2, verified: 2 } }, milestones: 3 },
+
+          { name: "Farida Aziz", story: "Documentation and media, and the most milestones posted",
+            work: { documentation: { sessions: 3, verified: 3 } }, milestones: 9 },
+
+          { name: "Gethin Price", story: "Peer wellbeing support — earns Care team",
+            work: { wellbeing: { sessions: 2, verified: 2 } }, milestones: 1 },
+
+          { name: "Halima Yusuf", story: "Policy advocacy — earns Policy voice",
+            work: { policy: { sessions: 2, verified: 2 } }, milestones: 2 },
+
+          { name: "Ivan Petrov", story: "facilitation and performance — Company member level 2",
+            work: { facilitation: { sessions: 2, verified: 2 }, performance: { sessions: 2, verified: 2 } },
+            milestones: 3 },
+
+          { name: "Jasmine Clarke", story: "all three show crafts plus the hours — Company member maxed",
+            work: {
+              facilitation: { sessions: 3, verified: 3 },
+              performance: { sessions: 3, verified: 3 },
+              production: { sessions: 3, verified: 3 },
+              documentation: { sessions: 2, verified: 2 }
+            },
+            milestones: 5 }
         ]
       end
+
+      MILESTONE_NOTES = [
+        "Twelve people in the circle today, and everyone spoke at least once.",
+        "The forum scene finally landed — the audience stopped the action twice.",
+        "Step-free route re-checked after the venue moved the staging.",
+        "Sound levels set for the matinee; noted the levels for the evening.",
+        "Wrote up the barriers the group named, ready for the drafting session.",
+        "Two check-ins today; one person needed a longer conversation afterwards.",
+        "Photographed the rehearsal without putting anyone on camera who asked not to be.",
+        "Redrafted the proposal with the group's changes to section two.",
+        "Get-out finished ahead of time, venue signed off by the caretaker."
+      ].freeze
 
       def build_participants
         @participants = participant_plan.each_with_index.map do |plan, index|
           user = create_user(plan[:name], index + 1)
           accept_tos(user)
 
-          record_work(user, tasks[:garden], plan[:garden], plan[:milestones])
-          record_work(user, tasks[:kitchen], plan[:kitchen], 0)
+          plan[:work].each do |strand_key, shape|
+            tasks.fetch(strand_key).each { |task| record_work(user, task, shape) }
+          end
+
+          create_milestones(user, plan)
+          sync_activity_badge(user)
 
           plan.merge(user:)
         end
       end
 
       def create_user(name, index)
-        email = "demo-volunteer-#{index}@example.org"
-
         Decidim::User.create!(
           organization:,
           name:,
           nickname: "demo_volunteer_#{index}",
-          email:,
+          email: "demo-volunteer-#{index}@example.org",
           password: SecureRandom.hex(16),
           confirmed_at: Time.current,
           tos_agreement: true,
@@ -395,59 +546,53 @@ module Decidim
       # each activity, `sessions` tracked sessions on each, of which `verified`
       # are signed off by the admin. Completions are written directly rather
       # than through the timer so the seed does not depend on wall-clock
-      # behaviour. A nil plan means the participant never joined this task.
-      def record_work(user, task, plan, milestones)
-        return if plan.blank?
-
-        sessions = plan[:sessions]
-        verified = plan[:verified]
+      # behaviour.
+      def record_work(user, task, shape)
+        sessions = shape[:sessions]
+        verified = shape[:verified]
 
         task.activities.each do |activity|
           assignation = Decidim::TimeTracker::Assignation.create!(
             activity:,
             user:,
             status: :accepted,
-            invited_at: 3.weeks.ago,
+            invited_at: 6.weeks.ago,
             invited_by_user: admin
           )
 
           sessions.times do |session|
-            started = (3.weeks.ago + (session * 2).days).to_i
+            started = (6.weeks.ago + (session * 3).days).to_i
             Decidim::TimeTracker::TimeEvent.create!(
               assignation:,
               activity:,
               user:,
               start: started,
-              stop: started + SESSION_SECONDS,
-              total_seconds: SESSION_SECONDS
+              stop: started + (SESSION_MINUTES * 60),
+              total_seconds: SESSION_MINUTES * 60
             )
-          end
 
-          sessions.times do |session|
             completion = Decidim::TimeTracker::ActivityCompletion.create!(
               assignation:,
-              requested_at: (3.weeks.ago + (session * 2).days + 1.hour)
+              requested_at: Time.zone.at(started) + 1.hour
             )
-
-            next unless session < verified
-
-            completion.update!(verified_at: 2.weeks.ago, verified_by: admin)
+            completion.update!(verified_at: 4.weeks.ago, verified_by: admin) if session < verified
           end
 
           assignation.sync_completed_at!
         end
-
-        create_milestones(user, task, milestones)
-        sync_activity_badge(user)
       end
 
-      def create_milestones(user, task, count)
-        count.times do |index|
+      # Milestones are attached to activities the volunteer actually worked on.
+      def create_milestones(user, plan)
+        activities = plan[:work].keys.flat_map { |key| tasks.fetch(key) }.flat_map(&:activities)
+        return if activities.empty?
+
+        plan[:milestones].times do |index|
           Decidim::TimeTracker::Milestone.create!(
             user:,
-            activity: task.activities.first,
-            title: "Week #{index + 1}: #{task.activities.first.description["en"]}",
-            description: "A short note about what got done this week."
+            activity: activities[index % activities.size],
+            title: "Week #{index + 1}",
+            description: MILESTONE_NOTES[index % MILESTONE_NOTES.size]
           )
         end
       end
@@ -465,8 +610,10 @@ module Decidim
       # Certifications are normally awarded as completions are verified; the
       # seed writes the completions directly, so it runs the certifier itself.
       def certify_everyone
+        all_tasks = tasks.values.flatten
+
         participants.each do |participant|
-          tasks.each_value do |task|
+          all_tasks.each do |task|
             Decidim::TimeTracker::SkillCertifier.new(participant[:user], task).refresh
           end
         end
@@ -474,15 +621,21 @@ module Decidim
 
       def log_summary
         log ""
-        log "Done. #{Decidim::TimeTracker::Skill.where(organization:).count} skills, " \
-            "#{Decidim::TimeTracker::Badge.where(organization:).count} badges."
+        log "Done. #{demo_skills.count} skills, " \
+            "#{Decidim::TimeTracker::Badge.where(organization:).where("name->>'en' LIKE ?", "#{TAG}%").count} badges, " \
+            "#{tasks.values.flatten.size} tasks."
         log ""
-        log "Participants (password reset needed to sign in as them):"
+        log "Participants:"
 
         participants.each do |participant|
           user = participant[:user]
-          certified = Decidim::TimeTracker::SkillCertification.where(user:).count
-          log "  #{user.nickname.ljust(18)}#{user.email.ljust(30)}#{certified} skill(s) — #{participant[:story]}"
+          certified = Decidim::TimeTracker::SkillCertification
+                      .where(user:)
+                      .where.not(decidim_time_tracker_skill_id: nil)
+                      .distinct
+                      .count(:decidim_time_tracker_skill_id)
+
+          log "  #{user.nickname.ljust(18)}#{user.name.ljust(18)}#{certified} skill(s) — #{participant[:story]}"
         end
 
         log ""
