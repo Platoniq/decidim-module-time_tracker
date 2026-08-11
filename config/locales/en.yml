@@ -432,7 +432,7 @@ en:
           badges_intro: Badges have levels, and each level has a threshold you reach
             by getting the counted thing up to that number. A badge based on required
             skills can be set to need a single skill or several.
-          badges_title: Badges
+          badges_title: Time Tracker badges
           counts:
             completed_activities: verified activity completions
             milestones_created: milestones posted
@@ -447,8 +447,8 @@ en:
           levels: 'Levels: %{levels}'
           my_progress: See my progress
           not_started: Not started yet
-          platform_badges_intro: These badges come with Decidim itself and are shared
-            by the whole platform.
+          platform_badges_intro: These come with Decidim itself and are shared by
+            the whole platform, rather than being set up for this organisation.
           platform_badges_title: Platform badges
           skill_rules:
             completed_activities_all:

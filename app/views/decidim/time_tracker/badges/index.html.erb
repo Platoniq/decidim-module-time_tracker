@@ -56,7 +56,12 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <% badges.each do |badge| %>
           <div class="card p-4 time-tracker--badge">
-            <h3 class="h5"><%= translated_attribute(badge.name) %></h3>
+            <div class="time-tracker--badge__head">
+              <span class="time-tracker--badge__emblem" aria-hidden="true">
+                <%= icon badge_icon_name(badge) %>
+              </span>
+              <h3 class="h5"><%= translated_attribute(badge.name) %></h3>
+            </div>
 
             <% if badge.description.present? %>
               <p class="text-sm text-muted"><%= translated_attribute(badge.description) %></p>

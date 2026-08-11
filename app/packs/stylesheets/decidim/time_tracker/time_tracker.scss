@@ -277,3 +277,37 @@
     @apply text-sm text-gray-2 whitespace-nowrap;
   }
 }
+
+// Badge emblems on the public explainer. Admin-defined badges have no image
+// of their own, so an icon chosen from the badge's metric stands in — set in
+// a tinted disc so it reads as an emblem rather than as UI chrome.
+.time-tracker--badge {
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+
+    h3 {
+      margin: 0;
+    }
+  }
+
+  &__emblem {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: var(--secondary, #e8e8f5);
+    color: #fff;
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: currentcolor;
+    }
+  }
+}

@@ -49,6 +49,24 @@ module Decidim
         root to: "time_tracker#index"
       end
 
+      # Icons have to be registered to end up in the compiled sprite; using an
+      # unregistered name renders nothing at all. One per badge metric, so an
+      # admin-defined badge gets an emblem without anyone uploading an image.
+      initializer "decidim_time_tracker.icons" do
+        {
+          "trophy-line" => "Badge counting verified work",
+          "award-line" => "Badge counting certified skills",
+          "medal-line" => "Badge counting specific required skills",
+          "timer-line" => "Badge counting hours tracked",
+          "quill-pen-line" => "Badge counting milestones posted"
+        }.each do |icon, description|
+          # Core already ships some of these; re-registering warns.
+          next if Decidim.icons.all.has_key?(icon)
+
+          Decidim.icons.register(name: icon, icon:, category: "system", description:, engine: :time_tracker)
+        end
+      end
+
       initializer "decidim_time_tracker.webpacker.assets_path" do
         Decidim.register_assets_path File.expand_path("app/packs", root)
       end
