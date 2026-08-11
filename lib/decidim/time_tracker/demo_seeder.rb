@@ -117,7 +117,10 @@ module Decidim
         "demo-user-b@example.org" => { name: "Blair Okoye", nickname: "demo_user_b", admin: false }
       }.freeze
 
-      VIDEO_PASSWORD = "InspireDemo2026!"
+      # Every demo account shares this, the whole cast included — the point of
+      # the demo is that anyone can sign in as any of these and look around.
+      # Randomising the volunteers' passwords made them useless for that.
+      DEMO_PASSWORD = "InspireDemo2026!"
 
       def initialize(organization: nil, replace: false, logger: nil)
         @organization = organization || Decidim::Organization.first
@@ -582,7 +585,8 @@ module Decidim
           name:,
           nickname: "demo_volunteer_#{index}",
           email: "demo-volunteer-#{index}@example.org",
-          password: SecureRandom.hex(16),
+          password: DEMO_PASSWORD,
+          password_confirmation: DEMO_PASSWORD,
           confirmed_at: Time.current,
           tos_agreement: true,
           accepted_tos_version: organization.tos_version || Time.current,
@@ -717,8 +721,8 @@ module Decidim
             name: attrs[:name],
             nickname: attrs[:nickname],
             email:,
-            password: VIDEO_PASSWORD,
-            password_confirmation: VIDEO_PASSWORD,
+            password: DEMO_PASSWORD,
+            password_confirmation: DEMO_PASSWORD,
             confirmed_at: Time.current,
             tos_agreement: true,
             accepted_tos_version: organization.tos_version || Time.current,
@@ -751,7 +755,7 @@ module Decidim
             "#{demo_badges.size} badges, " \
             "#{tasks.values.flatten.size} tasks."
         log ""
-        log "Participants:"
+        log "Participants (all accounts use the password #{DEMO_PASSWORD}):"
 
         participants.each do |participant|
           user = participant[:user]
@@ -765,7 +769,7 @@ module Decidim
         end
 
         log ""
-        log "For recording (password #{VIDEO_PASSWORD}):"
+        log "For recording (password #{DEMO_PASSWORD}):"
         (@video_users || []).each do |u|
           role = u.admin? ? "administrator" : "volunteer"
           extra = case u.nickname
