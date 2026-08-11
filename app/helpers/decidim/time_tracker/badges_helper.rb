@@ -70,8 +70,25 @@ module Decidim
         t("counts.#{badge.metric}", scope: SCOPE)
       end
 
-      # The tasks that can certify a skill, labelled with the space they live
-      # in so participants can tell two same-named tasks apart.
+      # The tasks that can certify a skill.
+      #
+      # Each task is qualified with the space it lives in, so two same-named
+      # tasks in different spaces can be told apart. When every task shares one
+      # space that qualifier is pure repetition — a skill spanning nine tasks
+      # repeated the same space name nine times — so it is named once at the
+      # end instead.
+      def skill_tasks_sentence(skill)
+        tasks = skill.tasks.to_a
+        spaces = tasks.filter_map { |task| task.component&.participatory_space }.uniq
+
+        if spaces.one?
+          "#{tasks.map { |task| translated_attribute(task.name) }.to_sentence} " \
+            "(#{translated_attribute(spaces.first.title)})"
+        else
+          skill_task_labels(skill).to_sentence
+        end
+      end
+
       def skill_task_labels(skill)
         skill.tasks.map do |task|
           space = task.component&.participatory_space

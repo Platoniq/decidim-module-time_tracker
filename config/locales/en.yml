@@ -425,9 +425,9 @@ en:
         how_it_works: How skills and badges work
         index:
           badge_rules:
-            all_tasks: Counts your %{metric} across every task.
+            all_tasks: Counts %{metric} across every task.
             required_skills: 'Earned by being certified in these skills: %{skills}.'
-            restricted_to: Counts your %{metric} on %{tasks} only.
+            restricted_to: Counts %{metric} on %{tasks} only.
           badges_empty: No badges have been set up yet.
           badges_intro: Badges have levels, and each level has a threshold you reach
             by getting the counted thing up to that number. A badge based on required

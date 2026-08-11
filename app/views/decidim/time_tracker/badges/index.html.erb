@@ -42,7 +42,7 @@
             <p class="text-sm pt-2"><%= skill_rule_sentence(skill) %></p>
 
             <p class="text-xs text-muted pt-2">
-              <%= t ".granted_by", tasks: skill_task_labels(skill).to_sentence %>
+              <%= t ".granted_by", tasks: skill_tasks_sentence(skill) %>
             </p>
           </div>
         <% end %>
