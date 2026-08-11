@@ -477,7 +477,7 @@ en:
             verify: When your work meets the activity's completion rules it is submitted
               to an administrator, who verifies it.
           steps_title: How you earn them
-          title: Skills & badges
+          title: Skills & Badges
           your_level: 'Your level: %{level} of %{max}'
         level: Level %{level} of %{max}
         max_level: Maximum level reached!
