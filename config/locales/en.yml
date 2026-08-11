@@ -439,14 +439,12 @@ en:
             required_skills: specific certified skills
             skills_earned: certified skills
             time_dedicated_hours: hours tracked
-          earned: Earned
           granted_by: 'Earned by working on: %{tasks}'
-          intro: Skills recognise what you have learned by volunteering here, and badges
-            recognise how much you have done. Both are earned by taking part — you
-            never have to apply for them.
+          intro: Skills recognise what you have learned by volunteering here, and
+            badges recognise how much you have done. Both are earned by taking part
+            — you never have to apply for them.
           levels: 'Levels: %{levels}'
           my_progress: See my progress
-          not_started: Not started yet
           platform_badges_intro: These come with Decidim itself and are shared by
             the whole platform, rather than being set up for this organisation.
           platform_badges_title: Platform badges
@@ -478,7 +476,6 @@ en:
               to an administrator, who verifies it.
           steps_title: How you earn them
           title: Skills & Badges
-          your_level: 'Your level: %{level} of %{max}'
         level: Level %{level} of %{max}
         max_level: Maximum level reached!
         progress:
