@@ -1,3 +1,8 @@
+<%# This page lives at the organisation root rather than inside the component,
+    so the module's stylesheet is not on the layout already — without this the
+    badge emblems and the skill/badge cards render unstyled. %>
+<%= append_stylesheet_pack_tag "decidim_time_tracker" %>
+
 <% add_decidim_meta_tags(title: t(".title"), description: t(".intro")) %>
 
 <main class="layout-1col cols-10" role="main">
