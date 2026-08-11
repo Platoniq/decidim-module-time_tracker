@@ -18,7 +18,11 @@ module Decidim
     # Run with `rake decidim_time_tracker:demo_seed`.
     class DemoSeeder
       SLUG = "volunteer-skills-demo"
-      TAG = "[Demo]"
+
+      # Demo records used to be named with this prefix. Names are clean now,
+      # but the teardown still recognises it so a demo left behind by an older
+      # version of this seed can be removed.
+      LEGACY_TAG = "[Demo]"
 
       # One tracked session. Long enough to satisfy an activity's completion
       # rule on its own, so the arithmetic in the cast below stays readable.
@@ -186,7 +190,7 @@ module Decidim
       # interrupted run can leave participants or skills behind on their own,
       # and those collide on the next attempt.
       def demo_present?
-        find_demo_process.present? || demo_users.exists? || demo_skills.exists?
+        find_demo_process.present? || demo_users.exists? || demo_skills.exists? || demo_badges.any?
       end
 
       def demo_users
@@ -194,8 +198,45 @@ module Decidim
         Decidim::User.where(organization:).where("email LIKE ?", "demo-%@example.org")
       end
 
+      # Demo skills are recognised by what they are attached to: every one of
+      # them hangs off a task in the demo component. That beats matching on a
+      # name prefix, which would have to be visible to participants, and it
+      # cannot collide with a real skill that happens to share a name.
       def demo_skills
-        Decidim::TimeTracker::Skill.where(organization:).where("name->>'en' LIKE ?", "#{TAG}%")
+        tasks = Decidim::TimeTracker::Task.where(time_tracker: demo_trackers)
+        attached = Decidim::TimeTracker::TaskSkill.where(task: tasks).select(:decidim_time_tracker_skill_id)
+
+        Decidim::TimeTracker::Skill
+          .where(organization:)
+          .where("id IN (?) OR name->>'en' LIKE ?", attached, "#{LEGACY_TAG}%")
+      end
+
+      def demo_trackers
+        process = find_demo_process
+        return Decidim::TimeTracker::TimeTracker.none if process.blank?
+
+        Decidim::TimeTracker::TimeTracker.where(
+          component: Decidim::Component.where(participatory_space: process, manifest_name: "time_tracker")
+        )
+      end
+
+      # Badges have no association back to the demo — one that counts hours
+      # across every task looks identical to a real one. They are matched on
+      # name *and* description together, which the seed controls exactly, so a
+      # real badge would have to duplicate both to be caught.
+      def demo_badges
+        matches = badge_definitions.map { |name, description| [name, description] }
+
+        Decidim::TimeTracker::Badge.where(organization:).select do |badge|
+          badge_name = badge.name["en"].to_s
+          matches.any? do |name, description|
+            (badge_name == name && badge.description["en"] == description) ||
+              # Earlier versions of this seed prefixed every name with
+              # "[Demo] ". Recognised so a demo seeded by one of those can
+              # still be torn down by this one.
+              badge_name == "#{LEGACY_TAG} #{name}"
+          end
+        end
       end
 
       # Participatory processes are soft-deleted, and a trashed one still holds
@@ -211,6 +252,10 @@ module Decidim
       # into the time tracker's tables, and time events and milestones hold
       # foreign keys straight to decidim_users.
       def purge_demo!
+        # Resolved up front: demo_skills finds them through the demo's tasks,
+        # which destroy_demo_tasks is about to remove.
+        skill_ids = demo_skills.pluck(:id)
+
         Decidim::TimeTracker::TimeEvent.where(user: demo_users).delete_all
         Decidim::TimeTracker::Milestone.where(user: demo_users).destroy_all
         Decidim::TimeTracker::ActivityCompletion
@@ -225,9 +270,11 @@ module Decidim
         Decidim::TimeTracker::TosAcceptance.where(assignee: assignees).destroy_all
         assignees.destroy_all
 
+        # Badges first: a required_skills badge holds a foreign key to the
+        # skills it names.
+        demo_badges.each(&:destroy!)
         destroy_demo_tasks
-        Decidim::TimeTracker::Badge.where(organization:).where("name->>'en' LIKE ?", "#{TAG}%").destroy_all
-        demo_skills.destroy_all
+        Decidim::TimeTracker::Skill.where(id: skill_ids).destroy_all
 
         demo_users.find_each(&:destroy!)
         find_demo_process&.really_destroy!
@@ -262,7 +309,7 @@ module Decidim
         @process = Decidim::ParticipatoryProcess.create!(
           organization:,
           slug: SLUG,
-          title: localized("#{TAG} Community Stage: a youth-led theatre season"),
+          title: localized("Community Stage: a youth-led theatre season"),
           subtitle: localized("A worked example of volunteer skills and badges"),
           short_description: localized(
             "<p>A demonstration programme showing how tracked volunteer time becomes certified skills and badges.</p>"
@@ -324,7 +371,7 @@ module Decidim
         task = Decidim.traceability.create!(
           Decidim::TimeTracker::Task,
           admin,
-          name: localized("#{TAG} #{name}"),
+          name: localized(name),
           time_tracker:,
           weight:
         )
@@ -382,7 +429,7 @@ module Decidim
           Decidim::TimeTracker::Skill,
           admin,
           organization:,
-          name: localized("#{TAG} #{name}"),
+          name: localized(name),
           description: localized(description),
           tasks:,
           required_completions_per_activity: 1,
@@ -393,68 +440,51 @@ module Decidim
       # Badges are built so that each one answers a different question about a
       # volunteer: did they start, did they go deep in one craft, did they
       # spread across the programme, did they keep showing up.
+      #
+      # Held as data rather than a run of create_badge calls because the
+      # teardown needs the same name/description pairs to recognise them again.
+      def badge_definitions
+        [
+          ["Getting started",
+           "The first pieces of work an administrator signs off.",
+           { metric: "completed_activities", levels: [1, 5, 20], weight: 0 }],
+
+          ["Company member",
+           "Awarded for the three crafts that put a show on: facilitation, performance and production. " \
+           "One of them earns level 1; all three earn level 3.",
+           { metric: "required_skills", levels: [1, 2, 3], weight: 1, skill_keys: [:facilitation, :performance, :production] }],
+
+          ["Care team",
+           "For the people who look after everyone else.",
+           { metric: "required_skills", levels: [1], weight: 2, skill_keys: [:wellbeing] }],
+
+          ["Policy voice",
+           "For turning what the room surfaced into a proposal.",
+           { metric: "required_skills", levels: [1], weight: 3, skill_keys: [:policy] }],
+
+          ["All-rounder",
+           "Counts every skill certified anywhere in the programme.",
+           { metric: "skills_earned", levels: [1, 3, 5], weight: 4 }],
+
+          ["Hours on the floor",
+           "Time tracked across the whole season.",
+           { metric: "time_dedicated_hours", levels: [2, 6, 15], weight: 5 }],
+
+          ["Chronicler",
+           "For leaving a record of the work behind.",
+           { metric: "milestones_created", levels: [1, 4, 8], weight: 6 }]
+        ]
+      end
+
       def build_badges
-        create_badge(
-          "Getting started",
-          "The first pieces of work an administrator signs off.",
-          metric: "completed_activities",
-          levels: [1, 5, 20],
-          weight: 0
-        )
+        badge_definitions.each do |name, description, attributes|
+          attributes = attributes.dup
+          skill_keys = attributes.delete(:skill_keys) || []
 
-        create_badge(
-          "Company member",
-          "Awarded for the three crafts that put a show on: facilitation, performance and production. " \
-          "One of them earns level 1; all three earn level 3.",
-          metric: "required_skills",
-          levels: [1, 2, 3],
-          skills: [skills[:facilitation], skills[:performance], skills[:production]],
-          weight: 1
-        )
+          create_badge(name, description, skills: skill_keys.map { |key| skills.fetch(key) }, **attributes)
+        end
 
-        create_badge(
-          "Care team",
-          "For the people who look after everyone else.",
-          metric: "required_skills",
-          levels: [1],
-          skills: [skills[:wellbeing]],
-          weight: 2
-        )
-
-        create_badge(
-          "Policy voice",
-          "For turning what the room surfaced into a proposal.",
-          metric: "required_skills",
-          levels: [1],
-          skills: [skills[:policy]],
-          weight: 3
-        )
-
-        create_badge(
-          "All-rounder",
-          "Counts every skill certified anywhere in the programme.",
-          metric: "skills_earned",
-          levels: [1, 3, 5],
-          weight: 4
-        )
-
-        create_badge(
-          "Hours on the floor",
-          "Time tracked across the whole season.",
-          metric: "time_dedicated_hours",
-          levels: [2, 6, 15],
-          weight: 5
-        )
-
-        create_badge(
-          "Chronicler",
-          "For leaving a record of the work behind.",
-          metric: "milestones_created",
-          levels: [1, 4, 8],
-          weight: 6
-        )
-
-        log "  badges: #{Decidim::TimeTracker::Badge.where(organization:).where("name->>'en' LIKE ?", "#{TAG}%").count}"
+        log "  badges: #{demo_badges.size}"
       end
 
       def create_badge(name, description, skills: [], **attributes)
@@ -462,7 +492,7 @@ module Decidim
           Decidim::TimeTracker::Badge,
           admin,
           organization:,
-          name: localized("#{TAG} #{name}"),
+          name: localized(name),
           description: localized(description),
           skills:,
           active: true,
@@ -648,7 +678,7 @@ module Decidim
         task = Decidim.traceability.create!(
           Decidim::TimeTracker::Task,
           admin,
-          name: localized("#{TAG} #{VIDEO_TASK}"),
+          name: localized(VIDEO_TASK),
           time_tracker:,
           weight: 99
         )
@@ -718,7 +748,7 @@ module Decidim
       def log_summary
         log ""
         log "Done. #{demo_skills.count} skills, " \
-            "#{Decidim::TimeTracker::Badge.where(organization:).where("name->>'en' LIKE ?", "#{TAG}%").count} badges, " \
+            "#{demo_badges.size} badges, " \
             "#{tasks.values.flatten.size} tasks."
         log ""
         log "Participants:"
@@ -745,7 +775,7 @@ module Decidim
                   end
           log "  #{u.email.ljust(26)}#{role}#{extra}"
         end
-        log "  task \"#{TAG} #{VIDEO_TASK}\" completes after 1 minute of tracking"
+        log "  task \"#{VIDEO_TASK}\" completes after 1 minute of tracking"
         log ""
         log "Public pages: /badges (the explainer) and /my_voluntary_work (per participant)"
       end

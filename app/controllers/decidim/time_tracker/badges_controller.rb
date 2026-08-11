@@ -12,14 +12,17 @@ module Decidim
       include Decidim::HasSpecificBreadcrumb
 
       helper Decidim::TimeTracker::BadgesHelper
-      helper_method :badge_progress, :skills, :platform_badges, :certified_skill_ids
+      helper_method :badges, :skills, :platform_badges
 
       def index; end
 
       private
 
-      def badge_progress
-        @badge_progress ||= BadgeProgress.new(current_user, current_organization)
+      # This page explains the rules; it deliberately shows nobody's personal
+      # standing, so no user is passed and no per-participant metric is
+      # calculated. Participants see where they are on /my_voluntary_work.
+      def badges
+        @badges ||= BadgeProgress.new(nil, current_organization).badges
       end
 
       # Every skill the organization can certify, with the tasks that grant it.
@@ -31,19 +34,6 @@ module Decidim
                          .distinct
                          .includes(tasks: { time_tracker: :component })
                          .order(:id)
-      end
-
-      # The skills the signed-in participant already holds, so the list can
-      # mark them off.
-      def certified_skill_ids
-        @certified_skill_ids ||= if current_user
-                                   SkillCertification.where(user: current_user)
-                                                     .where.not(decidim_time_tracker_skill_id: nil)
-                                                     .pluck(:decidim_time_tracker_skill_id)
-                                                     .uniq
-                                 else
-                                   []
-                                 end
       end
 
       # Decidim's own badges, which are registered in code and shared by every

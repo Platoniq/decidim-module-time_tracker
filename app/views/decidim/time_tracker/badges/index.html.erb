@@ -28,12 +28,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <% skills.each do |skill| %>
           <div class="card p-4 time-tracker--skill">
-            <h3 class="h5">
-              <%= translated_attribute(skill.name) %>
-              <% if certified_skill_ids.include?(skill.id) %>
-                <span class="success label"><%= t ".earned" %></span>
-              <% end %>
-            </h3>
+            <h3 class="h5"><%= translated_attribute(skill.name) %></h3>
 
             <% if skill.description.present? %>
               <p class="text-sm text-muted"><%= translated_attribute(skill.description) %></p>
@@ -55,43 +50,23 @@
   <section class="mb-12">
     <h2 class="h4 mb-4"><%= t ".badges_title" %></h2>
 
-    <% if badge_progress.any? %>
+    <% if badges.any? %>
       <p class="text-gray-2 mb-4"><%= t ".badges_intro" %></p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <% badge_progress.statuses.each do |status| %>
-          <div class="card p-4 time-tracker--badge<%= " time-tracker--badge-locked" unless status.earned? %>">
-            <h3 class="h5"><%= translated_attribute(status.badge.name) %></h3>
+        <% badges.each do |badge| %>
+          <div class="card p-4 time-tracker--badge">
+            <h3 class="h5"><%= translated_attribute(badge.name) %></h3>
 
-            <% if status.badge.description.present? %>
-              <p class="text-sm text-muted"><%= translated_attribute(status.badge.description) %></p>
+            <% if badge.description.present? %>
+              <p class="text-sm text-muted"><%= translated_attribute(badge.description) %></p>
             <% end %>
 
-            <p class="text-sm pt-2"><%= badge_rule_sentence(status.badge) %></p>
+            <p class="text-sm pt-2"><%= badge_rule_sentence(badge) %></p>
 
             <p class="text-xs text-muted pt-2">
-              <%= t ".levels", levels: badge_levels_sentence(status.badge) %>
+              <%= t ".levels", levels: badge_levels_sentence(badge) %>
             </p>
-
-            <% if current_user %>
-              <p class="text-sm pt-2">
-                <% if status.earned? %>
-                  <strong><%= t ".your_level", level: status.level, max: status.badge.max_level %></strong>
-                <% else %>
-                  <span class="text-muted"><%= t ".not_started" %></span>
-                <% end %>
-              </p>
-
-              <% unless status.maxed? %>
-                <div class="progress" role="progressbar"
-                     aria-valuenow="<%= status.value %>" aria-valuemin="0" aria-valuemax="<%= status.next_threshold %>">
-                  <div class="progress-meter" style="width: <%= status.percent %>%"></div>
-                </div>
-                <span class="text-xs text-muted">
-                  <%= t("decidim.time_tracker.badges.progress.#{status.badge.metric}", value: status.value, next: status.next_threshold) %>
-                </span>
-              <% end %>
-            <% end %>
           </div>
         <% end %>
       </div>
