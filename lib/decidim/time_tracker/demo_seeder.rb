@@ -94,6 +94,27 @@ module Decidim
         strands: [:facilitation, :performance, :production]
       }.freeze
 
+      # Everything above is built for a realistic-looking programme, where an
+      # activity needs half an hour of tracked time before a completion is
+      # filed. That is unwatchable on camera, so the video setup below adds a
+      # task whose activities complete after a single minute, plus the accounts
+      # needed to record the full loop live: an administrator, a volunteer who
+      # still has to apply, and one already accepted and ready to press play.
+      VIDEO_TASK = "Video walkthrough (1-minute activities)"
+      VIDEO_ACTIVITIES = ["Demo activity A", "Demo activity B"].freeze
+      VIDEO_SKILL = "Quick demo skill"
+
+      VIDEO_ACCOUNTS = {
+        # Names deliberately avoid the word "demo": Decidim rejects a password
+        # that resembles the account's own name, and these share a password
+        # with the rest of the cast.
+        "demo-admin@example.org" => { name: "Sam Organiser", nickname: "demo_admin", admin: true },
+        "demo-user-a@example.org" => { name: "Alex Rivera", nickname: "demo_user_a", admin: false },
+        "demo-user-b@example.org" => { name: "Blair Okoye", nickname: "demo_user_b", admin: false }
+      }.freeze
+
+      VIDEO_PASSWORD = "InspireDemo2026!"
+
       def initialize(organization: nil, replace: false, logger: nil)
         @organization = organization || Decidim::Organization.first
         @replace = replace
@@ -116,6 +137,7 @@ module Decidim
           build_badges
           build_participants
           certify_everyone
+          build_video_setup
         end
 
         log_summary
@@ -168,7 +190,8 @@ module Decidim
       end
 
       def demo_users
-        Decidim::User.where(organization:).where("email LIKE ?", "demo-volunteer-%@example.org")
+        # Covers demo-volunteer-N, demo-admin and demo-user-* alike.
+        Decidim::User.where(organization:).where("email LIKE ?", "demo-%@example.org")
       end
 
       def demo_skills
@@ -619,6 +642,79 @@ module Decidim
         end
       end
 
+      # The recording setup: a fast task, a skill it certifies, and the three
+      # accounts used on camera.
+      def build_video_setup
+        task = Decidim.traceability.create!(
+          Decidim::TimeTracker::Task,
+          admin,
+          name: localized("#{TAG} #{VIDEO_TASK}"),
+          time_tracker:,
+          weight: 99
+        )
+
+        VIDEO_ACTIVITIES.each_with_index do |description, index|
+          Decidim.traceability.create!(
+            Decidim::TimeTracker::Activity,
+            admin,
+            task:,
+            description: localized(description),
+            active: true,
+            weight: index,
+            start_date: 2.months.ago,
+            end_date: 2.months.from_now,
+            requests_start_at: 2.months.ago,
+            max_minutes_per_day: 180,
+            min_events: 1,
+            # One minute of tracked time files a completion — short enough to
+            # show the whole chain inside a single take.
+            min_duration_minutes_per_event: 1
+          )
+        end
+
+        create_skill(
+          VIDEO_SKILL,
+          "Certified by finishing one activity of the video walkthrough task. Exists so the full loop can be filmed.",
+          tasks: [task],
+          earning_mode: "completed_activities",
+          required_activities_count: 1,
+          required_completions_per_activity: 1
+        )
+
+        @video_users = VIDEO_ACCOUNTS.map do |email, attrs|
+          user = Decidim::User.create!(
+            organization:,
+            name: attrs[:name],
+            nickname: attrs[:nickname],
+            email:,
+            password: VIDEO_PASSWORD,
+            password_confirmation: VIDEO_PASSWORD,
+            confirmed_at: Time.current,
+            tos_agreement: true,
+            accepted_tos_version: organization.tos_version || Time.current,
+            locale: organization.default_locale,
+            admin: attrs[:admin],
+            # Set so the admin lands in the panel instead of a terms screen.
+            admin_terms_accepted_at: (Time.current if attrs[:admin])
+          )
+          accept_tos(user) unless attrs[:admin]
+          user
+        end
+
+        # Blair starts already accepted, so a take can begin at "press play"
+        # without waiting on an approval. Alex is left with nothing, so the
+        # apply-and-accept step can be filmed from the beginning.
+        blair = @video_users.find { |u| u.nickname == "demo_user_b" }
+        task.activities.each do |activity|
+          Decidim::TimeTracker::Assignation.create!(
+            activity:, user: blair, status: :accepted,
+            invited_at: 1.week.ago, invited_by_user: admin
+          )
+        end
+
+        log "  video setup: 1 fast task, 1 skill, #{@video_users.size} accounts"
+      end
+
       def log_summary
         log ""
         log "Done. #{demo_skills.count} skills, " \
@@ -638,6 +734,18 @@ module Decidim
           log "  #{user.nickname.ljust(18)}#{user.name.ljust(18)}#{certified} skill(s) — #{participant[:story]}"
         end
 
+        log ""
+        log "For recording (password #{VIDEO_PASSWORD}):"
+        (@video_users || []).each do |u|
+          role = u.admin? ? "administrator" : "volunteer"
+          extra = case u.nickname
+                  when "demo_user_a" then " — no assignations yet, film the apply + accept step"
+                  when "demo_user_b" then " — already accepted, can press play immediately"
+                  else " — builds tasks, skills and badges on camera"
+                  end
+          log "  #{u.email.ljust(26)}#{role}#{extra}"
+        end
+        log "  task \"#{TAG} #{VIDEO_TASK}\" completes after 1 minute of tracking"
         log ""
         log "Public pages: /badges (the explainer) and /my_voluntary_work (per participant)"
       end
