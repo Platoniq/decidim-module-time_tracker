@@ -4,7 +4,12 @@ module Decidim
   module TimeTracker
     module Admin
       class TasksController < Admin::ApplicationController
+        # `include` puts these on the controller, which is what the label
+        # helper_methods below rely on; `helper` is what makes the rest of them
+        # — clockify_seconds and friends — reachable from the templates.
         include Decidim::TimeTracker::ApplicationHelper
+        helper Decidim::TimeTracker::ApplicationHelper
+
         helper_method :tasks, :current_task, :assignations, :pending_completions, :tasks_label, :activities_label, :assignations_label
 
         delegate :tasks, to: :time_tracker
