@@ -588,6 +588,10 @@ module Decidim
           password: DEMO_PASSWORD,
           password_confirmation: DEMO_PASSWORD,
           confirmed_at: Time.current,
+          # Decidim makes an admin change their password on first sign-in when
+          # this is blank (User#needs_password_update?). Mid-demo that means
+          # being handed a mandatory password form instead of the admin panel.
+          password_updated_at: Time.current,
           tos_agreement: true,
           accepted_tos_version: organization.tos_version || Time.current,
           locale: organization.default_locale
@@ -724,6 +728,7 @@ module Decidim
             password: DEMO_PASSWORD,
             password_confirmation: DEMO_PASSWORD,
             confirmed_at: Time.current,
+            password_updated_at: Time.current,
             tos_agreement: true,
             accepted_tos_version: organization.tos_version || Time.current,
             locale: organization.default_locale,
