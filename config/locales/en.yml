@@ -246,6 +246,13 @@ en:
               one: 1 level
               other: "%{count} levels"
             metric_help: What is counted to level up this badge.
+            preview:
+              all_tasks: Counts %{metric} across every task.
+              levels: 'Levels: %{levels}.'
+              no_skills: Choose the skills this badge requires.
+              required_skills: 'Earned by being certified in: %{skills}.'
+              restricted: Counts %{metric} on %{tasks} only.
+            preview_label: This badge will read
             skills_help: Only used by the "Required skills" rule. The badge levels
               up as the participant earns these specific skills.
             tasks_help: Optionally restrict the rule to specific tasks. Leave empty
@@ -331,6 +338,20 @@ en:
             earning_mode_help: How the skill is earned within a task. "Completed activities"
               counts admin-verified activity completions; "Time spent" counts tracked
               hours across the task's activities and does not require admin verification.
+            name_help: Name it as a competence a volunteer could put on a CV — "Group
+              facilitation", not the name of one session.
+            preview:
+              all_one: Complete every activity of the task, verified once by an administrator.
+              all_other: Complete every activity of the task %{count} times over,
+                each verified by an administrator.
+              incomplete: Set the number of hours to finish this rule.
+              some_one: Complete %{activities} of the task's activities, verified
+                once by an administrator.
+              some_other: Complete %{activities} of the task's activities %{count}
+                times over, each verified by an administrator.
+              time_spent: Track %{hours} hours across the task's activities. No administrator
+                verification needed.
+            preview_label: This skill will read
             required_activities_help: 'Only for "Completed activities": how many of
               the task''s activities must be completed. Leave empty to require all
               of them.'
@@ -556,6 +577,21 @@ en:
         tos: Data answered here is treated as confidential and used for statistical
           purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a>
           also apply. By submitting this questionnaire, you agree to them.
+      earnings:
+        all_link: See all skills and badges
+        badge_levels: 'Badge levels: %{levels}'
+        lead: What you earn by working on this
+        rules:
+          all_activities:
+            one: Complete every activity here, verified by an organiser
+            other: Complete every activity here %{count} times over, each verified
+              by an organiser
+          some_activities:
+            one: Complete %{activities} of these activities, verified by an organiser
+            other: Complete %{activities} of these activities %{count} times over,
+              each verified by an organiser
+          task_fallback: Certified once every activity here is verified by an organiser
+          time_spent: Track %{hours} hours across these activities
       milestone:
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
         time_dedicated: Time dedicated

@@ -48,22 +48,6 @@ module Decidim
         badge.levels.join(" → ")
       end
 
-      # The emblem for a badge, chosen from what it counts. Admin-defined
-      # badges carry no image of their own, so the metric stands in for one —
-      # every badge gets a mark, and two badges counting the same thing look
-      # like siblings.
-      BADGE_ICONS = {
-        "completed_activities" => "trophy-line",
-        "skills_earned" => "award-line",
-        "required_skills" => "medal-line",
-        "time_dedicated_hours" => "timer-line",
-        "milestones_created" => "quill-pen-line"
-      }.freeze
-
-      def badge_icon_name(badge)
-        BADGE_ICONS.fetch(badge.metric, "trophy-line")
-      end
-
       # What the badge counts, in plain words ("hours tracked", "skills
       # certified"), reused inside the rule sentences.
       def badge_metric_label(badge)

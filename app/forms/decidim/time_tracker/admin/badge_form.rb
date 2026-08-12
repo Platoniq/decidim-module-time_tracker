@@ -14,7 +14,10 @@ module Decidim
         translatable_attribute :name, String
         translatable_attribute :description, String
 
-        attribute :metric, String
+        # Defaulted so a new badge's object agrees with the dropdown, which
+        # shows the first metric as selected. Left nil, the unit lookup below
+        # resolves to the whole units hash instead of a label.
+        attribute :metric, String, default: Decidim::TimeTracker::Badge::METRICS.first
         # How many levels the badge has. The admin picks this from a dropdown;
         # the threshold for each level is prefilled from the metric's default
         # curve, so a badge can be set up without choosing any numbers.

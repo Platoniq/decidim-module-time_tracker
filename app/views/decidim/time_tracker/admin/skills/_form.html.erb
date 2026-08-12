@@ -9,6 +9,7 @@
 
       <div class="row column">
         <%= form.translated :text_field, :name, autofocus: true %>
+        <p class="help-text"><%= t("skills.form.name_help", scope: "decidim.time_tracker.admin") %></p>
       </div>
 
       <div class="row column">
@@ -23,25 +24,36 @@
         <p class="help-text"><%= t("skills.form.tasks_help", scope: "decidim.time_tracker.admin") %></p>
       </div>
 
-      <div class="row column">
+      <%# Only one or two of the three numeric fields apply, depending on the
+          earning mode, so the rest are hidden and the resulting rule is spelled
+          out underneath as it is edited. %>
+      <div class="row column" id="skill-rules"
+           data-strings="<%= skill_rule_strings_json %>">
         <% mode_options = Decidim::TimeTracker::Skill::EARNING_MODES.map { |mode| [t("models.skill.earning_modes.#{mode}", scope: "decidim.time_tracker"), mode] } %>
         <%= form.select :earning_mode, mode_options %>
         <p class="help-text"><%= t("skills.form.earning_mode_help", scope: "decidim.time_tracker.admin") %></p>
-      </div>
 
-      <div class="row column">
-        <%= form.number_field :required_activities_count, min: 1 %>
-        <p class="help-text"><%= t("skills.form.required_activities_help", scope: "decidim.time_tracker.admin") %></p>
-      </div>
+        <div class="card-section pt-2">
+          <div id="skill-required-activities">
+            <%= form.number_field :required_activities_count, min: 1 %>
+            <p class="help-text"><%= t("skills.form.required_activities_help", scope: "decidim.time_tracker.admin") %></p>
+          </div>
 
-      <div class="row column">
-        <%= form.number_field :required_completions_per_activity, min: 1 %>
-        <p class="help-text"><%= t("skills.form.required_completions_help", scope: "decidim.time_tracker.admin") %></p>
-      </div>
+          <div id="skill-required-completions">
+            <%= form.number_field :required_completions_per_activity, min: 1 %>
+            <p class="help-text"><%= t("skills.form.required_completions_help", scope: "decidim.time_tracker.admin") %></p>
+          </div>
 
-      <div class="row column">
-        <%= form.number_field :required_hours, min: 0, step: 0.5 %>
-        <p class="help-text"><%= t("skills.form.required_hours_help", scope: "decidim.time_tracker.admin") %></p>
+          <div id="skill-required-hours">
+            <%= form.number_field :required_hours, min: 0, step: 0.5 %>
+            <p class="help-text"><%= t("skills.form.required_hours_help", scope: "decidim.time_tracker.admin") %></p>
+          </div>
+
+          <div class="admin-rule-preview">
+            <span class="admin-rule-preview__label"><%= t("skills.form.preview_label", scope: "decidim.time_tracker.admin") %></span>
+            <span class="admin-rule-preview__text" id="skill-rule-preview"></span>
+          </div>
+        </div>
       </div>
 
       <div class="button button__sm button__secondary pt-4">

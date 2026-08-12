@@ -110,6 +110,52 @@ module Decidim
         time_tracker.activities.active.empty?
       end
 
+      # The skills a task certifies. A task with none still certifies itself,
+      # using its own name — that is the module's fallback, and participants
+      # should be told which of the two is happening.
+      def task_skills(task)
+        task.skills.to_a
+      end
+
+      # Badges that specifically name this task or one of its skills.
+      #
+      # Deliberately excludes badges that count across every task: those apply
+      # everywhere, so repeating them under all sixteen tasks would be noise.
+      # They are covered once, on the Skills & Badges page.
+      def task_badges(task)
+        skill_ids = task_skills(task).map(&:id)
+
+        organization_badges.select do |badge|
+          badge.badge_tasks.any? { |bt| bt.decidim_time_tracker_task_id == task.id } ||
+            badge.badge_skills.any? { |bs| skill_ids.include?(bs.decidim_time_tracker_skill_id) }
+        end
+      end
+
+      # Loaded once per request; task_badges is called for every task on the
+      # page.
+      def organization_badges
+        @organization_badges ||= Decidim::TimeTracker::Badge
+                                 .where(organization: current_organization)
+                                 .active
+                                 .sorted
+                                 .includes(:badge_tasks, :badge_skills)
+                                 .to_a
+      end
+
+      # How a skill is earned, in one line, for the public task list.
+      def skill_earning_summary(skill)
+        if skill.time_spent?
+          hours = skill.required_minutes.to_i / 60.0
+          hours = (hours % 1).zero? ? hours.to_i : hours.round(1)
+          t("decidim.time_tracker.earnings.rules.time_spent", hours:)
+        elsif skill.required_activities_count.present?
+          t("decidim.time_tracker.earnings.rules.some_activities",
+            activities: skill.required_activities_count, count: skill.required_completions_per_activity)
+        else
+          t("decidim.time_tracker.earnings.rules.all_activities", count: skill.required_completions_per_activity)
+        end
+      end
+
       def stripped_translated_attribute(attribute)
         text = translated_attribute(attribute)
         return text if text.blank?

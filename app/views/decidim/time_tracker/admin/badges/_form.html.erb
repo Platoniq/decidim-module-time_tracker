@@ -25,7 +25,9 @@
           admin script, so picking a number of levels is enough on its own. %>
       <div class="row column" id="badge-levels"
            data-default-curves="<%= form.object.default_curves.to_json %>"
-           data-metric-units="<%= Decidim::TimeTracker::Badge::METRICS.index_with { |metric| t("badges.form.units.#{metric}", scope: "decidim.time_tracker.admin") }.to_json %>">
+           data-metric-units="<%= badge_metric_units_json %>"
+           data-metric-labels="<%= badge_metric_labels_json %>"
+           data-preview-templates="<%= badge_preview_templates_json %>">
         <% level_options = (1..Decidim::TimeTracker::Badge::MAX_LEVELS).map { |count| [t("badges.form.levels_count_option", scope: "decidim.time_tracker.admin", count: count), count] } %>
         <%= form.select :levels_count, level_options %>
         <p class="help-text"><%= t("badges.form.levels_count_help", scope: "decidim.time_tracker.admin") %></p>
@@ -38,7 +40,9 @@
               load and still submits the right thresholds without JavaScript. %>
           <% current_levels = form.object.levels %>
           <% chosen_count = current_levels.size %>
-          <% unit = t("badges.form.units.#{form.object.metric}", scope: "decidim.time_tracker.admin", default: "") %>
+          <%# Guarded: a blank metric would make this key resolve to the parent
+              "units" node, printing the whole hash next to every level. %>
+          <% unit = badge_metric_unit(form.object.metric) %>
           <% (1..Decidim::TimeTracker::Badge::MAX_LEVELS).each do |level| %>
             <% beyond_count = level > chosen_count %>
             <%# `hidden` is a boolean attribute — the tag helper drops it when
@@ -58,10 +62,14 @@
               </div>
             <% end %>
           <% end %>
+          <div class="admin-rule-preview">
+            <span class="admin-rule-preview__label"><%= t("badges.form.preview_label", scope: "decidim.time_tracker.admin") %></span>
+            <span class="admin-rule-preview__text" id="badge-rule-preview"></span>
+          </div>
         </div>
       </div>
 
-      <div class="row column">
+      <div class="row column" id="badge-skills-field">
         <% skill_options = form.object.available_skills.map { |skill| [translated_attribute(skill.name), skill.id] } %>
         <%= form.select :skill_ids,
                         options_for_select(skill_options, form.object.skill_ids),
@@ -70,7 +78,7 @@
         <p class="help-text"><%= t("badges.form.skills_help", scope: "decidim.time_tracker.admin") %></p>
       </div>
 
-      <div class="row column">
+      <div class="row column" id="badge-tasks-field">
         <%= form.select :task_ids,
                         grouped_options_for_select(form.object.grouped_task_options, form.object.task_ids),
                         { include_hidden: false },

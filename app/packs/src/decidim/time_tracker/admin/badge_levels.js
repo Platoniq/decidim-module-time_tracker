@@ -92,7 +92,92 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ---- live rule preview ------------------------------------------------
+  //
+  // The badge's rule is assembled from four controls sitting apart on the
+  // form. Restating it as one sentence means the admin reads what they built
+  // instead of inferring it from the parts.
+  const labels = JSON.parse(container.dataset.metricLabels || "{}");
+  const templates = JSON.parse(container.dataset.previewTemplates || "{}");
+  const preview = document.getElementById("badge-rule-preview");
+  const skillsField = document.getElementById("badge-skills-field");
+  const tasksField = document.getElementById("badge-tasks-field");
+  const skillsSelect = document.getElementById("badge_skill_ids");
+  const tasksSelect = document.getElementById("badge_task_ids");
+
+  const selectedLabels = (select) =>
+    (select
+      ? [...select.selectedOptions].map((option) => option.textContent.trim())
+      : []);
+
+  const fill = (tpl, values) =>
+    Object.keys(values).reduce(
+      (acc, key) => acc.replace(new RegExp(`%\\{${key}\\}`, "g"), values[key]),
+      tpl || ""
+    );
+
+  const isRequiredSkills = () => metricField && metricField.value === "required_skills";
+
+  const describe = () => {
+    const chosenLevels = rows.
+      filter((row) => !row.hidden).
+      map((row) => row.querySelector(".badge-level-threshold").value.trim()).
+      filter(Boolean);
+    const levelText = fill(templates.levels, { levels: chosenLevels.join(" → ") });
+
+    if (isRequiredSkills()) {
+      const names = selectedLabels(skillsSelect);
+      if (!names.length) {
+        return templates.no_skills;
+      }
+      return `${fill(templates.required_skills, { skills: names.join(", ") })} ${levelText}`;
+    }
+
+    const metricLabel = labels[metricField
+      ? metricField.value
+      : ""] || "";
+    const taskNames = selectedLabels(tasksSelect);
+    const base = taskNames.length
+      ? fill(templates.restricted, { metric: metricLabel, tasks: taskNames.join(", ") })
+      : fill(templates.all_tasks, { metric: metricLabel });
+
+    return `${base} ${levelText}`;
+  };
+
+  // A required_skills badge ignores the task restriction, and every other
+  // metric ignores the skill list — so only the one that matters is shown.
+  const renderPreview = () => {
+    if (skillsField) {
+      skillsField.hidden = !isRequiredSkills();
+    }
+    if (tasksField) {
+      tasksField.hidden = isRequiredSkills();
+    }
+    if (preview) {
+      preview.textContent = describe();
+    }
+  };
+
+  [metricField, skillsSelect, tasksSelect].forEach((el) => {
+    if (el) {
+      el.addEventListener("change", renderPreview);
+    }
+  });
+  rows.forEach((row) => {
+    const input = row.querySelector(".badge-level-threshold");
+    if (input) {
+      input.addEventListener("input", renderPreview);
+    }
+  });
+  if (countField) {
+    countField.addEventListener("change", renderPreview);
+  }
+  if (metricField) {
+    metricField.addEventListener("change", renderPreview);
+  }
+
   applyUnitLabels();
+  renderPreview();
 
   if (countField) {
     showRowsUpTo(parseInt(countField.value, 10));

@@ -33,6 +33,18 @@ module Decidim
 
       DEFAULT_LEVEL_COUNT = 3
 
+      # Admin-defined badges carry no image of their own, so the emblem is
+      # derived from what the badge counts. Lives here rather than in a helper
+      # because both the public explainer and the component's task list need
+      # it, and they load different helper sets.
+      METRIC_ICONS = {
+        "completed_activities" => "trophy-line",
+        "skills_earned" => "award-line",
+        "required_skills" => "medal-line",
+        "time_dedicated_hours" => "timer-line",
+        "milestones_created" => "quill-pen-line"
+      }.freeze
+
       # The suggested thresholds for a metric at a given number of levels.
       def self.default_levels(metric, count)
         curve = DEFAULT_LEVEL_CURVES.fetch(metric.to_s, DEFAULT_LEVEL_CURVES["completed_activities"])
@@ -75,6 +87,10 @@ module Decidim
       validate :levels_are_sorted_positive_integers
       validate :skills_selected_for_required_skills
       validate :levels_are_reachable
+
+      def icon_name
+        METRIC_ICONS.fetch(metric, "trophy-line")
+      end
 
       def required_skills?
         metric == "required_skills"

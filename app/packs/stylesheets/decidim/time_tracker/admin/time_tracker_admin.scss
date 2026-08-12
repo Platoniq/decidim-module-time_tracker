@@ -97,3 +97,40 @@
     white-space: nowrap;
   }
 }
+
+// Live rule preview on the skill and badge forms. The rule is assembled from
+// controls sitting apart on the page, so it is restated here as one sentence
+// the admin can read back.
+.admin-rule-preview {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.03);
+  border-left: 3px solid var(--primary, #5a3fa8);
+  border-radius: 0 3px 3px 0;
+
+  &__label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 0.2rem;
+  }
+
+  &__text {
+    display: block;
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+}
+
+// Fields that do not apply to the chosen rule are hidden outright rather than
+// left visible with "only used when..." help text.
+#skill-required-activities[hidden],
+#skill-required-completions[hidden],
+#skill-required-hours[hidden],
+#badge-skills-field[hidden],
+#badge-tasks-field[hidden] {
+  display: none;
+}
