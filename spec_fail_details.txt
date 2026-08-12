@@ -1,0 +1,38 @@
+/Users/hhassig/.rbenv/versions/3.3.4/lib/ruby/gems/3.3.0/gems/activesupport-7.0.8.7/lib/active_support/notifications/fanout.rb:3: warning: mutex_m was loaded from the standard library, but will no longer be part of the default gems since Ruby 3.4.0. Add mutex_m to your Gemfile or gemspec. Also contact author of activesupport-7.0.8.7 to add mutex_m into its gemspec.
+/Users/hhassig/.rbenv/versions/3.3.4/lib/ruby/gems/3.3.0/gems/bootsnap-1.18.6/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:30: warning: /Users/hhassig/.rbenv/versions/3.3.4/lib/ruby/3.3.0/drb.rb was loaded from the standard library, but will no longer be part of the default gems since Ruby 3.4.0. Add drb to your Gemfile or gemspec. Also contact author of activesupport-7.0.8.7 to add drb into its gemspec.
+Run options: include {:locations=>{"./spec/commands/admin/create_time_tracker_spec.rb"=>[89]}}
+
+Randomized with seed 60086
+
+Decidim::TimeTracker::Admin::CreateTimeTracker
+  activity questionnaire seeds
+    when time_tracker_questionnaire_seeds config is customized
+      has questions (FAILED - 1)
+
+Failures:
+
+  1) Decidim::TimeTracker::Admin::CreateTimeTracker activity questionnaire seeds when time_tracker_questionnaire_seeds config is customized has questions
+     Failure/Error: expect(subject.questionnaire.questions.first.body["en"]).to eq(custom_activity_questionnaire_seeds[:questions][0][:body])
+
+       expected: "Question 1"
+            got: "Question 2"
+
+       (compared using ==)
+     # ./spec/commands/admin/create_time_tracker_spec.rb:94:in `block (4 levels) in <module:Admin>'
+
+Top 1 slowest examples (1.09 seconds, 12.0% of total time):
+  Decidim::TimeTracker::Admin::CreateTimeTracker activity questionnaire seeds when time_tracker_questionnaire_seeds config is customized has questions
+    1.09 seconds ./spec/commands/admin/create_time_tracker_spec.rb:89
+
+Finished in 9.08 seconds (files took 5.17 seconds to load)
+1 example, 1 failure
+
+Failed examples:
+
+rspec ./spec/commands/admin/create_time_tracker_spec.rb:89 # Decidim::TimeTracker::Admin::CreateTimeTracker activity questionnaire seeds when time_tracker_questionnaire_seeds config is customized has questions
+
+Randomized with seed 60086
+
+Coverage report generated for RSpec to /Users/hhassig/Documents/code/platoniq/modules/decidim-module-time_tracker/coverage.
+Line Coverage: 8.32% (207 / 2488)
+Stopped processing SimpleCov as a previous error not related to SimpleCov has been detected

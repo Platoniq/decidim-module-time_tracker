@@ -1,5 +1,6 @@
 <%= render partial: "decidim/time_tracker/admin/breadcrumbs" %>
 
 <%= render partial: "decidim/time_tracker/admin/tasks/assignations" if assignations.present? %>
+<%= render partial: "decidim/time_tracker/admin/tasks/pending_completions" if pending_completions.present? %>
 <%= render partial: "decidim/time_tracker/admin/tasks/index" %>
 <%= render partial: "decidim/time_tracker/admin/questionnaires/index" %>

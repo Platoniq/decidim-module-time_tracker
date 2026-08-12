@@ -1,0 +1,67 @@
+<% add_decidim_meta_tags(title: stripped_translated_attribute(activity.description)) %>
+
+<% content_for :aside do %>
+  <%= render partial: "decidim/time_tracker/time_tracker/aside" %>
+<% end %>
+
+<%= render layout: "layouts/decidim/shared/layout_two_col" do %>
+  <%= link_to t("decidim.time_tracker.time_tracker.index.back_to_tasks", default: "Back to tasks"), root_path, class: "button button__sm button__secondary mb-4" %>
+
+  <section class="section">
+    <% if activity.image.attached? %>
+      <img src="<%= activity.attached_uploader(:image).variant_url(:card) %>"
+           alt="<%= stripped_translated_attribute activity.description %>"
+           class="time-tracker-activity__image rounded mb-4 w-full object-cover">
+    <% end %>
+
+    <div class="activity-status-container pb-2">
+      <span class="activity-status-badge <%= activity.display_status %>">
+        <%= t("decidim.time_tracker.time_tracker.activity.status.#{activity.display_status}") %>
+      </span>
+      <% if activity.progress.present? %>
+        <div class="activity-progress">
+          <div class="progress" role="progressbar" aria-valuenow="<%= activity.progress %>" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-meter" style="width: <%= activity.progress %>%"></div>
+          </div>
+          <span class="activity-progress__label"><%= activity.progress %>% <%= t("decidim.time_tracker.time_tracker.activity.completion") %></span>
+        </div>
+      <% end %>
+    </div>
+
+    <h1 class="h2 pb-1"><%= stripped_translated_attribute activity.description %></h1>
+    <p class="text-sm text-gray-2 pb-4"><%= stripped_translated_attribute task.name %></p>
+
+    <div class="text-sm text-gray-2 pb-6">
+      <% if activity.start_date.present? %>
+        <%= t("activemodel.attributes.activity.start_date") %> <%= l(activity.start_date, format: :decidim_short) %>
+      <% end %>
+      <% if activity.end_date.present? %>
+        &nbsp;&bull;&nbsp;
+        <%= t("activemodel.attributes.activity.end_date") %> <%= l(activity.end_date, format: :decidim_short) %>
+      <% end %>
+    </div>
+
+    <% participants = activity_participants(activity) %>
+    <% if participants.any? %>
+      <h2 class="h4 decorator pb-2"><%= t("activities.show.participants_title", scope: "decidim.time_tracker", count: participants.size) %></h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 pb-6">
+        <% participants.each do |participant| %>
+          <%= cell "decidim/author", participant, layout: :compact %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if milestones.any? %>
+      <h2 class="h4 decorator pb-2"><%= t("decidim.time_tracker.time_tracker.index.milestones_list") %></h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pb-6">
+        <% milestones.each do |milestone| %>
+          <%= card_for milestone, type: :list %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= link_to t("activities.show.track_time", scope: "decidim.time_tracker"), root_path, class: "button button__sm button__secondary" %>
+  </section>
+<% end %>
+
+<%= append_stylesheet_pack_tag "decidim_time_tracker" %>

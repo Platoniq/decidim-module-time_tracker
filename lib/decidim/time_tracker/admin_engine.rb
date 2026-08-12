@@ -13,11 +13,31 @@ module Decidim
         # Add admin engine routes here
         get :stats, to: "stats#index"
 
+        resources :skills, except: [:show]
+        resources :badges, except: [:show]
+
         resources :tasks do
-          resources :activities do
-            resources :assignations
+          collection do
+            post :reorder
+            post :accept_all_pending_assignations
+            post :verify_all_pending_completions
           end
-          post "accept_all_pending_assignations", on: :collection
+          resources :activities do
+            collection do
+              post :reorder
+            end
+            resources :assignations do
+              member do
+                patch :complete
+              end
+              resources :completions, only: [] do
+                member do
+                  patch :verify
+                  delete :dismiss
+                end
+              end
+            end
+          end
         end
 
         [:activity_questionnaire, :assignee_questionnaire].each do |questionnaire|

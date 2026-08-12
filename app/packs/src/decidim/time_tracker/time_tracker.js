@@ -4,6 +4,20 @@ import updateReports from "src/decidim/time_tracker/updateReports"
 
 document.addEventListener("DOMContentLoaded", () => {
   updateReports();
+  const startPolling = (activityId) => {
+    const interval = setInterval(() => {
+      fetch(`/timetracker/activities/${activityId}/assignation_status`).
+        then((response) => response.json()).
+        then((data) => {
+          if (data.status === "accepted") {
+            clearInterval(interval);
+            window.location.reload();
+          }
+        }).
+        catch((error) => console.error("Error polling assignation status:", error));
+    }, 5000);
+  };
+
   // For each request track ajax responses
   const timeTrackerRequests = document.querySelectorAll(".time-tracker-request");
   
@@ -17,7 +31,18 @@ document.addEventListener("DOMContentLoaded", () => {
       newElement.textContent = data.message;
 
       element.replaceWith(newElement);
+      
+      if (data.activityId) {
+        startPolling(data.activityId);
+      }
     });
+  });
+
+  // Start polling for existing pending requests on page load
+  document.querySelectorAll(".time-tracker-pending-request").forEach((element) => {
+    if (element.dataset.activityId) {
+      startPolling(element.dataset.activityId);
+    }
   });
 
   timeTrackerRequests.forEach((form) => {

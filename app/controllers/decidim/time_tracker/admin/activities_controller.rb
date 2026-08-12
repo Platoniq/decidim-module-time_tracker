@@ -63,6 +63,20 @@ module Decidim
           end
         end
 
+        def reorder
+          enforce_permission_to :update, :activity
+
+          ReorderActivities.call(activities, params[:items_ids]) do
+            on(:ok) do
+              head :ok
+            end
+
+            on(:invalid) do
+              head :bad_request
+            end
+          end
+        end
+
         private
 
         def activities

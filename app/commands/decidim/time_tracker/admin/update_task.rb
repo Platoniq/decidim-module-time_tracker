@@ -23,7 +23,12 @@ module Decidim
         def call
           return broadcast(:invalid) if form.invalid?
 
+          skill_ids_before = @task.skill_ids.sort
           update_task!
+          # Attaching or detaching skills changes what this task certifies, so
+          # everyone's certifications for it have to be recomputed.
+          RefreshCertificationsJob.perform_later(@task) if @task.skill_ids.sort != skill_ids_before
+
           broadcast(:ok)
         end
 
@@ -35,7 +40,9 @@ module Decidim
           Decidim.traceability.update!(
             @task,
             @user,
-            name: form.name
+            name: form.name,
+            progress: form.progress,
+            skills: form.skills
           )
         end
       end

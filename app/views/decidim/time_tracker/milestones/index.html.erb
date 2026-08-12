@@ -1,26 +1,15 @@
 <div class="layout-item">
   <main class="layout-item__main">
     <div class="section">
-      <%= link_to root_path, class: "small hollow" do %>
-        <div class="milestone-link">
-          <%= icon "arrow-left-s-line", class: "icon--small", role: "img", "aria-hidden": true %>
-          <%= t(".back_to_list") %>
-        </div>
+      <%= link_to root_path, class: "button button__sm button__secondary mb-4" do %>
+        <%= icon "arrow-left-s-line", class: "icon--small", role: "img", "aria-hidden": true %>
+        <%= t(".back_to_list") %>
       <% end %>
       <h2 class="h2 pt-2"> <%= t(".assignations_activity", user_name: user.name) %> </h2>
 
-      <%= link_to decidim.profile_path(user.nickname) do %>
-        <div class="author pt-2">
-          <div class="author__container">
-            <span class="author__avatar-container">
-              <%= image_tag present(user).avatar_url %>
-            </span>
-            <span class="author__name">
-              <%= user.name %>
-            </span>
-          </div>
-        </div>
-      <% end %>
+      <div class="pt-2">
+        <%= cell "decidim/author", present(user), layout: :compact %>
+      </div>
     </div>
 
     <div class="flex">
@@ -44,12 +33,12 @@
 
       <div class="statistic">
         <h3 class="statistic__title"><%= t(".joined_on") %></h3>
-        <b><%= user_joined_at(user).strftime("%d %b %Y") %></b>
+        <b><%= user_joined_at(user) ? l(user_joined_at(user), format: :decidim_short) : "-" %></b>
       </div>
 
       <div class="statistic">
         <h3 class="statistic__title"><%= t(".last_worked_on") %></h3>
-        <b><%= user_last_milestone(user).created_at.strftime("%d %b %Y") %></b>
+        <b><%= user_last_milestone(user) ? l(user_last_milestone(user).created_at, format: :decidim_short) : "-" %></b>
       </div>
     </div>
   </aside>

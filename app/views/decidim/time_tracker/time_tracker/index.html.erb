@@ -1,58 +1,70 @@
 <%= render partial: "decidim/shared/component_announcement" %>
 
-<section id="sub_hero" class="home__section">
-  <div id="time_tracker" class="columns">
-    <% if activities_empty? %>
-      <div class="callout warning">
-        <%= t(".empty") %>
-      </div>
-    <% else %>
-      <% if !user_signed_in? %>
-        <%= render partial: "sign_in" %>
-      <% elsif must_fill_in_data? %>
-        <%= render partial: "assignee_data" %>
-      <% end %>
+<% content_for :aside do %>
+  <%= render partial: "aside" %>
+<% end %>
 
+<%= render layout: "layouts/decidim/shared/layout_two_col" do %>
+  <% if activities_empty? %>
+    <section class="layout-main__section">
+      <div class="callout warning">
+        <%= t("decidim.time_tracker.time_tracker.index.empty") %>
+      </div>
+    </section>
+  <% else %>
+    <% if !user_signed_in? %>
+      <section class="layout-main__section">
+        <%= render partial: "sign_in" %>
+      </section>
+    <% elsif must_fill_in_data? %>
+      <section class="layout-main__section">
+        <%= render partial: "assignee_data" %>
+      </section>
+    <% end %>
+
+    <section class="layout-main__section">
       <div id="tasks">
         <% tasks.each do |task| %>
-          <% next if task.activities.active.empty? %>
+          <% active_activities = task.activities.active %>
+          <% next if active_activities.empty? %>
 
-          <h2 class="h2 decorator"><%= translated_attribute task.name %></h2>
-          <div id="activities">
-            <% task.activities.active.each do |activity| %>
-              <div class="section">
-                <% if activity.assignation_accepted? current_user %>
-                  <%= render partial: "activity", locals: { activity: activity } %>
-                <% elsif allowed_to? :create, :assignation, activity: activity %>
-                  <%= render partial: "request_activity", locals: { activity: activity } %>
-                <% else %>
-                  <%= render partial: "idle_activity", locals: { activity: activity } %>
-                <% end %>
+          <h2 class="h4 decorator text-primary"><%= stripped_translated_attribute task.name %></h2>
 
-                <% milestones_for_activity = assignation_milestones(activity) %>
-                <% if milestones_for_activity.any? %>
-                  <div class="section milestones-section">
-                    <div class="milestone-link" data-toggle="milestones-collection-<%= activity.id %>">
-                      <%= icon "arrow-right-s-line", class: "icon--small" %>
-                      <span class="show-milestones">
-                        <%= t(".milestones_list") %>
-                      </span>
-                    </div>
+          <%= render partial: "task_earnings", locals: { task: task } %>
 
-                    <div id="milestones-collection-<%= activity.id %>" data-toggler=".hidden" class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-12 pt-6 hidden" hidden>
-                      <% milestones_for_activity.each do |milestone| %>
-                        <%= card_for milestone, type: :list %>
-                      <% end %>
-                    </div>
-                  </div>
-                <% end %>
+          <div id="activities" class="card--list">
+            <% active_activities.each do |activity| %>
+              <% if activity.assignation_accepted? current_user %>
+                <%= render partial: "activity", locals: { activity: activity } %>
+              <% elsif allowed_to? :create, :assignation, activity: activity %>
+                <%= render partial: "request_activity", locals: { activity: activity } %>
+              <% else %>
+                <%= render partial: "idle_activity", locals: { activity: activity } %>
               <% end %>
-            </div>
+
+              <% milestones_for_activity = assignation_milestones(activity) %>
+              <% if milestones_for_activity.any? %>
+                <div class="card--list__item milestones-section">
+                  <div class="milestone-link" data-toggle="milestones-collection-<%= activity.id %>">
+                    <%= icon "arrow-right-s-line", class: "icon--small" %>
+                    <span class="show-milestones">
+                      <%= t("decidim.time_tracker.time_tracker.index.milestones_list") %>
+                    </span>
+                  </div>
+
+                  <div id="milestones-collection-<%= activity.id %>" data-toggler=".hidden" class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-12 pt-6 hidden" hidden>
+                    <% milestones_for_activity.each do |milestone| %>
+                      <%= card_for milestone, type: :list %>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
           </div>
         <% end %>
       </div>
-    <% end %>
-  </div>
-</section>
+    </section>
+  <% end %>
+<% end %>
 
 <%= append_javascript_pack_tag "decidim_time_tracker" %>

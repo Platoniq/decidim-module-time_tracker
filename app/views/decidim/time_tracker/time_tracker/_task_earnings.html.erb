@@ -1,0 +1,56 @@
+<%# What working on this task earns you, shown under the task heading so the
+    answer is next to the work rather than on a separate page. %>
+<% skills = task_skills(task) %>
+<% badges = task_badges(task) %>
+
+<div class="time-tracker--earnings">
+  <p class="time-tracker--earnings__lead">
+    <%= t("decidim.time_tracker.earnings.lead") %>
+  </p>
+
+  <ul class="time-tracker--earnings__list">
+    <% if skills.any? %>
+      <% skills.each do |skill| %>
+        <li class="time-tracker--earnings__item">
+          <span class="time-tracker--earnings__mark time-tracker--earnings__mark--skill" aria-hidden="true">
+            <%= icon "award-line" %>
+          </span>
+          <span>
+            <strong><%= translated_attribute(skill.name) %></strong>
+            <span class="time-tracker--earnings__rule"><%= skill_earning_summary(skill) %></span>
+          </span>
+        </li>
+      <% end %>
+    <% else %>
+      <%# No skill attached, so the module certifies the task under its own
+          name. Saying so beats implying nothing is earned. %>
+      <li class="time-tracker--earnings__item">
+        <span class="time-tracker--earnings__mark time-tracker--earnings__mark--skill" aria-hidden="true">
+          <%= icon "award-line" %>
+        </span>
+        <span>
+          <strong><%= stripped_translated_attribute(task.name) %></strong>
+          <span class="time-tracker--earnings__rule"><%= t("decidim.time_tracker.earnings.rules.task_fallback") %></span>
+        </span>
+      </li>
+    <% end %>
+
+    <% badges.each do |badge| %>
+      <li class="time-tracker--earnings__item">
+        <span class="time-tracker--earnings__mark time-tracker--earnings__mark--badge" aria-hidden="true">
+          <%= icon badge.icon_name %>
+        </span>
+        <span>
+          <strong><%= translated_attribute(badge.name) %></strong>
+          <span class="time-tracker--earnings__rule">
+            <%= t("decidim.time_tracker.earnings.badge_levels", levels: badge.levels.join(" → ")) %>
+          </span>
+        </span>
+      </li>
+    <% end %>
+  </ul>
+
+  <p class="time-tracker--earnings__more">
+    <%= link_to t("decidim.time_tracker.earnings.all_link"), decidim.public_badges_path %>
+  </p>
+</div>

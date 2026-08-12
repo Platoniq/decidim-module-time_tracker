@@ -1,0 +1,77 @@
+<%# Organisation-level page, outside the component, so the module stylesheet
+    is not already on the layout. %>
+<%= append_stylesheet_pack_tag "decidim_time_tracker" %>
+
+<%= render layout: "layouts/decidim/shared/layout_user_profile" do %>
+  <% add_decidim_page_title(t("time_tracker", scope: "layouts.decidim.user_profile")) %>
+  <% content_for(:subtitle) { t("time_tracker", scope: "layouts.decidim.user_profile") } %>
+
+  <% if assignations_by_component.any? %>
+    <p class="pb-6">
+      <%== t("my_activities.show.total_time", scope: "decidim.time_tracker", time: clockify_seconds(total_time)) %>
+    </p>
+
+    <% assignations_by_component.each do |component, assignations| %>
+      <section class="section pb-8">
+        <h2 class="h4 decorator">
+          <%= translated_attribute(component.participatory_space.title) %> &mdash; <%= translated_attribute(component.name) %>
+        </h2>
+
+        <div class="card__list-list pt-2">
+          <% assignations.each do |assignation| %>
+            <%= link_to main_component_path(component), class: "card__list time-tracker--activity" do %>
+              <div class="card--list__item">
+                <div class="card--list__text">
+                  <div>
+                    <h5 class="h5 pb-2">
+                      <%= stripped_translated_attribute(assignation.activity.description) %>
+                    </h5>
+                    <span class="text-xs">
+                      <%= assignation_status_label assignation.status %>
+                      <span class="assignation--date"><%= assignation_date(assignation) %></span>
+                    </span>
+                  </div>
+                </div>
+                <div class="card--list__annotation">
+                  <%= clockify_seconds assignation.time_dedicated, padded: true %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="pt-2">
+          <%= link_to t("my_activities.show.component_report", scope: "decidim.time_tracker"),
+                      Decidim::EngineRouter.main_proxy(component).user_report_path,
+                      class: "text-sm text-secondary hover:underline" %>
+        </div>
+      </section>
+    <% end %>
+  <% else %>
+    <p class="pb-6"><%= t("my_activities.show.empty", scope: "decidim.time_tracker") %></p>
+  <% end %>
+
+  <%= render partial: "decidim/time_tracker/shared/earned_badges" %>
+
+  <section class="section">
+    <h2 class="h4 decorator"><%= t("reports.user.index.skills_title", scope: "decidim.time_tracker") %></h2>
+    <% if skill_certifications.any? %>
+      <div class="card__list-list pt-2">
+        <% skill_certifications.each do |certification| %>
+          <div class="card__list time-tracker--skill">
+            <div class="card--list__item">
+              <div class="card--list__text">
+                <h5 class="h5 pb-2"><%= certification.skill_names.map { |name| translated_attribute(name) }.join(", ") %></h5>
+                <span class="text-xs text-muted">
+                  <%= t("reports.user.index.earned_on", scope: "decidim.time_tracker", date: l(certification.earned_at, format: :decidim_short)) %>
+                </span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="pt-2"><%= t("reports.user.index.skills_empty", scope: "decidim.time_tracker") %></p>
+    <% end %>
+  </section>
+<% end %>

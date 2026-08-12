@@ -7,10 +7,48 @@
   data-counter-active="<%= activity.counter_active_for?(current_user) %>"
   data-remaining-time="<%= activity.user_remaining_for_today(current_user) %>">
   <div class="content">
+    <% if activity.image.attached? %>
+      <img src="<%= activity.attached_uploader(:image).variant_url(:card) %>"
+           alt="<%= stripped_translated_attribute activity.description %>"
+           class="time-tracker-activity__image rounded mb-4 w-full object-cover" loading="lazy">
+    <% end %>
 
-    <h4 class="h4 pb-4"><%= translated_attribute activity.description %></h4>
+    <div class="activity-status-container">
+      <span class="activity-status-badge <%= activity.display_status %>">
+        <%= t(".status.#{activity.display_status}") %>
+      </span>
+      <% if activity.respond_to?(:progress) && activity.progress.present? %>
+        <div class="activity-progress">
+          <div class="progress" role="progressbar" aria-valuenow="<%= activity.progress %>" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-meter" style="width: <%= activity.progress %>%"></div>
+          </div>
+          <span class="activity-progress__label"><%= number_to_percentage(activity.progress, precision: 0) %> <%= t(".completion") %></span>
+        </div>
+      <% end %>
+    </div>
+
+    <h4 class="h4 pb-1">
+      <%= link_to stripped_translated_attribute(activity.description), task_activity_path(activity.task, activity), class: "hover:underline" %>
+    </h4>
+    <%= render partial: "activity_participants", locals: { activity: activity } %>
     <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
     <div class="elapsed-time pt-2"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div class="elapsed-time-clock pt-2"><%= clockify_seconds(activity.user_seconds_elapsed(current_user)) %></div></div>
+
+    <% assignation = activity.assignations.accepted.find_by(user: current_user) %>
+    <% if assignation %>
+      <% verified = assignation.verified_completions_count %>
+      <% pending_completions = assignation.pending_completions.count %>
+      <% if verified.positive? || pending_completions.positive? %>
+        <div class="time-tracker--completions pt-2">
+          <% if verified.positive? %>
+            <span class="label success"><%= t("activity.completions.verified", scope: "decidim.time_tracker.time_tracker", count: verified) %></span>
+          <% end %>
+          <% if pending_completions.positive? %>
+            <span class="label warning"><%= t("activity.completions.awaiting_verification", scope: "decidim.time_tracker.time_tracker") %></span>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
 
     <div class="top pt-2">
       <% if activity.status != :open %>

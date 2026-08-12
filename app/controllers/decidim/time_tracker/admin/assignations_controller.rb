@@ -51,6 +51,22 @@ module Decidim
           end
         end
 
+        def complete
+          enforce_permission_to :complete, :assignation, assignation: current_assignation
+
+          CompleteAssignation.call(current_assignation, current_user, complete: params[:revert].blank?) do
+            on(:ok) do
+              flash[:notice] = I18n.t("assignations.complete.success", scope: "decidim.time_tracker.admin")
+              redirect_back_to_assignations
+            end
+
+            on(:invalid) do
+              flash[:alert] = I18n.t("assignations.complete.error", scope: "decidim.time_tracker.admin")
+              redirect_back_to_assignations
+            end
+          end
+        end
+
         def destroy
           enforce_permission_to :destroy, :assignation, assignation: current_assignation
 
@@ -77,6 +93,14 @@ module Decidim
 
         def current_assignation
           @current_assignation ||= Assignation.find(params[:id])
+        end
+
+        def redirect_back_to_assignations
+          if params[:success_path].present?
+            redirect_to params[:success_path]
+          else
+            redirect_to EngineRouter.admin_proxy(current_component).task_activity_assignations_path(current_task, current_activity)
+          end
         end
       end
     end

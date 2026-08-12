@@ -8,7 +8,7 @@ module Decidim
       attribute :activity_id, Integer
       attribute :title, String
       attribute :description, String
-      attribute :attachment, AttachmentForm
+      attribute :attachment, Decidim::AttachmentForm
 
       validates :activity_id, :title, presence: true
       validates :activity, presence: true, if: ->(form) { form.activity_id.present? }

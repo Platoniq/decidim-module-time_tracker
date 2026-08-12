@@ -1,29 +1,166 @@
-@import "stylesheets/decidim/legacy/variables";
+// Styles follow the recipes of decidim-accountability (the closest core
+// module: statuses + progress over a list of items) so the component reads
+// as native Decidim. Recipes are copied rather than importing that module's
+// stylesheet to avoid coupling our markup to its class names.
 
+// ─── Aside status widget (from accountability__status) ──────────────────────
+.time-tracker__status {
+  @apply flex flex-col gap-3 w-full;
+
+  &-title {
+    @apply font-semibold text-secondary text-lg [&+*]:mt-auto;
+  }
+
+  &-progress {
+    @apply w-full h-4 rounded overflow-hidden bg-white [&>*]:bg-success [&>*]:h-full;
+  }
+
+  &-value {
+    @apply flex justify-between items-baseline gap-1 text-gray-2;
+
+    > :first-child {
+      @apply text-4xl font-bold;
+    }
+  }
+
+  &--home {
+    @apply gap-4 p-6 bg-white drop-shadow-[0_4px_6px_rgba(211,211,211,0.25)];
+
+    .time-tracker__status-title {
+      @apply text-xl text-gray-2;
+    }
+
+    .time-tracker__status-progress {
+      @apply bg-background;
+    }
+
+    .time-tracker__status-value > :first-child {
+      @apply text-[48px];
+    }
+  }
+}
+
+// ─── Progress chip on list cards (from accountability__progress) ────────────
+.time-tracker__progress {
+  @apply ml-auto self-center shrink-0 rounded px-3 md:px-6 py-4 bg-background font-bold text-gray-2 text-xl min-w-[120px] grid place-items-center;
+}
+
+// ─── Activity images ─────────────────────────────────────────────────────────
+.time-tracker-activity__image {
+  @apply max-h-[250px];
+}
+
+.time-tracker-activity__thumb {
+  @apply w-10 h-10;
+}
+
+// ─── Activity participants (avatar stack) ────────────────────────────────────
+.time-tracker--participants {
+  @apply flex items-center gap-2;
+
+  &__avatars {
+    @apply inline-flex items-center;
+
+    .author {
+      @apply inline-flex;
+    }
+
+    // Overlap each avatar over the previous one, with a white ring so they
+    // read as a stack.
+    .author + .author {
+      @apply -ml-2;
+    }
+
+    .author__avatar-container img {
+      @apply block w-7 h-7 rounded-full border-2 border-white bg-background;
+    }
+  }
+
+  &__more {
+    @apply inline-flex items-center justify-center w-7 h-7 -ml-2 rounded-full border-2 border-white bg-gray text-gray-2 text-xs font-semibold;
+  }
+
+  &__label {
+    @apply text-sm text-gray-2;
+  }
+}
+
+// ─── Earned badges ───────────────────────────────────────────────────────────
+.time-tracker--badge-locked {
+  @apply opacity-60;
+}
+
+// ─── Activity card-list items ────────────────────────────────────────────────
+.time-tracker-activity-card {
+  @apply flex items-start gap-4 px-5 py-3 bg-white border-b border-gray-3 last:border-b-0;
+
+  .card--list__icon {
+    @apply shrink-0 mt-1 text-secondary [&>svg]:w-5 [&>svg]:h-5;
+  }
+
+  .card--list__text {
+    @apply flex-1;
+  }
+
+  .card--list__heading {
+    @apply block font-semibold text-secondary;
+  }
+
+  .card--list__meta {
+    @apply block text-sm text-gray mb-0;
+  }
+
+  .card--list__actions {
+    @apply mt-2;
+
+    .callout {
+      @apply m-0 px-3 py-2 text-sm;
+    }
+
+    .button {
+      @apply mb-0;
+    }
+  }
+}
+
+// ─── Activity status (inline text on list cards) ────────────────────────────
+.activity-status {
+  @apply font-semibold;
+
+  &--open {
+    @apply text-success;
+  }
+
+  &--finished {
+    @apply text-gray;
+  }
+
+  &--not_started {
+    @apply text-warning;
+  }
+
+  &--inactive {
+    @apply text-alert;
+  }
+}
+
+// ─── Card--list container for activities ────────────────────────────────────
+#activities.card--list {
+  @apply border border-gray-3 rounded mb-8 overflow-hidden;
+}
+
+// ─── Activity & request cards ────────────────────────────────────────────────
 .time-tracker {
   &-activity,
   &-request {
-    background-color: white;
-    padding: 2rem;
-    margin-bottom: 1rem;
+    @apply bg-white p-8 mb-4;
 
     .callout {
-      margin: 0;
-    }
-
-    .elapsed-time {
-      .elapsed-time-clock {
-        font-size: 1rem;
-      }
+      @apply m-0;
     }
 
     .milestone {
-      padding-top: 1em;
-      border-top: 1px solid #eee;
-    }
-
-    .form__wrapper {
-      width: 50%;
+      @apply pt-4 border-t border-gray-3;
     }
   }
 
@@ -33,63 +170,51 @@
     }
 
     .text-muted {
-      opacity: 0.5;
+      @apply opacity-50;
     }
   }
 
   &--activity {
     .card--list__item {
-      display: flex;
-      align-items: center;
-      width: 100%;
+      @apply flex items-center w-full;
 
       .card--list__text {
-        width: 70%;
+        @apply w-[70%];
       }
 
       .card--list__annotation {
-        width: 30%;
-        text-align: right;
+        @apply w-[30%] text-right;
       }
     }
   }
 
   &--assignee-data {
-    margin-bottom: 3rem;
+    @apply mb-12;
   }
 
   &--start-button {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+    @apply mt-8 mb-4;
 
     &-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @apply flex justify-center items-center;
     }
   }
 }
 
 .breadcrumb-link {
-  color: rgb(var(--secondary-rgb));
+  @apply text-secondary;
 }
 
 .comment-link {
-  display: flex;
-  color: #39747f;
-
-  svg {
-    margin-right: 0.4rem;
-  }
+  @apply flex text-secondary [&>svg]:mr-2;
 }
 
 .danger {
-  background-color: #cb3c29;
+  @apply bg-alert;
 }
 
 .milestones-section {
-  padding: 2rem;
-  margin-bottom: 1rem;
+  @apply p-8 mb-4;
 }
 
 .milestone-card {
@@ -97,30 +222,161 @@
 }
 
 .milestone-link {
-  display: flex;
-  color: #39747f;
-
-  svg {
-    margin-top: 0.1rem;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
+  @apply flex text-secondary hover:cursor-pointer [&>svg]:mt-0.5;
 }
 
 .secondary {
-  background-color: rgb(var(--secondary-rgb));
+  @apply bg-secondary;
 }
 
 .show-milestones {
-  color: $secondary;
-
-  &:hover {
-    text-decoration: underline;
-  }
+  @apply text-secondary hover:underline;
 }
 
 .success {
-  background-color: $success;
+  @apply bg-success;
+}
+
+// ─── Activity status & progress (active activity card) ──────────────────────
+.activity-status-container {
+  @apply flex justify-between items-center flex-wrap gap-4 mb-6;
+}
+
+.activity-status-badge {
+  @apply inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase bg-background text-gray-2;
+
+  &.work_in_progress {
+    @apply bg-warning/20;
+  }
+
+  &.completed {
+    @apply bg-success/20 text-success;
+  }
+
+  &.not_started {
+    @apply bg-background-5;
+  }
+
+  &.inactive {
+    @apply bg-alert/10 text-alert;
+  }
+}
+
+.activity-progress {
+  @apply flex items-center gap-3 flex-1 min-w-[200px] max-w-[300px];
+
+  .progress {
+    @apply flex-1 h-2 rounded overflow-hidden bg-background mb-0;
+  }
+
+  .progress-meter {
+    @apply block h-full bg-success rounded;
+  }
+
+  &__label {
+    @apply text-sm text-gray-2 whitespace-nowrap;
+  }
+}
+
+// Badge emblems on the public explainer. Admin-defined badges have no image
+// of their own, so an icon chosen from the badge's metric stands in — set in
+// a tinted disc so it reads as an emblem rather than as UI chrome.
+.time-tracker--badge {
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+
+    h3 {
+      margin: 0;
+    }
+  }
+
+  &__emblem {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: var(--secondary, #e8e8f5);
+    color: #fff;
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: currentcolor;
+    }
+  }
+}
+
+// "What you earn by working on this", shown under each task heading on the
+// public component page so the answer sits next to the work.
+.time-tracker--earnings {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--secondary, #e8e8f5);
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 0 3px 3px 0;
+
+  &__lead {
+    margin: 0 0 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  &__mark {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background: var(--secondary, #e8e8f5);
+    color: #fff;
+
+    svg {
+      width: 0.95rem;
+      height: 0.95rem;
+      fill: currentcolor;
+    }
+  }
+
+  &__mark--badge {
+    background: var(--primary, #5a3fa8);
+  }
+
+  &__rule {
+    display: block;
+    opacity: 0.72;
+    font-size: 0.84rem;
+  }
+
+  &__more {
+    margin: 0.6rem 0 0;
+    font-size: 0.82rem;
+  }
 }

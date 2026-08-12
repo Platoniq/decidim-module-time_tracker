@@ -2,6 +2,21 @@
   <%= form.translated :text_field, :name, autofocus: true %>
 </div>
 
+<div class="row column">
+  <%= form.number_field :progress, step: 0.1, min: 0, max: 100 %>
+</div>
+
+<div class="row column">
+  <%= form.select :skill_ids,
+                  options_from_collection_for_select(form.object.available_skills, :id, ->(skill) { translated_attribute(skill.name) }, form.object.skill_ids),
+                  { include_hidden: false },
+                  multiple: true %>
+  <p class="help-text">
+    <%= t("tasks.form.skills_help", scope: "decidim.time_tracker.admin") %>
+    <%= link_to t("tasks.form.manage_skills", scope: "decidim.time_tracker.admin"), skills_path %>
+  </p>
+</div>
+
 <div class="button button__sm button__secondary">
   <%= form.submit submit %>
 </div>

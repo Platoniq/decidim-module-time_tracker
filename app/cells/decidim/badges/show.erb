@@ -1,0 +1,19 @@
+<%# Overrides Decidim core's badges banner so the "all badges" link points to
+    the word-free /badges path (see decidim_time_tracker.public_badges_path in
+    the engine) instead of /gamification/badges. %>
+<div class="profile__badge-banner">
+  <%= icon "information-line" %>
+  <div>
+    <h2 class="h4"><%= t "decidim.gamification.title" %></h2>
+    <p>
+      <%= t "decidim.gamification.description" %>
+      <%= link_to t("decidim.gamification.all_badges_link"), public_badges_path, class: "text-secondary underline" %>
+    </p>
+  </div>
+</div>
+
+<div class="profile__badge-grid">
+  <% available_badges.each do |badge| %>
+    <%= cell "decidim/badge", model, badge: %>
+  <% end %>
+</div>

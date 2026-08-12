@@ -12,8 +12,8 @@ module Decidim
       routes do
         # Add engine routes here
         # resources :time_tracker
-        resources :tasks do
-          resources :activities do
+        resources :tasks, only: [] do
+          resources :activities, only: [:show] do
             post :start, controller: "time_events"
             post :stop, controller: "time_events"
 
@@ -42,16 +42,95 @@ module Decidim
         end
 
         resources :assignations, only: [:create]
+        get "activities/:activity_id/assignation_status", to: "assignation_status#show", as: :activity_assignation_status
+
+        resource :user_report, only: [:show], controller: "user_report"
 
         root to: "time_tracker#index"
+      end
+
+      # Icons have to be registered to end up in the compiled sprite; using an
+      # unregistered name renders nothing at all. One per badge metric, so an
+      # admin-defined badge gets an emblem without anyone uploading an image.
+      initializer "decidim_time_tracker.icons" do
+        {
+          "trophy-line" => "Badge counting verified work",
+          "award-line" => "Badge counting certified skills",
+          "medal-line" => "Badge counting specific required skills",
+          "timer-line" => "Badge counting hours tracked",
+          "quill-pen-line" => "Badge counting milestones posted"
+        }.each do |icon, description|
+          # Core already ships some of these; re-registering warns.
+          next if Decidim.icons.all.has_key?(icon)
+
+          Decidim.icons.register(name: icon, icon:, category: "system", description:, engine: :time_tracker)
+        end
       end
 
       initializer "decidim_time_tracker.webpacker.assets_path" do
         Decidim.register_assets_path File.expand_path("app/packs", root)
       end
 
+      initializer "decidim_time_tracker.add_badges" do
+        Decidim::Gamification.register_badge(:time_tracker_activities) do |badge|
+          badge.levels = [1, 5, 15, 30, 50]
+
+          badge.valid_for = [:user]
+
+          badge.reset = lambda { |user|
+            Decidim::TimeTracker::ActivityCompletion.verified
+                                                    .joins(:assignation)
+                                                    .where(decidim_time_tracker_assignations: { decidim_user_id: user.id })
+                                                    .count
+          }
+        end
+
+        Decidim::Gamification.register_badge(:time_tracker_skills) do |badge|
+          badge.levels = [1, 3, 5, 10]
+
+          badge.valid_for = [:user]
+
+          badge.reset = lambda { |user|
+            Decidim::TimeTracker::SkillCertification.where(user:).count
+          }
+        end
+      end
+
+      # Public naming: we surface badges/skills to participants as "Skills & badges"
+      # and never expose the word "gamification" in a public URL. The core badges
+      # page lives at /gamification/badges and can only describe the badges
+      # registered in code, so we serve our own explainer at the word-free
+      # /badges — it covers the organization's skills and admin-defined badges
+      # as well as Decidim's own — and redirect the old path so existing links
+      # keep working.
+      initializer "decidim_time_tracker.public_badges_path" do
+        Decidim::Core::Engine.routes.prepend do
+          # Inside the isolated Decidim namespace, controllers are referenced
+          # without the leading "decidim/".
+          get "/badges", to: "time_tracker/badges#index", as: :public_badges
+          get "/gamification/badges", to: redirect("/badges")
+
+          # Organization-level page aggregating the user's activities across
+          # every time tracker component ("My voluntary work").
+          get "/my_voluntary_work", to: "time_tracker/my_activities#show", as: :my_voluntary_work
+        end
+      end
+
+      initializer "decidim_time_tracker.user_menu" do
+        Decidim.menu :user_menu do |menu|
+          menu.add_item :time_tracker,
+                        I18n.t("time_tracker", scope: "layouts.decidim.user_profile"),
+                        decidim.my_voluntary_work_path,
+                        position: 1.4
+        end
+      end
+
       initializer "decidim.time_tracker.add_cells_view_paths" do
-        Cell::ViewModel.view_paths << File.expand_path("#{Decidim::TimeTracker::Engine.root}/app/cells")
+        # Prepend so our overrides (e.g. decidim/badges/show, which fixes the
+        # "all badges" link to the word-free /badges path) take precedence over
+        # the core cell templates. Our other cells are namespaced under
+        # decidim/time_tracker, so no unintended core cell is shadowed.
+        Cell::ViewModel.view_paths.unshift(File.expand_path("#{Decidim::TimeTracker::Engine.root}/app/cells"))
         Cell::ViewModel.view_paths << File.expand_path("#{Decidim::TimeTracker::Engine.root}/app/views") # for partials
       end
     end

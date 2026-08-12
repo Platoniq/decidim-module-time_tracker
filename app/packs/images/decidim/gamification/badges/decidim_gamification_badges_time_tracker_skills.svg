@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Skill certified badge">
+  <circle cx="60" cy="60" r="56" fill="#4a2c7a"/>
+  <circle cx="60" cy="60" r="48" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.4"/>
+  <circle cx="60" cy="50" r="24" fill="none" stroke="#ffd24d" stroke-width="5"/>
+  <path d="M48 50 l8 8 16 -18" fill="none" stroke="#ffd24d" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M48 70 l-8 34 20 -12 20 12 -8 -34 z" fill="#ffd24d" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+</svg>

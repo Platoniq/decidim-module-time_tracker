@@ -4,8 +4,13 @@ module Decidim
   module TimeTracker
     module Admin
       class TasksController < Admin::ApplicationController
+        # `include` puts these on the controller, which is what the label
+        # helper_methods below rely on; `helper` is what makes the rest of them
+        # — clockify_seconds and friends — reachable from the templates.
         include Decidim::TimeTracker::ApplicationHelper
-        helper_method :tasks, :current_task, :assignations, :tasks_label, :activities_label, :assignations_label
+        helper Decidim::TimeTracker::ApplicationHelper
+
+        helper_method :tasks, :current_task, :assignations, :pending_completions, :tasks_label, :activities_label, :assignations_label
 
         delegate :tasks, to: :time_tracker
 
@@ -71,6 +76,42 @@ module Decidim
           end
         end
 
+        def reorder
+          enforce_permission_to :update, :task
+
+          ReorderTasks.call(tasks, params[:items_ids]) do
+            on(:ok) do
+              head :ok
+            end
+
+            on(:invalid) do
+              head :bad_request
+            end
+          end
+        end
+
+        def verify_all_pending_completions
+          return redirect_to(tasks_path) if pending_completions.blank?
+
+          ok_count = invalid_count = 0
+          pending_completions.each do |completion|
+            VerifyCompletion.call(completion, current_user) do
+              on(:ok) do
+                ok_count += 1
+              end
+
+              on(:invalid) do
+                invalid_count += 1
+              end
+            end
+          end
+
+          flash[:notice] = I18n.t("completions.bulk_ok", scope: "decidim.time_tracker.admin", count: ok_count) if ok_count.positive?
+          flash[:alert] = I18n.t("completions.bulk_invalid", scope: "decidim.time_tracker.admin", count: invalid_count) if invalid_count.positive?
+
+          redirect_to(tasks_path)
+        end
+
         def accept_all_pending_assignations
           return redirect_to(tasks_path) if assignations.blank?
 
@@ -101,6 +142,13 @@ module Decidim
 
         def assignations
           time_tracker.assignations.pending
+        end
+
+        def pending_completions
+          ActivityCompletion.pending
+                            .joins(assignation: { activity: :task })
+                            .where(decidim_time_tracker_tasks: { time_tracker_id: time_tracker.id })
+                            .order(:requested_at)
         end
 
         def current_task
