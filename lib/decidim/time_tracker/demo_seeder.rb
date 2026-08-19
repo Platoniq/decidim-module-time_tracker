@@ -125,7 +125,7 @@ module Decidim
       def initialize(organization: nil, replace: false, logger: nil)
         @organization = organization || Decidim::Organization.first
         @replace = replace
-        @logger = logger || ->(message) { puts message }
+        @logger = logger || ->(message) { puts message } # rubocop:disable Rails/Output
       end
 
       def call
