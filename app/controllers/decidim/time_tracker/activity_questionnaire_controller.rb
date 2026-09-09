@@ -21,7 +21,7 @@ module Decidim
 
         @form = form(Decidim::Forms::QuestionnaireForm).from_params(params, session_token:, ip_hash:)
 
-        Decidim::Forms::AnswerQuestionnaire.call(@form, questionnaire, allow_editing_answers: allow_editing_answers?) do
+        Decidim::Forms::ResponseQuestionnaire.call(@form, questionnaire, allow_editing_answers: allow_editing_answers?) do
           on(:ok) do
             flash[:notice] = I18n.t("answer.success", scope: i18n_flashes_scope)
             redirect_to after_answer_path

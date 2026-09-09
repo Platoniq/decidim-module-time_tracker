@@ -48,7 +48,7 @@ module Decidim
           if question.has_key?(:answer_options)
             question[:answer_options].map! do |answer_option|
               answer_option[:body] = i18nize(answer_option[:body])
-              Decidim::Forms::AnswerOption.new(answer_option)
+              Decidim::Forms::ResponseOption.new(answer_option)
             end
           end
 

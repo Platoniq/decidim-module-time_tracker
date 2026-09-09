@@ -29,7 +29,7 @@ Decidim.register_component(:time_tracker) do |component|
     # Code executed before removing the component
     time_tracker = Decidim::TimeTracker::TimeTracker.find_by(decidim_component_id: instance.id)
 
-    answers = Decidim::Forms::Answer.where(questionnaire: time_tracker.questionnaire)
+    answers = Decidim::Forms::Response.where(questionnaire: time_tracker.questionnaire)
     tasks = Decidim::TimeTracker::Task.where(time_tracker:)
 
     raise StandardError, "Can't remove this component, there are resources associated" if [answers, assignation_answers, tasks].any?(&:any?)
@@ -89,7 +89,7 @@ Decidim.register_component(:time_tracker) do |component|
     exports.collection do |f|
       time_tracker = Decidim::TimeTracker::TimeTracker.find_by(component: f)
 
-      Decidim::Forms::Answer.joins(:questionnaire).where(questionnaire: time_tracker.activity_questionnaire)
+      Decidim::Forms::Response.joins(:questionnaire).where(questionnaire: time_tracker.activity_questionnaire)
                             .group_by do |answer|
         answer.session_token.split("-").first
       end.values
@@ -103,10 +103,10 @@ Decidim.register_component(:time_tracker) do |component|
   component.exports :time_tracker_assignee_questionnaire_answers do |exports|
     exports.collection do |f|
       time_tracker = Decidim::TimeTracker::TimeTracker.find_by(component: f)
-      Decidim::Forms::QuestionnaireUserAnswers.for(time_tracker.assignee_questionnaire)
+      Decidim::Forms::QuestionnaireUserResponses.for(time_tracker.assignee_questionnaire)
     end
 
-    exports.serializer Decidim::Forms::UserAnswersSerializer
+    exports.serializer Decidim::Forms::UserResponsesSerializer
 
     exports.formats %w(CSV JSON Excel FormPDF)
   end
@@ -167,7 +167,7 @@ Decidim.register_component(:time_tracker) do |component|
                                            question_type: "single_option",
                                            body: Decidim::Faker::Localized.sentence(word_count: 5),
                                            position: 2,
-                                           answer_options: 3.times.to_a.map { Decidim::Forms::AnswerOption.new(body: Decidim::Faker::Localized.sentence(word_count: 5)) }
+                                           answer_options: 3.times.to_a.map { Decidim::Forms::ResponseOption.new(body: Decidim::Faker::Localized.sentence(word_count: 5)) }
                                          }
                                        ])
     end
@@ -222,7 +222,7 @@ Decidim.register_component(:time_tracker) do |component|
 
           questionnaire_parents.each do |resource|
             resource.questionnaire.questions.each do |question|
-              answer = Decidim::Forms::Answer.new(
+              answer = Decidim::Forms::Response.new(
                 questionnaire: resource.questionnaire,
                 question:,
                 session_token: activity.session_token(user)
@@ -234,9 +234,9 @@ Decidim.register_component(:time_tracker) do |component|
 
               next unless question.question_type == "single_option"
 
-              Decidim::Forms::AnswerChoice.create(
+              Decidim::Forms::ResponseChoice.create(
                 answer:,
-                answer_option: question.answer_options.sample,
+                answer_option: question.response_options.sample,
                 body: question.body["en"]
               )
             end

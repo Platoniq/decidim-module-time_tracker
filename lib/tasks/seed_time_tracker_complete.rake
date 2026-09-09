@@ -204,7 +204,7 @@ namespace :time_tracker do
     return unless questionnaire
 
     questionnaire.questions.each do |question|
-      Decidim::Forms::Answer.create!(
+      Decidim::Forms::Response.create!(
         questionnaire: questionnaire,
         question: question,
         user: user,
@@ -335,8 +335,8 @@ namespace :time_tracker do
     answer_generators = {
       "short_answer" => -> { generate_short_answer },
       "long_answer" => -> { Faker::Lorem.paragraph(sentence_count: 3) },
-      "single_option" => -> { question.answer_options.sample&.id&.to_s },
-      "multiple_option" => -> { question.answer_options.sample(rand(1..3)).map { |opt| opt.id.to_s } },
+      "single_option" => -> { question.response_options.sample&.id&.to_s },
+      "multiple_option" => -> { question.response_options.sample(rand(1..3)).map { |opt| opt.id.to_s } },
       "number" => -> { rand(1..8).to_s },
       "date" => -> { rand(1..30).days.ago.to_date.to_s }
     }
