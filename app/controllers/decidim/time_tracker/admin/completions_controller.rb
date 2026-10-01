@@ -23,7 +23,7 @@ module Decidim
         end
 
         def dismiss
-          enforce_permission_to :verify, :completion, completion: current_completion
+          enforce_permission_to :dismiss, :completion, completion: current_completion
 
           DismissCompletion.call(current_completion, current_user) do
             on(:ok) do
@@ -40,8 +40,12 @@ module Decidim
 
         private
 
+        def current_activity
+          @current_activity ||= scoped_task(params[:task_id]).activities.find(params[:activity_id])
+        end
+
         def current_assignation
-          @current_assignation ||= Assignation.find(params[:assignation_id])
+          @current_assignation ||= current_activity.assignations.find(params[:assignation_id])
         end
 
         def current_completion
@@ -49,12 +53,7 @@ module Decidim
         end
 
         def redirect_back_to_source
-          if params[:success_path].present?
-            redirect_to params[:success_path]
-          else
-            activity = current_assignation.activity
-            redirect_to EngineRouter.admin_proxy(current_component).task_activity_assignations_path(activity.task, activity)
-          end
+          redirect_to success_path || EngineRouter.admin_proxy(current_component).task_activity_assignations_path(current_activity.task, current_activity)
         end
       end
     end

@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 namespace :decidim_time_tracker do
-  desc "Seeds a self-contained demo of the skills & badges system (ORGANIZATION_HOST=… REPLACE=1)"
+  desc "Seeds a self-contained demo of the skills & badges system " \
+       "(ORGANIZATION_HOST=… REPLACE=1 DEMO_PASSWORD=… DEMO_ADMIN_PASSWORD=…)"
   task demo_seed: :environment do
     require "decidim/time_tracker/demo_seeder"
 
@@ -15,7 +16,9 @@ namespace :decidim_time_tracker do
 
     Decidim::TimeTracker::DemoSeeder.new(
       organization:,
-      replace: ENV["REPLACE"].present?
+      replace: ENV["REPLACE"].present?,
+      password: ENV.fetch("DEMO_PASSWORD", nil),
+      admin_password: ENV.fetch("DEMO_ADMIN_PASSWORD", nil)
     ).call
   end
 

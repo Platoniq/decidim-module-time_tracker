@@ -98,7 +98,7 @@ module Decidim
       end
 
       def activity
-        @activity ||= Activity.find(params[:activity_id])
+        @activity ||= time_tracker.activities.find(params[:activity_id])
       end
     end
   end

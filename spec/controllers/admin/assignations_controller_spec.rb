@@ -137,5 +137,64 @@ module Decidim::TimeTracker::Admin
         end
       end
     end
+
+    describe "returning to success_path" do
+      let(:params) do
+        {
+          component_id: component.id,
+          participatory_process_slug: participatory_space.slug,
+          task_id: task.id,
+          activity_id: activity.id,
+          id: assignation.id,
+          assignation_status: "accepted",
+          success_path:
+        }
+      end
+
+      context "when it is a path on this site" do
+        let(:success_path) { "/admin/participatory_processes/#{participatory_space.slug}/components/#{component.id}/manage/" }
+
+        it "goes back there" do
+          patch(:update, params:)
+          expect(response).to redirect_to(success_path)
+        end
+      end
+
+      ["https://evil.example.org/", "//evil.example.org/", "/\\evil.example.org/", "javascript:alert(1)"].each do |unsafe|
+        context "when it is #{unsafe}" do
+          let(:success_path) { unsafe }
+
+          it "ignores it and returns to the activity's assignations" do
+            patch(:update, params:)
+            expect(response.location).not_to include("evil.example.org")
+            expect(response.location).to end_with("/tasks/#{task.id}/activities/#{activity.id}/assignations")
+          end
+        end
+      end
+    end
+
+    describe "records of another component" do
+      let(:other_space) { create(:participatory_process, organization:) }
+      let(:other_time_tracker) { create(:time_tracker, component: create(:time_tracker_component, participatory_space: other_space)) }
+      let(:other_task) { create(:task, time_tracker: other_time_tracker) }
+      let(:other_activity) { create(:activity, task: other_task) }
+      let!(:other_assignation) { create(:assignation, :pending, activity: other_activity) }
+
+      it "cannot be reached by putting their ids in this component's URL" do
+        expect do
+          patch(:update, params: { task_id: other_task.id, activity_id: other_activity.id, id: other_assignation.id, assignation_status: "accepted" })
+        end.to raise_error(ActiveRecord::RecordNotFound)
+
+        expect(other_assignation.reload).to be_pending
+      end
+
+      it "cannot be reached through one of this component's tasks either" do
+        expect do
+          patch(:update, params: { task_id: task.id, activity_id: activity.id, id: other_assignation.id, assignation_status: "accepted" })
+        end.to raise_error(ActiveRecord::RecordNotFound)
+
+        expect(other_assignation.reload).to be_pending
+      end
+    end
   end
 end

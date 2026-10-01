@@ -152,7 +152,7 @@ module Decidim
         end
 
         def current_task
-          @current_task ||= Task.find(params[:id])
+          @current_task ||= scoped_task(params[:id])
         end
       end
     end

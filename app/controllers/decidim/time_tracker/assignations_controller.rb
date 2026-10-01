@@ -27,7 +27,7 @@ module Decidim
       private
 
       def activity
-        @activity ||= Activity.active.find_by(id: params[:activity_id])
+        @activity ||= time_tracker.activities.active.find_by(id: params[:activity_id])
       end
 
       def assignation

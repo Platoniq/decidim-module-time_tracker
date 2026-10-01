@@ -98,6 +98,12 @@ bundle exec rails decidim_time_tracker:demo_unseed           # remove it
 Pass `ORGANIZATION_HOST=…` to target a specific organization; otherwise the
 first one is used.
 
+Every volunteer in the cast signs in with the same password, so anyone can look
+around as any of them; set it with `DEMO_PASSWORD=…`. The demo administrator
+(`demo-admin@example.org`) never shares it: it gets `DEMO_ADMIN_PASSWORD`, or a
+random password printed at the end of the run. Keep that one to yourself on any
+instance other people can reach.
+
 ## Installation
 
 Add this line to your application's Gemfile:

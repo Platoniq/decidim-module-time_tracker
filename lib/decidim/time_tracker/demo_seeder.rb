@@ -110,22 +110,29 @@ module Decidim
 
       VIDEO_ACCOUNTS = {
         # Names deliberately avoid the word "demo": Decidim rejects a password
-        # that resembles the account's own name, and these share a password
-        # with the rest of the cast.
+        # that resembles the account's own name, and the volunteers share a
+        # password with the rest of the cast.
         "demo-admin@example.org" => { name: "Sam Organiser", nickname: "demo_admin", admin: true },
         "demo-user-a@example.org" => { name: "Alex Rivera", nickname: "demo_user_a", admin: false },
         "demo-user-b@example.org" => { name: "Blair Okoye", nickname: "demo_user_b", admin: false }
       }.freeze
 
-      # Every demo account shares this, the whole cast included — the point of
-      # the demo is that anyone can sign in as any of these and look around.
-      # Randomising the volunteers' passwords made them useless for that.
-      DEMO_PASSWORD = "InspireDemo2026!"
+      # Every volunteer account shares one known password — the point of the
+      # demo is that anyone can sign in as any of them and look around, and
+      # randomising them made the cast useless for that. Pass `password:` (the
+      # rake task reads DEMO_PASSWORD) to use another one.
+      DEFAULT_PASSWORD = "InspireDemo2026!"
 
-      def initialize(organization: nil, replace: false, logger: nil)
+      # The administrator is the exception. A shared password written in a
+      # public repository would hand the admin panel of any instance running
+      # the demo to whoever read this file, so unless one is given it gets a
+      # random password, printed once at the end of the run.
+      def initialize(organization: nil, replace: false, logger: nil, password: nil, admin_password: nil)
         @organization = organization || Decidim::Organization.first
         @replace = replace
         @logger = logger || ->(message) { puts message }
+        @password = password.presence || DEFAULT_PASSWORD
+        @admin_password = admin_password.presence || SecureRandom.alphanumeric(24)
       end
 
       def call
@@ -160,7 +167,8 @@ module Decidim
 
       private
 
-      attr_reader :organization, :replace, :process, :component, :time_tracker, :tasks, :skills, :participants
+      attr_reader :organization, :replace, :password, :admin_password,
+                  :process, :component, :time_tracker, :tasks, :skills, :participants
 
       def log(message)
         @logger.call(message)
@@ -585,8 +593,8 @@ module Decidim
           name:,
           nickname: "demo_volunteer_#{index}",
           email: "demo-volunteer-#{index}@example.org",
-          password: DEMO_PASSWORD,
-          password_confirmation: DEMO_PASSWORD,
+          password:,
+          password_confirmation: password,
           confirmed_at: Time.current,
           # Decidim makes an admin change their password on first sign-in when
           # this is blank (User#needs_password_update?). Mid-demo that means
@@ -720,13 +728,14 @@ module Decidim
         )
 
         @video_users = VIDEO_ACCOUNTS.map do |email, attrs|
+          account_password = attrs[:admin] ? admin_password : password
           user = Decidim::User.create!(
             organization:,
             name: attrs[:name],
             nickname: attrs[:nickname],
             email:,
-            password: DEMO_PASSWORD,
-            password_confirmation: DEMO_PASSWORD,
+            password: account_password,
+            password_confirmation: account_password,
             confirmed_at: Time.current,
             password_updated_at: Time.current,
             tos_agreement: true,
@@ -760,7 +769,7 @@ module Decidim
             "#{demo_badges.size} badges, " \
             "#{tasks.values.flatten.size} tasks."
         log ""
-        log "Participants (all accounts use the password #{DEMO_PASSWORD}):"
+        log "Participants (all volunteer accounts use the password #{password}):"
 
         participants.each do |participant|
           user = participant[:user]
@@ -774,7 +783,7 @@ module Decidim
         end
 
         log ""
-        log "For recording (password #{DEMO_PASSWORD}):"
+        log "For recording (volunteers: #{password}; administrator: #{admin_password}):"
         (@video_users || []).each do |u|
           role = u.admin? ? "administrator" : "volunteer"
           extra = case u.nickname

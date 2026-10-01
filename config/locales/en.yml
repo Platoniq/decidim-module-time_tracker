@@ -363,10 +363,13 @@ en:
             tasks_help: Working on any of the selected tasks can earn this skill.
               You can also assign skills from the task form.
           index:
-            description: Skills are shared across all time tracker components of the
-              platform. Assign them to tasks; participants earn them by completing
-              every activity of a task.
+            description: Skills are shared by every time tracker on the platform.
+              Attach them to tasks; participants earn them by meeting the rule set
+              on each skill.
             empty: There are no skills yet.
+            organization_admins_only: Skills and badges are shared by every space
+              on the platform, so only organization administrators can create, change
+              or delete them. You can still attach any of them to your tasks.
             title: Skills
           new:
             submit: Create skill

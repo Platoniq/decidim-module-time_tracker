@@ -60,7 +60,7 @@ module Decidim
       end
 
       def user
-        @user ||= Decidim::User.find_by(nickname: params[:nickname])
+        @user ||= Decidim::User.where(organization: current_organization).not_deleted.find_by(nickname: params[:nickname])
       end
     end
   end
