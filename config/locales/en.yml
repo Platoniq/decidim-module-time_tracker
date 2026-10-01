@@ -421,10 +421,6 @@ en:
           update:
             error: Error updating the task
             success: Task updated successfully
-        time_tracker_exports:
-          create:
-            error: Error importing the Time Tracker data to accountability
-            success: Time Tracker data exported to accountability successfully
       admin_log:
         activity:
           create: "%{user_name} created the %{resource_name} activity"

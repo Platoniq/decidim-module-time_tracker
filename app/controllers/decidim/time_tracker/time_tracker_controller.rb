@@ -5,7 +5,7 @@ module Decidim
     class TimeTrackerController < Decidim::TimeTracker::ApplicationController
       include Decidim::FormFactory
 
-      helper_method :assignation_milestones, :start_endpoint, :stop_endpoint, :requests_path, :questionnaire_path
+      helper_method :assignation_milestones, :start_endpoint, :stop_endpoint, :requests_path
 
       def index
         @form = form(MilestoneForm).instance
@@ -28,10 +28,6 @@ module Decidim
 
       def requests_path(activity)
         Decidim::EngineRouter.main_proxy(current_component).assignations_path(activity_id: activity.id)
-      end
-
-      def questionnaire_path(activity)
-        Decidim::EngineRouter.main_proxy(current_component).new_assignation_path(task_id: activity.task, activity_id: activity.id, id: activity.questionnaire.id)
       end
     end
   end

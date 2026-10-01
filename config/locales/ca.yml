@@ -186,10 +186,6 @@ ca:
           update:
             error: S'ha produït un error al actualitzar la tasca
             success: Tasca actualitzada correctament
-        time_tracker_exports:
-          create:
-            error: Error importing the Time Tracker data to accountability
-            success: Time Tracker data exported to accountability successfully
       admin_log:
         activity:
           create: "%{user_name} ha creat l'activitat %{resource_name}"
