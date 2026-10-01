@@ -42,7 +42,7 @@
         <%= link_to stripped_translated_attribute(activity.description), task_activity_path(activity.task, activity), class: "time-tracker__activity-title" %>
       </h2>
       <div class="time-tracker__milestones">
-        <% activity.milestones.where(user:).order(created_at: :desc).each do |milestone| %>
+        <% activity.milestones.where(user:).order(created_at: :desc, id: :desc).each do |milestone| %>
           <%= card_for milestone %>
         <% end %>
       </div>
