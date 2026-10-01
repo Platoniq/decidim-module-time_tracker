@@ -34,13 +34,14 @@ module Decidim
       def allow_assignation?
         return allow! unless activity
 
-        if permission_action.action == :create
-          return false if activity.has_assignation? user
+        return false unless permission_action.action == :create
+        return false if activity.has_assignation? user
+        return false unless activity.accepts_requests?
+        # The page asks for the terms first; this stops a direct request from
+        # skipping them.
+        return false unless terms_accepted?
 
-          return false unless activity.status.in? [:open, :not_started]
-
-          allow!
-        end
+        allow!
       end
 
       def allow_milestone?
@@ -56,6 +57,10 @@ module Decidim
       end
 
       private
+
+      def terms_accepted?
+        Assignee.find_by(user:)&.tos_accepted?(activity.task.time_tracker)
+      end
 
       def activity
         @activity ||= context.fetch(:activity, nil)

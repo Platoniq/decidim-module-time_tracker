@@ -15,7 +15,8 @@ module Decidim
       validates_upload :image, uploader: Decidim::TimeTracker::ActivityImageUploader
 
       belongs_to :task,
-                 class_name: "Decidim::TimeTracker::Task"
+                 class_name: "Decidim::TimeTracker::Task",
+                 inverse_of: :activities
 
       has_many :assignations,
                class_name: "Decidim::TimeTracker::Assignation",
@@ -94,6 +95,18 @@ module Decidim
 
       def user_remaining_for_today(user)
         user_remaining_for_date(user, Date.current)
+      end
+
+      # Admins set when join requests open; before that the activity is listed
+      # but nobody can ask to join yet.
+      def requests_open?
+        requests_start_at.blank? || requests_start_at <= Time.current
+      end
+
+      # Whether anyone may ask to join right now (who is asking is the
+      # permission's business, not the activity's).
+      def accepts_requests?
+        status.in?([:open, :not_started]) && requests_open?
       end
 
       def assignation_pending?(user)

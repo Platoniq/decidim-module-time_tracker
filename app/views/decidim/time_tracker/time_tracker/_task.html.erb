@@ -1,0 +1,31 @@
+<% activities = task_list.activities_for(task) %>
+<% starts_at, ends_at = task_list.date_range_for(task) %>
+<% volunteers = task_list.volunteers_count(task) %>
+
+<article class="time-tracker__task" id="task-<%= task.id %>" aria-labelledby="task-<%= task.id %>-title">
+  <header class="time-tracker__task-header">
+    <div class="time-tracker__task-heading">
+      <h3 class="time-tracker__task-title" id="task-<%= task.id %>-title"><%= stripped_translated_attribute task.name %></h3>
+
+      <div class="time-tracker__meta">
+        <span><%= icon "list-check" %> <%= t(".activities", count: activities.size) %></span>
+        <span><%= icon "group-line" %> <%= t(".volunteers", count: volunteers) %></span>
+        <% if (range = date_range(starts_at, ends_at)) %>
+          <span><%= icon "calendar-line" %> <%= range %></span>
+        <% end %>
+      </div>
+    </div>
+
+    <% if task.progress.present? %>
+      <%= render partial: "progress_meter", locals: { progress: task.progress, label: t(".progress") } %>
+    <% end %>
+  </header>
+
+  <%= render partial: "task_earnings", locals: { task: } %>
+
+  <ul class="time-tracker__activities">
+    <% activities.each do |activity| %>
+      <%= render partial: "activity_row", locals: { activity: } %>
+    <% end %>
+  </ul>
+</article>

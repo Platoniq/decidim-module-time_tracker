@@ -44,6 +44,76 @@ module Decidim
         users.map { |user| present(user) }
       end
 
+      # "1 Aug – 1 Dec 2026". The year is written once unless the range
+      # crosses into another one.
+      def date_range(start_at, end_at)
+        first, last = [start_at, end_at].map { |time| time&.to_date }
+        dates = [first, last].compact.uniq
+        return if dates.empty?
+        return l(dates.first, format: :decidim_short_with_month_name_short) if dates.one?
+
+        opening = l(first, format: first.year == last.year ? :decidim_with_month_name_short : :decidim_short_with_month_name_short)
+        "#{opening} – #{l(last, format: :decidim_short_with_month_name_short)}"
+      end
+
+      # "2 h 15 min" — a duration to read, as opposed to the running clock.
+      def duration_in_words(seconds)
+        hours, minutes = (seconds.to_i / 60.0).round.divmod(60)
+        return t("decidim.time_tracker.duration.minutes", count: minutes) if hours.zero?
+        return t("decidim.time_tracker.duration.hours", count: hours) if minutes.zero?
+
+        t("decidim.time_tracker.duration.hours_minutes", hours:, minutes:)
+      end
+
+      # "2:15:07", the face of a running timer. The script that ticks it
+      # formats seconds the same way.
+      def timer_clock(seconds)
+        seconds = seconds.to_i
+        format("%<hours>d:%<minutes>02d:%<seconds>02d", hours: seconds / 3600, minutes: (seconds / 60) % 60, seconds: seconds % 60)
+      end
+
+      # The one status every activity shows: whether its timer can run now.
+      def activity_status_label(activity)
+        status = activity.status
+        text = if status == :not_started && activity.start_date.present?
+                 t("decidim.time_tracker.activity_status.starts_on", date: l(activity.start_date.to_date, format: :decidim_with_month_name_short))
+               else
+                 t("decidim.time_tracker.activity_status.#{status}")
+               end
+
+        content_tag(:span, text, class: "time-tracker__status-label time-tracker__status-label--#{status}")
+      end
+
+      # What a volunteer has to do for their work on an activity to be
+      # submitted for verification, or nil when it has no completion rule.
+      def completion_rule_sentence(activity)
+        return if activity.min_events.to_i <= 0 || activity.min_duration_minutes_per_event.to_i <= 0
+
+        t("decidim.time_tracker.completion_rule.sessions",
+          count: activity.min_events,
+          duration: duration_in_words(activity.min_duration_minutes_per_event.to_i * 60))
+      end
+
+      def daily_limit_sentence(activity)
+        return if activity.max_minutes_per_day.to_i <= 0
+
+        t("decidim.time_tracker.completion_rule.daily_limit", duration: duration_in_words(activity.max_minutes_per_day.to_i * 60))
+      end
+
+      # A row of overlapping avatars, for "who works on this".
+      def participant_avatars(users, limit: 4)
+        return if users.blank?
+
+        content_tag :span, class: "time-tracker__avatars" do
+          avatars = users.first(limit).map do |user|
+            presented = present(user)
+            image_tag(presented.avatar_url, alt: "", title: presented.name, class: "time-tracker__avatar", loading: "lazy")
+          end
+          avatars << content_tag(:span, "+#{users.size - limit}", class: "time-tracker__avatar time-tracker__avatar--more") if users.size > limit
+          safe_join(avatars)
+        end
+      end
+
       # turns a number of seconds to a string 0h 0m 0s
       def clockify_seconds(total_seconds, padded: false)
         total_seconds = total_seconds.to_i
@@ -76,11 +146,14 @@ module Decidim
         end
       end
 
+      # When someone was added to an activity, or asked to join it. The
+      # "invited at" string this used to borrow is a column header with no
+      # place for the date, so every activity read "Invited at" and nothing else.
       def assignation_date(assignation)
         if assignation.invited_at.present?
-          t("models.assignation.fields.invited_at", time: l(assignation.invited_at, format: :short), scope: "decidim.time_tracker")
+          t("decidim.time_tracker.assignation_dates.invited", date: l(assignation.invited_at.to_date, format: :decidim_short_with_month_name_short))
         elsif assignation.requested_at.present?
-          t("models.assignation.fields.requested_at", time: l(assignation.requested_at, format: :short), scope: "decidim.time_tracker")
+          t("decidim.time_tracker.assignation_dates.requested", date: l(assignation.requested_at.to_date, format: :decidim_short_with_month_name_short))
         end
       end
 

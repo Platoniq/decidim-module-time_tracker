@@ -1,151 +1,120 @@
 import TimerApi from "src/decidim/time_tracker/timer_api"
 import ActivityUI from "src/decidim/time_tracker/activity_ui"
-import updateReports from "src/decidim/time_tracker/updateReports"
 
-document.addEventListener("DOMContentLoaded", () => {
-  updateReports();
-  // Each card renders the status URL itself: the engine is mounted under the
-  // space and component, so no path can be built here from the id alone.
-  const startPolling = (statusUrl) => {
-    if (!statusUrl) {
+const POLL_EVERY = 8000;
+
+// While a join request waits for an organiser, ask now and then whether it
+// has been answered, and reload once it has so the timer (or the answer)
+// shows up without the volunteer having to refresh.
+const pollRequest = (statusUrl) => {
+  if (!statusUrl) {
+    return;
+  }
+
+  const interval = setInterval(() => {
+    if (document.hidden) {
       return;
     }
 
-    const interval = setInterval(() => {
-      fetch(statusUrl, { headers: { Accept: "application/json" } }).
-        then((response) => response.json()).
-        then((data) => {
-          if (data.status === "accepted") {
-            clearInterval(interval);
-            window.location.reload();
-          }
-        }).
-        catch((error) => console.error("Error polling assignation status:", error));
-    }, 5000);
-  };
+    fetch(statusUrl, { headers: { Accept: "application/json" }, credentials: "same-origin" }).
+      then((response) => response.json()).
+      then((data) => {
+        if (data.status && data.status !== "pending") {
+          clearInterval(interval);
+          window.location.reload();
+        }
+      }).
+      catch(() => clearInterval(interval));
+  }, POLL_EVERY);
+};
 
-  // For each request track ajax responses
-  const timeTrackerRequests = document.querySelectorAll(".time-tracker-request");
-  
-  timeTrackerRequests.forEach((element) => {
-    element.addEventListener("ajax:success", (event) => {
-      const detail = event.detail;
-      const data = detail[0];
-
-      const newElement = document.createElement("div");
-      newElement.classList.add("callout", "success", "m-4");
-      newElement.textContent = data.message;
-
-      element.replaceWith(newElement);
-
-      startPolling(element.dataset.statusUrl);
-    });
-  });
-
-  // Start polling for existing pending requests on page load
+const setUpRequests = () => {
   document.querySelectorAll(".time-tracker-pending-request").forEach((element) => {
-    startPolling(element.dataset.statusUrl);
+    pollRequest(element.dataset.statusUrl);
   });
 
-  timeTrackerRequests.forEach((form) => {
+  document.querySelectorAll("form.time-tracker-request-form").forEach((form) => {
+    form.addEventListener("ajax:success", (event) => {
+      const [data] = event.detail;
+      const pending = document.createElement("span");
+      pending.className = "time-tracker__state time-tracker__state--pending";
+      pending.setAttribute("role", "status");
+      pending.textContent = data.message;
+      form.replaceWith(pending);
+
+      pollRequest(form.dataset.statusUrl);
+    });
+
     form.addEventListener("ajax:error", (event) => {
-      const detail = event.detail;
-      const data = detail[0];
-
-      const callout = document.createElement("div");
-      callout.classList.add("callout", "alert", "m-4");
-      callout.textContent = data.message;
-
-      form.parentNode.insertBefore(callout, form.nextSibling);
-      form.style.display = "none";
-
-      setTimeout(() => {
-        callout.style.transition = "opacity 1s";
-        callout.style.opacity = 0;
-
-        callout.addEventListener("transitionend", () => {
-          callout.remove();
-          form.style.display = "block";
-        });
-      }, 2000);
+      const [data] = event.detail;
+      const error = document.createElement("span");
+      error.className = "time-tracker__state time-tracker__state--rejected";
+      error.setAttribute("role", "alert");
+      error.textContent = (data && data.message) || form.dataset.errorMessage || "";
+      form.replaceWith(error);
     });
   });
+};
 
-  // For each activity set up the counters
-  const activities = document.querySelectorAll(".time-tracker-activity");
+const setUpTimers = () => {
+  const timers = [];
 
-  activities.forEach((activityElement) => {
-    const milestone = activityElement.querySelector(".milestone");
-    const activity = new ActivityUI(activityElement);
-    const api = new TimerApi(activity.startEndpoint, activity.stopEndpoint);
+  document.querySelectorAll(".time-tracker-activity").forEach((element) => {
+    const ui = new ActivityUI(element);
+    const api = new TimerApi(ui.startEndpoint, ui.stopEndpoint);
+    timers.push(ui);
 
-    // store api
-    activityElement._activity = activity;
-    activityElement._api = api;
-
-    if (activityElement.dataset.counterActive === "true") {
-      activity.showPauseStop();
-      activity.startCounter();
-    }
-
-    activity.onStop = () => {
-      console.log("automatic stop");
-      activity.showError(activityElement.dataset.textCounterStopped);
-      activity.showStart();
-      // Unnecessary if the job is working well
-      api.stop();
+    // The server also stops a counter that runs past the daily limit; this
+    // keeps the page in step with it.
+    ui.onLimitReached = () => {
+      ui.showError(element.dataset.textCounterStopped);
+      api.stop().catch(() => {});
     };
 
-    const startButton = activityElement.querySelector(".time-tracker-activity-start");
-    const pauseButton = activityElement.querySelector(".time-tracker-activity-pause");
-    const stopButton = activityElement.querySelector(".time-tracker-activity-stop");
-
-    // Start button click
-    if (startButton) {
-      startButton.addEventListener("click", () => {
-        api.start().
-          then((data) => {
-            // select all counters except the clicked one
-            activity.activity.classList.add("current")
-            const otherActivities = document.querySelectorAll('div[class="time-tracker-activity"]');
-            // stop all these counters
-            otherActivities.forEach((otherActivityElement) => {
-              const activityData = otherActivityElement._activity;
-              if (activityData.isRunning()) {
-                activityData.showPlayStop();
-                activityData.stopCounter();
-              }
-            });
-            // start only the clicked counter
-            activity.showPauseStop();
-            activity.startCounter(data);
-            activity.activity.classList.remove("current")
-          }).
-          catch(activity.showError.bind(activity));
-      });
+    if (element.dataset.counterActive === "true") {
+      ui.startCounter();
     }
 
-    if (pauseButton) {
-      pauseButton.addEventListener("click", () => {
-        activity.showPlayStop();
-        api.stop().
-          then((data) => activity.stopCounter(data)).
-          catch(activity.showError.bind(activity));
-      });
-    }
+    ui.startButton?.addEventListener("click", () => {
+      ui.setBusy(true);
+      ui.hideMessages();
+      ui.hideMilestone();
+      api.start().
+        then(() => {
+          // Starting one activity stops whatever else was running, on the
+          // server as well as here.
+          timers.filter((other) => other !== ui && other.isRunning()).forEach((other) => other.stopCounter());
+          ui.startCounter();
+        }).
+        catch((error) => ui.showError(error.message)).
+        finally(() => ui.setBusy(false));
+    });
 
-    if (stopButton) {
-      stopButton.addEventListener("click", () => {
-        activity.showStart();
-        api.stop().
-          then((data) => {
-            activity.stopCounter(data);
-            console.log("show milestone creator");
-            milestone.classList.remove("hidden");
-          }).
-          catch(activity.showError.bind(activity));
-      });
-    }
+    ui.pauseButton?.addEventListener("click", () => {
+      ui.setBusy(true);
+      api.stop().
+        then(() => ui.stopCounter()).
+        catch((error) => ui.showError(error.message)).
+        finally(() => ui.setBusy(false));
+    });
+
+    ui.stopButton?.addEventListener("click", () => {
+      ui.setBusy(true);
+      api.stop().
+        then(() => {
+          ui.stopCounter();
+          ui.showNotice(element.dataset.textSessionSaved);
+          ui.showMilestone();
+        }).
+        catch((error) => ui.showError(error.message)).
+        finally(() => ui.setBusy(false));
+    });
+
+    element.querySelector("[data-milestone-dismiss]")?.addEventListener("click", () => ui.hideMilestone());
   });
-});
+};
 
+document.addEventListener("DOMContentLoaded", () => {
+  setUpRequests();
+  setUpTimers();
+});

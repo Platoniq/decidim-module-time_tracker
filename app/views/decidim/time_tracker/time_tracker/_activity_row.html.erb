@@ -1,0 +1,45 @@
+<% assignation = task_list.assignation_for(activity) %>
+<% participants = task_list.participants_for(activity) %>
+<% milestones = task_list.milestones_for(activity) %>
+
+<li class="time-tracker__activity<%= " time-tracker__activity--mine" if assignation&.accepted? %>" id="activity-row-<%= activity.id %>" data-activity-id="<%= activity.id %>">
+  <div class="time-tracker__activity-image">
+    <% if activity.image.attached? %>
+      <img src="<%= activity.attached_uploader(:image).variant_url(:thumb) %>" alt="" loading="lazy">
+    <% else %>
+      <%= icon "time-line" %>
+    <% end %>
+  </div>
+
+  <div class="time-tracker__activity-body">
+    <%= link_to stripped_translated_attribute(activity.description),
+                task_activity_path(activity.task, activity),
+                class: "time-tracker__activity-title" %>
+
+    <div class="time-tracker__meta">
+      <%= activity_status_label(activity) %>
+      <% if (range = date_range(activity.start_date, activity.end_date)) %>
+        <span><%= icon "calendar-line" %> <%= range %></span>
+      <% end %>
+      <% if participants.any? %>
+        <span class="time-tracker__meta-people">
+          <%= participant_avatars(participants, limit: 3) %>
+          <%= t(".volunteers", count: participants.size) %>
+        </span>
+      <% end %>
+      <% if milestones.any? %>
+        <%= link_to task_activity_path(activity.task, activity, anchor: "milestones") do %>
+          <%= icon "image-line" %> <%= t(".milestones", count: milestones.size) %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="time-tracker__activity-aside">
+    <%= render partial: "decidim/time_tracker/time_tracker/activity_action", locals: { activity:, assignation:, timer_path: "#activity-#{activity.id}" } %>
+
+    <% if activity.progress.present? %>
+      <span class="time-tracker__progress-chip" title="<%= t(".progress") %>"><%= number_to_percentage(activity.progress, precision: 0) %></span>
+    <% end %>
+  </div>
+</li>

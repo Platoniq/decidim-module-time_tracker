@@ -28,6 +28,7 @@ module Decidim::TimeTracker
 
       context "when user is signed in" do
         before do
+          Decidim::TimeTracker::TosAcceptance.create!(assignee: Decidim::TimeTracker::Assignee.for(user), time_tracker:)
           sign_in user
         end
 
@@ -42,6 +43,16 @@ module Decidim::TimeTracker
           it "do not create a new assignation" do
             post(:create, params:)
             expect(response).to have_http_status(:unprocessable_entity)
+          end
+        end
+
+        context "when the user has not accepted the terms" do
+          before { Decidim::TimeTracker::TosAcceptance.delete_all }
+
+          it "does not let them skip the terms by posting directly" do
+            post(:create, params:)
+            expect(response).to redirect_to("/")
+            expect(Decidim::TimeTracker::Assignation.where(user:)).to be_empty
           end
         end
       end

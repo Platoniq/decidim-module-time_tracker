@@ -58,7 +58,9 @@ module Decidim
           "award-line" => "Badge counting certified skills",
           "medal-line" => "Badge counting specific required skills",
           "timer-line" => "Badge counting hours tracked",
-          "quill-pen-line" => "Badge counting milestones posted"
+          "quill-pen-line" => "Badge counting milestones posted",
+          "pause-fill" => "Pause a time tracker counter",
+          "stop-fill" => "Stop a time tracker counter"
         }.each do |icon, description|
           # Core already ships some of these; re-registering warns.
           next if Decidim.icons.all.has_key?(icon)

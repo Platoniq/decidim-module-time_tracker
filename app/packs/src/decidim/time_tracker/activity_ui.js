@@ -1,138 +1,158 @@
-export default class ActivityUI { // eslint-disable-line no-unused-vars
-  constructor(target) {
-    this.activity = target;
-    this.elapsedElement = this.activity.querySelector(".elapsed-time-clock");
-    this.startButton = this.activity.querySelector(".time-tracker-activity-start");
-    this.pauseButton = this.activity.querySelector(".time-tracker-activity-pause");
-    this.stopButton = this.activity.querySelector(".time-tracker-activity-stop");
+// The timer card of one activity: its clock, its buttons and its messages.
+// It only reflects state; time_tracker.js decides when to start and stop.
+
+export const formatClock = (totalSeconds) => {
+  const seconds = Math.max(0, Math.floor(totalSeconds));
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const rest = seconds % 60;
+
+  return `${hours}:${String(minutes).padStart(2, "0")}:${String(rest).padStart(2, "0")}`;
+};
+
+const now = () => Math.floor(Date.now() / 1000);
+
+export default class ActivityUI {
+  constructor(element) {
+    this.element = element;
+    this.clock = element.querySelector("[data-timer-clock]");
+    this.startButton = element.querySelector(".time-tracker-activity-start");
+    this.pauseButton = element.querySelector(".time-tracker-activity-pause");
+    this.stopButton = element.querySelector(".time-tracker-activity-stop");
+    this.alert = element.querySelector(".callout.alert");
+    this.notice = element.querySelector(".callout.success");
+    this.milestone = element.querySelector(".milestone");
     this.interval = null;
-    this.initTime = this.now;
-    this.onStop = () => {};
+    this.startedAt = null;
+    this.onLimitReached = () => {};
   }
 
   get startEndpoint() {
-    return this.activity.dataset.startEndpoint;
+    return this.element.dataset.startEndpoint;
   }
 
   get stopEndpoint() {
-    return this.activity.dataset.stopEndpoint;
+    return this.element.dataset.stopEndpoint;
   }
 
-  get now() {
-    return Math.floor(new Date().getTime() / 1000);
-  }
-
+  // Seconds tracked before the current run started.
   get elapsed() {
-    return parseInt(this.activity.dataset.elapsedTime || 0, 10);
+    return parseInt(this.element.dataset.elapsedTime || 0, 10);
   }
 
   set elapsed(seconds) {
-    this.activity.dataset.elapsedTime = seconds;
+    this.element.dataset.elapsedTime = seconds;
   }
 
+  // Seconds still allowed today.
   get remaining() {
-    return parseInt(this.activity.dataset.remainingTime || 0, 10);
+    return parseInt(this.element.dataset.remainingTime || 0, 10);
   }
 
   set remaining(seconds) {
-    this.activity.dataset.remainingTime = seconds;
-  }
-
-  showStart() {
-    if (this.startButton) {
-      this.startButton.classList.remove("hidden");
-    }
-    if (this.pauseButton) {
-      this.pauseButton.classList.add("hidden");
-    }
-    if (this.stopButton) {
-      this.stopButton.classList.add("hidden");
-    }
-    return this;
-  }
-
-  showPauseStop() {
-    if (this.startButton) {
-      this.startButton.classList.add("hidden");
-    }
-    if (this.pauseButton) {
-      this.pauseButton.classList.remove("hidden");
-    }
-    if (this.stopButton) {
-      this.stopButton.classList.remove("hidden");
-    }
-    return this;
-  }
-
-  showPlayStop() {
-    if (this.startButton) {
-      this.startButton.classList.remove("hidden");
-    }
-    if (this.pauseButton) {
-      this.pauseButton.classList.add("hidden");
-    }
-    if (this.stopButton) {
-      this.stopButton.classList.add("hidden");
-    }
-    return this;
-  }
-
-  showError(error) {
-    const calloutAlert = this.activity.querySelector(".callout.alert");
-    if (calloutAlert) {
-      calloutAlert.innerHTML = error;
-      calloutAlert.classList.remove("hidden");
-    }
-    this.showStart();
-    return this;
-  }
-
-  clockifySeconds(totalSeconds) {
-    const hours = Math.floor(totalSeconds / (60 * 60))
-    const minutes = Math.floor((totalSeconds / 60) % 60)
-    const seconds = totalSeconds % 60
-
-    return `${hours}h${minutes}m${seconds}s`
-  }
-
-  updateElapsedTime() {
-    const diff = this.now - this.initTime;
-    if (this.remaining <= diff) {
-      this.stopCounter();
-      return this.onStop();
-    }
-    this.elapsedElement.innerHTML = this.clockifySeconds(this.elapsed + diff);
-
-    return null;
-  }
-
-  startCounter(data) {
-    console.log("starting counter", data)
-    clearInterval(this.interval);
-    this.initTime = this.now;
-    this.running = true;
-    this.interval = setInterval(() => {
-      this.updateElapsedTime();
-    }, 1000);
-    return this;
-  }
-
-  stopCounter(data) {
-    const diff = this.now - this.initTime
-    console.log("stopping counter", data)
-    this.elapsed += diff;
-    this.remaining -= diff;
-    this.running = false;
-    clearInterval(this.interval);
-    return this;
+    this.element.dataset.remainingTime = Math.max(0, seconds);
   }
 
   isRunning() {
-    return this.running;
+    return this.interval !== null;
+  }
+
+  // Shown and hidden with the hidden attribute, which reads the same to
+  // assistive technology as it looks on screen.
+  toggle(element, visible) {
+    if (element) {
+      element.hidden = !visible;
+    }
+  }
+
+  showRunning() {
+    this.toggle(this.startButton, false);
+    this.toggle(this.pauseButton, true);
+    this.toggle(this.stopButton, true);
+    this.element.classList.add("is-running");
+  }
+
+  showIdle() {
+    this.toggle(this.startButton, true);
+    this.toggle(this.pauseButton, false);
+    this.toggle(this.stopButton, false);
+    this.element.classList.remove("is-running");
+  }
+
+  setBusy(busy) {
+    [this.startButton, this.pauseButton, this.stopButton].forEach((button) => {
+      if (button) {
+        button.disabled = busy;
+      }
+    });
+  }
+
+  showError(message) {
+    this.hideMessages();
+    if (this.alert) {
+      this.alert.textContent = message;
+      this.toggle(this.alert, true);
+    }
+  }
+
+  showNotice(message) {
+    this.hideMessages();
+    if (this.notice && message) {
+      this.notice.textContent = message;
+      this.toggle(this.notice, true);
+    }
+  }
+
+  hideMessages() {
+    this.toggle(this.alert, false);
+    this.toggle(this.notice, false);
   }
 
   showMilestone() {
-    console.log("TODO: show milestone")
+    this.toggle(this.milestone, true);
+    this.milestone?.querySelector("input[type=text]")?.focus();
+  }
+
+  hideMilestone() {
+    this.toggle(this.milestone, false);
+  }
+
+  render(seconds) {
+    if (this.clock) {
+      this.clock.textContent = formatClock(seconds);
+    }
+  }
+
+  // Starts ticking. `alreadyElapsed` is how long the current run has been
+  // going, for a counter that was running when the page loaded.
+  startCounter(alreadyElapsed = 0) {
+    clearInterval(this.interval);
+    this.startedAt = now() - alreadyElapsed;
+    this.showRunning();
+    this.tick();
+    this.interval = setInterval(() => this.tick(), 1000);
+  }
+
+  tick() {
+    const run = now() - this.startedAt;
+    if (run >= this.remaining) {
+      this.stopCounter();
+      this.onLimitReached();
+      return;
+    }
+    this.render(this.elapsed + run);
+  }
+
+  stopCounter() {
+    if (!this.isRunning()) {
+      return;
+    }
+    const run = now() - this.startedAt;
+    clearInterval(this.interval);
+    this.interval = null;
+    this.elapsed += run;
+    this.remaining -= run;
+    this.render(this.elapsed);
+    this.showIdle();
   }
 }
-
