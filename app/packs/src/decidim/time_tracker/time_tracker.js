@@ -4,9 +4,15 @@ import updateReports from "src/decidim/time_tracker/updateReports"
 
 document.addEventListener("DOMContentLoaded", () => {
   updateReports();
-  const startPolling = (activityId) => {
+  // Each card renders the status URL itself: the engine is mounted under the
+  // space and component, so no path can be built here from the id alone.
+  const startPolling = (statusUrl) => {
+    if (!statusUrl) {
+      return;
+    }
+
     const interval = setInterval(() => {
-      fetch(`/timetracker/activities/${activityId}/assignation_status`).
+      fetch(statusUrl, { headers: { Accept: "application/json" } }).
         then((response) => response.json()).
         then((data) => {
           if (data.status === "accepted") {
@@ -31,18 +37,14 @@ document.addEventListener("DOMContentLoaded", () => {
       newElement.textContent = data.message;
 
       element.replaceWith(newElement);
-      
-      if (data.activityId) {
-        startPolling(data.activityId);
-      }
+
+      startPolling(element.dataset.statusUrl);
     });
   });
 
   // Start polling for existing pending requests on page load
   document.querySelectorAll(".time-tracker-pending-request").forEach((element) => {
-    if (element.dataset.activityId) {
-      startPolling(element.dataset.activityId);
-    }
+    startPolling(element.dataset.statusUrl);
   });
 
   timeTrackerRequests.forEach((form) => {

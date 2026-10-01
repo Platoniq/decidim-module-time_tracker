@@ -118,6 +118,16 @@ module Decidim::TimeTracker
           expect(resp["error"]).to eq("Counter already stopped")
         end
       end
+
+      context "when the user has never tracked any time" do
+        let!(:time_event) { nil }
+
+        it "returns already stopped instead of failing" do
+          get(:stop, params:)
+          expect(response).to have_http_status(:success)
+          expect(response.parsed_body["error"]).to eq("Counter already stopped")
+        end
+      end
     end
 
     context "when the activity belongs to another component" do

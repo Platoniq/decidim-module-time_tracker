@@ -68,7 +68,7 @@ module Decidim
         klass = case status
                 when "accepted" then "success"
                 when "pending" then "warning"
-                when "rejected" then "danger"
+                when "rejected" then "alert"
                 end
 
         content_tag :span, class: "#{klass} label" do

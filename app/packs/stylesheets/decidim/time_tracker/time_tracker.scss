@@ -209,10 +209,6 @@
   @apply flex text-secondary [&>svg]:mr-2;
 }
 
-.danger {
-  @apply bg-alert;
-}
-
 .milestones-section {
   @apply p-8 mb-4;
 }
@@ -225,16 +221,25 @@
   @apply flex text-secondary hover:cursor-pointer [&>svg]:mt-0.5;
 }
 
-.secondary {
-  @apply bg-secondary;
-}
-
 .show-milestones {
   @apply text-secondary hover:underline;
 }
 
-.success {
-  @apply bg-success;
+// Play / pause / stop. Scoped to the timer: as bare .success, .secondary and
+// .danger these colours used to paint every Decidim label and callout on any
+// page that loaded this stylesheet.
+.tracker-buttons {
+  .success {
+    @apply bg-success;
+  }
+
+  .secondary {
+    @apply bg-secondary;
+  }
+
+  .danger {
+    @apply bg-alert;
+  }
 }
 
 // ─── Activity status & progress (active activity card) ──────────────────────
