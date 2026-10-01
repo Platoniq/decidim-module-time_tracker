@@ -1,0 +1,41 @@
+<%# What the visitor can do about one activity, given where their request
+    stands. Shared by the task list and the activity page; timer_path is where
+    "track time" goes from each of them. %>
+<div class="time-tracker__action" data-activity-id="<%= activity.id %>">
+  <% if assignation&.accepted? %>
+    <%= link_to timer_path, class: "time-tracker__state time-tracker__state--accepted" do %>
+      <%= icon "check-line" %> <%= t("decidim.time_tracker.activity_action.accepted") %>
+    <% end %>
+  <% elsif assignation&.pending? %>
+    <span class="time-tracker__state time-tracker__state--pending time-tracker-pending-request"
+          data-status-url="<%= activity_assignation_status_path(activity_id: activity.id) %>">
+      <%= icon "time-line" %> <%= t("decidim.time_tracker.activity_action.pending") %>
+    </span>
+  <% elsif assignation&.rejected? %>
+    <span class="time-tracker__state time-tracker__state--rejected">
+      <%= t("decidim.time_tracker.activity_action.rejected") %>
+    </span>
+  <% elsif activity.accepts_requests? %>
+    <% if !user_signed_in? %>
+      <button type="button" class="button button__sm button__secondary" data-dialog-open="loginModal">
+        <%= icon "user-add-line" %> <%= t("decidim.time_tracker.activity_action.join") %>
+      </button>
+    <% elsif must_fill_in_data? %>
+      <%= link_to assignee_questionnaire_path, class: "button button__sm button__transparent-secondary", title: t("decidim.time_tracker.activity_action.terms_first") do %>
+        <%= icon "user-add-line" %> <%= t("decidim.time_tracker.activity_action.join") %>
+      <% end %>
+    <% else %>
+      <%= button_to assignations_path(activity_id: activity.id),
+                    method: :post,
+                    remote: true,
+                    form: { class: "time-tracker-request-form", data: { status_url: activity_assignation_status_path(activity_id: activity.id) } },
+                    class: "button button__sm button__secondary" do %>
+        <%= icon "user-add-line" %> <%= t("decidim.time_tracker.activity_action.join") %>
+      <% end %>
+    <% end %>
+  <% elsif !activity.requests_open? && activity.status != :finished %>
+    <span class="time-tracker__state">
+      <%= t("decidim.time_tracker.activity_action.requests_open_on", date: l(activity.requests_start_at.to_date, format: :decidim_with_month_name_short)) %>
+    </span>
+  <% end %>
+</div>

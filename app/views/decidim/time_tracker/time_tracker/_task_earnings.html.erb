@@ -1,0 +1,43 @@
+<%# What working on this task earns, next to the work rather than on a
+    separate page. Badges counting across every task are left out: they apply
+    everywhere, and the aside links to the page that explains them. %>
+<% skills = task_skills(task) %>
+<% badges = task_badges(task) %>
+
+<div class="time-tracker__earnings<%= " time-tracker__earnings--bare" if local_assigns[:bare] %>">
+  <span class="time-tracker__earnings-lead"><%= t("decidim.time_tracker.earnings.lead") %></span>
+
+  <ul class="time-tracker__earnings-list">
+    <% if skills.any? %>
+      <% skills.each do |skill| %>
+        <li class="time-tracker__earning">
+          <span class="time-tracker__earning-mark" aria-hidden="true"><%= icon "award-line" %></span>
+          <span>
+            <strong><%= translated_attribute(skill.name) %></strong>
+            <span class="time-tracker__earning-rule"><%= skill_earning_summary(skill) %></span>
+          </span>
+        </li>
+      <% end %>
+    <% else %>
+      <%# No skill attached, so the module certifies the task under its own
+          name. Saying so beats implying nothing is earned. %>
+      <li class="time-tracker__earning">
+        <span class="time-tracker__earning-mark" aria-hidden="true"><%= icon "award-line" %></span>
+        <span>
+          <strong><%= stripped_translated_attribute(task.name) %></strong>
+          <span class="time-tracker__earning-rule"><%= t("decidim.time_tracker.earnings.rules.task_fallback") %></span>
+        </span>
+      </li>
+    <% end %>
+
+    <% badges.each do |badge| %>
+      <li class="time-tracker__earning">
+        <span class="time-tracker__earning-mark time-tracker__earning-mark--badge" aria-hidden="true"><%= icon badge.icon_name %></span>
+        <span>
+          <strong><%= translated_attribute(badge.name) %></strong>
+          <span class="time-tracker__earning-rule"><%= t("decidim.time_tracker.earnings.badge_levels", levels: badge.levels.join(" → ")) %></span>
+        </span>
+      </li>
+    <% end %>
+  </ul>
+</div>

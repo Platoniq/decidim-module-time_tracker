@@ -1,0 +1,57 @@
+<div class="card">
+  <div class="item_show__header">
+    <h1 class="item_show__header-title">
+      <%= t(".pending", count: pending_completions.count) %>
+      <%= link_to t("completions.actions.verify_all", scope: "decidim.time_tracker.admin"), verify_all_pending_completions_tasks_path, method: :post, class: "button button__sm button__secondary" %>
+    </h1>
+  </div>
+
+  <div class="card-section">
+    <p class="text-sm text-muted pb-4"><%= t(".description") %></p>
+
+    <div class="table-scroll">
+      <table class="table-list">
+        <thead>
+          <tr>
+            <th><%= t("models.assignation.fields.name", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignation.fields.task", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.completion.fields.requested_at", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.assignation.fields.time_dedicated", scope: "decidim.time_tracker") %></th>
+            <th><%= t("models.completion.fields.verified_so_far", scope: "decidim.time_tracker") %></th>
+            <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker.admin") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% pending_completions.each do |completion| %>
+            <% assignation = completion.assignation %>
+            <tr data-id="<%= completion.id %>" class="completion--pending">
+              <td>
+                <%= link_to assignation.user.name, decidim.profile_path(assignation.user.nickname) %>
+                (<%= assignation.user.email %>)
+              </td>
+              <td>
+                <%= link_to translated_attribute(assignation.task.name), edit_task_path(assignation.task) %> /
+                <%= link_to translated_attribute(assignation.activity.description), task_activity_assignations_path(assignation.task, assignation.activity) %>
+              </td>
+              <td>
+                <%= l(completion.requested_at, format: :decidim_short) %>
+              </td>
+              <td>
+                <%= clockify_seconds(assignation.time_dedicated) %>
+              </td>
+              <td>
+                <%= assignation.verified_completions_count %>
+              </td>
+              <td class="table-list__actions">
+                <% if allowed_to? :verify, :completion, completion: completion %>
+                  <%= icon_link_to "check-double-line", verify_task_activity_assignation_completion_path(assignation.task, assignation.activity, assignation, completion, success_path: tasks_path), t("completions.actions.verify", scope: "decidim.time_tracker.admin"), method: :patch, class: "action-icon--complete" %>
+                  <%= icon_link_to "close-circle-line", dismiss_task_activity_assignation_completion_path(assignation.task, assignation.activity, assignation, completion, success_path: tasks_path), t("completions.actions.dismiss", scope: "decidim.time_tracker.admin"), method: :delete, class: "action-icon--remove", data: { confirm: t("completions.actions.confirm_dismiss", scope: "decidim.time_tracker.admin") } %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

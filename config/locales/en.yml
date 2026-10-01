@@ -6,29 +6,52 @@ en:
         active: Active
         description: Description
         end_date: End date
+        image: Image
         max_minutes_per_day: Maximum minutes per day
+        min_duration_minutes_per_event: Minimum minutes per session
+        min_events: Sessions needed for a completion
+        progress: Progress (%)
         requests_start_at: Requests start at
         start_date: Start date
+      badge:
+        active: Active
+        description: Description
+        levels_list: Levels
+        metric: Rule
+        name: Name
+        skill_ids: Required skills
+        task_ids: Restrict to tasks
+        weight: Order position
       milestone:
         title: What have you done?
+      skill:
+        description: Description
+        earning_mode: Earned by
+        name: Name
+        required_activities_count: Activities required (leave empty for all)
+        required_completions_per_activity: Completions required per activity
+        required_hours: Required time (hours)
+        task_ids: Earned by working on
       task:
         name: Name
+        progress: Progress (%)
+        skill_ids: Skills
     errors:
-      time_event:
-        attributes:
-          activity:
-            finished: Activity has finished already
-            inactive: Activity is not active
-            no_time_available: User has reached the maximum amount of time available
-              for the day
-            not_started: Activity has not started yet
-          assignation:
-            unassigned: User is not assigned to the task
-          start:
-            date_format: Start time is not a date
-          stop:
-            date_format: Stop time is not a date
-            stop_before_start: Stop is before start
+      models:
+        time_event:
+          attributes:
+            activity:
+              finished: This activity has already finished
+              inactive: Activity is not active
+              no_time_available: You have reached today's limit for this activity
+              not_started: This activity has not started yet
+            assignation:
+              unassigned: You have not been accepted onto this activity
+            start:
+              date_format: Start time is not a date
+            stop:
+              date_format: Stop time is not a date
+              stop_before_start: Stop is before start
   decidim:
     admin:
       actions:
@@ -55,22 +78,78 @@ en:
           step:
             announcement: Announcement
         views:
-          activity:
-            info: Click on the button to track your time.
-            time_elapsed: 'Time elapsed:'
           index:
             account_message: <a href="%{sign_in_url}">Sign in with your account</a>
               or <a href="%{sign_up_url}">sign up</a> to participate in this activity.
-            data:
-              fill: Fill in data
-              submit: Submit
-            request: Request to join activity
+    events:
+      time_tracker:
+        assignation_accepted_event:
+          email_intro: Your request to join the activity "%{resource_title}" in %{participatory_space_title}
+            has been accepted. You can start tracking your time on it now.
+          email_outro: You have received this notification because you asked to join
+            this activity.
+          email_subject: You can start on %{resource_title}
+          notification_title: Your request to join <a href="%{resource_path}">%{resource_title}</a>
+            was accepted. You can start tracking your time.
+        assignation_rejected_event:
+          email_intro: Your request to join the activity "%{resource_title}" in %{participatory_space_title}
+            was not accepted this time.
+          email_outro: You have received this notification because you asked to join
+            this activity.
+          email_subject: Your request to join %{resource_title}
+          notification_title: Your request to join <a href="%{resource_path}">%{resource_title}</a>
+            was not accepted.
+        assignation_requested_event:
+          email_intro: A participant has asked to join the activity "%{resource_title}"
+            in %{participatory_space_title}.
+          email_outro: You have received this notification because you are an admin
+            of this participatory space.
+          email_subject: New request to join %{resource_title}
+          notification_title: A participant asked to join the activity <a href="%{resource_path}">%{resource_title}</a>.
+        skill_certified_event:
+          email_intro: Congratulations! Your work on "%{task_title}" has certified
+            you in "%{resource_title}".
+          email_outro: You have received this notification because you earned a skill
+            certification.
+          email_subject: You earned the %{resource_title} skill
+          notification_title: You earned the <a href="%{resource_path}">%{resource_title}</a>
+            skill.
     forms:
       admin:
         questionnaires:
           questions_form:
             update:
               success: Questions successfully saved
+    gamification:
+      badges:
+        time_tracker_activities:
+          conditions:
+          - Get assigned to an activity in a time tracker and start tracking your
+            time
+          - An administrator marks your work on the activity as completed
+          description: This badge is granted when administrators mark the activities
+            you worked on as completed.
+          description_another: This participant has completed %{score} activities.
+          description_own: You have completed %{score} activities.
+          name: Completed activities
+          next_level_in: Complete %{score} more activities to reach the next level!
+          unearned_another: This participant has not completed any activities yet.
+          unearned_own: You have not completed any activities yet.
+        time_tracker_skills:
+          conditions:
+          - Get assigned to every activity of a task (a skill) in a time tracker
+          - Complete all of the task's activities so administrators can certify the
+            skill
+          description: This badge is granted when you earn skill certifications by
+            completing every activity of a task.
+          description_another: This participant has been certified in %{score} skills.
+          description_own: You have been certified in %{score} skills.
+          name: Certified skills
+          next_level_in: Earn %{score} more skill certifications to reach the next
+            level!
+          unearned_another: This participant has not been certified in any skills
+            yet.
+          unearned_own: You have not been certified in any skills yet.
     log:
       value_types:
         activity_presenter:
@@ -88,6 +167,36 @@ en:
       assignees_count: Volunteers
       tasks_count: Tasks
     time_tracker:
+      activities:
+        show:
+          back: All activities
+          earns: What it earns
+          how_joining_works: Ask to join and an organiser will review your request.
+            You will get a notification when they answer.
+          progress: Progress
+          sign_in_to_join: Sign in to ask to join. An organiser reviews every request.
+          taking_part: Taking part
+          tracked: "%{duration} tracked"
+          volunteers:
+            one: 1 volunteer
+            other: "%{count} volunteers"
+          your_time: You are on this activity and have tracked %{duration} so far.
+      activity_action:
+        accepted: You're in — track time
+        join: Join
+        pending: Request sent
+        rejected: Not accepted
+        requests_open_on: Requests open %{date}
+        terms_first: Accept the terms of participation first
+      activity_questionnaire:
+        show:
+          about_activity: You are answering the follow-up questions for this activity
+      activity_status:
+        finished: Finished
+        inactive: Inactive
+        not_started: Not started
+        open: Open
+        starts_on: Starts %{date}
       admin:
         actions:
           title: Actions
@@ -106,6 +215,19 @@ en:
           edit:
             submit: Update activity
             title: Edit activity
+          form:
+            image_help: Shown on the activity's page and as a thumbnail in the list.
+            progress_help: How far along the activity is, shown to everyone. Leave
+              empty to show no progress.
+            requests_help: Volunteers can ask to join from this date. It has to be
+              before the start date.
+            rule_help: Each time a volunteer tracks this many sessions of at least
+              this length, a completion is filed for an organiser to verify. Set either
+              number to 0 and none is ever filed.
+            sections:
+              about: About the activity
+              dates: When it runs
+              time: Time and completion
           index:
             title: Task activities
           new:
@@ -119,10 +241,15 @@ en:
             accept: Accept
             accept_all: Accept all pending assignations
             assignations: Manage assignations
+            complete: Add verified completion
             confirm_destroy: Are you sure you want to delete this assignation?
             destroy: Delete assignation
             new: New assignation
             reject: Reject
+            uncomplete: Revert last verified completion
+          complete:
+            error: This assignation cannot be marked as completed
+            success: Assignation completion updated successfully
           create:
             error: Error creating assignation
             success: Assignation created successfully
@@ -142,10 +269,99 @@ en:
           update:
             error: Error updating assignation
             success: Assignee updated successfully
+        badges:
+          actions:
+            confirm_destroy: Are you sure you want to delete this badge?
+            destroy: Delete badge
+            edit: Edit badge
+            manage: Manage badges
+            new: New badge
+          create:
+            error: Error creating the badge
+            success: Badge created successfully
+          destroy:
+            success: Badge deleted successfully
+          edit:
+            submit: Update badge
+            title: Edit badge
+          form:
+            active_help: Hidden badges are not shown to participants and nobody progresses
+              on them.
+            description_help: One line on what the badge celebrates. Participants
+              see it on their profile.
+            every_task: Every task on the platform
+            level_reached_at: Level %{level} is reached at
+            levels_count_help: A level is a step on the way to earning the badge in
+              full. Three is a good default — participants see progress early without
+              the badge feeling out of reach.
+            levels_count_option:
+              one: 1 level
+              other: "%{count} levels"
+            metric_explanations:
+              completed_activities: Activity completions an organiser has verified.
+              milestones_created: Milestones volunteers post when they finish a session.
+              required_skills: How many of the skills you pick below a volunteer holds.
+                One skill or several.
+              skills_earned: Any skill certified anywhere, each counting once.
+              time_dedicated_hours: Hours tracked with the timer, verified or not.
+            preview:
+              all_tasks: Counts %{metric} across every task.
+              levels: 'Levels: %{levels}.'
+              no_skills: Choose the skills this badge requires.
+              required_skills: 'Earned by being certified in: %{skills}.'
+              restricted: Counts %{metric} on %{tasks} only.
+            preview_label: This badge will read
+            sections:
+              about: 1. About the badge
+              counts: 2. What it counts
+              levels: 3. Levels
+              publish: 4. Publishing
+            skills_help: The badge levels up as the volunteer is certified in these
+              skills, so it can have as many levels as skills you pick.
+            some_tasks: Only the tasks I choose
+            thresholds_help: These are filled in for you and are usually fine as they
+              are. Change a number only if you want a level to arrive sooner or later.
+            units:
+              completed_activities: verified completions
+              milestones_created: milestones posted
+              required_skills: of the required skills
+              skills_earned: skills certified
+              time_dedicated_hours: hours tracked
+            weight_help: Badges are listed from the lowest number up.
+            which_work: Which work counts
+          index:
+            description: Badges are shared across all time tracker components of the
+              platform. Choose what a badge counts and how many levels it has; participants
+              level up automatically as they work.
+            empty: There are no badges yet.
+            hidden: Hidden
+            shown: Shown
+            title: Badges
+          new:
+            submit: Create badge
+            title: New badge
+          update:
+            error: Error updating the badge
+            success: Badge updated successfully
         breadcrumbs:
           assignations: Assignations
           global: All tasks
           stats: Stats
+        completions:
+          actions:
+            confirm_dismiss: Are you sure you want to dismiss this completion? The
+              participant's tracked time is kept, but this round will not count.
+            dismiss: Dismiss
+            verify: Verify completion
+            verify_all: Verify all
+          bulk_invalid: "%{count} completions could not be verified"
+          bulk_ok: Successfully verified %{count} completions
+          dismiss:
+            error: This completion cannot be dismissed
+            success: Completion dismissed
+          verify:
+            error: This completion cannot be verified
+            success: Completion verified successfully
         exports:
           time_tracker_activity_questionnaire_answers: Activity questionnaire answers
           time_tracker_assignee_questionnaire_answers: Assignee questionnaire answers
@@ -156,6 +372,12 @@ en:
             name: Assignation
           task:
             name: Task
+        navigation:
+          breadcrumb: Breadcrumb
+          label: Time tracker sections
+          skills: Skills & badges
+          stats: Volunteer time
+          tasks: Tasks
         questionnaire_answers:
           index:
             title: "%{total} total responses"
@@ -167,6 +389,85 @@ en:
           questionnaire:
             edit: Edit questionnaire
             manage_questions: Manage questions
+        shared:
+          no_tasks: There are no tasks yet. Create some in a time tracker first.
+        skills:
+          actions:
+            confirm_destroy: Are you sure you want to delete this skill? It will be
+              unassigned from every task.
+            destroy: Delete skill
+            edit: Edit skill
+            manage: Skills & badges
+            new: New skill
+          create:
+            error: Error creating the skill
+            success: Skill created successfully
+          destroy:
+            success: Skill deleted successfully
+          edit:
+            submit: Update skill
+            title: Edit skill
+          form:
+            mode_explanations:
+              completed_activities: Volunteers complete a task's activities and an
+                organiser verifies each completion.
+              time_spent: Volunteers track a number of hours on a task's activities.
+                No verification needed.
+            name_help: Name it as a competence a volunteer could put on a CV — "Group
+              facilitation", not the name of one session.
+            preview:
+              all_one: Complete every activity of the task, verified once by an administrator.
+              all_other: Complete every activity of the task %{count} times over,
+                each verified by an administrator.
+              incomplete: Set the number of hours to finish this rule.
+              some_one: Complete %{activities} of the task's activities, verified
+                once by an administrator.
+              some_other: Complete %{activities} of the task's activities %{count}
+                times over, each verified by an administrator.
+              time_spent: Track %{hours} hours across the task's activities. No administrator
+                verification needed.
+            preview_label: This skill will read
+            required_activities_help: How many of a task's activities must be completed.
+              Leave empty to require all of them.
+            required_completions_help: How many times each of those activities must
+              be completed and verified.
+            required_hours_help: Total hours tracked across a task's activities.
+            sections:
+              about: 1. About the skill
+              rule: 3. How it is earned
+              tasks: 2. Which tasks earn it
+            tasks_help: Working on any of the selected tasks can earn this skill.
+              You can also assign skills from the task form.
+          index:
+            description: Skills are shared by every time tracker on the platform.
+              Attach them to tasks; participants earn them by meeting the rule set
+              on each skill.
+            empty: There are no skills yet.
+            intro: Skills and badges are how the time volunteers give turns into recognition
+              they can show. They are shared by every space on the platform.
+            more_tasks:
+              one: " and 1 more"
+              other: " and %{count} more"
+            no_tasks: Not attached to any task yet
+            organization_admins_only: Skills and badges are shared by every space
+              on the platform, so only organization administrators can create, change
+              or delete them. You can still attach any of them to your tasks.
+            page_title: Skills & badges
+            public_page: See the public page
+            steps:
+              badges: Badges level up on their own as verified work, certified skills,
+                hours and milestones add up.
+              skills: 'Attach skills to tasks. Each skill has a rule: complete some
+                activities, or track some hours.'
+              verify: When a volunteer's work meets an activity's completion rule,
+                you verify it from the tasks page.
+            title: Skills
+          new:
+            submit: Create skill
+            title: New skill
+          update:
+            error: Error updating the skill
+            success: Skill updated successfully
         stats:
           index:
             title: Stats
@@ -192,18 +493,32 @@ en:
           edit:
             submit: Update
             title: Update task
+          form:
+            manage_skills: Manage skills
+            no_skills: Without a skill, the task certifies itself under its own name.
+              Attach a skill so volunteers earn a competence they can name.
+            progress_help: Leave empty to show the average progress of the task's
+              activities.
+            sections:
+              about: About the task
+              skills: Skills it certifies
+            skills_help: Volunteers working on this task earn each selected skill
+              by that skill's own rule.
           index:
             title: Tasks
           new:
             submit: Create
             title: Create task
+          pending_completions:
+            description: Participants whose tracked time met an activity's completion
+              criteria. Completions only count towards badges and skills after you
+              verify them.
+            pending:
+              one: 1 completion waiting for verification
+              other: "%{count} completions waiting for verification"
           update:
             error: Error updating the task
             success: Task updated successfully
-        time_tracker_exports:
-          create:
-            error: Error importing the Time Tracker data to accountability
-            success: Time Tracker data exported to accountability successfully
       admin_log:
         activity:
           create: "%{user_name} created the %{resource_name} activity"
@@ -217,6 +532,9 @@ en:
           create: "%{user_name} created the %{resource_name} task"
           delete: "%{user_name} removed the %{resource_name} task"
           update: "%{user_name} updated the %{resource_name} task"
+      assignation_dates:
+        invited: Added %{date}
+        requested: Requested %{date}
       assignations:
         request:
           error: There was an error assigning you to this activity.
@@ -224,10 +542,83 @@ en:
         show:
           assignations_activity: "%{user_name}'s activity"
           milestones_list: List of milestones
+      badges:
+        how_it_works: How skills and badges work
+        index:
+          badge_rules:
+            all_tasks: Counts %{metric} across every task.
+            required_skills: 'Earned by being certified in these skills: %{skills}.'
+            restricted_to: Counts %{metric} on %{tasks} only.
+          badges_empty: No badges have been set up yet.
+          badges_intro: Badges have levels, and each level has a threshold you reach
+            by getting the counted thing up to that number. A badge based on required
+            skills can be set to need a single skill or several.
+          badges_title: Time Tracker badges
+          counts:
+            completed_activities: verified activity completions
+            milestones_created: milestones posted
+            required_skills: specific certified skills
+            skills_earned: certified skills
+            time_dedicated_hours: hours tracked
+          granted_by: 'Earned by working on: %{tasks}'
+          intro: Skills recognise what you have learned by volunteering here, and
+            badges recognise how much you have done. Both are earned by taking part
+            — you never have to apply for them.
+          levels: 'Levels: %{levels}'
+          my_progress: See my progress
+          platform_badges_intro: These come with Decidim itself and are shared by
+            the whole platform, rather than being set up for this organisation.
+          platform_badges_title: Platform badges
+          skill_rules:
+            completed_activities_all:
+              one: Complete every activity of the task, verified by an administrator.
+              other: Complete every activity of the task %{count} times over, each
+                verified by an administrator.
+            completed_activities_some:
+              one: Complete %{activities} of the task's activities, verified by an
+                administrator.
+              other: Complete %{activities} of the task's activities %{count} times
+                over, each verified by an administrator.
+            time_spent: Track %{hours} hours across the task's activities.
+          skills_empty: No skills have been set up yet.
+          skills_intro: Each skill is certified by working on the tasks listed under
+            it. Only work an administrator has verified counts towards it.
+          skills_title: Skills you can earn here
+          steps:
+            badges: Badges level up on their own as your verified completions, certified
+              skills, tracked hours and milestones add up.
+            certify: Once enough of a task's activities are verified, the skills attached
+              to that task are certified to you.
+            join: Join an activity in a time tracker and wait for an administrator
+              to accept you.
+            track: Track the time you spend on it with the timer, and record a milestone
+              when you stop.
+            verify: When your work meets the activity's completion rules it is submitted
+              to an administrator, who verifies it.
+          steps_title: How you earn them
+          title: Skills & Badges
+        level: Level %{level} of %{max}
+        max_level: Maximum level reached!
+        progress:
+          completed_activities: "%{value} of %{next} activities completed to reach
+            the next level"
+          milestones_created: "%{value} of %{next} milestones posted to reach the
+            next level"
+          required_skills: "%{value} of %{next} required skills earned to reach the
+            next level"
+          skills_earned: "%{value} of %{next} skills earned to reach the next level"
+          time_dedicated_hours: "%{value} of %{next} hours dedicated to reach the
+            next level"
+        title: My badges
       clock:
         hours: "%{n}h"
         minutes: "%{n}m"
         seconds: "%{n}s"
+      completion_rule:
+        daily_limit: Up to %{duration} can be tracked per day.
+        sessions:
+          one: Counts as done after one session of at least %{duration}.
+          other: Counts as done after %{count} sessions of at least %{duration} each.
       default_activity_questionnaire:
         description: Thank you for filling this questionnaire! We are asking you this
           set of questions to help you understand whether your project (and its actions
@@ -291,6 +682,29 @@ en:
         tos: Data answered here is treated as confidential and used for statistical
           purposes only. General <a href="/pages/terms-and-conditions">Terms and Conditions</a>
           also apply. By submitting this questionnaire, you agree to them.
+      duration:
+        hours:
+          one: "%{count} h"
+          other: "%{count} h"
+        hours_minutes: "%{hours} h %{minutes} min"
+        minutes:
+          one: "%{count} min"
+          other: "%{count} min"
+        under_a_minute: less than a minute
+      earnings:
+        badge_levels: 'Badge levels: %{levels}'
+        lead: Earns
+        rules:
+          all_activities:
+            one: Complete every activity here, verified by an organiser
+            other: Complete every activity here %{count} times over, each verified
+              by an organiser
+          some_activities:
+            one: Complete %{activities} of these activities, verified by an organiser
+            other: Complete %{activities} of these activities %{count} times over,
+              each verified by an organiser
+          task_fallback: Certified once every activity here is verified by an organiser
+          time_spent: Track %{hours} hours across these activities
       milestone:
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
         time_dedicated: Time dedicated
@@ -335,6 +749,7 @@ en:
         assignation:
           fields:
             activity: Activity
+            completed: Completed
             email: Email
             invited_at: Invited at
             invited_by: Invited by
@@ -349,10 +764,53 @@ en:
             time_dedicated: Time dedicated
             tos_accepted_at: Joined at
           name: Assignation
+        badge:
+          fields:
+            active: Active
+            all_tasks: All tasks
+            levels: Levels
+            metric: Rule
+            name: Name
+            tasks: Tasks
+          metrics:
+            completed_activities: Verified activity completions
+            milestones_created: Milestones posted
+            required_skills: Required skills
+            skills_earned: Skills earned
+            time_dedicated_hours: Hours dedicated
+          name: Badge
+        completion:
+          fields:
+            pending_count:
+              one: 1 pending
+              other: "%{count} pending"
+            requested_at: Requested at
+            verified_count:
+              one: Verified 1 time
+              other: Verified %{count} times
+            verified_so_far: Verified so far
+          name: Completion
+        milestone:
+          name: Milestones
         questionnaire:
           fields:
             name: Name
             title: Title
+        skill:
+          earning_modes:
+            completed_activities: Completed activities
+            time_spent: Time spent
+          earning_summary:
+            all_activities: all
+            completed_activities: "%{activities} activities, %{times}× each"
+            time_spent: "%{hours}h tracked"
+          fields:
+            certified: Certified
+            description: Description
+            earning_mode: Earned by
+            name: Name
+            tasks_count: Assigned tasks
+          name: Skill
         task:
           fields:
             activities_count: Number of activities
@@ -362,13 +820,24 @@ en:
             assignations_pending: Pending assignations
             name: Name
           name: Task
+        time_entry:
+          name: Time entries
+      my_activities:
+        show:
+          component_report: View my full report for this space
+          empty: You are not signed up for any activity yet.
       reports:
+        activities:
+          title: Activities
+        skills:
+          earned: Earned %{date}, through %{tasks}
+          empty: No skills yet. When an organiser verifies your work on a task, the
+            skills attached to it are certified to you.
+          title: Skills earned
+        total_time: "%{duration} tracked in total"
         user:
           index:
-            accepted: Accepted
-            dedicated_time: 'Time dedicated so far: %{time}'
             empty: You don't have any activity assignations
-            pending: Pending
       time_events:
         start:
           already_started: Counter already started
@@ -380,10 +849,34 @@ en:
           success: Counter stopped successfully
       time_tracker:
         activity:
-          counter_stopped: Counter has been stopped automatically
+          awaiting_verification: Awaiting verification
+          counter_stopped: You have reached today's limit for this activity, so the
+            timer stopped.
+          pause: Pause
           questionnaire:
             answered: Thanks for answering the questionnaire!
-            respond: What do you think about this task?
+            respond: Answer the follow-up questions about this activity
+          session_saved: Session saved. Want to tell everyone what you did?
+          start: Start
+          stop: Stop
+          time_tracked: tracked so far
+          verified:
+            one: Verified once
+            other: Verified %{count} times
+        activity_row:
+          milestones:
+            one: 1 update
+            other: "%{count} updates"
+          progress: Progress
+          volunteers:
+            one: 1 volunteer
+            other: "%{count} volunteers"
+        aside:
+          activities: Activities
+          hours: Hours tracked
+          how_it_works: How skills & badges work
+          my_progress_and_skills: My progress & skills
+          volunteers: Volunteers
         assignee_data:
           answer: Let's start!
           description: To better understand our participants and their relationship
@@ -396,19 +889,27 @@ en:
           inactive: Inactive
           not_started: Will start on %{start_date}
           open: Open, started on %{start_date}
-        idle_activity:
-          assignation_pending: Already applied! Soon an admin will review your application.
-          assignation_rejected: Sorry, you're application has been rejected.
         index:
+          all:
+            title: Tasks and activities
+          back_to_tasks: Back to activities
           empty: There are no activities yet.
-          milestones_list: People working in this activity
+          global_execution_status: Overall progress
+          milestones_list: Latest updates from participants
+          mine:
+            intro: Press start when you begin working and stop when you are done.
+              Verified work certifies the skills shown under each task.
+            title: Your activities
         questionnaire_in_preview_mode: This questionnaire cannot be answered in preview
           mode!
-        request_activity:
-          assignation_pending: Already applied! Soon an admin will review your application.
-          assignation_rejected: Sorry, you're application has been rejected.
-          assignee_questionnaire: Please accept the <a href="%{path}" target="_blank">terms
-            of use</a> to join the activity.
+        task:
+          activities:
+            one: 1 activity
+            other: "%{count} activities"
+          progress: Progress
+          volunteers:
+            one: 1 volunteer
+            other: "%{count} volunteers"
       time_tracker_activity_questionnaire_answers_serializer:
         activity_description: Activity
         activity_id: Activity ID
@@ -420,6 +921,13 @@ en:
         task_name: Task
         unregistered: Unregistered
         user_status: User status
+  errors:
+    messages:
+      skills_missing: requires at least one skill to be selected
+      unreachable:
+        one: cannot go above 1, because the badge requires only 1 skill
+        other: cannot go above %{count}, because the badge requires only %{count}
+          skills
   layouts:
     decidim:
       user_profile:

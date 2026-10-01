@@ -1,58 +1,51 @@
 <%= render partial: "decidim/shared/component_announcement" %>
 
-<section id="sub_hero" class="home__section">
-  <div id="time_tracker" class="columns">
-    <% if activities_empty? %>
-      <div class="callout warning">
-        <%= t(".empty") %>
-      </div>
-    <% else %>
-      <% if !user_signed_in? %>
+<% content_for :aside do %>
+  <%= render partial: "aside" %>
+<% end %>
+
+<%= render layout: "layouts/decidim/shared/layout_two_col" do %>
+  <% if task_list.empty? %>
+    <section class="layout-main__section">
+      <%= cell("decidim/announcement", t("decidim.time_tracker.time_tracker.index.empty")) %>
+    </section>
+  <% else %>
+    <% if !user_signed_in? %>
+      <section class="layout-main__section">
         <%= render partial: "sign_in" %>
-      <% elsif must_fill_in_data? %>
+      </section>
+    <% elsif must_fill_in_data? %>
+      <section class="layout-main__section">
         <%= render partial: "assignee_data" %>
-      <% end %>
+      </section>
+    <% end %>
 
-      <div id="tasks">
-        <% tasks.each do |task| %>
-          <% next if task.activities.active.empty? %>
+    <%# The activities a volunteer has been accepted onto come first, with their
+        timers: tracking time is what they come back to this page to do. %>
+    <% if task_list.accepted_activities.any? %>
+      <section class="layout-main__section time-tracker__mine" id="my-activities" aria-labelledby="my-activities-title">
+        <h2 class="h3 decorator" id="my-activities-title"><%= t("decidim.time_tracker.time_tracker.index.mine.title") %></h2>
+        <p class="time-tracker__lead"><%= t("decidim.time_tracker.time_tracker.index.mine.intro") %></p>
 
-          <h2 class="h2 decorator"><%= translated_attribute task.name %></h2>
-          <div id="activities">
-            <% task.activities.active.each do |activity| %>
-              <div class="section">
-                <% if activity.assignation_accepted? current_user %>
-                  <%= render partial: "activity", locals: { activity: activity } %>
-                <% elsif allowed_to? :create, :assignation, activity: activity %>
-                  <%= render partial: "request_activity", locals: { activity: activity } %>
-                <% else %>
-                  <%= render partial: "idle_activity", locals: { activity: activity } %>
-                <% end %>
+        <div class="time-tracker__timers">
+          <% task_list.accepted_activities.each do |activity| %>
+            <%= render partial: "activity", locals: { activity: } %>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
 
-                <% milestones_for_activity = assignation_milestones(activity) %>
-                <% if milestones_for_activity.any? %>
-                  <div class="section milestones-section">
-                    <div class="milestone-link" data-toggle="milestones-collection-<%= activity.id %>">
-                      <%= icon "arrow-right-s-line", class: "icon--small" %>
-                      <span class="show-milestones">
-                        <%= t(".milestones_list") %>
-                      </span>
-                    </div>
+    <section class="layout-main__section" id="tasks" aria-labelledby="tasks-title">
+      <h2 class="h3 decorator" id="tasks-title"><%= t("decidim.time_tracker.time_tracker.index.all.title") %></h2>
 
-                    <div id="milestones-collection-<%= activity.id %>" data-toggler=".hidden" class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-12 pt-6 hidden" hidden>
-                      <% milestones_for_activity.each do |milestone| %>
-                        <%= card_for milestone, type: :list %>
-                      <% end %>
-                    </div>
-                  </div>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
+      <div class="time-tracker__tasks">
+        <% task_list.tasks.each do |task| %>
+          <%= render partial: "task", locals: { task: } %>
         <% end %>
       </div>
-    <% end %>
-  </div>
-</section>
+    </section>
+  <% end %>
+<% end %>
 
+<%= append_stylesheet_pack_tag "decidim_time_tracker" %>
 <%= append_javascript_pack_tag "decidim_time_tracker" %>

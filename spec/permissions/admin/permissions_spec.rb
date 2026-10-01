@@ -111,6 +111,34 @@ module Decidim::TimeTracker::Admin
       end
     end
 
+    # Skills and badges are shared by the whole organization, so only an
+    # organization admin may change them from inside a component.
+    [:skill, :time_tracker_badge].each do |subject_name|
+      context "when subject is #{subject_name}" do
+        context "when indexing" do
+          it_behaves_like "action is allowed", :admin, :index, subject_name
+        end
+
+        [:create, :update, :destroy].each do |action_name|
+          context "when trying to #{action_name}" do
+            let(:action) do
+              { scope: :admin, action: action_name, subject: subject_name }
+            end
+
+            context "and the user is an organization admin" do
+              let(:user) { create(:user, :admin, organization:) }
+
+              it { is_expected.to be true }
+            end
+
+            context "and the user only administers a space" do
+              it_behaves_like "permission is not set"
+            end
+          end
+        end
+      end
+    end
+
     context "when subject is an assignation" do
       context "when indexing" do
         it_behaves_like "action is allowed", :admin, :index, :assignations

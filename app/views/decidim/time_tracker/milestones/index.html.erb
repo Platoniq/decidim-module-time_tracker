@@ -1,58 +1,53 @@
-<div class="layout-item">
-  <main class="layout-item__main">
-    <div class="section">
-      <%= link_to root_path, class: "small hollow" do %>
-        <div class="milestone-link">
-          <%= icon "arrow-left-s-line", class: "icon--small", role: "img", "aria-hidden": true %>
-          <%= t(".back_to_list") %>
-        </div>
-      <% end %>
-      <h2 class="h2 pt-2"> <%= t(".assignations_activity", user_name: user.name) %> </h2>
+<% presented_user = present(user) %>
+<% joined_at = user_joined_at(user) %>
+<% last_milestone = user_last_milestone(user) %>
 
-      <%= link_to decidim.profile_path(user.nickname) do %>
-        <div class="author pt-2">
-          <div class="author__container">
-            <span class="author__avatar-container">
-              <%= image_tag present(user).avatar_url %>
-            </span>
-            <span class="author__name">
-              <%= user.name %>
-            </span>
-          </div>
-        </div>
-      <% end %>
+<% content_for :aside do %>
+  <div class="time-tracker__person">
+    <%= image_tag presented_user.avatar_url(:big), alt: "", class: "time-tracker__report-avatar" %>
+    <div>
+      <p class="h4"><%= link_to presented_user.name, presented_user.profile_path %></p>
+      <span class="text-gray-2">@<%= presented_user.nickname %></span>
     </div>
+  </div>
 
-    <div class="flex">
-      <div class="section">
-        <% activities.each do |activity| %>
-          <h4 class="h4 decorator pt-10"><%= translated_attribute(activity.description) %></h4>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-12 pt-8">
-            <% activity.milestones.where(user: user).each do |milestone| %>
-              <%= card_for milestone %>
-            <% end %>
-          </div>
+  <dl class="time-tracker__stats">
+    <div class="time-tracker__stat">
+      <dt><%= icon "timer-line" %> <%= t("decidim.time_tracker.milestones.index.total_time") %></dt>
+      <dd><%= duration_in_words(user_total_time_dedicated(user)) %></dd>
+    </div>
+    <div class="time-tracker__stat">
+      <dt><%= icon "calendar-line" %> <%= t("decidim.time_tracker.milestones.index.joined_on") %></dt>
+      <dd><%= joined_at ? l(joined_at.to_date, format: :decidim_short_with_month_name_short) : "—" %></dd>
+    </div>
+    <div class="time-tracker__stat">
+      <dt><%= icon "history" %> <%= t("decidim.time_tracker.milestones.index.last_worked_on") %></dt>
+      <dd><%= last_milestone ? l(last_milestone.created_at.to_date, format: :decidim_short_with_month_name_short) : "—" %></dd>
+    </div>
+  </dl>
+<% end %>
+
+<%= render layout: "layouts/decidim/shared/layout_two_col" do %>
+  <section class="layout-main__section">
+    <%= link_to root_path, class: "time-tracker__back" do %>
+      <%= icon "arrow-left-line" %> <%= t("decidim.time_tracker.milestones.index.back_to_list") %>
+    <% end %>
+    <h1 class="h2"><%= t("decidim.time_tracker.milestones.index.assignations_activity", user_name: presented_user.name) %></h1>
+  </section>
+
+  <% activities.each do |activity| %>
+    <section class="layout-main__section time-tracker__report-section">
+      <p class="time-tracker__eyebrow"><%= stripped_translated_attribute activity.task.name %></p>
+      <h2 class="h4">
+        <%= link_to stripped_translated_attribute(activity.description), task_activity_path(activity.task, activity), class: "time-tracker__activity-title" %>
+      </h2>
+      <div class="time-tracker__milestones">
+        <% activity.milestones.where(user:).order(created_at: :desc, id: :desc).each do |milestone| %>
+          <%= card_for milestone %>
         <% end %>
       </div>
-  </main>
-  <aside class="layout-item__aside">
-    <div class="statistic__container">
-      <div class="statistic">
-        <h3 class="statistic__title"><%= t(".total_time") %></h3>
-        <b><%= clockify_seconds user_total_time_dedicated(user) %></b>
-      </div>
+    </section>
+  <% end %>
+<% end %>
 
-      <div class="statistic">
-        <h3 class="statistic__title"><%= t(".joined_on") %></h3>
-        <b><%= user_joined_at(user).strftime("%d %b %Y") %></b>
-      </div>
-
-      <div class="statistic">
-        <h3 class="statistic__title"><%= t(".last_worked_on") %></h3>
-        <b><%= user_last_milestone(user).created_at.strftime("%d %b %Y") %></b>
-      </div>
-    </div>
-  </aside>
-</div>
-
-<%= append_javascript_pack_tag "decidim_time_tracker" %>
+<%= append_stylesheet_pack_tag "decidim_time_tracker" %>

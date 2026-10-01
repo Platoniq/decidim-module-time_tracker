@@ -1,0 +1,22 @@
+<%# The activities someone has joined or asked to join, with the time they
+    have put into each. Links resolve through each activity's own component,
+    so the list also works outside the component (on "My voluntary work"). %>
+<ul class="time-tracker__assignations">
+  <% assignations.each do |assignation| %>
+    <% activity = assignation.activity %>
+    <% router = Decidim::EngineRouter.main_proxy(activity.task.component) %>
+    <li class="time-tracker__assignation">
+      <div class="time-tracker__assignation-body">
+        <%= link_to stripped_translated_attribute(activity.description), router.task_activity_path(activity.task, activity), class: "time-tracker__activity-title" %>
+        <div class="time-tracker__meta">
+          <span><%= stripped_translated_attribute(activity.task.name) %></span>
+          <%= assignation_status_label assignation.status %>
+          <% if (date = assignation_date(assignation)) %>
+            <span><%= date %></span>
+          <% end %>
+        </div>
+      </div>
+      <span class="time-tracker__assignation-time"><%= duration_in_words(assignation.time_dedicated) %></span>
+    </li>
+  <% end %>
+</ul>

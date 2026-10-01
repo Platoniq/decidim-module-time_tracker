@@ -1,7 +1,7 @@
 <% if activity.answered_by? current_user %>
-  <p class="pt-2"><%= t("questionnaire.answered", scope: "decidim.time_tracker.time_tracker.activity") %></p>
+  <p class="time-tracker__timer-rule"><%= icon "check-line" %> <span><%= t("questionnaire.answered", scope: "decidim.time_tracker.time_tracker.activity") %></span></p>
 <% else %>
-  <%= link_to task_activity_form_path(task_id: activity.task, activity_id: activity, id: activity.questionnaire), class: "comment-link pt-4" do %>
+  <%= link_to task_activity_form_path(task_id: activity.task, activity_id: activity, id: activity.questionnaire), class: "time-tracker__questionnaire-link" do %>
     <%= icon "chat-1-line" %> <%= t("questionnaire.respond", scope: "decidim.time_tracker.time_tracker.activity") %>
   <% end %>
 <% end %>

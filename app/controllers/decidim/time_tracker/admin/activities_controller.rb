@@ -63,18 +63,36 @@ module Decidim
           end
         end
 
+        def reorder
+          enforce_permission_to :update, :activity
+
+          ReorderActivities.call(activities, params[:items_ids]) do
+            on(:ok) do
+              head :ok
+            end
+
+            on(:invalid) do
+              head :bad_request
+            end
+          end
+        end
+
         private
 
         def activities
-          @activities = Decidim::TimeTracker::Activity.where(task: current_task.id)
+          @activities ||= current_task.activities
         end
 
         def current_task
-          @current_task ||= Task.find(params[:task_id])
+          @current_task ||= scoped_task(params[:task_id])
         end
 
+        # nil on the collection routes (new, create, reorder), which the
+        # breadcrumbs rely on; a 404 for an id that is not one of this task's.
         def current_activity
-          @current_activity ||= Activity.find_by(id: params[:id])
+          return if params[:id].blank?
+
+          @current_activity ||= current_task.activities.find(params[:id])
         end
       end
     end

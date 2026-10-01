@@ -1,0 +1,43 @@
+<% content_for :aside do %>
+  <%= render partial: "decidim/time_tracker/time_tracker/aside" %>
+<% end %>
+
+<%= render layout: "layouts/decidim/shared/layout_two_col" do %>
+  <% presented_user = present(current_user) %>
+
+  <section class="layout-main__section">
+    <%= link_to root_path, class: "time-tracker__back" do %>
+      <%= icon "arrow-left-line" %> <%= t("decidim.time_tracker.activities.show.back") %>
+    <% end %>
+
+    <div class="time-tracker__report-header">
+      <%= image_tag presented_user.avatar_url(:big), alt: "", class: "time-tracker__report-avatar" %>
+      <div>
+        <h1 class="h2"><%= presented_user.name %></h1>
+        <p class="time-tracker__meta">
+          <%= link_to "@#{presented_user.nickname}", presented_user.profile_path %>
+          <span><%= icon "timer-line" %> <%= t("decidim.time_tracker.reports.total_time", duration: duration_in_words(total_time)) %></span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="layout-main__section">
+    <%= render partial: "decidim/time_tracker/shared/skills_earned", locals: { certifications: skill_certifications } %>
+  </section>
+
+  <section class="layout-main__section">
+    <%= render partial: "decidim/time_tracker/shared/earned_badges" %>
+  </section>
+
+  <section class="layout-main__section time-tracker__report-section" aria-labelledby="my-activities-title">
+    <h2 class="h4" id="my-activities-title"><%= t("decidim.time_tracker.reports.activities.title") %></h2>
+    <% if assignations.any? %>
+      <%= render partial: "decidim/time_tracker/shared/assignation_list", locals: { assignations: } %>
+    <% else %>
+      <p class="time-tracker__empty"><%= t("decidim.time_tracker.reports.user.index.empty") %></p>
+    <% end %>
+  </section>
+<% end %>
+
+<%= append_stylesheet_pack_tag "decidim_time_tracker" %>
