@@ -37,21 +37,21 @@ en:
         progress: Progress (%)
         skill_ids: Skills
     errors:
-      time_event:
-        attributes:
-          activity:
-            finished: Activity has finished already
-            inactive: Activity is not active
-            no_time_available: User has reached the maximum amount of time available
-              for the day
-            not_started: Activity has not started yet
-          assignation:
-            unassigned: User is not assigned to the task
-          start:
-            date_format: Start time is not a date
-          stop:
-            date_format: Stop time is not a date
-            stop_before_start: Stop is before start
+      models:
+        time_event:
+          attributes:
+            activity:
+              finished: This activity has already finished
+              inactive: Activity is not active
+              no_time_available: You have reached today's limit for this activity
+              not_started: This activity has not started yet
+            assignation:
+              unassigned: You have not been accepted onto this activity
+            start:
+              date_format: Start time is not a date
+            stop:
+              date_format: Stop time is not a date
+              stop_before_start: Stop is before start
   decidim:
     admin:
       actions:
