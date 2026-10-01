@@ -92,8 +92,8 @@ module Decidim::TimeTracker::Admin
           expect(subject.questionnaire.tos["en"]).to eq(custom_activity_questionnaire_seeds[:tos])
           expect(subject.questionnaire.description["en"]).to eq(custom_activity_questionnaire_seeds[:description][:en])
           expect(subject.questionnaire.questions.first.body["en"]).to eq(custom_activity_questionnaire_seeds[:questions][0][:body])
-          expect(subject.questionnaire.questions.second.answer_options.first.body["en"]).to eq(custom_activity_questionnaire_seeds[:questions][1][:answer_options][0][:body])
-          expect(subject.questionnaire.questions.second.answer_options.first.free_text).to be true
+          expect(subject.questionnaire.questions.second.response_options.first.body["en"]).to eq(custom_activity_questionnaire_seeds[:questions][1][:answer_options][0][:body])
+          expect(subject.questionnaire.questions.second.response_options.first.free_text).to be true
         end
       end
     end
@@ -156,8 +156,8 @@ module Decidim::TimeTracker::Admin
           expect(subject.assignee_questionnaire.tos["en"]).to eq(custom_assignee_questionnaire_seeds[:tos])
           expect(subject.assignee_questionnaire.description["en"]).to eq(custom_assignee_questionnaire_seeds[:description][:en])
           expect(subject.assignee_questionnaire.questions.first.body["en"]).to eq(custom_assignee_questionnaire_seeds[:questions][0][:body])
-          expect(subject.assignee_questionnaire.questions.second.answer_options.first.body["en"]).to eq(custom_assignee_questionnaire_seeds[:questions][1][:answer_options][0][:body])
-          expect(subject.assignee_questionnaire.questions.second.answer_options.first.free_text).to be true
+          expect(subject.assignee_questionnaire.questions.second.response_options.first.body["en"]).to eq(custom_assignee_questionnaire_seeds[:questions][1][:answer_options][0][:body])
+          expect(subject.assignee_questionnaire.questions.second.response_options.first.free_text).to be true
         end
       end
     end

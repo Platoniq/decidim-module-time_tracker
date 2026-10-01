@@ -5,7 +5,7 @@ module Decidim
     module Admin
       class ActivityQuestionnaireController < Admin::ApplicationController
         include Decidim::Forms::Admin::Concerns::HasQuestionnaire
-        include Decidim::Forms::Admin::Concerns::HasQuestionnaireAnswersUrlHelper
+        include Decidim::Forms::Admin::Concerns::HasQuestionnaireResponsesUrlHelper
 
         def questionnaire_for
           time_tracker
@@ -53,7 +53,7 @@ module Decidim
               question_id = params["id"]
               question = Decidim::Forms::Question.find_by(id: question_id)
               if question.present?
-                render json: question.answer_options.map { |answer_option| Decidim::Forms::AnswerOptionPresenter.new(answer_option).as_json }
+                render json: question.response_options.map { |answer_option| Decidim::Forms::ResponseOptionPresenter.new(answer_option).as_json }
               else
                 render json: []
               end
