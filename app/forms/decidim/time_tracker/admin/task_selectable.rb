@@ -22,11 +22,15 @@ module Decidim
         # Every task of the organization, across all time tracker components.
         # The organization is reached through the component's participatory
         # space (polymorphic), so it is filtered in Ruby; admin-scale data.
+        #
+        # A component can outlive the space it was in; asking it for its
+        # organization then raises, so those tasks are skipped rather than
+        # taking the whole form down with them.
         def available_tasks
           @available_tasks ||= Decidim::TimeTracker::Task
                                .includes(time_tracker: :component)
                                .order(:id)
-                               .select { |task| task.component&.organization == current_organization }
+                               .select { |task| task.component&.participatory_space&.organization == current_organization }
         end
 
         # Options for a grouped select, one group per component.

@@ -160,7 +160,12 @@ module Decidim
       # demo is that anyone can sign in as any of them and look around, and
       # randomising them made the cast useless for that. Pass `password:` (the
       # rake task reads DEMO_PASSWORD) to use another one.
-      DEFAULT_PASSWORD = "InspireDemo2026!"
+      #
+      # Decidim refuses a password containing any part of the organization's
+      # host, so the default avoids words a host is likely to have ("demo",
+      # "decidim", "platform"…); seeding modules.demo.platoniq.net with the
+      # previous "InspireDemo2026!" failed on exactly that.
+      DEFAULT_PASSWORD = "Lantern-Quokka-4791"
 
       # The administrator is the exception. A shared password written in a
       # public repository would hand the admin panel of any instance running
@@ -171,12 +176,13 @@ module Decidim
         @replace = replace
         @logger = logger || ->(message) { puts message }
         @password = password.presence || DEFAULT_PASSWORD
-        @admin_password = admin_password.presence || SecureRandom.alphanumeric(24)
+        @admin_password = admin_password.presence
       end
 
       def call
         raise "No organization found to seed into" if organization.blank?
 
+        check_passwords!
         handle_existing_demo
 
         log "Seeding the skills & badges demo into #{organization_name}…"
@@ -207,11 +213,42 @@ module Decidim
 
       private
 
-      attr_reader :organization, :replace, :password, :admin_password,
+      attr_reader :organization, :replace, :password,
                   :process, :component, :time_tracker, :tasks, :skills, :participants
 
       def log(message)
         @logger.call(message)
+      end
+
+      # Decidim's password rules depend on the organization (its host, for a
+      # start), so a password that seeds one instance can be refused by
+      # another. Checked before anything is built, so the run stops with the
+      # reason instead of failing on the first account.
+      def check_passwords!
+        { "DEMO_PASSWORD" => password, "DEMO_ADMIN_PASSWORD" => admin_password }.each do |variable, candidate|
+          problems = password_problems(candidate)
+          next if problems.empty?
+
+          raise ArgumentError, "#{variable} is refused for #{organization.host}: #{problems.to_sentence}. Pass another one."
+        end
+      end
+
+      def password_problems(candidate, admin: false)
+        probe = Decidim::User.new(organization:, name: "Ama Boateng", nickname: "demo_volunteer_1",
+                                  email: "demo-volunteer-1@example.org", admin:, password: candidate)
+        probe.validate
+        probe.errors[:password]
+      end
+
+      def admin_password
+        @admin_password ||= generated_admin_password
+      end
+
+      def generated_admin_password
+        loop do
+          candidate = SecureRandom.alphanumeric(24)
+          return candidate if password_problems(candidate, admin: true).empty?
+        end
       end
 
       def organization_name
