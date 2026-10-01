@@ -1,5 +1,18 @@
-<%= render partial: "decidim/time_tracker/admin/breadcrumbs" %>
+<%= render partial: "decidim/time_tracker/admin/navigation" %>
 
-<%= decidim_form_for(@form, url: badge_path(current_badge), html: { class: "form edit_badge" }) do |form| %>
-  <%= render partial: "form", locals: { form: form, title: t("badges.edit.title", scope: "decidim.time_tracker.admin"), submit: t("badges.edit.submit", scope: "decidim.time_tracker.admin") } %>
-<% end %>
+<% add_decidim_page_title(t("badges.edit.title", scope: "decidim.time_tracker.admin")) %>
+<div class="item_show__header">
+  <h1 class="item_show__header-title"><%= t("badges.edit.title", scope: "decidim.time_tracker.admin") %></h1>
+</div>
+
+<div class="item__edit-form">
+  <%= decidim_form_for(@form, url: badge_path(current_badge), html: { class: "form form-defaults edit_badge" }) do |form| %>
+    <%= render partial: "form", locals: { form: } %>
+
+    <div class="item__edit-sticky">
+      <div class="item__edit-sticky-container">
+        <%= form.submit t("badges.edit.submit", scope: "decidim.time_tracker.admin"), class: "button button__sm button__secondary" %>
+      </div>
+    </div>
+  <% end %>
+</div>

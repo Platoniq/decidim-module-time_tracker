@@ -15,7 +15,8 @@ module Decidim
       validates_upload :image, uploader: Decidim::TimeTracker::ActivityImageUploader
 
       belongs_to :task,
-                 class_name: "Decidim::TimeTracker::Task"
+                 class_name: "Decidim::TimeTracker::Task",
+                 inverse_of: :activities
 
       has_many :assignations,
                class_name: "Decidim::TimeTracker::Assignation",
@@ -45,6 +46,12 @@ module Decidim
 
       def organization
         @organization || component&.organization
+      end
+
+      # Lets Decidim's notifications and mailers name the space an activity
+      # belongs to; without it their "in <space>" read "in ".
+      def participatory_space
+        component&.participatory_space
       end
 
       # total number of seconds spent by the user
@@ -90,6 +97,18 @@ module Decidim
         user_remaining_for_date(user, Date.current)
       end
 
+      # Admins set when join requests open; before that the activity is listed
+      # but nobody can ask to join yet.
+      def requests_open?
+        requests_start_at.blank? || requests_start_at <= Time.current
+      end
+
+      # Whether anyone may ask to join right now (who is asking is the
+      # permission's business, not the activity's).
+      def accepts_requests?
+        status.in?([:open, :not_started]) && requests_open?
+      end
+
       def assignation_pending?(user)
         assignations.pending.where(user:).count.positive?
       end
@@ -133,7 +152,7 @@ module Decidim
       def answered_by?(user)
         return false if user.blank?
 
-        questionnaire.answered_by? session_token(user)
+        questionnaire.responded_by? session_token(user)
       end
 
       # used as a unique idenfier when answering the task associated questionnaire

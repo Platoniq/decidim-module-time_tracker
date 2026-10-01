@@ -17,7 +17,7 @@ module Decidim
       end
 
       def activity
-        @activity ||= task.activities.find(params[:id])
+        @activity ||= task.activities.active.find(params[:id])
       end
 
       # The latest milestone of each participant, like the index list.

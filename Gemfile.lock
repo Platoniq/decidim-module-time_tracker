@@ -3,7 +3,6 @@ PATH
   specs:
     decidim-time_tracker (0.8)
       concurrent-ruby (= 1.3.4)
-      decidim-accountability (>= 0.31.0, < 0.32)
       decidim-admin (>= 0.31.0, < 0.32)
       decidim-core (>= 0.31.0, < 0.32)
       decidim-forms (>= 0.31.0, < 0.32)

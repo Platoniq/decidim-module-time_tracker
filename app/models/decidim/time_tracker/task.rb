@@ -12,9 +12,13 @@ module Decidim
       belongs_to :time_tracker,
                  class_name: "Decidim::TimeTracker::TimeTracker"
 
+      # inverse_of is spelled out because the ordering scope stops Rails from
+      # inferring it, and without it every preloaded activity would query for
+      # the task it was just loaded from.
       has_many :activities,
                -> { order("decidim_time_tracker_activities.weight" => :asc, "decidim_time_tracker_activities.id" => :asc) },
                class_name: "Decidim::TimeTracker::Activity",
+               inverse_of: :task,
                dependent: :destroy
 
       has_many :skill_certifications,
@@ -43,6 +47,11 @@ module Decidim
 
       delegate :questionnaire, to: :time_tracker
       delegate :component, to: :time_tracker
+
+      # Lets Decidim's notifications and mailers name the space a task is in.
+      def participatory_space
+        component&.participatory_space
+      end
 
       validates :progress, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
 
@@ -115,7 +124,8 @@ module Decidim
       end
 
       def progress_from_activities
-        active_activities = activities.active
+        # Uses the activities already in memory when the page preloaded them.
+        active_activities = activities.loaded? ? activities.select(&:active?) : activities.active
         return nil if active_activities.empty?
 
         valid_progresses = active_activities.map(&:progress).compact

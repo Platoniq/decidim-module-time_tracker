@@ -84,7 +84,9 @@ one earns level 1 and all three earn level 3.
 The module ships a seed that builds a complete worked example — a youth-led
 theatre season with sixteen tasks in six strands, seven skills, seven badges and
 ten volunteers placed from "just joined" to "every badge earned", so every state
-the public pages can render is visible at once.
+the public pages can render is visible at once. A finished audition and some
+wrap-up work still ahead show the other activity states, and the volunteers wear
+the portraits Decidim ships for its own seeds.
 
 It creates its own participatory space and tags everything it makes, so it is
 safe to point at a running instance.
@@ -97,6 +99,12 @@ bundle exec rails decidim_time_tracker:demo_unseed           # remove it
 
 Pass `ORGANIZATION_HOST=…` to target a specific organization; otherwise the
 first one is used.
+
+Every volunteer in the cast signs in with the same password, so anyone can look
+around as any of them; set it with `DEMO_PASSWORD=…`. The demo administrator
+(`demo-admin@example.org`) never shares it: it gets `DEMO_ADMIN_PASSWORD`, or a
+random password printed at the end of the run. Keep that one to yourself on any
+instance other people can reach.
 
 ## Installation
 

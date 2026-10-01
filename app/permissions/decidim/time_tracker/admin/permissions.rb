@@ -18,21 +18,30 @@ module Decidim
           permission_action
         end
 
+        # Skills and badges belong to the organization and are shared by every
+        # time tracker in it, but they are managed from inside a component.
+        # Anyone who can administer one component may read them, to attach
+        # skills to their own tasks; changing them is reserved to organization
+        # admins, because an edit re-evaluates — and a deletion revokes — the
+        # certifications of participants in every other space too.
         def allowed_skill_action?
           return false unless permission_action.subject.in? [:skill, :skills]
 
-          case permission_action.action
-          when :index, :create, :update, :destroy
-            permission_action.allow!
-          end
+          allow_organization_wide_action!
         end
 
         def allowed_badge_action?
           return false unless permission_action.subject == :time_tracker_badge
 
+          allow_organization_wide_action!
+        end
+
+        def allow_organization_wide_action!
           case permission_action.action
-          when :index, :create, :update, :destroy
+          when :index
             permission_action.allow!
+          when :create, :update, :destroy
+            permission_action.allow! if user.admin?
           end
         end
 

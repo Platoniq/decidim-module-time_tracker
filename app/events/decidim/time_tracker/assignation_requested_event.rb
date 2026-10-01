@@ -2,29 +2,15 @@
 
 module Decidim
   module TimeTracker
-    class AssignationRequestedEvent < Decidim::Events::SimpleEvent
-      def resource_url
-        EngineRouter.admin_proxy(component).task_activity_assignations_path(task, activity)
-      end
-
+    # Tells the space's admins that someone asked to join an activity, and
+    # links them to where the request is accepted.
+    class AssignationRequestedEvent < ActivityEvent
       def resource_path
-        EngineRouter.admin_proxy(component).task_activity_assignations_path(task, activity)
+        Decidim::EngineRouter.admin_proxy(component).task_activity_assignations_path(task, activity)
       end
 
-      def activity
-        @activity ||= resource
-      end
-
-      def task
-        @task ||= activity.task
-      end
-
-      def component
-        @component ||= task.time_tracker.component
-      end
-
-      def resource_title
-        task.name.is_a?(Hash) ? task.name[I18n.locale.to_s] || task.name.values.first : task.name
+      def resource_url
+        Decidim::EngineRouter.admin_proxy(component).task_activity_assignations_url(task, activity)
       end
     end
   end

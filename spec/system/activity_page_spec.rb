@@ -26,7 +26,7 @@ describe "Activity page" do
 
     expect(page).to have_i18n_content(activity.description)
     expect(page).to have_i18n_content(task.name)
-    expect(page).to have_content("1 participant")
+    expect(page).to have_content("1 volunteer")
     expect(page).to have_content(milestone.title)
   end
 
@@ -39,7 +39,7 @@ describe "Activity page" do
   it "is reachable from the activity list" do
     visit Decidim::EngineRouter.main_proxy(component).root_path
 
-    within first(".card--list__heading") do
+    within first(".time-tracker__activity") do
       click_on activity.description["en"]
     end
 

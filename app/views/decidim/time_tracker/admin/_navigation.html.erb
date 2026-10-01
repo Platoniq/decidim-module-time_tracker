@@ -1,0 +1,42 @@
+<%# Rendered at the top of every admin page of the component. Loads the
+    module's admin styles and scripts (the component manifest's
+    admin_stylesheet is not read by Decidim any more) and gives the three
+    areas a tab each, with a trail back up from tasks to activities to people. %>
+<%= append_stylesheet_pack_tag "decidim_time_tracker_admin" %>
+<%= append_javascript_pack_tag "decidim_time_tracker_admin" %>
+
+<% section = if controller_name.in?(%w(skills badges)) then :skills
+             elsif controller_name == "stats" then :stats
+             else :tasks
+             end %>
+
+<nav class="time-tracker-admin__tabs" aria-label="<%= t("decidim.time_tracker.admin.navigation.label") %>">
+  <% { tasks: tasks_path, skills: skills_path, stats: stats_path }.each do |key, path| %>
+    <%= link_to t("decidim.time_tracker.admin.navigation.#{key}"), path,
+                class: "time-tracker-admin__tab#{" is-active" if section == key}",
+                "aria-current": (section == key ? "page" : nil) %>
+  <% end %>
+</nav>
+
+<% crumbs = [] %>
+<% if controller_name.in?(%w(activities assignations)) || (controller_name == "tasks" && action_name.in?(%w(edit update))) %>
+  <% crumbs << [t("decidim.time_tracker.admin.breadcrumbs.global"), tasks_path] %>
+  <% crumbs << [translated_attribute(current_task.name), (edit_task_path(current_task) unless controller_name == "tasks")] %>
+  <% if controller_name == "assignations" %>
+    <% crumbs.last[1] = edit_task_path(current_task) %>
+    <% crumbs << [translated_attribute(current_activity.description), edit_task_activity_path(current_task, current_activity)] %>
+    <% crumbs << [t("decidim.time_tracker.admin.activities.actions.assignations"), (task_activity_assignations_path(current_task, current_activity) if action_name == "new")] %>
+  <% elsif controller_name == "activities" && current_activity %>
+    <% crumbs << [translated_attribute(current_activity.description), nil] %>
+  <% end %>
+<% end %>
+
+<% if crumbs.any? %>
+  <nav class="time-tracker-admin__crumbs" aria-label="<%= t("decidim.time_tracker.admin.navigation.breadcrumb") %>">
+    <ol>
+      <% crumbs.each do |label, path| %>
+        <li><%= path ? link_to(label, path) : content_tag(:span, label, "aria-current": "page") %></li>
+      <% end %>
+    </ol>
+  </nav>
+<% end %>

@@ -27,7 +27,7 @@ module Decidim
       end
 
       def skill_certifications
-        @skill_certifications ||= SkillCertification.where(user: current_user).includes(:task).order(earned_at: :desc)
+        @skill_certifications ||= SkillCertification.where(user: current_user).includes(:skill, :task).order(earned_at: :asc)
       end
 
       def total_time

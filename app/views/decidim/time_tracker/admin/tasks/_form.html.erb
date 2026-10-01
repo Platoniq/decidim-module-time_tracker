@@ -1,22 +1,39 @@
-<div class="row column">
-  <%= form.translated :text_field, :name, autofocus: true %>
-</div>
+<div class="form__wrapper time-tracker-admin__form">
+  <section class="card time-tracker-admin__section">
+    <div class="card-section">
+      <h2 class="time-tracker-admin__section-title"><%= t("decidim.time_tracker.admin.tasks.form.sections.about") %></h2>
+      <div class="row column">
+        <%= form.translated :text_field, :name, autofocus: true %>
+      </div>
+      <div class="row column">
+        <%= form.number_field :progress, step: 1, min: 0, max: 100 %>
+        <p class="help-text"><%= t("decidim.time_tracker.admin.tasks.form.progress_help") %></p>
+      </div>
+    </div>
+  </section>
 
-<div class="row column">
-  <%= form.number_field :progress, step: 0.1, min: 0, max: 100 %>
-</div>
+  <section class="card time-tracker-admin__section">
+    <div class="card-section">
+      <h2 class="time-tracker-admin__section-title"><%= t("decidim.time_tracker.admin.tasks.form.sections.skills") %></h2>
+      <p class="help-text">
+        <%= t("decidim.time_tracker.admin.tasks.form.skills_help") %>
+        <%= link_to t("tasks.form.manage_skills", scope: "decidim.time_tracker.admin"), skills_path %>
+      </p>
 
-<div class="row column">
-  <%= form.select :skill_ids,
-                  options_from_collection_for_select(form.object.available_skills, :id, ->(skill) { translated_attribute(skill.name) }, form.object.skill_ids),
-                  { include_hidden: false },
-                  multiple: true %>
-  <p class="help-text">
-    <%= t("tasks.form.skills_help", scope: "decidim.time_tracker.admin") %>
-    <%= link_to t("tasks.form.manage_skills", scope: "decidim.time_tracker.admin"), skills_path %>
-  </p>
-</div>
-
-<div class="button button__sm button__secondary">
-  <%= form.submit submit %>
+      <% selected = Array(form.object.skill_ids).compact %>
+      <div class="time-tracker-admin__checks">
+        <div class="time-tracker-admin__check-group">
+          <% form.object.available_skills.each do |skill| %>
+            <label class="time-tracker-admin__check">
+              <%= check_box_tag "task[skill_ids][]", skill.id, selected.include?(skill.id), id: "task_skill_ids_#{skill.id}" %>
+              <span><%= translated_attribute(skill.name) %></span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+      <% if selected.empty? %>
+        <p class="help-text time-tracker-admin__warning"><%= t("decidim.time_tracker.admin.tasks.form.no_skills") %></p>
+      <% end %>
+    </div>
+  </section>
 </div>

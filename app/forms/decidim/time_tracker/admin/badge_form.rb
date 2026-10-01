@@ -39,6 +39,7 @@ module Decidim
                     less_than_or_equal_to: Decidim::TimeTracker::Badge::MAX_LEVELS
                   }
         validate :thresholds_are_ascending_positive_integers
+        validate :levels_are_reachable
         validates :skill_ids, presence: true, if: ->(form) { form.metric == "required_skills" }
 
         def map_model(model)
@@ -75,10 +76,23 @@ module Decidim
         end
 
         def skills
-          available_skills.where(id: skill_ids)
+          available_skills.where(id: Array(skill_ids).compact)
         end
 
         private
+
+        # A required_skills badge counts how many of its skills are certified,
+        # so a level above that number could never be reached. The model
+        # refuses such a badge too, but only by raising; caught here, the
+        # admin gets the form back with the reason.
+        def levels_are_reachable
+          return unless metric == "required_skills"
+
+          available = skills.count
+          return if available.zero? || levels.compact.max.to_i <= available
+
+          errors.add(:level_thresholds, :unreachable, count: available)
+        end
 
         def thresholds_are_ascending_positive_integers
           return if levels.blank?

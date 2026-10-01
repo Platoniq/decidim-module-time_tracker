@@ -12,18 +12,25 @@ module Decidim
           attribute :task_ids, [Integer]
         end
 
+        # Checkbox lists submit nothing at all when every box is cleared, so a
+        # missing list means "none" rather than an error.
         def tasks
-          available_tasks.select { |task| task_ids.include?(task.id) }
+          ids = Array(task_ids).compact
+          available_tasks.select { |task| ids.include?(task.id) }
         end
 
         # Every task of the organization, across all time tracker components.
         # The organization is reached through the component's participatory
         # space (polymorphic), so it is filtered in Ruby; admin-scale data.
+        #
+        # A component can outlive the space it was in; asking it for its
+        # organization then raises, so those tasks are skipped rather than
+        # taking the whole form down with them.
         def available_tasks
           @available_tasks ||= Decidim::TimeTracker::Task
                                .includes(time_tracker: :component)
                                .order(:id)
-                               .select { |task| task.component&.organization == current_organization }
+                               .select { |task| task.component&.participatory_space&.organization == current_organization }
         end
 
         # Options for a grouped select, one group per component.

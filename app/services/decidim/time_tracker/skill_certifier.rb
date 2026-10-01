@@ -75,19 +75,20 @@ module Decidim
       # certification itself.
       def award!(skill)
         SkillCertification.create!(user:, task:, skill:, earned_at: Time.current)
-        notify_user
+        notify_user(skill)
       end
 
       def revoke!(certification)
         certification.destroy!
       end
 
-      def notify_user
+      def notify_user(skill)
         Decidim::EventsManager.publish(
           event: "decidim.events.time_tracker.skill_certified_event",
           event_class: Decidim::TimeTracker::SkillCertifiedEvent,
           resource: task,
-          affected_users: [user]
+          affected_users: [user],
+          extra: { skill_id: skill&.id }
         )
       end
     end

@@ -5,11 +5,9 @@
 <% end %>
 
 <%= render layout: "layouts/decidim/shared/layout_two_col" do %>
-  <% if activities_empty? %>
+  <% if task_list.empty? %>
     <section class="layout-main__section">
-      <div class="callout warning">
-        <%= t("decidim.time_tracker.time_tracker.index.empty") %>
-      </div>
+      <%= cell("decidim/announcement", t("decidim.time_tracker.time_tracker.index.empty")) %>
     </section>
   <% else %>
     <% if !user_signed_in? %>
@@ -22,49 +20,32 @@
       </section>
     <% end %>
 
-    <section class="layout-main__section">
-      <div id="tasks">
-        <% tasks.each do |task| %>
-          <% active_activities = task.activities.active %>
-          <% next if active_activities.empty? %>
+    <%# The activities a volunteer has been accepted onto come first, with their
+        timers: tracking time is what they come back to this page to do. %>
+    <% if task_list.accepted_activities.any? %>
+      <section class="layout-main__section time-tracker__mine" id="my-activities" aria-labelledby="my-activities-title">
+        <h2 class="h3 decorator" id="my-activities-title"><%= t("decidim.time_tracker.time_tracker.index.mine.title") %></h2>
+        <p class="time-tracker__lead"><%= t("decidim.time_tracker.time_tracker.index.mine.intro") %></p>
 
-          <h2 class="h4 decorator text-primary"><%= stripped_translated_attribute task.name %></h2>
+        <div class="time-tracker__timers">
+          <% task_list.accepted_activities.each do |activity| %>
+            <%= render partial: "activity", locals: { activity: } %>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
 
-          <%= render partial: "task_earnings", locals: { task: task } %>
+    <section class="layout-main__section" id="tasks" aria-labelledby="tasks-title">
+      <h2 class="h3 decorator" id="tasks-title"><%= t("decidim.time_tracker.time_tracker.index.all.title") %></h2>
 
-          <div id="activities" class="card--list">
-            <% active_activities.each do |activity| %>
-              <% if activity.assignation_accepted? current_user %>
-                <%= render partial: "activity", locals: { activity: activity } %>
-              <% elsif allowed_to? :create, :assignation, activity: activity %>
-                <%= render partial: "request_activity", locals: { activity: activity } %>
-              <% else %>
-                <%= render partial: "idle_activity", locals: { activity: activity } %>
-              <% end %>
-
-              <% milestones_for_activity = assignation_milestones(activity) %>
-              <% if milestones_for_activity.any? %>
-                <div class="card--list__item milestones-section">
-                  <div class="milestone-link" data-toggle="milestones-collection-<%= activity.id %>">
-                    <%= icon "arrow-right-s-line", class: "icon--small" %>
-                    <span class="show-milestones">
-                      <%= t("decidim.time_tracker.time_tracker.index.milestones_list") %>
-                    </span>
-                  </div>
-
-                  <div id="milestones-collection-<%= activity.id %>" data-toggler=".hidden" class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-12 pt-6 hidden" hidden>
-                    <% milestones_for_activity.each do |milestone| %>
-                      <%= card_for milestone, type: :list %>
-                    <% end %>
-                  </div>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
+      <div class="time-tracker__tasks">
+        <% task_list.tasks.each do |task| %>
+          <%= render partial: "task", locals: { task: } %>
         <% end %>
       </div>
     </section>
   <% end %>
 <% end %>
 
+<%= append_stylesheet_pack_tag "decidim_time_tracker" %>
 <%= append_javascript_pack_tag "decidim_time_tracker" %>

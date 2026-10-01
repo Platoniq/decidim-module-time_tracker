@@ -18,7 +18,7 @@ describe "User reports page" do
     end
 
     it "shows a link to the user report" do
-      expect(page).to have_link("My Progress & Skills")
+      expect(page).to have_link("My progress & skills")
     end
   end
 
@@ -42,10 +42,10 @@ describe "User reports page" do
 
       it "shows the list of assignations and the time dedicated" do
         visit report_path
-        expect(page).to have_content "Time dedicated so far"
+        expect(page).to have_content "tracked in total"
 
         # Assignations are sorted accepted, pending, rejected (see UserReportController#assignations).
-        activities = all(".time-tracker--activity")
+        activities = all(".time-tracker__assignation")
         expect(activities.size).to eq(3)
 
         within activities[0] do

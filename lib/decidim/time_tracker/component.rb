@@ -5,7 +5,6 @@ require_dependency "decidim/components/namer"
 Decidim.register_component(:time_tracker) do |component|
   component.engine = Decidim::TimeTracker::Engine
   component.admin_engine = Decidim::TimeTracker::AdminEngine
-  component.admin_stylesheet = "decidim/time_tracker/admin/time_tracker"
   component.icon = "media/images/decidim_time_tracker.svg"
   component.permissions_class_name = "Decidim::TimeTracker::Permissions"
 
@@ -25,14 +24,23 @@ Decidim.register_component(:time_tracker) do |component|
     end
   end
 
+  # A time tracker that holds any work cannot be deleted: its tasks carry
+  # people's tracked time, certifications and badge progress. An empty one is
+  # removed together with the records CreateTimeTracker made for it, which no
+  # foreign key would otherwise clean up.
   component.on(:before_destroy) do |instance|
-    # Code executed before removing the component
     time_tracker = Decidim::TimeTracker::TimeTracker.find_by(decidim_component_id: instance.id)
+    next if time_tracker.blank?
 
-    answers = Decidim::Forms::Response.where(questionnaire: time_tracker.questionnaire)
-    tasks = Decidim::TimeTracker::Task.where(time_tracker:)
+    assignee_data = time_tracker.assignee_data
+    questionnaires = [time_tracker.questionnaire, assignee_data&.questionnaire].compact
 
-    raise StandardError, "Can't remove this component, there are resources associated" if [answers, assignation_answers, tasks].any?(&:any?)
+    holds_work = time_tracker.tasks.exists? || questionnaires.any? { |questionnaire| questionnaire.responses.exists? }
+    raise StandardError, "Can't remove this component, there are resources associated" if holds_work
+
+    Decidim::TimeTracker::TosAcceptance.where(time_tracker:).delete_all
+    assignee_data&.destroy!
+    time_tracker.destroy!
   end
 
   # These actions permissions can be configured in the admin panel
@@ -90,7 +98,7 @@ Decidim.register_component(:time_tracker) do |component|
       time_tracker = Decidim::TimeTracker::TimeTracker.find_by(component: f)
 
       Decidim::Forms::Response.joins(:questionnaire).where(questionnaire: time_tracker.activity_questionnaire)
-                            .group_by do |answer|
+                              .group_by do |answer|
         answer.session_token.split("-").first
       end.values
     end
@@ -167,7 +175,7 @@ Decidim.register_component(:time_tracker) do |component|
                                            question_type: "single_option",
                                            body: Decidim::Faker::Localized.sentence(word_count: 5),
                                            position: 2,
-                                           answer_options: 3.times.to_a.map { Decidim::Forms::ResponseOption.new(body: Decidim::Faker::Localized.sentence(word_count: 5)) }
+                                           response_options: 3.times.to_a.map { Decidim::Forms::ResponseOption.new(body: Decidim::Faker::Localized.sentence(word_count: 5)) }
                                          }
                                        ])
     end
@@ -235,8 +243,8 @@ Decidim.register_component(:time_tracker) do |component|
               next unless question.question_type == "single_option"
 
               Decidim::Forms::ResponseChoice.create(
-                answer:,
-                answer_option: question.response_options.sample,
+                response: answer,
+                response_option: question.response_options.sample,
                 body: question.body["en"]
               )
             end

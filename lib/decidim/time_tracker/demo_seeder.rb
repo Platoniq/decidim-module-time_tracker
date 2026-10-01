@@ -98,6 +98,45 @@ module Decidim
         strands: [:facilitation, :performance, :production]
       }.freeze
 
+      # The strands above all run across the whole season, so on their own
+      # every activity on the page would read "Open". Two more tasks show the
+      # other states: an audition that has already happened, and wrap-up work
+      # still ahead — one activity already taking requests, one whose requests
+      # open later. Offsets are from the moment the seed runs. Nobody has
+      # tracked time on these, so they stay consistent with the cast's history.
+      TIMED_TASKS = [
+        {
+          name: "Open auditions",
+          strand: :performance,
+          activities: [
+            { description: "Run the open auditions", requests: -12.weeks, starts: -10.weeks, ends: -3.weeks }
+          ]
+        },
+        {
+          name: "Season wrap-up",
+          strand: :production,
+          activities: [
+            { description: "Plan the closing celebration", requests: -1.week, starts: 3.weeks, ends: 5.weeks },
+            { description: "Return borrowed equipment", requests: 2.weeks, starts: 6.weeks, ends: 7.weeks }
+          ]
+        }
+      ].freeze
+
+      # How far along each activity is, as an admin would report it, cycled
+      # through the strand activities so the page shows a spread of progress.
+      PROGRESS_STEPS = [100, 85, 70, 60, 45, 30, 20, 10].freeze
+
+      # Portraits from the avatars Decidim ships for its own seeds, picked to
+      # suit each name. A face per volunteer makes the avatar stacks and the
+      # people lists read as people rather than as rows of blank discs.
+      AVATARS = {
+        "Ama Boateng" => "080", "Bilal Haddad" => "033", "Cerys Morgan" => "083",
+        "Dmitri Volkov" => "072", "Efua Mensah" => "078", "Farida Aziz" => "046",
+        "Gethin Price" => "020", "Halima Yusuf" => "093", "Ivan Petrov" => "040",
+        "Jasmine Clarke" => "009", "Sam Organiser" => "088", "Alex Rivera" => "089",
+        "Blair Okoye" => "071"
+      }.freeze
+
       # Everything above is built for a realistic-looking programme, where an
       # activity needs half an hour of tracked time before a completion is
       # filed. That is unwatchable on camera, so the video setup below adds a
@@ -110,27 +149,40 @@ module Decidim
 
       VIDEO_ACCOUNTS = {
         # Names deliberately avoid the word "demo": Decidim rejects a password
-        # that resembles the account's own name, and these share a password
-        # with the rest of the cast.
+        # that resembles the account's own name, and the volunteers share a
+        # password with the rest of the cast.
         "demo-admin@example.org" => { name: "Sam Organiser", nickname: "demo_admin", admin: true },
         "demo-user-a@example.org" => { name: "Alex Rivera", nickname: "demo_user_a", admin: false },
         "demo-user-b@example.org" => { name: "Blair Okoye", nickname: "demo_user_b", admin: false }
       }.freeze
 
-      # Every demo account shares this, the whole cast included — the point of
-      # the demo is that anyone can sign in as any of these and look around.
-      # Randomising the volunteers' passwords made them useless for that.
-      DEMO_PASSWORD = "InspireDemo2026!"
+      # Every volunteer account shares one known password — the point of the
+      # demo is that anyone can sign in as any of them and look around, and
+      # randomising them made the cast useless for that. Pass `password:` (the
+      # rake task reads DEMO_PASSWORD) to use another one.
+      #
+      # Decidim refuses a password containing any part of the organization's
+      # host, so the default avoids words a host is likely to have ("demo",
+      # "decidim", "platform"…); seeding modules.demo.platoniq.net with the
+      # previous "InspireDemo2026!" failed on exactly that.
+      DEFAULT_PASSWORD = "Lantern-Quokka-4791"
 
-      def initialize(organization: nil, replace: false, logger: nil)
+      # The administrator is the exception. A shared password written in a
+      # public repository would hand the admin panel of any instance running
+      # the demo to whoever read this file, so unless one is given it gets a
+      # random password, printed once at the end of the run.
+      def initialize(organization: nil, replace: false, logger: nil, password: nil, admin_password: nil)
         @organization = organization || Decidim::Organization.first
         @replace = replace
         @logger = logger || ->(message) { puts message } # rubocop:disable Rails/Output
+        @password = password.presence || DEFAULT_PASSWORD
+        @admin_password = admin_password.presence
       end
 
       def call
         raise "No organization found to seed into" if organization.blank?
 
+        check_passwords!
         handle_existing_demo
 
         log "Seeding the skills & badges demo into #{organization_name}…"
@@ -144,6 +196,7 @@ module Decidim
           build_badges
           build_participants
           certify_everyone
+          build_timed_tasks
           build_video_setup
         end
 
@@ -160,10 +213,42 @@ module Decidim
 
       private
 
-      attr_reader :organization, :replace, :process, :component, :time_tracker, :tasks, :skills, :participants
+      attr_reader :organization, :replace, :password,
+                  :process, :component, :time_tracker, :tasks, :skills, :participants
 
       def log(message)
         @logger.call(message)
+      end
+
+      # Decidim's password rules depend on the organization (its host, for a
+      # start), so a password that seeds one instance can be refused by
+      # another. Checked before anything is built, so the run stops with the
+      # reason instead of failing on the first account.
+      def check_passwords!
+        { "DEMO_PASSWORD" => password, "DEMO_ADMIN_PASSWORD" => admin_password }.each do |variable, candidate|
+          problems = password_problems(candidate)
+          next if problems.empty?
+
+          raise ArgumentError, "#{variable} is refused for #{organization.host}: #{problems.to_sentence}. Pass another one."
+        end
+      end
+
+      def password_problems(candidate, admin: false)
+        probe = Decidim::User.new(organization:, name: "Ama Boateng", nickname: "demo_volunteer_1",
+                                  email: "demo-volunteer-1@example.org", admin:, password: candidate)
+        probe.validate
+        probe.errors[:password]
+      end
+
+      def admin_password
+        @admin_password ||= generated_admin_password
+      end
+
+      def generated_admin_password
+        loop do
+          candidate = SecureRandom.alphanumeric(24)
+          return candidate if password_problems(candidate, admin: true).empty?
+        end
       end
 
       def organization_name
@@ -325,6 +410,7 @@ module Decidim
           ),
           published_at: Time.current
         )
+        attach_core_seed_image(@process, :hero_image, "city.jpeg")
         log "  process: /processes/#{SLUG}"
       end
 
@@ -387,6 +473,7 @@ module Decidim
             description: localized(description),
             active: true,
             weight: index,
+            progress: PROGRESS_STEPS[((weight * 3) + index) % PROGRESS_STEPS.size],
             start_date: 2.months.ago,
             end_date: 2.months.from_now,
             requests_start_at: 2.months.ago,
@@ -580,13 +667,13 @@ module Decidim
       end
 
       def create_user(name, index)
-        Decidim::User.create!(
+        user = Decidim::User.create!(
           organization:,
           name:,
           nickname: "demo_volunteer_#{index}",
           email: "demo-volunteer-#{index}@example.org",
-          password: DEMO_PASSWORD,
-          password_confirmation: DEMO_PASSWORD,
+          password:,
+          password_confirmation: password,
           confirmed_at: Time.current,
           # Decidim makes an admin change their password on first sign-in when
           # this is blank (User#needs_password_update?). Mid-demo that means
@@ -596,6 +683,8 @@ module Decidim
           accepted_tos_version: organization.tos_version || Time.current,
           locale: organization.default_locale
         )
+        attach_avatar(user)
+        user
       end
 
       def accept_tos(user)
@@ -680,6 +769,64 @@ module Decidim
         end
       end
 
+      # The finished audition and the wrap-up still ahead. Each certifies its
+      # strand's skill, like every other task; the audition was attended by the
+      # volunteers who went on to perform, who keep it on their list as a
+      # finished activity.
+      def build_timed_tasks
+        weight = tasks.values.flatten.size
+
+        TIMED_TASKS.each do |definition|
+          weight += 1
+          task = Decidim.traceability.create!(
+            Decidim::TimeTracker::Task,
+            admin,
+            name: localized(definition[:name]),
+            time_tracker:,
+            weight:
+          )
+
+          definition[:activities].each_with_index do |activity, index|
+            create_timed_activity(task, activity, index)
+          end
+
+          skills.fetch(definition[:strand]).tasks << task
+          join_performers(task) if definition[:strand] == :performance
+        end
+
+        log "  timed tasks: #{TIMED_TASKS.size} (one finished, one ahead)"
+      end
+
+      def create_timed_activity(task, activity, index)
+        Decidim.traceability.create!(
+          Decidim::TimeTracker::Activity,
+          admin,
+          task:,
+          description: localized(activity[:description]),
+          active: true,
+          weight: index,
+          requests_start_at: Time.current + activity[:requests],
+          start_date: Time.current + activity[:starts],
+          end_date: Time.current + activity[:ends],
+          max_minutes_per_day: 180,
+          min_events: 1,
+          min_duration_minutes_per_event: 30
+        )
+      end
+
+      def join_performers(task)
+        performers = participants.select { |participant| participant[:work].has_key?(:performance) }
+
+        task.activities.each do |activity|
+          performers.each do |participant|
+            Decidim::TimeTracker::Assignation.create!(
+              activity:, user: participant[:user], status: :accepted,
+              invited_at: 11.weeks.ago, invited_by_user: admin
+            )
+          end
+        end
+      end
+
       # The recording setup: a fast task, a skill it certifies, and the three
       # accounts used on camera.
       def build_video_setup
@@ -720,13 +867,14 @@ module Decidim
         )
 
         @video_users = VIDEO_ACCOUNTS.map do |email, attrs|
+          account_password = attrs[:admin] ? admin_password : password
           user = Decidim::User.create!(
             organization:,
             name: attrs[:name],
             nickname: attrs[:nickname],
             email:,
-            password: DEMO_PASSWORD,
-            password_confirmation: DEMO_PASSWORD,
+            password: account_password,
+            password_confirmation: account_password,
             confirmed_at: Time.current,
             password_updated_at: Time.current,
             tos_agreement: true,
@@ -736,6 +884,7 @@ module Decidim
             # Set so the admin lands in the panel instead of a terms screen.
             admin_terms_accepted_at: (Time.current if attrs[:admin])
           )
+          attach_avatar(user)
           accept_tos(user) unless attrs[:admin]
           user
         end
@@ -760,7 +909,7 @@ module Decidim
             "#{demo_badges.size} badges, " \
             "#{tasks.values.flatten.size} tasks."
         log ""
-        log "Participants (all accounts use the password #{DEMO_PASSWORD}):"
+        log "Participants (all volunteer accounts use the password #{password}):"
 
         participants.each do |participant|
           user = participant[:user]
@@ -774,7 +923,7 @@ module Decidim
         end
 
         log ""
-        log "For recording (password #{DEMO_PASSWORD}):"
+        log "For recording (volunteers: #{password}; administrator: #{admin_password}):"
         (@video_users || []).each do |u|
           role = u.admin? ? "administrator" : "volunteer"
           extra = case u.nickname
@@ -791,6 +940,21 @@ module Decidim
 
       def localized(text)
         organization.available_locales.index_with { text }
+      end
+
+      def attach_avatar(user)
+        number = AVATARS[user.name]
+        attach_core_seed_image(user, :avatar, "avatars", "#{number}.jpg") if number
+      end
+
+      # Images come from the seed files bundled with decidim-core, so the demo
+      # carries none of its own. A missing file just leaves the default
+      # placeholder in place.
+      def attach_core_seed_image(record, attachment, *path)
+        file = Decidim::Core::Engine.root.join("db", "seeds", *path)
+        return unless file.exist?
+
+        record.public_send(attachment).attach(io: File.open(file), filename: file.basename.to_s, content_type: "image/jpeg")
       end
     end
   end
