@@ -98,6 +98,45 @@ module Decidim
         strands: [:facilitation, :performance, :production]
       }.freeze
 
+      # The strands above all run across the whole season, so on their own
+      # every activity on the page would read "Open". Two more tasks show the
+      # other states: an audition that has already happened, and wrap-up work
+      # still ahead — one activity already taking requests, one whose requests
+      # open later. Offsets are from the moment the seed runs. Nobody has
+      # tracked time on these, so they stay consistent with the cast's history.
+      TIMED_TASKS = [
+        {
+          name: "Open auditions",
+          strand: :performance,
+          activities: [
+            { description: "Run the open auditions", requests: -12.weeks, starts: -10.weeks, ends: -3.weeks }
+          ]
+        },
+        {
+          name: "Season wrap-up",
+          strand: :production,
+          activities: [
+            { description: "Plan the closing celebration", requests: -1.week, starts: 3.weeks, ends: 5.weeks },
+            { description: "Return borrowed equipment", requests: 2.weeks, starts: 6.weeks, ends: 7.weeks }
+          ]
+        }
+      ].freeze
+
+      # How far along each activity is, as an admin would report it, cycled
+      # through the strand activities so the page shows a spread of progress.
+      PROGRESS_STEPS = [100, 85, 70, 60, 45, 30, 20, 10].freeze
+
+      # Portraits from the avatars Decidim ships for its own seeds, picked to
+      # suit each name. A face per volunteer makes the avatar stacks and the
+      # people lists read as people rather than as rows of blank discs.
+      AVATARS = {
+        "Ama Boateng" => "080", "Bilal Haddad" => "033", "Cerys Morgan" => "083",
+        "Dmitri Volkov" => "072", "Efua Mensah" => "078", "Farida Aziz" => "046",
+        "Gethin Price" => "020", "Halima Yusuf" => "093", "Ivan Petrov" => "040",
+        "Jasmine Clarke" => "009", "Sam Organiser" => "088", "Alex Rivera" => "089",
+        "Blair Okoye" => "071"
+      }.freeze
+
       # Everything above is built for a realistic-looking programme, where an
       # activity needs half an hour of tracked time before a completion is
       # filed. That is unwatchable on camera, so the video setup below adds a
@@ -151,6 +190,7 @@ module Decidim
           build_badges
           build_participants
           certify_everyone
+          build_timed_tasks
           build_video_setup
         end
 
@@ -333,6 +373,7 @@ module Decidim
           ),
           published_at: Time.current
         )
+        attach_core_seed_image(@process, :hero_image, "city.jpeg")
         log "  process: /processes/#{SLUG}"
       end
 
@@ -395,6 +436,7 @@ module Decidim
             description: localized(description),
             active: true,
             weight: index,
+            progress: PROGRESS_STEPS[((weight * 3) + index) % PROGRESS_STEPS.size],
             start_date: 2.months.ago,
             end_date: 2.months.from_now,
             requests_start_at: 2.months.ago,
@@ -588,7 +630,7 @@ module Decidim
       end
 
       def create_user(name, index)
-        Decidim::User.create!(
+        user = Decidim::User.create!(
           organization:,
           name:,
           nickname: "demo_volunteer_#{index}",
@@ -604,6 +646,8 @@ module Decidim
           accepted_tos_version: organization.tos_version || Time.current,
           locale: organization.default_locale
         )
+        attach_avatar(user)
+        user
       end
 
       def accept_tos(user)
@@ -688,6 +732,64 @@ module Decidim
         end
       end
 
+      # The finished audition and the wrap-up still ahead. Each certifies its
+      # strand's skill, like every other task; the audition was attended by the
+      # volunteers who went on to perform, who keep it on their list as a
+      # finished activity.
+      def build_timed_tasks
+        weight = tasks.values.flatten.size
+
+        TIMED_TASKS.each do |definition|
+          weight += 1
+          task = Decidim.traceability.create!(
+            Decidim::TimeTracker::Task,
+            admin,
+            name: localized(definition[:name]),
+            time_tracker:,
+            weight:
+          )
+
+          definition[:activities].each_with_index do |activity, index|
+            create_timed_activity(task, activity, index)
+          end
+
+          skills.fetch(definition[:strand]).tasks << task
+          join_performers(task) if definition[:strand] == :performance
+        end
+
+        log "  timed tasks: #{TIMED_TASKS.size} (one finished, one ahead)"
+      end
+
+      def create_timed_activity(task, activity, index)
+        Decidim.traceability.create!(
+          Decidim::TimeTracker::Activity,
+          admin,
+          task:,
+          description: localized(activity[:description]),
+          active: true,
+          weight: index,
+          requests_start_at: Time.current + activity[:requests],
+          start_date: Time.current + activity[:starts],
+          end_date: Time.current + activity[:ends],
+          max_minutes_per_day: 180,
+          min_events: 1,
+          min_duration_minutes_per_event: 30
+        )
+      end
+
+      def join_performers(task)
+        performers = participants.select { |participant| participant[:work].has_key?(:performance) }
+
+        task.activities.each do |activity|
+          performers.each do |participant|
+            Decidim::TimeTracker::Assignation.create!(
+              activity:, user: participant[:user], status: :accepted,
+              invited_at: 11.weeks.ago, invited_by_user: admin
+            )
+          end
+        end
+      end
+
       # The recording setup: a fast task, a skill it certifies, and the three
       # accounts used on camera.
       def build_video_setup
@@ -745,6 +847,7 @@ module Decidim
             # Set so the admin lands in the panel instead of a terms screen.
             admin_terms_accepted_at: (Time.current if attrs[:admin])
           )
+          attach_avatar(user)
           accept_tos(user) unless attrs[:admin]
           user
         end
@@ -800,6 +903,21 @@ module Decidim
 
       def localized(text)
         organization.available_locales.index_with { text }
+      end
+
+      def attach_avatar(user)
+        number = AVATARS[user.name]
+        attach_core_seed_image(user, :avatar, "avatars", "#{number}.jpg") if number
+      end
+
+      # Images come from the seed files bundled with decidim-core, so the demo
+      # carries none of its own. A missing file just leaves the default
+      # placeholder in place.
+      def attach_core_seed_image(record, attachment, *path)
+        file = Decidim::Core::Engine.root.join("db", "seeds", *path)
+        return unless file.exist?
+
+        record.public_send(attachment).attach(io: File.open(file), filename: file.basename.to_s, content_type: "image/jpeg")
       end
     end
   end

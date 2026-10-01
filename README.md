@@ -84,7 +84,9 @@ one earns level 1 and all three earn level 3.
 The module ships a seed that builds a complete worked example — a youth-led
 theatre season with sixteen tasks in six strands, seven skills, seven badges and
 ten volunteers placed from "just joined" to "every badge earned", so every state
-the public pages can render is visible at once.
+the public pages can render is visible at once. A finished audition and some
+wrap-up work still ahead show the other activity states, and the volunteers wear
+the portraits Decidim ships for its own seeds.
 
 It creates its own participatory space and tags everything it makes, so it is
 safe to point at a running instance.
