@@ -86,18 +86,34 @@ en:
             request: Request to join activity
     events:
       time_tracker:
+        assignation_accepted_event:
+          email_intro: Your request to join the activity "%{resource_title}" in %{participatory_space_title}
+            has been accepted. You can start tracking your time on it now.
+          email_outro: You have received this notification because you asked to join
+            this activity.
+          email_subject: You can start on %{resource_title}
+          notification_title: Your request to join <a href="%{resource_path}">%{resource_title}</a>
+            was accepted. You can start tracking your time.
+        assignation_rejected_event:
+          email_intro: Your request to join the activity "%{resource_title}" in %{participatory_space_title}
+            was not accepted this time.
+          email_outro: You have received this notification because you asked to join
+            this activity.
+          email_subject: Your request to join %{resource_title}
+          notification_title: Your request to join <a href="%{resource_path}">%{resource_title}</a>
+            was not accepted.
         assignation_requested_event:
-          email_intro: A user has requested to join the activity "%{resource_title}"
+          email_intro: A participant has asked to join the activity "%{resource_title}"
             in %{participatory_space_title}.
           email_outro: You have received this notification because you are an admin
             of this participatory space.
-          email_subject: New assignation request for %{resource_title}
-          notification_title: A user requested to join the activity <a href="%{resource_path}">%{resource_title}</a>.
+          email_subject: New request to join %{resource_title}
+          notification_title: A participant asked to join the activity <a href="%{resource_path}">%{resource_title}</a>.
         skill_certified_event:
-          email_intro: Congratulations! You have earned the "%{resource_title}" skill
-            by completing all of its activities.
-          email_outro: You have received this notification because you completed every
-            activity of this skill.
+          email_intro: Congratulations! Your work on "%{task_title}" has certified
+            you in "%{resource_title}".
+          email_outro: You have received this notification because you earned a skill
+            certification.
           email_subject: You earned the %{resource_title} skill
           notification_title: You earned the <a href="%{resource_path}">%{resource_title}</a>
             skill.

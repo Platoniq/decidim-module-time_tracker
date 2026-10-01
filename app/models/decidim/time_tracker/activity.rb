@@ -47,6 +47,12 @@ module Decidim
         @organization || component&.organization
       end
 
+      # Lets Decidim's notifications and mailers name the space an activity
+      # belongs to; without it their "in <space>" read "in ".
+      def participatory_space
+        component&.participatory_space
+      end
+
       # total number of seconds spent by the user
       # not counting current counters
       def user_total_seconds(user)

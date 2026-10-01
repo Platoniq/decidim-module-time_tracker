@@ -44,6 +44,11 @@ module Decidim
       delegate :questionnaire, to: :time_tracker
       delegate :component, to: :time_tracker
 
+      # Lets Decidim's notifications and mailers name the space a task is in.
+      def participatory_space
+        component&.participatory_space
+      end
+
       validates :progress, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
 
       def progress
