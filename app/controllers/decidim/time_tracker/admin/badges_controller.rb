@@ -6,6 +6,7 @@ module Decidim
       # Manages the organization-wide badges participants can earn. Admins
       # define each badge's rule (metric) and level thresholds here.
       class BadgesController < Admin::ApplicationController
+        helper Decidim::TimeTracker::BadgesHelper
         helper_method :badges, :current_badge
 
         def index

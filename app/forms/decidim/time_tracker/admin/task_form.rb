@@ -29,7 +29,7 @@ module Decidim
         end
 
         def skills
-          available_skills.where(id: skill_ids)
+          available_skills.where(id: Array(skill_ids).compact)
         end
       end
     end

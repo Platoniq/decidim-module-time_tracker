@@ -12,8 +12,11 @@ module Decidim
           attribute :task_ids, [Integer]
         end
 
+        # Checkbox lists submit nothing at all when every box is cleared, so a
+        # missing list means "none" rather than an error.
         def tasks
-          available_tasks.select { |task| task_ids.include?(task.id) }
+          ids = Array(task_ids).compact
+          available_tasks.select { |task| ids.include?(task.id) }
         end
 
         # Every task of the organization, across all time tracker components.

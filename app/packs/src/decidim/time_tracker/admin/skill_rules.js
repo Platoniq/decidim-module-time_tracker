@@ -12,23 +12,21 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  const modeField = document.getElementById("skill_earning_mode");
+  const modes = Array.from(container.querySelectorAll("input[name='skill[earning_mode]']"));
   const activities = document.getElementById("skill-required-activities");
   const completions = document.getElementById("skill-required-completions");
   const hours = document.getElementById("skill-required-hours");
   const preview = document.getElementById("skill-rule-preview");
   const strings = JSON.parse(container.dataset.strings || "{}");
 
-  const value = (wrapper) => {
-    const input = wrapper.querySelector("input");
-    return input
-      ? input.value.trim()
-      : "";
-  };
+  const value = (wrapper) => wrapper?.querySelector("input")?.value.trim() || "";
 
-  const isTimeSpent = () => modeField && modeField.value === "time_spent";
+  const isTimeSpent = () => modes.some((radio) => radio.checked && radio.value === "time_spent");
 
   const show = (wrapper, visible) => {
+    if (!wrapper) {
+      return;
+    }
     wrapper.hidden = !visible;
     const input = wrapper.querySelector("input");
     // Left enabled but hidden, a stale number would still be submitted and
@@ -41,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const fill = (template, values) =>
     Object.keys(values).reduce(
       (acc, key) => acc.replace(new RegExp(`%\\{${key}\\}`, "g"), values[key]),
-      template
+      template || ""
     );
 
   const describe = () => {
@@ -74,21 +72,15 @@ document.addEventListener("DOMContentLoaded", () => {
     show(hours, isTimeSpent());
     show(activities, !isTimeSpent());
     show(completions, !isTimeSpent());
-    preview.textContent = describe();
+    if (preview) {
+      preview.textContent = describe();
+    }
   };
 
-  [modeField, activities, completions, hours].forEach((el) => {
-    if (!el) {
-      return;
-    }
-    const target = el.tagName === "SELECT"
-      ? el
-      : el.querySelector("input");
-    if (!target) {
-      return;
-    }
-    target.addEventListener("change", render);
-    target.addEventListener("input", render);
+  modes.forEach((radio) => radio.addEventListener("change", render));
+  [activities, completions, hours].forEach((wrapper) => {
+    const input = wrapper?.querySelector("input");
+    input?.addEventListener("input", render);
   });
 
   render();

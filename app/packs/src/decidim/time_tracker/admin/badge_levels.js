@@ -1,9 +1,10 @@
-// Drives the badge form's levels section.
+// Drives the badge form: its levels, which parts of the rule apply, and the
+// sentence that restates the rule as it is edited.
 //
 // Admins told us the old "1, 5, 15, 30" text box was the confusing part of
-// setting up a badge, so the form now asks how many levels the badge has and
-// fills in a sensible threshold for each one. The numbers stay editable for
-// anyone who wants to tune them, but nobody has to invent a curve.
+// setting up a badge, so the form asks how many levels the badge has and fills
+// in a sensible threshold for each one. The numbers stay editable for anyone
+// who wants to tune them, but nobody has to invent a curve.
 
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("badge-levels");
@@ -13,110 +14,77 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const countField = document.getElementById("badge_levels_count");
-  const metricField = document.getElementById("badge_metric");
+  const metrics = Array.from(container.querySelectorAll("input[name='badge[metric]']"));
   const rows = Array.from(container.querySelectorAll(".badge-level-row"));
   const curves = JSON.parse(container.dataset.defaultCurves || "{}");
   const units = JSON.parse(container.dataset.metricUnits || "{}");
+  const labels = JSON.parse(container.dataset.metricLabels || "{}");
+  const templates = JSON.parse(container.dataset.previewTemplates || "{}");
+  const preview = document.getElementById("badge-rule-preview");
+  const skillsField = document.getElementById("badge-skills-field");
+  const tasksField = document.getElementById("badge-tasks-field");
+  const taskList = document.getElementById("badge-task-list");
+  const scopes = Array.from(container.querySelectorAll("input[name='badge_task_scope']"));
+  const skillBoxes = Array.from(container.querySelectorAll("input[name='badge[skill_ids][]']"));
+  const taskBoxes = Array.from(container.querySelectorAll("input[name='badge[task_ids][]']"));
+
+  const currentMetric = () => metrics.find((radio) => radio.checked)?.value || "";
+  const isRequiredSkills = () => currentMetric() === "required_skills";
+  const restrictedToTasks = () => scopes.some((radio) => radio.checked && radio.value === "some");
+  const currentCurve = () => curves[currentMetric()] || [];
+  const checkedLabels = (boxes) => boxes.filter((box) => box.checked && !box.disabled).map((box) => box.dataset.label);
+
+  // Inputs in a hidden part of the form are disabled too, so a choice that no
+  // longer applies is not submitted along with the ones that do.
+  const enable = (boxes, enabled) => boxes.forEach((box) => {
+    box.disabled = !enabled;
+  });
 
   // Only rows up to the chosen level count are shown, and only those are
-  // submitted — a disabled input is left out of the form data, which keeps the
-  // thresholds array the same length as the level count.
+  // submitted, which keeps the thresholds array the same length as the count.
   const showRowsUpTo = (count) => {
     rows.forEach((row) => {
-      const level = parseInt(row.dataset.level, 10);
-      const visible = level <= count;
-      const input = row.querySelector(".badge-level-threshold");
-
+      const visible = parseInt(row.dataset.level, 10) <= count;
       row.hidden = !visible;
-      input.disabled = !visible;
+      row.querySelector(".badge-level-threshold").disabled = !visible;
     });
   };
 
-  const currentMetric = () => {
-    if (!metricField) {
-      return "";
-    }
-
-    return metricField.value;
-  };
-
-  const currentCurve = () => curves[currentMetric()] || [];
-
   const applyUnitLabels = () => {
     const unit = units[currentMetric()] || "";
-
     rows.forEach((row) => {
       row.querySelector(".badge-level-row__unit").textContent = unit;
     });
   };
 
-  // Called when the metric changes: the old curve's numbers rarely make sense
-  // for the new one (25 hours vs 25 milestones), so they are replaced.
+  // When the metric changes the old curve's numbers rarely make sense for the
+  // new one (25 hours against 25 milestones), so they are replaced.
   const applyCurve = () => {
     const curve = currentCurve();
-
     rows.forEach((row, index) => {
-      const input = row.querySelector(".badge-level-threshold");
-
       if (typeof curve[index] !== "undefined") {
-        input.value = curve[index];
+        row.querySelector(".badge-level-threshold").value = curve[index];
       }
     });
   };
 
-  // Filling a newly revealed row that has no value yet, without touching the
-  // numbers the admin already set on the rows above it.
+  // Fills a newly revealed row that has no value yet, without touching the
+  // numbers already set on the rows above it.
   const fillBlankRows = () => {
     const curve = currentCurve();
-
     rows.forEach((row, index) => {
       const input = row.querySelector(".badge-level-threshold");
-
       if (input.value === "" && typeof curve[index] !== "undefined") {
         input.value = curve[index];
       }
     });
   };
 
-  if (countField) {
-    countField.addEventListener("change", () => {
-      fillBlankRows();
-      showRowsUpTo(parseInt(countField.value, 10));
-    });
-  }
-
-  if (metricField) {
-    metricField.addEventListener("change", () => {
-      applyUnitLabels();
-      applyCurve();
-    });
-  }
-
-  // ---- live rule preview ------------------------------------------------
-  //
-  // The badge's rule is assembled from four controls sitting apart on the
-  // form. Restating it as one sentence means the admin reads what they built
-  // instead of inferring it from the parts.
-  const labels = JSON.parse(container.dataset.metricLabels || "{}");
-  const templates = JSON.parse(container.dataset.previewTemplates || "{}");
-  const preview = document.getElementById("badge-rule-preview");
-  const skillsField = document.getElementById("badge-skills-field");
-  const tasksField = document.getElementById("badge-tasks-field");
-  const skillsSelect = document.getElementById("badge_skill_ids");
-  const tasksSelect = document.getElementById("badge_task_ids");
-
-  const selectedLabels = (select) =>
-    (select
-      ? [...select.selectedOptions].map((option) => option.textContent.trim())
-      : []);
-
-  const fill = (tpl, values) =>
+  const fill = (template, values) =>
     Object.keys(values).reduce(
       (acc, key) => acc.replace(new RegExp(`%\\{${key}\\}`, "g"), values[key]),
-      tpl || ""
+      template || ""
     );
-
-  const isRequiredSkills = () => metricField && metricField.value === "required_skills";
 
   const describe = () => {
     const chosenLevels = rows.
@@ -126,17 +94,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const levelText = fill(templates.levels, { levels: chosenLevels.join(" → ") });
 
     if (isRequiredSkills()) {
-      const names = selectedLabels(skillsSelect);
-      if (!names.length) {
-        return templates.no_skills;
-      }
-      return `${fill(templates.required_skills, { skills: names.join(", ") })} ${levelText}`;
+      const names = checkedLabels(skillBoxes);
+      return names.length
+        ? `${fill(templates.required_skills, { skills: names.join(", ") })} ${levelText}`
+        : templates.no_skills;
     }
 
-    const metricLabel = labels[metricField
-      ? metricField.value
-      : ""] || "";
-    const taskNames = selectedLabels(tasksSelect);
+    const metricLabel = labels[currentMetric()] || "";
+    const taskNames = restrictedToTasks()
+      ? checkedLabels(taskBoxes)
+      : [];
     const base = taskNames.length
       ? fill(templates.restricted, { metric: metricLabel, tasks: taskNames.join(", ") })
       : fill(templates.all_tasks, { metric: metricLabel });
@@ -145,43 +112,44 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // A required_skills badge ignores the task restriction, and every other
-  // metric ignores the skill list — so only the one that matters is shown.
-  const renderPreview = () => {
+  // metric ignores the skill list, so only the one that matters is shown.
+  const render = () => {
+    const skillsBased = isRequiredSkills();
     if (skillsField) {
-      skillsField.hidden = !isRequiredSkills();
+      skillsField.hidden = !skillsBased;
     }
     if (tasksField) {
-      tasksField.hidden = isRequiredSkills();
+      tasksField.hidden = skillsBased;
     }
+    if (taskList) {
+      taskList.hidden = !restrictedToTasks();
+    }
+    enable(skillBoxes, skillsBased);
+    enable(taskBoxes, !skillsBased && restrictedToTasks());
+
     if (preview) {
       preview.textContent = describe();
     }
   };
 
-  [metricField, skillsSelect, tasksSelect].forEach((el) => {
-    if (el) {
-      el.addEventListener("change", renderPreview);
-    }
+  countField?.addEventListener("change", () => {
+    fillBlankRows();
+    showRowsUpTo(parseInt(countField.value, 10));
+    render();
   });
-  rows.forEach((row) => {
-    const input = row.querySelector(".badge-level-threshold");
-    if (input) {
-      input.addEventListener("input", renderPreview);
-    }
-  });
-  if (countField) {
-    countField.addEventListener("change", renderPreview);
-  }
-  if (metricField) {
-    metricField.addEventListener("change", renderPreview);
-  }
+
+  metrics.forEach((radio) => radio.addEventListener("change", () => {
+    applyUnitLabels();
+    applyCurve();
+    render();
+  }));
+
+  [...scopes, ...skillBoxes, ...taskBoxes].forEach((input) => input.addEventListener("change", render));
+  rows.forEach((row) => row.querySelector(".badge-level-threshold")?.addEventListener("input", render));
 
   applyUnitLabels();
-  renderPreview();
-
-  if (countField) {
-    showRowsUpTo(parseInt(countField.value, 10));
-  } else {
-    showRowsUpTo(rows.length);
-  }
+  showRowsUpTo(countField
+    ? parseInt(countField.value, 10)
+    : rows.length);
+  render();
 });

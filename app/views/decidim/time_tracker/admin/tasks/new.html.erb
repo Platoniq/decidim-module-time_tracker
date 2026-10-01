@@ -1,12 +1,18 @@
-<div class="card">
-  <div class="item_show__header">
-    <h1 class="item_show__header-title">
-      <%= t(".title") %>
-    </h1>
-  </div>
-  <div class="card-section">
-    <%= decidim_form_for(@form, html: { class: "form new_task" }) do |f| %>
-      <%= render partial: "form", object: f, locals: { submit: t(".submit") } %>
-    <% end %>
-  </div>
+<%= render partial: "decidim/time_tracker/admin/navigation" %>
+
+<% add_decidim_page_title(t(".title")) %>
+<div class="item_show__header">
+  <h1 class="item_show__header-title"><%= t(".title") %></h1>
+</div>
+
+<div class="item__edit-form">
+  <%= decidim_form_for(@form, url: tasks_path, html: { class: "form form-defaults new_task" }) do |form| %>
+    <%= render partial: "form", locals: { form: } %>
+
+    <div class="item__edit-sticky">
+      <div class="item__edit-sticky-container">
+        <%= form.submit t(".submit"), class: "button button__sm button__secondary" %>
+      </div>
+    </div>
+  <% end %>
 </div>
