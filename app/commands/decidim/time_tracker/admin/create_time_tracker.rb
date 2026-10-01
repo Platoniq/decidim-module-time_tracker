@@ -44,11 +44,14 @@ module Decidim
           questionnaire.attributes = seeds
         end
 
+        # The seed files keep the answer_options key they have always
+        # documented; Decidim 0.31 calls the association response_options, and
+        # passing the old name made every new time tracker fail to save.
         def prepare_question(question, questionnaire, position)
-          if question.has_key?(:answer_options)
-            question[:answer_options].map! do |answer_option|
-              answer_option[:body] = i18nize(answer_option[:body])
-              Decidim::Forms::ResponseOption.new(answer_option)
+          options = question.delete(:answer_options) || question.delete(:response_options)
+          if options
+            question[:response_options] = options.map do |option|
+              Decidim::Forms::ResponseOption.new(option.merge(body: i18nize(option[:body])))
             end
           end
 
