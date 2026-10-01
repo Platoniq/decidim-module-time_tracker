@@ -690,6 +690,7 @@ en:
         minutes:
           one: "%{count} min"
           other: "%{count} min"
+        under_a_minute: less than a minute
       earnings:
         badge_levels: 'Badge levels: %{levels}'
         lead: Earns

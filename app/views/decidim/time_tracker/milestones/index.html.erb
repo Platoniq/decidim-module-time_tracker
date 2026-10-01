@@ -6,8 +6,8 @@
   <div class="time-tracker__person">
     <%= image_tag presented_user.avatar_url(:big), alt: "", class: "time-tracker__report-avatar" %>
     <div>
-      <p class="h4"><%= presented_user.name %></p>
-      <%= link_to "@#{presented_user.nickname}", presented_user.profile_path, class: "text-secondary hover:underline" %>
+      <p class="h4"><%= link_to presented_user.name, presented_user.profile_path %></p>
+      <span class="text-gray-2">@<%= presented_user.nickname %></span>
     </div>
   </div>
 
@@ -18,11 +18,11 @@
     </div>
     <div class="time-tracker__stat">
       <dt><%= icon "calendar-line" %> <%= t("decidim.time_tracker.milestones.index.joined_on") %></dt>
-      <dd><%= joined_at ? l(joined_at.to_date, format: :decidim_with_month_name_short) : "—" %></dd>
+      <dd><%= joined_at ? l(joined_at.to_date, format: :decidim_short_with_month_name_short) : "—" %></dd>
     </div>
     <div class="time-tracker__stat">
       <dt><%= icon "history" %> <%= t("decidim.time_tracker.milestones.index.last_worked_on") %></dt>
-      <dd><%= last_milestone ? l(last_milestone.created_at.to_date, format: :decidim_with_month_name_short) : "—" %></dd>
+      <dd><%= last_milestone ? l(last_milestone.created_at.to_date, format: :decidim_short_with_month_name_short) : "—" %></dd>
     </div>
   </dl>
 <% end %>

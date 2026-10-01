@@ -58,6 +58,8 @@ module Decidim
 
       # "2 h 15 min" — a duration to read, as opposed to the running clock.
       def duration_in_words(seconds)
+        return t("decidim.time_tracker.duration.under_a_minute") if seconds.to_i.between?(1, 59)
+
         hours, minutes = (seconds.to_i / 60.0).round.divmod(60)
         return t("decidim.time_tracker.duration.minutes", count: minutes) if hours.zero?
         return t("decidim.time_tracker.duration.hours", count: hours) if minutes.zero?

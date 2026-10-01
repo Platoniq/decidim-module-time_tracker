@@ -8,7 +8,7 @@
   </div>
 
   <div class="form__wrapper">
-    <%= decidim_form_for(@form, url: milestones_path, namespace: "activity_#{activity.id}", html: { class: "form-defaults" }) do |form| %>
+    <%= decidim_form_for(@form, url: milestones_path, namespace: "activity_#{activity.id}", html: { class: "form-defaults new_milestone" }) do |form| %>
       <%= form.text_field :title %>
       <%= form.text_area :description, rows: 3 %>
       <%= form.hidden_field :activity_id, value: activity.id %>
