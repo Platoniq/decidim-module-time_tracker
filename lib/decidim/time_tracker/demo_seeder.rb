@@ -24,9 +24,17 @@ module Decidim
       # version of this seed can be removed.
       LEGACY_TAG = "[Demo]"
 
-      # One tracked session. Long enough to satisfy an activity's completion
-      # rule on its own, so the arithmetic in the cast below stays readable.
+      # Tracked sessions average 45 minutes, long enough to satisfy an
+      # activity's completion rule on its own, so the arithmetic in the cast
+      # below stays readable. They are not all 45, though: lengths come in pairs
+      # around it (55/35, 50/40, 60/30, 45/45) within a volunteer's task, so the
+      # task totals that skills and badges count are exactly what 45 each gives.
       SESSION_MINUTES = 45
+      SESSION_SWINGS = [10, 5, 15, 0].freeze
+      # Volunteers track at different times of day.
+      SESSION_HOURS = [9, 17, 11, 19, 14, 10, 18, 16].freeze
+      # Recent sessions still waiting for an admin, each over the 30-minute bar.
+      PENDING_MINUTES = [50, 35, 70, 40, 85, 55, 45, 65].freeze
 
       # ---------------------------------------------------------------- shape
       #
@@ -594,37 +602,38 @@ module Decidim
       #
       # Ten volunteers spread deliberately across the states the public pages
       # can render: nobody, waiting on an admin, one craft, several crafts,
-      # and everything. `work` maps a strand to how many 45-minute sessions
-      # were tracked on each of its tasks' activities and how many an admin
-      # verified.
+      # and everything. `work` maps a strand to how many sessions were tracked
+      # on each of its tasks' activities and how many an admin verified, plus
+      # `pending`: recent sessions on that strand an admin has yet to verify,
+      # so the verification queue holds several people's work, not one.
       def participant_plan
         [
           { name: "Ama Boateng", story: "accepted onto facilitation, has not started the timer",
             work: { facilitation: { sessions: 0, verified: 0 } }, milestones: 0 },
 
           { name: "Bilal Haddad", story: "tracked two sessions, nothing verified yet — no skills",
-            work: { production: { sessions: 2, verified: 0 } }, milestones: 1 },
+            work: { production: { sessions: 0, verified: 0, pending: 2 } }, milestones: 1 },
 
           { name: "Cerys Morgan", story: "certified in Group facilitation",
-            work: { facilitation: { sessions: 2, verified: 2 } }, milestones: 2 },
+            work: { facilitation: { sessions: 2, verified: 2, pending: 1 } }, milestones: 2 },
 
           { name: "Dmitri Volkov", story: "certified in Devising and performance",
-            work: { performance: { sessions: 2, verified: 2 } }, milestones: 1 },
+            work: { performance: { sessions: 2, verified: 2, pending: 2 } }, milestones: 1 },
 
           { name: "Efua Mensah", story: "certified in Stage production",
-            work: { production: { sessions: 2, verified: 2 } }, milestones: 3 },
+            work: { production: { sessions: 2, verified: 2, pending: 1 } }, milestones: 3 },
 
           { name: "Farida Aziz", story: "Documentation and media, and the most milestones posted",
-            work: { documentation: { sessions: 3, verified: 3 } }, milestones: 9 },
+            work: { documentation: { sessions: 3, verified: 3, pending: 2 } }, milestones: 9 },
 
           { name: "Gethin Price", story: "Peer wellbeing support — earns Care team",
-            work: { wellbeing: { sessions: 2, verified: 2 } }, milestones: 1 },
+            work: { wellbeing: { sessions: 2, verified: 2, pending: 1 } }, milestones: 1 },
 
           { name: "Halima Yusuf", story: "Policy advocacy — earns Policy voice",
-            work: { policy: { sessions: 2, verified: 2 } }, milestones: 2 },
+            work: { policy: { sessions: 2, verified: 2, pending: 1 } }, milestones: 2 },
 
           { name: "Ivan Petrov", story: "facilitation and performance — Company member level 2",
-            work: { facilitation: { sessions: 2, verified: 2 }, performance: { sessions: 2, verified: 2 } },
+            work: { facilitation: { sessions: 2, verified: 2 }, performance: { sessions: 2, verified: 2, pending: 1 } },
             milestones: 3 },
 
           { name: "Jasmine Clarke", story: "all three show crafts plus the hours — Company member maxed",
@@ -632,7 +641,7 @@ module Decidim
               facilitation: { sessions: 3, verified: 3 },
               performance: { sessions: 3, verified: 3 },
               production: { sessions: 3, verified: 3 },
-              documentation: { sessions: 2, verified: 2 }
+              documentation: { sessions: 2, verified: 2, pending: 1 }
             },
             milestones: 5 }
         ]
@@ -657,6 +666,7 @@ module Decidim
 
           plan[:work].each do |strand_key, shape|
             tasks.fetch(strand_key).each { |task| record_work(user, task, shape) }
+            record_pending(user, tasks.fetch(strand_key), shape[:pending].to_i)
           end
 
           create_milestones(user, plan)
@@ -700,8 +710,10 @@ module Decidim
       def record_work(user, task, shape)
         sessions = shape[:sessions]
         verified = shape[:verified]
+        count = task.activities.size * sessions
+        index = 0
 
-        task.activities.each do |activity|
+        task.activities.each_with_index do |activity, activity_index|
           assignation = Decidim::TimeTracker::Assignation.create!(
             activity:,
             user:,
@@ -711,23 +723,58 @@ module Decidim
           )
 
           sessions.times do |session|
-            started = (6.weeks.ago + (session * 3).days).to_i
-            Decidim::TimeTracker::TimeEvent.create!(
-              assignation:,
-              activity:,
-              user:,
-              start: started,
-              stop: started + (SESSION_MINUTES * 60),
-              total_seconds: SESSION_MINUTES * 60
-            )
-
-            completion = Decidim::TimeTracker::ActivityCompletion.create!(
-              assignation:,
-              requested_at: Time.zone.at(started) + 1.hour
-            )
-            completion.update!(verified_at: 4.weeks.ago, verified_by: admin) if session < verified
+            started = session_start(6.weeks.ago + ((session * 3) + activity_index).days, user, index)
+            completion = track_session(assignation, started, session_minutes(index, count))
+            completion.update!(verified_at: completion.requested_at + (1 + (index % 3)).days, verified_by: admin) if session < verified
+            index += 1
           end
 
+          assignation.sync_completed_at!
+        end
+      end
+
+      # The k-th of a task's `count` sessions: pairs swing either side of
+      # SESSION_MINUTES so the task total stays count × 45.
+      def session_minutes(index, count)
+        return SESSION_MINUTES if count.odd? && index == count - 1
+
+        swing = SESSION_SWINGS[(index / 2) % SESSION_SWINGS.size]
+        index.even? ? SESSION_MINUTES + swing : SESSION_MINUTES - swing
+      end
+
+      def session_start(day, user, index)
+        hour = SESSION_HOURS[(user.id + index) % SESSION_HOURS.size]
+        day.beginning_of_day + hour.hours + ((index % 4) * 15).minutes
+      end
+
+      # One tracked session and the completion it files.
+      def track_session(assignation, started, minutes)
+        Decidim::TimeTracker::TimeEvent.create!(
+          assignation:,
+          activity: assignation.activity,
+          user: assignation.user,
+          start: started.to_i,
+          stop: started.to_i + (minutes * 60),
+          total_seconds: minutes * 60
+        )
+        Decidim::TimeTracker::ActivityCompletion.create!(
+          assignation:,
+          requested_at: started + minutes.minutes + (5 + ((assignation.id * 7) % 50)).minutes
+        )
+      end
+
+      # Recent sessions still waiting for an admin, on different activities of
+      # the strand for different volunteers.
+      def record_pending(user, strand_tasks, count)
+        return if count.zero?
+
+        activities = strand_tasks.flat_map(&:activities)
+        activities.rotate(user.id % activities.size).first(count).each do |activity|
+          assignation = Decidim::TimeTracker::Assignation.find_by!(activity:, user:)
+          @pending_index = (@pending_index || 0) + 1
+          day = (1 + ((@pending_index * 5) % 13)).days.ago
+          track_session(assignation, session_start(day, user, @pending_index),
+                        PENDING_MINUTES[@pending_index % PENDING_MINUTES.size])
           assignation.sync_completed_at!
         end
       end
