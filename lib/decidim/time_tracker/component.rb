@@ -166,7 +166,7 @@ Decidim.register_component(:time_tracker) do |component|
       Decidim::Forms::Question.create!([
                                          {
                                            questionnaire: resource.questionnaire,
-                                           question_type: "short_answer",
+                                           question_type: "short_response",
                                            body: Decidim::Faker::Localized.sentence(word_count: 5),
                                            position: 1
                                          },
@@ -236,7 +236,7 @@ Decidim.register_component(:time_tracker) do |component|
                 session_token: activity.session_token(user)
               )
 
-              answer.body = "My name is #{user.nickname}" if question.question_type == "short_answer"
+              answer.body = "My name is #{user.nickname}" if question.question_type == "short_response"
 
               answer.save!
 

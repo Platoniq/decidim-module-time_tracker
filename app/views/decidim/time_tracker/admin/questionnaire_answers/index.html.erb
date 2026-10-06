@@ -13,9 +13,9 @@
         <tr>
           <th>#</th>
           <th class="!text-left"><%= first_table_th(@participants.first) %></th>
-          <th><%= t("user_status", scope: "decidim.forms.user_answers_serializer") %></th>
-          <th><%= t("completion", scope: "decidim.forms.user_answers_serializer") %></th>
-          <th><%= t("created_at", scope: "decidim.forms.user_answers_serializer") %></th>
+          <th><%= t("user_status", scope: "decidim.forms.user_responses_serializer") %></th>
+          <th><%= t("completion", scope: "decidim.forms.user_responses_serializer") %></th>
+          <th><%= t("created_at", scope: "decidim.forms.user_responses_serializer") %></th>
           <th></th>
         </tr>
       </thead>
@@ -31,7 +31,7 @@
               <% end %>
             <td><%= participant.status %></td>
             <td><%= display_percentage(participant.completion) %></td>
-            <td><%= l participant.answered_at, format: :short %></td>
+            <td><%= l participant.responded_at, format: :short %></td>
             <td class="table-list__actions">
               <% if allowed_to? :show, :questionnaire_answers %>
                 <%= icon_link_to "eye-line", questionnaire_participant_responses_url(participant.session_token), t("actions.show", scope: "decidim.forms.admin.questionnaires.responses"), class: "action-icon--eye", target: "_blank", data: { "external-link": false } %>

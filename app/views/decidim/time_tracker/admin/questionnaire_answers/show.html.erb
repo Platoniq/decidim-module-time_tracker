@@ -1,6 +1,6 @@
 <%= render partial: "decidim/time_tracker/admin/navigation" %>
 
-<div class="card" id="answers">
+<div class="card" id="responses">
   <div class="item_show__header">
     <h1 class="item_show__header-title">
       <%= t ".title", number: current_idx %>
@@ -16,10 +16,10 @@
       <table class="table-list">
         <thead>
           <tr>
-            <th><%= t("session_token", scope: "decidim.forms.user_answers_serializer") %></th>
-            <th><%= t("user_status", scope: "decidim.forms.user_answers_serializer") %></th>
-            <th><%= t("completion", scope: "decidim.forms.user_answers_serializer") %></th>
-            <th><%= t("created_at", scope: "decidim.forms.user_answers_serializer") %></th>
+            <th><%= t("session_token", scope: "decidim.forms.user_responses_serializer") %></th>
+            <th><%= t("user_status", scope: "decidim.forms.user_responses_serializer") %></th>
+            <th><%= t("completion", scope: "decidim.forms.user_responses_serializer") %></th>
+            <th><%= t("created_at", scope: "decidim.forms.user_responses_serializer") %></th>
             <th></th>
           </tr>
         </thead>
@@ -28,7 +28,7 @@
             <td><%= @participant.session_token %></td>
             <td><%= @participant.status %></td>
             <td><%= display_percentage(@participant.completion) %></td>
-            <td><%= l @participant.answered_at, format: :short %></td>
+            <td><%= l @participant.responded_at, format: :short %></td>
           </tr>
         </tbody>
       </table>
