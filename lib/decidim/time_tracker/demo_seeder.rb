@@ -173,7 +173,7 @@ module Decidim
       # host, so the default avoids words a host is likely to have ("demo",
       # "decidim", "platform"…); seeding modules.demo.platoniq.net with the
       # previous "InspireDemo2026!" failed on exactly that.
-      DEFAULT_PASSWORD = "Lantern-Quokka-4791"
+      DEFAULT_PASSWORD = "decidim123456789"
 
       # The administrator is the exception. A shared password written in a
       # public repository would hand the admin panel of any instance running
