@@ -234,7 +234,7 @@ Decidim.register_component(:time_tracker) do |component|
           # Accepted volunteers have tracked some sessions, of different
           # lengths and at different times, and filed the completions those
           # earn, as stopping the timer would; an admin has verified some.
-          if assignation.accepted? && activity.start_date.past?
+          if assignation.accepted? && activity.start_date < 1.day.ago
             rand(0..4).times do
               started = Time.zone.at(rand(activity.start_date.to_i..1.hour.ago.to_i)).change(hour: rand(8..20), min: rand(0..59))
               started = 1.day.ago.change(hour: rand(8..20)) if started.future?
