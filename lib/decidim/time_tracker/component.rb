@@ -235,9 +235,9 @@ Decidim.register_component(:time_tracker) do |component|
           # lengths and at different times, and filed the completions those
           # earn, as stopping the timer would; an admin has verified some.
           if assignation.accepted? && activity.start_date < 1.day.ago
-            rand(0..4).times do
-              started = Time.zone.at(rand(activity.start_date.to_i..1.hour.ago.to_i)).change(hour: rand(8..20), min: rand(0..59))
-              started = 1.day.ago.change(hour: rand(8..20)) if started.future?
+            # One session a day at most, so none goes past the daily cap.
+            (activity.start_date.to_date..1.day.ago.to_date).to_a.sample(rand(0..4)).each do |day|
+              started = Time.zone.local(day.year, day.month, day.day, rand(8..20), rand(0..59))
               minutes = rand(10..activity.max_minutes_per_day)
               Decidim::TimeTracker::TimeEvent.create!(
                 assignation:, activity:, user:,
