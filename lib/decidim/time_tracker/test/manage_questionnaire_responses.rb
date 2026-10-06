@@ -79,7 +79,7 @@ shared_examples_for "time tracker manage questionnaire responses" do
 
         it "shows the responses page with custom body" do
           within "tr", text: decidim_sanitize_translated(response1.session_token) do
-              new_window = window_opened_by { click_on "Show responses" }
+            new_window = window_opened_by { click_on "Show responses" }
             page.within_window(new_window) do
               within "#responses" do
                 expect(page).to have_css("dt", text: translated(first.body))
