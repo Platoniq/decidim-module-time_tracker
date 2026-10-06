@@ -826,6 +826,13 @@ en:
         show:
           component_report: View my full report for this space
           empty: You are not signed up for any activity yet.
+      profile_badges:
+        badges: Badges
+        description: What this participant has earned by volunteering.
+        other_badges: Other badges
+        skill: Skill
+        skills: Skills
+        title: Skills and badges
       reports:
         activities:
           title: Activities
