@@ -4,8 +4,6 @@ require "spec_helper"
 
 module Decidim::TimeTracker
   describe UserReportController do
-    routes { Decidim::TimeTracker::Engine.routes }
-
     let(:organization) { create(:organization) }
     let(:user) { create(:user, :confirmed, organization:) }
     let(:participatory_space) { create(:participatory_process, organization:) }

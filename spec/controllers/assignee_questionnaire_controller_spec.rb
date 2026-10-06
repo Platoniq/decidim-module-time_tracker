@@ -5,8 +5,6 @@ require "decidim/forms/test/factories"
 
 module Decidim::TimeTracker
   describe AssigneeQuestionnaireController do
-    routes { Decidim::TimeTracker::Engine.routes }
-
     include_context "with a time_tracker"
 
     let(:user) { create(:user, :confirmed, organization:) }
@@ -72,7 +70,7 @@ module Decidim::TimeTracker
         end
 
         context "and questionnaire have questions" do
-          let!(:question) { create(:questionnaire_question, question_type: :short_answer, body: Decidim::Faker::Localized.word, questionnaire:) }
+          let!(:question) { create(:questionnaire_question, question_type: :short_response, body: Decidim::Faker::Localized.word, questionnaire:) }
 
           it_behaves_like "renders the form"
         end
@@ -80,7 +78,7 @@ module Decidim::TimeTracker
     end
 
     describe "POST #answer" do
-      let!(:question) { create(:questionnaire_question, question_type: :short_answer, body: Decidim::Faker::Localized.word, questionnaire:) }
+      let!(:question) { create(:questionnaire_question, question_type: :short_response, body: Decidim::Faker::Localized.word, questionnaire:) }
       let(:tos_agreement) { "0" }
       let(:form) do
         {
@@ -109,7 +107,7 @@ module Decidim::TimeTracker
           post(:answer, params:)
 
           expect(flash[:alert]).to be_present
-          expect(questionnaire).not_to be_answered_by(user)
+          expect(questionnaire).not_to be_responded_by(user)
           expect(response).to render_template(:show)
           expect(Decidim::TimeTracker::TosAcceptance.count).to be_zero
         end
@@ -122,7 +120,7 @@ module Decidim::TimeTracker
           post(:answer, params:)
 
           expect(flash[:notice]).to be_present
-          expect(questionnaire).to be_answered_by(user)
+          expect(questionnaire).to be_responded_by(user)
           expect(response).to have_http_status(:redirect)
           expect(Decidim::TimeTracker::TosAcceptance.last.assignee).to eq(assignee)
         end

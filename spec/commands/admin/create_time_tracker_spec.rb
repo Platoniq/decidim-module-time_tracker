@@ -40,7 +40,7 @@ module Decidim::TimeTracker::Admin
         title: "A questionnaire",
         description: { en: "This is a questionnaire" },
         questions: [
-          { question_type: "short_answer", body: "Question 1" },
+          { question_type: "short_response", body: "Question 1" },
           { question_type: "single_option", body: { en: "Question 2" }, answer_options: [{ body: "Answer Option 1", free_text: true }] }
         ]
       }
@@ -105,7 +105,7 @@ module Decidim::TimeTracker::Admin
         title: "A questionnaire",
         description: { en: "This is a questionnaire" },
         questions: [
-          { question_type: "short_answer", body: "Question 1" },
+          { question_type: "short_response", body: "Question 1" },
           { question_type: "single_option", body: { en: "Question 2" }, answer_options: [{ body: "Answer Option 1", free_text: true }] }
         ]
       }
