@@ -101,7 +101,27 @@ describe "Time tracker page" do
         it_behaves_like "renders activity list"
 
         context "when user has not accepted terms" do
+          before { create(:questionnaire_question, questionnaire: assignee_data.questionnaire) }
+
           it_behaves_like "renders links to fill in demographic data"
+        end
+
+        context "when the time tracker asks nothing before joining" do
+          before do
+            login_as user, scope: :user
+            visit_time_tracker
+          end
+
+          it_behaves_like "does not render links to fill in demographic data"
+
+          it "registers the request with one click" do
+            within ".time-tracker__activity" do
+              click_on "Join"
+
+              expect(page).to have_css(".time-tracker__state--pending", text: "registered")
+            end
+            expect(Decidim::TimeTracker::Assignation.find_by(user:, activity:)).to be_pending
+          end
         end
 
         context "when user has accepted terms" do
@@ -118,7 +138,7 @@ describe "Time tracker page" do
               within ".time-tracker__activity" do
                 click_on "Join"
 
-                expect(page).to have_css(".time-tracker__state--pending", text: "successfully")
+                expect(page).to have_css(".time-tracker__state--pending", text: "registered")
               end
               expect(Decidim::TimeTracker::Assignation.find_by(user:, activity:)).to be_pending
             end
