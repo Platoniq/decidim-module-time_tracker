@@ -142,7 +142,7 @@ en:
       badges:
         time_tracker_activities:
           conditions:
-          - Get assigned to an activity in a time tracker and start tracking your
+          - Get assigned to an activity in a Time Tracker and start tracking your
             time
           - An administrator marks your work on the activity as completed
           description: This badge is granted when administrators mark the activities
@@ -155,7 +155,7 @@ en:
           unearned_own: You have not completed any activities yet.
         time_tracker_skills:
           conditions:
-          - Get assigned to every activity of a task (a skill) in a time tracker
+          - Get assigned to every activity of a task (a skill) in a Time Tracker
           - Complete all of the task's activities so administrators can certify the
             skill
           description: This badge is granted when you earn skill certifications by
@@ -348,7 +348,7 @@ en:
             weight_help: Badges are listed from the lowest number up.
             which_work: Which work counts
           index:
-            description: Badges are shared across all time tracker components of the
+            description: Badges are shared across all Time Tracker components of the
               platform. Choose what a badge counts and how many levels it has; participants
               level up automatically as they work.
             empty: There are no badges yet.
@@ -392,7 +392,7 @@ en:
             name: Task
         navigation:
           breadcrumb: Breadcrumb
-          label: Time tracker sections
+          label: Time Tracker sections
           skills: Skills & badges
           stats: Volunteer time
           tasks: Tasks
@@ -408,7 +408,7 @@ en:
             edit: Edit questionnaire
             manage_questions: Manage questions
         shared:
-          no_tasks: There are no tasks yet. Create some in a time tracker first.
+          no_tasks: There are no tasks yet. Create some in a Time Tracker first.
         skills:
           actions:
             confirm_destroy: Are you sure you want to delete this skill? It will be
@@ -457,7 +457,7 @@ en:
             tasks_help: Working on any of the selected tasks can earn this skill.
               You can also assign skills from the task form.
           index:
-            description: Skills are shared by every time tracker on the platform.
+            description: Skills are shared by every Time Tracker on the platform.
               Attach them to tasks; participants earn them by meeting the rule set
               on each skill.
             empty: There are no skills yet.
@@ -608,7 +608,7 @@ en:
               skills, tracked hours and milestones add up.
             certify: Once enough of a task's activities are verified, the skills attached
               to that task are certified to you.
-            join: Join an activity in a time tracker and wait for an administrator
+            join: Join an activity in a Time Tracker and wait for an administrator
               to accept you.
             track: Track the time you spend on it with the timer, and record a milestone
               when you stop.
