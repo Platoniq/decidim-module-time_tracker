@@ -118,8 +118,9 @@ describe "Time tracker page" do
             within ".time-tracker__activity" do
               click_on "Join"
 
-              expect(page).to have_css(".time-tracker__state--pending", text: "registered")
+              expect(page).to have_css(".time-tracker__state--pending", text: "Request sent")
             end
+            expect(page).to have_css(".time-tracker__notice", text: "registered")
             expect(Decidim::TimeTracker::Assignation.find_by(user:, activity:)).to be_pending
           end
         end
@@ -138,8 +139,9 @@ describe "Time tracker page" do
               within ".time-tracker__activity" do
                 click_on "Join"
 
-                expect(page).to have_css(".time-tracker__state--pending", text: "registered")
+                expect(page).to have_css(".time-tracker__state--pending", text: "Request sent")
               end
+              expect(page).to have_css(".time-tracker__notice", text: "registered")
               expect(Decidim::TimeTracker::Assignation.find_by(user:, activity:)).to be_pending
             end
           end

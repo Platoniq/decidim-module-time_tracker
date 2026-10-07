@@ -28,6 +28,23 @@ const pollRequest = (statusUrl) => {
   }, POLL_EVERY);
 };
 
+// A short-lived confirmation floating over the page, so a long sentence
+// never squeezes the activity row it came from.
+const showNotice = (message) => {
+  if (!message) {
+    return;
+  }
+
+  const notice = document.createElement("div");
+  notice.className = "time-tracker__notice";
+  notice.setAttribute("role", "status");
+  notice.textContent = message;
+  document.body.appendChild(notice);
+
+  setTimeout(() => notice.classList.add("is-leaving"), 7000);
+  setTimeout(() => notice.remove(), 7600);
+};
+
 const setUpRequests = () => {
   document.querySelectorAll(".time-tracker-pending-request").forEach((element) => {
     pollRequest(element.dataset.statusUrl);
@@ -36,13 +53,20 @@ const setUpRequests = () => {
   document.querySelectorAll("form.time-tracker-request-form").forEach((form) => {
     form.addEventListener("ajax:success", (event) => {
       const [data] = event.detail;
-      const pending = document.createElement("span");
-      pending.className = "time-tracker__state time-tracker__state--pending";
-      pending.setAttribute("role", "status");
-      pending.textContent = data.message;
-      form.replaceWith(pending);
+      const statusUrl = form.dataset.statusUrl;
+      const action = form.closest(".time-tracker__action");
 
-      pollRequest(form.dataset.statusUrl);
+      if (data.html && action) {
+        action.outerHTML = data.html;
+      } else {
+        const pending = document.createElement("span");
+        pending.className = "time-tracker__state time-tracker__state--pending";
+        pending.textContent = form.dataset.pendingLabel || "";
+        form.replaceWith(pending);
+      }
+      showNotice(data.message);
+
+      pollRequest(statusUrl);
     });
 
     form.addEventListener("ajax:error", (event) => {
