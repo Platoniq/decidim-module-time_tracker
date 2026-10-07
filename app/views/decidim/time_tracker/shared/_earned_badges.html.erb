@@ -5,6 +5,7 @@
       <h2 class="h4" id="my-badges-title"><%= t("decidim.time_tracker.badges.title") %></h2>
       <%= link_to t("decidim.time_tracker.badges.how_it_works"), decidim.public_badges_path %>
     </div>
+    <p class="time-tracker__report-lead"><%= t("decidim.time_tracker.badges.lead") %></p>
 
     <ul class="time-tracker__badges">
       <% badge_progress.statuses.each do |status| %>

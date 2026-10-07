@@ -30,6 +30,7 @@ describe "Badges tab of a participant's profile" do
       expect(page).to have_content("Skills and badges")
 
       within "[data-skill='#{skill.id}']" do
+        expect(page).to have_content(/certified skill/i)
         expect(page).to have_content("Group facilitation")
         expect(page).to have_content("Trust-building workshops")
       end

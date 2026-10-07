@@ -51,9 +51,12 @@ module Decidim
 
       # Icons have to be registered to end up in the compiled sprite; using an
       # unregistered name renders nothing at all. One per badge metric, so an
-      # admin-defined badge gets an emblem without anyone uploading an image.
+      # admin-defined badge gets an emblem without anyone uploading an image,
+      # and one for skills, which never share an icon with a badge: a skill
+      # is a competence, a badge a tally with levels, and the marks say so.
       initializer "decidim_time_tracker.icons" do
         {
+          "graduation-cap-line" => "A certified skill",
           "trophy-line" => "Badge counting verified work",
           "award-line" => "Badge counting certified skills",
           "medal-line" => "Badge counting specific required skills",

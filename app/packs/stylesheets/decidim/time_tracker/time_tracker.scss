@@ -260,11 +260,21 @@
     @apply block text-xs text-gray-2;
   }
 
+  &-kind {
+    @apply block text-[11px] font-semibold uppercase tracking-wide text-gray-2;
+  }
+
+  // Skills get a square mark and badges a round one, wherever they appear:
+  // a skill is a certificate, a badge a medal with levels.
   &-mark {
     @apply grid place-items-center w-6 h-6 rounded-full flex-none bg-secondary text-white;
 
     svg {
       @apply w-3.5 h-3.5 fill-current;
+    }
+
+    &--skill {
+      @apply rounded;
     }
 
     &--badge {
@@ -547,6 +557,12 @@
   @apply flex items-center gap-4 w-full;
 }
 
+// The one line under "Skills earned" and "My badges" that says what each
+// kind is, so the two sections are not read as the same thing twice.
+.time-tracker__report-lead {
+  @apply -mt-2 mb-4 text-sm text-gray-2;
+}
+
 .time-tracker__skills {
   @apply grid grid-cols-1 md:grid-cols-2 gap-3 list-none m-0 p-0;
 }
@@ -652,6 +668,86 @@
 
     svg {
       @apply w-10 h-10 fill-current;
+    }
+  }
+}
+
+// "Skill or badge?" on the public explainer: two cards side by side, each
+// led by the mark used for that kind everywhere else in the module.
+.time-tracker-compare {
+  &__grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+  }
+
+  &__card {
+    @apply rounded border border-gray-3 p-5;
+  }
+
+  &__head {
+    @apply flex items-center gap-3 mb-3;
+
+    h3 {
+      @apply m-0;
+    }
+  }
+
+  &__tagline {
+    @apply text-sm font-semibold text-gray-2;
+  }
+
+  &__mark {
+    @apply grid place-items-center w-11 h-11 flex-none text-white;
+
+    svg {
+      @apply w-6 h-6 fill-current;
+    }
+
+    &--skill {
+      @apply rounded-lg bg-secondary;
+    }
+
+    &--badge {
+      @apply rounded-full bg-primary;
+    }
+  }
+
+  &__points {
+    @apply list-disc ml-5 text-sm text-gray-2 leading-relaxed;
+  }
+
+  &__link {
+    @apply mt-4 text-sm text-gray-2;
+  }
+}
+
+// Skill cards on the public explainer carry the same square mark.
+.time-tracker--skill {
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+
+    h3 {
+      margin: 0;
+    }
+  }
+
+  &__mark {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.5rem;
+    background: var(--secondary, #e8e8f5);
+    color: #fff;
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: currentcolor;
     }
   }
 }

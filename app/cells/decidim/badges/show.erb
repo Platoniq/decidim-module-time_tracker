@@ -2,7 +2,10 @@
 
     A volunteer's profile leads with what they earned in the time tracker:
     each certified skill (when, and through which tasks) and each badge level
-    they reached. Decidim's generic badges then appear only where the
+    they reached. The two must not read as the same thing: skills are cards
+    with a square mark and a "Certified skill" label (a competence, held or
+    not), badges keep Decidim's round medal with its level (a tally that
+    climbs). Each section opens with one line saying which is which. Decidim's generic badges then appear only where the
     participant has reached a level, so the tab reads as achievements rather
     than a grid of zeros. Anyone without time tracker achievements sees the
     core tab, whose "all badges" link points at the word-free /badges path
@@ -31,31 +34,36 @@
 
   <% if skill_groups.any? %>
     <h3 class="h5" style="margin-top: 2rem"><%= t("decidim.time_tracker.profile_badges.skills") %></h3>
-    <div class="profile__badge-grid">
+    <p class="text-gray-2" style="margin-top: .25rem"><%= t("decidim.time_tracker.profile_badges.skills_lead") %></p>
+    <%# The module's stylesheet is not loaded on profile pages, hence the
+        inline styles. %>
+    <ul style="display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 1rem; margin: 1rem 0 0; padding: 0; list-style: none">
       <% skill_groups.each_value do |earned| %>
         <% first = earned.min_by(&:earned_at) %>
-        <div data-skill="<%= first.decidim_time_tracker_skill_id || "task-#{first.decidim_time_tracker_task_id}" %>">
-          <div class="profile__badge">
-            <div class="profile__badge-outline" style="--value:1;--color:var(--primary)">
-              <div class="profile__badge-circle" style="display:flex;align-items:center;justify-content:center">
-                <%= icon "award-line", width: "3rem", height: "3rem" %>
-              </div>
-            </div>
-            <div class="profile__badge-title"><%= t("decidim.time_tracker.profile_badges.skill") %></div>
-          </div>
-          <div class="profile__badge-name"><%= translated_attribute(first.skill_name) %></div>
-          <div class="profile__badge-description">
-            <%= t("decidim.time_tracker.reports.skills.earned",
-                  date: l(first.earned_at.to_date, format: :decidim_short_with_month_name_short),
-                  tasks: earned.map { |certification| translated_attribute(certification.task.name) }.uniq.to_sentence) %>
-          </div>
-        </div>
+        <li data-skill="<%= first.decidim_time_tracker_skill_id || "task-#{first.decidim_time_tracker_task_id}" %>"
+            style="display: flex; gap: .875rem; align-items: flex-start; padding: 1rem; border: 1px solid #e1e5ef; border-radius: .5rem; background: #fff">
+          <span aria-hidden="true" style="display: grid; place-items: center; flex: none; width: 2.75rem; height: 2.75rem; border-radius: .5rem; background: var(--secondary); color: #fff">
+            <%= icon "graduation-cap-line", width: "1.5rem", height: "1.5rem", style: "fill: currentcolor" %>
+          </span>
+          <span style="display: block">
+            <span style="display: block; font-size: .75rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--secondary)">
+              <%= t("decidim.time_tracker.profile_badges.certified_skill") %>
+            </span>
+            <strong style="display: block; font-size: 1.125rem; line-height: 1.3"><%= translated_attribute(first.skill_name) %></strong>
+            <span class="text-gray-2" style="display: block; font-size: .875rem; margin-top: .25rem">
+              <%= t("decidim.time_tracker.reports.skills.earned",
+                    date: l(first.earned_at.to_date, format: :decidim_short_with_month_name_short),
+                    tasks: earned.map { |certification| translated_attribute(certification.task.name) }.uniq.to_sentence) %>
+            </span>
+          </span>
+        </li>
       <% end %>
-    </div>
+    </ul>
   <% end %>
 
   <% if earned_badges.any? %>
     <h3 class="h5" style="margin-top: 2rem"><%= t("decidim.time_tracker.profile_badges.badges") %></h3>
+    <p class="text-gray-2" style="margin-top: .25rem"><%= t("decidim.time_tracker.profile_badges.badges_lead") %></p>
     <div class="profile__badge-grid">
       <% earned_badges.each do |status| %>
         <div data-time-tracker-badge="<%= status.badge.id %>">
