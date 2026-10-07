@@ -18,9 +18,12 @@ module Decidim
       EVENT_PREFIX = "Decidim::TimeTracker::"
 
       def self.addresses
-        Array(Decidim::TimeTracker.email_allowlist).flat_map { |entry| entry.to_s.split(",") }
-                                                   .map { |address| address.strip.downcase }
-                                                   .compact_blank
+        configured = Decidim::TimeTracker.email_allowlist
+        configured = ENV.fetch("TIME_TRACKER_EMAIL_ALLOWLIST", "") if configured.nil?
+
+        Array(configured).flat_map { |entry| entry.to_s.split(",") }
+                         .map { |address| address.strip.downcase }
+                         .compact_blank
       end
 
       def self.active?
