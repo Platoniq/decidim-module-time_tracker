@@ -5,13 +5,14 @@
 
 <section class="time-tracker__report-section" aria-labelledby="skills-earned-title">
   <h2 class="h4" id="skills-earned-title"><%= t("decidim.time_tracker.reports.skills.title") %></h2>
+  <p class="time-tracker__report-lead"><%= t("decidim.time_tracker.reports.skills.lead") %></p>
 
   <% if groups.any? %>
     <ul class="time-tracker__skills">
       <% groups.each_value do |earned| %>
         <% first = earned.min_by(&:earned_at) %>
         <li class="time-tracker__skill">
-          <span class="time-tracker__earning-mark" aria-hidden="true"><%= icon "award-line" %></span>
+          <span class="time-tracker__earning-mark time-tracker__earning-mark--skill" aria-hidden="true"><%= icon "graduation-cap-line" %></span>
           <div>
             <strong><%= translated_attribute(first.skill_name) %></strong>
             <span class="time-tracker__skill-meta">

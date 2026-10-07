@@ -29,6 +29,20 @@ Time alone does not earn anything. The chain is:
 5. **Badges level up**, automatically, from verified completions, certified
    skills, hours tracked or milestones posted.
 
+### Skill or badge?
+
+| | Skill | Badge |
+| --- | --- | --- |
+| Answers | *What can this person do?* | *How much has this person done?* |
+| Attached to | The tasks that teach it | One metric, over every task or a chosen few |
+| Earned | Once, when work on one of its tasks meets the skill's rule | Level by level, automatically, as the count grows |
+| Levels | None: held or not | One or more, with thresholds |
+| On the profile | A "Certified skill" card with the date and the task | A round medal with "Level 2 of 3" |
+| Mark in the UI | Square, graduation cap | Round, icon of the metric |
+
+Skills can count towards badges (`skills_earned`, `required_skills`); badges
+never certify skills. The public `/badges` page opens with the same comparison.
+
 ### Skills
 
 A **skill** is a competence the organisation certifies. Skills belong to the
@@ -69,6 +83,9 @@ The `required_skills` metric is how you build "earned by one skill **or**
 several": name the skills, then let the level thresholds decide. Levels `1`
 means any one of them earns the badge; levels `1, 2, 3` over three skills means
 one earns level 1 and all three earn level 3.
+A `required_skills` badge over a single skill only restates that skill; use it
+to bundle several skills, or pick a metric that keeps counting after the skill
+is certified.
 
 ### Public pages
 

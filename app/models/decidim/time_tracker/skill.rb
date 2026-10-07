@@ -6,6 +6,14 @@ module Decidim
     # working on tasks. Skills belong to the organization so they can be
     # shared by every time tracker component.
     #
+    # Skill or Badge? A skill says what someone can do: it is attached to the
+    # tasks that teach it, it has no levels, and it is certified once
+    # (a SkillCertification) when their work on one of those tasks meets the
+    # rule below. A Badge says how much someone has done: it counts one metric
+    # and climbs through levels. Skills can feed badges (the skills_earned and
+    # required_skills metrics); badges never certify skills. The UI keeps the
+    # two apart too: skills get a square mark, badges a round one.
+    #
     # How a skill is earned depends on its earning mode:
     # - completed_activities: a number of the task's activities (or all of
     #   them) each with enough admin-verified completions.

@@ -1,6 +1,10 @@
 <%# What working on this task earns, next to the work rather than on a
     separate page. Badges counting across every task are left out: they apply
-    everywhere, and the aside links to the page that explains them. %>
+    everywhere, and the aside links to the page that explains them.
+
+    Each entry says which kind it is. A skill (square mark) is a competence
+    certified once; a badge (round mark) is a tally that climbs through
+    levels, so its line gives the levels and what they count. %>
 <% skills = task_skills(task) %>
 <% badges = task_badges(task) %>
 
@@ -11,8 +15,9 @@
     <% if skills.any? %>
       <% skills.each do |skill| %>
         <li class="time-tracker__earning">
-          <span class="time-tracker__earning-mark" aria-hidden="true"><%= icon "award-line" %></span>
+          <span class="time-tracker__earning-mark time-tracker__earning-mark--skill" aria-hidden="true"><%= icon "graduation-cap-line" %></span>
           <span>
+            <span class="time-tracker__earning-kind"><%= t("decidim.time_tracker.earnings.kinds.skill") %></span>
             <strong><%= translated_attribute(skill.name) %></strong>
             <span class="time-tracker__earning-rule"><%= skill_earning_summary(skill) %></span>
           </span>
@@ -22,8 +27,9 @@
       <%# No skill attached, so the module certifies the task under its own
           name. Saying so beats implying nothing is earned. %>
       <li class="time-tracker__earning">
-        <span class="time-tracker__earning-mark" aria-hidden="true"><%= icon "award-line" %></span>
+        <span class="time-tracker__earning-mark time-tracker__earning-mark--skill" aria-hidden="true"><%= icon "graduation-cap-line" %></span>
         <span>
+          <span class="time-tracker__earning-kind"><%= t("decidim.time_tracker.earnings.kinds.skill") %></span>
           <strong><%= stripped_translated_attribute(task.name) %></strong>
           <span class="time-tracker__earning-rule"><%= t("decidim.time_tracker.earnings.rules.task_fallback") %></span>
         </span>
@@ -34,8 +40,13 @@
       <li class="time-tracker__earning">
         <span class="time-tracker__earning-mark time-tracker__earning-mark--badge" aria-hidden="true"><%= icon badge.icon_name %></span>
         <span>
+          <span class="time-tracker__earning-kind"><%= t("decidim.time_tracker.earnings.kinds.badge") %></span>
           <strong><%= translated_attribute(badge.name) %></strong>
-          <span class="time-tracker__earning-rule"><%= t("decidim.time_tracker.earnings.badge_levels", levels: badge.levels.join(" → ")) %></span>
+          <span class="time-tracker__earning-rule">
+            <%= t("decidim.time_tracker.earnings.badge_levels",
+                  levels: badge.levels.join(" → "),
+                  counts: t("decidim.time_tracker.badges.index.counts.#{badge.metric}")) %>
+          </span>
         </span>
       </li>
     <% end %>

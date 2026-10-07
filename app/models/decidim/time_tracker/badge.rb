@@ -6,6 +6,13 @@ module Decidim
     # Decidim::Gamification (which are fixed in code at boot), these are
     # stored per organization so admins can create them and tune their
     # levels and rules from the admin panel.
+    #
+    # A badge says how much someone has done: it counts one metric (verified
+    # completions, skills, hours, milestones) and has levels, recomputed from
+    # that count by BadgeProgress rather than stored. A Skill, by contrast,
+    # says what someone can do and is certified once. A required_skills badge
+    # with a single skill and level only restates that skill, so the admin
+    # form steers admins towards bundling several.
     class Badge < ApplicationRecord
       include Decidim::Traceable
       include Decidim::Loggable

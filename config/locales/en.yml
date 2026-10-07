@@ -155,11 +155,11 @@ en:
           unearned_own: You have not completed any activities yet.
         time_tracker_skills:
           conditions:
-          - Get assigned to every activity of a task (a skill) in a Time Tracker
-          - Complete all of the task's activities so administrators can certify the
-            skill
-          description: This badge is granted when you earn skill certifications by
-            completing every activity of a task.
+          - Work on the activities of a task in a Time Tracker
+          - Have your work verified, so that the skills attached to the task are certified
+            to you
+          description: This badge counts the skills you have been certified in through
+            the Time Tracker.
           description_another: This participant has been certified in %{score} skills.
           description_own: You have been certified in %{score} skills.
           name: Certified skills
@@ -318,8 +318,9 @@ en:
             metric_explanations:
               completed_activities: Activity completions an organiser has verified.
               milestones_created: Milestones volunteers post when they finish a session.
-              required_skills: How many of the skills you pick below a volunteer holds.
-                One skill or several.
+              required_skills: 'How many of the skills you pick below a volunteer
+                holds. Use it to bundle several skills into one badge: with a single
+                skill, the badge only repeats that skill.'
               skills_earned: Any skill certified anywhere, each counting once.
               time_dedicated_hours: Hours tracked with the timer, verified or not.
             preview:
@@ -348,9 +349,9 @@ en:
             weight_help: Badges are listed from the lowest number up.
             which_work: Which work counts
           index:
-            description: Badges are shared across all Time Tracker components of the
-              platform. Choose what a badge counts and how many levels it has; participants
-              level up automatically as they work.
+            description: A badge counts one thing (verified work, skills, hours or
+              milestones) and has levels that volunteers climb automatically. Badges
+              are shared across all Time Tracker components of the platform.
             empty: There are no badges yet.
             hidden: Hidden
             shown: Shown
@@ -457,12 +458,13 @@ en:
             tasks_help: Working on any of the selected tasks can earn this skill.
               You can also assign skills from the task form.
           index:
-            description: Skills are shared by every Time Tracker on the platform.
-              Attach them to tasks; participants earn them by meeting the rule set
-              on each skill.
+            description: A skill names a competence and is certified once per volunteer.
+              Skills are shared by every Time Tracker on the platform; attach them
+              to the tasks that teach them.
             empty: There are no skills yet.
             intro: Skills and badges are how the time volunteers give turns into recognition
-              they can show. They are shared by every space on the platform.
+              they can show. A skill says what a volunteer can do; a badge says how
+              much they have done. Both are shared by every space on the platform.
             more_tasks:
               one: " and 1 more"
               other: " and %{count} more"
@@ -473,10 +475,11 @@ en:
             page_title: Skills & badges
             public_page: See the public page
             steps:
-              badges: Badges level up on their own as verified work, certified skills,
-                hours and milestones add up.
-              skills: 'Attach skills to tasks. Each skill has a rule: complete some
-                activities, or track some hours.'
+              badges: Badges are tallies with levels. They rise on their own as verified
+                work, certified skills, hours and milestones add up.
+              skills: 'Skills are competences. Attach them to tasks; each one is certified
+                once per volunteer, by its rule: verified activities, or hours tracked
+                on the task.'
               verify: When a volunteer's work meets an activity's completion rule,
                 you verify it from the tasks page.
             title: Skills
@@ -569,10 +572,37 @@ en:
             required_skills: 'Earned by being certified in these skills: %{skills}.'
             restricted_to: Counts %{metric} on %{tasks} only.
           badges_empty: No badges have been set up yet.
-          badges_intro: Badges have levels, and each level has a threshold you reach
-            by getting the counted thing up to that number. A badge based on required
-            skills can be set to need a single skill or several.
+          badges_intro: 'Each badge counts one thing and has levels: when your count
+            reaches the next number, the badge moves up a level on its own.'
           badges_title: Time Tracker badges
+          compare:
+            badge:
+              earned_when: Has levels. It moves up on its own each time your count
+                reaches the next number.
+              example: 'Example: an hours badge reaches level 1 at 1 hour tracked,
+                level 2 at 5 hours and level 3 at 10.'
+              name: Badge
+              shown_as: Shown on your profile as a medal with your level, such as
+                Level 2 of 3.
+              tagline: How much you have done
+              tied_to: 'Counts one thing across your volunteering: verified activities,
+                hours, milestones or skills, on every task or on a few an organiser
+                picks.'
+            link: Skills can count towards a badge, for example a badge for the number
+              of skills you hold, but a badge never certifies a skill.
+            skill:
+              earned_when: 'Certified once, when your work on one of those tasks meets
+                the skill''s rule. You either hold it or you don''t: there are no
+                levels.'
+              example: 'Example: have the activities of a facilitation task verified
+                and you are certified in "Group facilitation".'
+              name: Skill
+              shown_as: Shown on your profile as a certified skill, with the date
+                and the task that earned it.
+              tagline: What you can do
+              tied_to: Names a competence, such as "Group facilitation", and is attached
+                to the tasks that teach it.
+            title: Skill or badge?
           counts:
             completed_activities: verified activity completions
             milestones_created: milestones posted
@@ -580,9 +610,8 @@ en:
             skills_earned: certified skills
             time_dedicated_hours: hours tracked
           granted_by: 'Earned by working on: %{tasks}'
-          intro: Skills recognise what you have learned by volunteering here, and
-            badges recognise how much you have done. Both are earned by taking part
-            — you never have to apply for them.
+          intro: Skills show what you can do. Badges show how much you have done.
+            Both are earned by taking part — you never have to apply for them.
           levels: 'Levels: %{levels}'
           my_progress: See my progress
           platform_badges_intro: These come with Decidim itself and are shared by
@@ -600,14 +629,15 @@ en:
                 over, each verified by an administrator.
             time_spent: Track %{hours} hours across the task's activities.
           skills_empty: No skills have been set up yet.
-          skills_intro: Each skill is certified by working on the tasks listed under
-            it. Only work an administrator has verified counts towards it.
+          skills_intro: Each skill is attached to the tasks listed under it, and is
+            certified to you once, when your work on one of them meets the rule shown.
           skills_title: Skills you can earn here
           steps:
-            badges: Badges level up on their own as your verified completions, certified
-              skills, tracked hours and milestones add up.
-            certify: Once enough of a task's activities are verified, the skills attached
-              to that task are certified to you.
+            badges: 'Badges level up on their own as your verified completions, certified
+              skills, tracked hours and milestones add up: a record of how much you
+              have done.'
+            certify: 'Once enough of a task''s work is verified, you are certified
+              in the skills attached to it: proof of what you can do.'
             join: Join an activity in a Time Tracker and wait for an administrator
               to accept you.
             track: Track the time you spend on it with the timer, and record a milestone
@@ -616,6 +646,8 @@ en:
               to an administrator, who verifies it.
           steps_title: How you earn them
           title: Skills & Badges
+        lead: How much you have done. Each badge has levels and moves up on its own
+          as your work adds up.
         level: Level %{level} of %{max}
         max_level: Maximum level reached!
         progress:
@@ -711,7 +743,10 @@ en:
           other: "%{count} min"
         under_a_minute: less than a minute
       earnings:
-        badge_levels: 'Badge levels: %{levels}'
+        badge_levels: Levels at %{levels} %{counts}
+        kinds:
+          badge: Badge
+          skill: Skill
         lead: Earns
         rules:
           all_activities:
@@ -849,10 +884,15 @@ en:
           empty: You are not signed up for any activity yet.
       profile_badges:
         badges: Badges
-        description: What this participant has earned by volunteering.
+        badges_lead: How much this participant has done. Each badge has levels that
+          rise as their work adds up.
+        certified_skill: Certified skill
+        description: 'What this participant has earned by volunteering: skills say
+          what they can do, badges how much they have done.'
         other_badges: Other badges
-        skill: Skill
         skills: Skills
+        skills_lead: What this participant can do. Each skill was certified once,
+          through the work named under it.
         title: Skills and badges
       reports:
         activities:
@@ -861,6 +901,8 @@ en:
           earned: Earned %{date}, through %{tasks}
           empty: No skills yet. When an organiser verifies your work on a task, the
             skills attached to it are certified to you.
+          lead: What you can do. Each skill is certified once, when your work on a
+            task meets its rule.
           title: Skills earned
         total_time: "%{duration} tracked in total"
         user:
