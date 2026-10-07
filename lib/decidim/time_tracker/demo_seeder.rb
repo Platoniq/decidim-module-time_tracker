@@ -414,7 +414,7 @@ module Decidim
             "<p>Every task in this programme belongs to a strand, and every task in a strand certifies the same " \
             "skill. A volunteer who works across the facilitation strand ends up certified in <em>Group " \
             "facilitation</em> — not in three separate task names.</p>" \
-            "<p>This process exists to demonstrate the time tracker. The people and the work in it are invented.</p>"
+            "<p>This process exists to demonstrate the Time Tracker. The people and the work in it are invented.</p>"
           ),
           published_at: Time.current
         )
