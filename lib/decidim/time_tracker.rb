@@ -37,9 +37,9 @@ module Decidim
     end
 
     # Email addresses that alone receive Time Tracker emails, for demo and
-    # staging instances (see EmailAllowlist). Empty means everyone does.
-    config_accessor :email_allowlist do
-      ENV.fetch("TIME_TRACKER_EMAIL_ALLOWLIST", "")
-    end
+    # staging instances (see EmailAllowlist). Empty means everyone does; left
+    # nil, TIME_TRACKER_EMAIL_ALLOWLIST is read when a mail is about to go out
+    # (not here: figaro and the like load their variables after the gems).
+    config_accessor :email_allowlist
   end
 end

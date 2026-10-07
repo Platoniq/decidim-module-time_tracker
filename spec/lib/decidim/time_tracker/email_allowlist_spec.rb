@@ -44,6 +44,23 @@ describe Decidim::TimeTracker::EmailAllowlist do
         expect(notification_mail(time_tracker_event, colleague, activity).to).to eq([colleague.email])
       end
     end
+
+    context "when only the environment variable sets the list" do
+      let(:allowlist) { nil }
+
+      around do |example|
+        previous = ENV.fetch("TIME_TRACKER_EMAIL_ALLOWLIST", nil)
+        ENV["TIME_TRACKER_EMAIL_ALLOWLIST"] = "harrison@example.org"
+        example.run
+      ensure
+        ENV["TIME_TRACKER_EMAIL_ALLOWLIST"] = previous
+      end
+
+      it "reads it when the mail goes out" do
+        expect(notification_mail(time_tracker_event, colleague, activity).message).to be_a(ActionMailer::Base::NullMail)
+        expect(notification_mail(time_tracker_event, listed, activity).to).to eq([listed.email])
+      end
+    end
   end
 
   describe "the notifications digest" do
