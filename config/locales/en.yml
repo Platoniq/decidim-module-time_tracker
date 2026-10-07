@@ -100,12 +100,30 @@ en:
           notification_title: Your request to join <a href="%{resource_path}">%{resource_title}</a>
             was not accepted.
         assignation_requested_event:
-          email_intro: A participant has asked to join the activity "%{resource_title}"
-            in %{participatory_space_title}.
+          email_intro: '%{participant_name} asked to join the activity "%{resource_title}"
+            in %{participatory_space_title}. You can accept or reject it in the time
+            tracker admin.'
           email_outro: You have received this notification because you are an admin
             of this participatory space.
-          email_subject: New request to join %{resource_title}
-          notification_title: A participant asked to join the activity <a href="%{resource_path}">%{resource_title}</a>.
+          email_subject: "%{participant_name} asked to join %{resource_title}"
+          notification_title: '%{participant_name} asked to join the activity <a href="%{resource_path}">%{resource_title}</a>.'
+        completion_requested_event:
+          email_intro: '%{participant_name} tracked enough time on the activity "%{resource_title}"
+            in %{participatory_space_title} to complete it. The completion is waiting
+            for you to verify it.'
+          email_outro: You have received this notification because you are an admin
+            of this participatory space.
+          email_subject: "%{participant_name} completed %{resource_title}: please
+            verify"
+          notification_title: '%{participant_name} completed the activity <a href="%{resource_path}">%{resource_title}</a>,
+            which is waiting for you to verify it.'
+        milestone_created_event:
+          email_intro: '%{participant_name} posted an update on the activity "%{resource_title}"
+            in %{participatory_space_title}.'
+          email_outro: You have received this notification because you are an admin
+            of this participatory space.
+          email_subject: New update from %{participant_name} on %{resource_title}
+          notification_title: '%{participant_name} posted an update on <a href="%{resource_path}">%{resource_title}</a>.'
         skill_certified_event:
           email_intro: Congratulations! Your work on "%{task_title}" has certified
             you in "%{resource_title}".
@@ -706,6 +724,8 @@ en:
               each verified by an organiser
           task_fallback: Certified once every activity here is verified by an organiser
           time_spent: Track %{hours} hours across these activities
+      events:
+        a_participant: A participant
       milestone:
         dedicated_time: "%{hours}h %{minutes}m %{seconds}s"
         time_dedicated: Time dedicated

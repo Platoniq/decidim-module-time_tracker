@@ -36,6 +36,12 @@ module Decidim
         @component ||= task.time_tracker.component
       end
 
+      # Who did it, for the admin notifications that name the volunteer.
+      def participant_name
+        name = (extra || {}).with_indifferent_access[:participant_name]
+        name.presence || I18n.t("decidim.time_tracker.events.a_participant")
+      end
+
       private
 
       # The engine is mounted once per component, so routes must be resolved

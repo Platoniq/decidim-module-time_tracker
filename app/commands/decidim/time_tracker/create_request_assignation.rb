@@ -33,7 +33,9 @@ module Decidim
           event: "decidim.events.time_tracker.assignation_requested_event",
           event_class: Decidim::TimeTracker::AssignationRequestedEvent,
           resource: activity,
-          followers: activity.task.component.participatory_space.admins
+          followers: activity.task.component.participatory_space.admins,
+          # Admins have to act on it, so it is emailed whatever their digest setting.
+          extra: { participant_name: @user.name, force_email: true }
         )
       end
 
