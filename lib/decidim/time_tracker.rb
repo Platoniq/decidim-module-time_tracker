@@ -5,6 +5,7 @@ require "decidim/time_tracker/engine"
 require "decidim/time_tracker/admin_engine"
 
 require "decidim/time_tracker/component"
+require "decidim/time_tracker/email_allowlist"
 module Decidim
   # This namespace holds the logic of the `TimeTracker` component. This component
   # allows users to create time_tracker in a participatory space.
@@ -33,6 +34,12 @@ module Decidim
       return unless config[:default_assignee_questionnaire_seeds]
 
       config.default_assignee_questionnaire_seeds.deep_symbolize_keys
+    end
+
+    # Email addresses that alone receive Time Tracker emails, for demo and
+    # staging instances (see EmailAllowlist). Empty means everyone does.
+    config_accessor :email_allowlist do
+      ENV.fetch("TIME_TRACKER_EMAIL_ALLOWLIST", "")
     end
   end
 end
