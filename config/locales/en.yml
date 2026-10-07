@@ -538,7 +538,7 @@ en:
       assignations:
         request:
           error: There was an error assigning you to this activity.
-          success: You have successfully requested to join this activity!
+          success: Your request to join is registered. An administrator will review it, and you will get a notification with the answer.
         show:
           assignations_activity: "%{user_name}'s activity"
           milestones_list: List of milestones

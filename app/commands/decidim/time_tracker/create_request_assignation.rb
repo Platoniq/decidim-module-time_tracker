@@ -14,6 +14,7 @@ module Decidim
       # Broadcasts :ok if successful, :invalid otherwise.
       def call
         begin
+          accept_terms_by_joining
           create_request_assignation
           notify_admins
         rescue StandardError
@@ -34,6 +35,17 @@ module Decidim
           resource: activity,
           followers: activity.task.component.participatory_space.admins
         )
+      end
+
+      # When the "About you" questionnaire asks nothing, the join request is the
+      # volunteer's acceptance of the terms; recording it keeps "joined at" and
+      # the admin's terms column right.
+      def accept_terms_by_joining
+        time_tracker = activity.task.time_tracker
+        return if time_tracker.has_assignee_questions?
+
+        assignee = Decidim::TimeTracker::Assignee.for(@user)
+        Decidim::TimeTracker::TosAcceptance.create!(assignee:, time_tracker:) unless assignee.tos_accepted?(time_tracker)
       end
 
       def create_request_assignation
