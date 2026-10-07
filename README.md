@@ -140,6 +140,16 @@ bundle exec rails decidim_time_tracker:install:migrations
 bundle exec rails db:migrate
 ```
 
+### Emails on demo and staging instances
+
+Admins are emailed about join requests, completions and updates, and volunteers about their requests and skills. On a demo or staging instance, where the admins are real colleagues and the volunteers test accounts, set `TIME_TRACKER_EMAIL_ALLOWLIST` to the addresses that may receive Time Tracker emails (comma separated):
+
+```bash
+TIME_TRACKER_EMAIL_ALLOWLIST=harrison@platoniq.net
+```
+
+Time Tracker notifications are then emailed, one by one or in the digest, only to those addresses. Everyone still gets the in-app notification, and other Decidim emails are unaffected. Leave it unset in production. (`Decidim::TimeTracker.email_allowlist` sets the same thing from an initializer.)
+
 ## About Time tracker and attached questionnaires
 
 By default, every time tracker component has an attached questionnaire for the volunteer to fill with their personal data and to give their consent to the T&C (further referenced as **questionnaire for assignees**). Activities have also an attached questionnaire for the volunteer to fill when they request to be assigned to that activity (further referenced as **questionnaire for activities**). This is a very simple questionnaire with questions about how certain tasks may usually be perceived as related to certain genders. This can be useful to have a better understanding of the perception of tasks and their real gender assignation.

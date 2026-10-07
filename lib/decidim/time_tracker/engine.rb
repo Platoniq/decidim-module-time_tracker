@@ -54,6 +54,15 @@ module Decidim
       # admin-defined badge gets an emblem without anyone uploading an image,
       # and one for skills, which never share an icon with a badge: a skill
       # is a competence, a badge a tally with levels, and the marks say so.
+      # Restricts Time Tracker emails to TIME_TRACKER_EMAIL_ALLOWLIST when it is
+      # set (demo and staging instances); a no-op otherwise.
+      initializer "decidim_time_tracker.email_allowlist" do
+        config.to_prepare do
+          Decidim::NotificationMailer.prepend(Decidim::TimeTracker::EmailAllowlist::NotificationMailerGuard)
+          Decidim::NotificationsDigestMailer.prepend(Decidim::TimeTracker::EmailAllowlist::DigestMailerGuard)
+        end
+      end
+
       initializer "decidim_time_tracker.icons" do
         {
           "graduation-cap-line" => "A certified skill",
