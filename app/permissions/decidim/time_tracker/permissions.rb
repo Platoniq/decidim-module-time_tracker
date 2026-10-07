@@ -59,7 +59,10 @@ module Decidim
       private
 
       def terms_accepted?
-        Assignee.find_by(user:)&.tos_accepted?(activity.task.time_tracker)
+        time_tracker = activity.task.time_tracker
+        return true unless time_tracker.has_assignee_questions?
+
+        Assignee.find_by(user:)&.tos_accepted?(time_tracker)
       end
 
       def activity

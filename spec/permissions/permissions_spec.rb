@@ -122,7 +122,18 @@ module Decidim::TimeTracker
           end
 
           context "and user has not accepted the time tracker's terms" do
+            before do
+              assignee_data = create(:assignee_data, time_tracker: activity.task.time_tracker)
+              create(:questionnaire_question, questionnaire: assignee_data.questionnaire)
+            end
+
             it_behaves_like "permission is not set"
+          end
+
+          context "and the time tracker asks volunteers nothing before joining" do
+            before { create(:assignee_data, time_tracker: activity.task.time_tracker) }
+
+            it { is_expected.to be true }
           end
         end
       end

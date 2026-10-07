@@ -176,7 +176,7 @@ module Decidim
       def must_fill_in_data?
         return false if time_tracker.blank? || current_assignee.blank?
 
-        !current_assignee.tos_accepted?(time_tracker) && !activities_empty?
+        !current_assignee.tos_accepted?(time_tracker) && !activities_empty? && time_tracker.has_assignee_questions?
       end
 
       def activities_empty?

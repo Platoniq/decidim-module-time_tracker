@@ -37,8 +37,12 @@ module Decidim
         questionnaire.questions.any?
       end
 
+      # Volunteers fill in the "About you" questionnaire, accepting its terms,
+      # before their first join request. With no questions there is nothing to
+      # fill in: the request goes straight through and stands for the terms.
       def has_assignee_questions?
-        assignee_data.questionnaire.questions.any?
+        questionnaire = assignee_data&.questionnaire
+        questionnaire.present? && questionnaire.questions.any?
       end
 
       alias activity_questionnaire questionnaire
