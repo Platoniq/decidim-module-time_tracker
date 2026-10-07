@@ -5,7 +5,7 @@ module Decidim
     module Admin
       class AssigneeQuestionnaireController < Admin::ApplicationController
         include Decidim::Forms::Admin::Concerns::HasQuestionnaire
-        include Decidim::Forms::Admin::Concerns::HasQuestionnaireAnswersUrlHelper
+        include Decidim::Forms::Admin::Concerns::HasQuestionnaireResponsesUrlHelper
 
         # only allows answers if not in preview mode
         def allow_answers?
@@ -49,17 +49,16 @@ module Decidim
           end
         end
 
-        def answer_options_url(params)
-          EngineRouter.admin_proxy(current_component).answer_options_assignee_questionnaire_path(format: :json, **params)
+        def response_options_url(params)
+          EngineRouter.admin_proxy(current_component).response_options_assignee_questionnaire_path(format: :json, **params)
         end
 
-        def answer_options
+        def response_options
           respond_to do |format|
             format.json do
-              question_id = params["id"]
-              question = Decidim::Forms::Question.find_by(id: question_id)
+              question = questionnaire&.questions&.find_by(id: params["id"])
               if question.present?
-                render json: question.answer_options.map { |answer_option| Decidim::Forms::AnswerOptionPresenter.new(answer_option).as_json }
+                render json: question.response_options.map { |response_option| Decidim::Forms::ResponseOptionPresenter.new(response_option).as_json }
               else
                 render json: []
               end

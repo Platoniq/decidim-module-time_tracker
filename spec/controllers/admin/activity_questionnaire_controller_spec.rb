@@ -4,8 +4,6 @@ require "spec_helper"
 
 module Decidim::TimeTracker::Admin
   describe ActivityQuestionnaireController do
-    routes { Decidim::TimeTracker::AdminEngine.routes }
-
     let(:organization) { create(:organization) }
     let(:user) { create(:user, :confirmed, :admin, organization:) }
     let(:participatory_space) { create(:participatory_process, organization:) }

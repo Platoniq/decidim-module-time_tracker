@@ -152,7 +152,7 @@ module Decidim
       def answered_by?(user)
         return false if user.blank?
 
-        questionnaire.answered_by? session_token(user)
+        questionnaire.responded_by? session_token(user)
       end
 
       # used as a unique idenfier when answering the task associated questionnaire

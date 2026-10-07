@@ -42,7 +42,7 @@ module Decidim
 
         [:activity_questionnaire, :assignee_questionnaire].each do |questionnaire|
           resource questionnaire, controller: questionnaire, only: [:edit, :update] do
-            get "/answer_options", to: "#{questionnaire}#answer_options", as: :answer_options
+            get "/response_options", to: "#{questionnaire}#response_options", as: :response_options
             member do
               get :edit_questions
               patch :update_questions

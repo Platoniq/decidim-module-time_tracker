@@ -19,17 +19,17 @@ module Decidim
 
         @form = form(Decidim::Forms::QuestionnaireForm).from_params(params, session_token:, ip_hash:)
 
-        Decidim::Forms::AnswerQuestionnaire.call(@form, questionnaire) do
+        Decidim::Forms::ResponseQuestionnaire.call(@form, questionnaire) do
           on(:ok) do
-            # i18n-tasks-use t("decidim.forms.questionnaires.answer.success")
+            # i18n-tasks-use t("decidim.forms.questionnaires.response.success")
             TosAcceptance.create!(assignee: Assignee.for(current_user), time_tracker:)
-            flash[:notice] = I18n.t("answer.success", scope: i18n_flashes_scope)
-            redirect_to after_answer_path
+            flash[:notice] = I18n.t("response.success", scope: i18n_flashes_scope)
+            redirect_to after_response_path
           end
 
           on(:invalid) do
-            # i18n-tasks-use t("decidim.forms.questionnaires.answer.invalid")
-            flash.now[:alert] = I18n.t("answer.invalid", scope: i18n_flashes_scope)
+            # i18n-tasks-use t("decidim.forms.questionnaires.response.invalid")
+            flash.now[:alert] = I18n.t("response.invalid", scope: i18n_flashes_scope)
             render template: "decidim/forms/questionnaires/show"
           end
         end
@@ -40,7 +40,7 @@ module Decidim
       end
 
       # only allows answers if not in preview mode
-      def allow_answers?
+      def allow_responses?
         return false if current_user.blank?
 
         return true if params[:action] == "preview" && current_user.admin?
@@ -50,14 +50,14 @@ module Decidim
 
       # Override so can answer only if is an assignation can view
       # Also admins can preview it (but not answer)
-      def visitor_can_answer?
+      def visitor_can_respond?
         current_user.present?
       end
 
-      def visitor_already_answered?
+      def visitor_already_responded?
         return false if params[:action] == "preview" && current_user.admin?
 
-        questionnaire.answered_by?(current_user)
+        questionnaire.responded_by?(current_user)
       end
 
       # Returns the path to answer this questionnaire for normal users
@@ -72,7 +72,7 @@ module Decidim
         assignee_questionnaire_path
       end
 
-      def after_answer_path
+      def after_response_path
         Decidim::EngineRouter.main_proxy(current_component).root_path
       end
     end

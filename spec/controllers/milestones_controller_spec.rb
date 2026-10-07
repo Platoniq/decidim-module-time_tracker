@@ -4,8 +4,6 @@ require "spec_helper"
 
 module Decidim::TimeTracker
   describe MilestonesController do
-    routes { Decidim::TimeTracker::Engine.routes }
-
     include_context "with a time_tracker"
 
     let(:user) { create(:user, :confirmed, organization:) }
@@ -85,7 +83,7 @@ module Decidim::TimeTracker
         context "when the nickname param is missing" do
           it "redirects" do
             get :index
-            expect(response).to redirect_to(root_path)
+            expect(response).to redirect_to(Decidim::EngineRouter.main_proxy(component).root_path)
           end
         end
       end

@@ -24,7 +24,7 @@ shared_examples_for "manage time tracker questionnaires" do
     }
   end
 
-  context "when the questionnaire is not already answered" do
+  context "when the questionnaire is not already responded" do
     before do
       visit manage_questions_path
     end
@@ -35,9 +35,9 @@ shared_examples_for "manage time tracker questionnaires" do
     it_behaves_like "update display conditions"
   end
 
-  context "when the questionnaire is already answered" do
+  context "when the questionnaire is already responded" do
     let!(:question) { create(:questionnaire_question, questionnaire:, body:, question_type: "multiple_option") }
-    let!(:answer) { create(:answer, questionnaire:, question:) }
+    let!(:response) { create(:response, questionnaire:, question:) }
 
     it "cannot modify questionnaire questions" do
       visit manage_questions_path
@@ -108,7 +108,7 @@ shared_examples_for "manage time tracker questionnaires" do
               "Terms and conditions questionnaire"
             end
 
-    within ".card", text: title do
+    within ".card.rounded-border", text: title do
       click_on "Manage questions"
     end
   end

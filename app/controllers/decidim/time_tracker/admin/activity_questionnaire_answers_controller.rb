@@ -17,7 +17,7 @@ module Decidim
         end
 
         # Specify where to redirect after exporting a user response
-        def questionnaire_participant_answers_url(id)
+        def questionnaire_participant_responses_url(id)
           Decidim::EngineRouter.admin_proxy(questionnaire_for.component).activity_questionnaire_answer_path(questionnaire_for, id:)
         end
 

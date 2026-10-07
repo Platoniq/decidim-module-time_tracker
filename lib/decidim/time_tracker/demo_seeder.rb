@@ -182,7 +182,7 @@ module Decidim
       def initialize(organization: nil, replace: false, logger: nil, password: nil, admin_password: nil)
         @organization = organization || Decidim::Organization.first
         @replace = replace
-        @logger = logger || ->(message) { puts message }
+        @logger = logger || ->(message) { puts message } # rubocop:disable Rails/Output
         @password = password.presence || DEFAULT_PASSWORD
         @admin_password = admin_password.presence
       end

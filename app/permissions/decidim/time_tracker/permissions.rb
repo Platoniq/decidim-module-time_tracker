@@ -25,8 +25,10 @@ module Decidim
         permission_action
       end
 
+      # Decidim 0.31's questionnaire concern asks for :respond; the assignee
+      # questionnaire controller still asks for :answer.
       def allow_answer?
-        return false unless permission_action.action == :answer
+        return false unless permission_action.action.in?([:answer, :respond])
 
         allow! if current_component&.published?
       end
