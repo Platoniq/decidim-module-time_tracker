@@ -35,6 +35,16 @@ module Decidim::TimeTracker
           expect(response).to have_http_status(:ok)
         end
 
+        it "emails the space's admins about the request" do
+          allow(Decidim::EventsManager).to receive(:publish)
+          post(:create, params:)
+
+          expect(Decidim::EventsManager).to have_received(:publish).with(
+            hash_including(event: "decidim.events.time_tracker.assignation_requested_event",
+                           extra: { participant_name: user.name, force_email: true })
+          )
+        end
+
         context "when activity is not active" do
           let(:activity) { create(:activity, task:, active: false) }
 

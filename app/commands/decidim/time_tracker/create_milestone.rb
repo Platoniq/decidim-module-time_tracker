@@ -31,6 +31,7 @@ module Decidim
           create_milestone!
           create_attachment if attachment_present?
         end
+        notify_admins
 
         broadcast(:ok, @milestone)
       end
@@ -47,6 +48,19 @@ module Decidim
           activity: form.activity
         )
         @attached_to = @milestone
+      end
+
+      # Updates are often the proof an admin looks at before verifying, so
+      # they are emailed whatever the admin's digest setting.
+      def notify_admins
+        activity = @milestone.activity
+        Decidim::EventsManager.publish(
+          event: "decidim.events.time_tracker.milestone_created_event",
+          event_class: Decidim::TimeTracker::MilestoneCreatedEvent,
+          resource: activity,
+          followers: activity.task.component.participatory_space.admins,
+          extra: { participant_name: current_user.name, force_email: true }
+        )
       end
 
       def attachment_present?

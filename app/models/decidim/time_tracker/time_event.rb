@@ -80,7 +80,22 @@ module Decidim
 
         achievable = qualifying_events / min_events
         recorded = assignation.completions.count
-        assignation.completions.create!(requested_at: Time.current) if achievable > recorded
+        return unless achievable > recorded
+
+        assignation.completions.create!(requested_at: Time.current)
+        notify_admins_of_completion
+      end
+
+      # Admins verify completions, so they hear about each one by email
+      # whatever their notification digest setting.
+      def notify_admins_of_completion
+        Decidim::EventsManager.publish(
+          event: "decidim.events.time_tracker.completion_requested_event",
+          event_class: Decidim::TimeTracker::CompletionRequestedEvent,
+          resource: activity,
+          followers: activity.task.component.participatory_space.admins,
+          extra: { participant_name: user.name, force_email: true }
+        )
       end
 
       # Time-based skills certify from tracked time directly, so they must

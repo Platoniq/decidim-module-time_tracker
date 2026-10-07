@@ -56,6 +56,46 @@ module Decidim::TimeTracker
       expect(subject.resource_path)
         .to eq(Decidim::EngineRouter.admin_proxy(time_tracker.component).task_activity_assignations_path(task, resource))
     end
+
+    it "says who asked, or a participant when the name is unknown" do
+      expect(subject.email_subject).to start_with("A participant asked to join")
+    end
+
+    context "with the participant's name" do
+      let(:extra) { { participant_name: "Rim" } }
+
+      it "names them" do
+        expect(subject.email_subject).to eq("Rim asked to join Lay out the space")
+      end
+    end
+  end
+
+  describe CompletionRequestedEvent do
+    include_context "with an activity as the resource"
+
+    let(:event_name) { "decidim.events.time_tracker.completion_requested_event" }
+    let(:extra) { { participant_name: "Rim" } }
+
+    it_behaves_like "an activity event"
+
+    it "names the volunteer and links the admin to the verification queue" do
+      expect(subject.email_subject).to eq("Rim completed Lay out the space: please verify")
+      expect(subject.resource_path).to eq(Decidim::EngineRouter.admin_proxy(time_tracker.component).tasks_path)
+    end
+  end
+
+  describe MilestoneCreatedEvent do
+    include_context "with an activity as the resource"
+
+    let(:event_name) { "decidim.events.time_tracker.milestone_created_event" }
+    let(:extra) { { participant_name: "Rim" } }
+
+    it_behaves_like "an activity event"
+
+    it "names the volunteer and links the admin to the activity's updates" do
+      expect(subject.notification_title).to include("Rim posted an update")
+      expect(subject.resource_path).to eq(router.task_activity_path(task, resource, anchor: "milestones"))
+    end
   end
 
   describe SkillCertifiedEvent do

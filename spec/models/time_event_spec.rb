@@ -43,6 +43,22 @@ module Decidim
           expect { track!(30) }.to change(ActivityCompletion.pending, :count).by(1)
         end
 
+        it "emails the space's admins about each completion waiting to be verified" do
+          allow(Decidim::EventsManager).to receive(:publish).and_call_original
+          completion_event = hash_including(event: "decidim.events.time_tracker.completion_requested_event")
+
+          track!(30)
+          expect(Decidim::EventsManager).not_to have_received(:publish).with(completion_event)
+
+          track!(30)
+          expect(Decidim::EventsManager).to have_received(:publish).with(
+            hash_including(event: "decidim.events.time_tracker.completion_requested_event",
+                           event_class: Decidim::TimeTracker::CompletionRequestedEvent,
+                           resource: activity,
+                           extra: { participant_name: user.name, force_email: true })
+          ).once
+        end
+
         it "ignores sessions shorter than the minimum duration" do
           expect { track!(5) }.not_to change(ActivityCompletion, :count)
           expect { track!(30) }.not_to change(ActivityCompletion, :count)
