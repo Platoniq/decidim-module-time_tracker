@@ -99,6 +99,13 @@ module Decidim::TimeTracker
           context "and user is not assigned" do
             let!(:assignation) { create(:assignation, user:) }
 
+            before do
+              Decidim::TimeTracker::TosAcceptance.create!(
+                assignee: Decidim::TimeTracker::Assignee.for(user),
+                time_tracker: activity.task.time_tracker
+              )
+            end
+
             it { is_expected.to be true }
 
             context "and activity is not open" do
@@ -106,6 +113,27 @@ module Decidim::TimeTracker
 
               it_behaves_like "permission is not set"
             end
+
+            context "and requests have not opened yet" do
+              let(:activity) { create(:activity, start_date: 1.week.from_now, requests_start_at: 2.days.from_now) }
+
+              it_behaves_like "permission is not set"
+            end
+          end
+
+          context "and user has not accepted the time tracker's terms" do
+            before do
+              assignee_data = create(:assignee_data, time_tracker: activity.task.time_tracker)
+              create(:questionnaire_question, questionnaire: assignee_data.questionnaire)
+            end
+
+            it_behaves_like "permission is not set"
+          end
+
+          context "and the time tracker asks volunteers nothing before joining" do
+            before { create(:assignee_data, time_tracker: activity.task.time_tracker) }
+
+            it { is_expected.to be true }
           end
         end
       end

@@ -46,11 +46,9 @@ describe "Time tracker page" do
       end
     end
 
-    it "renders 'terms of use' callout next to activities" do
-      within "#activities .time-tracker-request" do
-        within ".callout.warning" do
-          expect(page).to have_link "terms of use", href: assignee_questionnaire_path
-        end
+    it "sends the Join button to the terms first" do
+      within ".time-tracker__activity" do
+        expect(page).to have_link "Join", href: assignee_questionnaire_path
       end
     end
   end
@@ -103,7 +101,28 @@ describe "Time tracker page" do
         it_behaves_like "renders activity list"
 
         context "when user has not accepted terms" do
+          before { create(:questionnaire_question, questionnaire: assignee_data.questionnaire) }
+
           it_behaves_like "renders links to fill in demographic data"
+        end
+
+        context "when the time tracker asks nothing before joining" do
+          before do
+            login_as user, scope: :user
+            visit_time_tracker
+          end
+
+          it_behaves_like "does not render links to fill in demographic data"
+
+          it "registers the request with one click" do
+            within ".time-tracker__activity" do
+              click_on "Join"
+
+              expect(page).to have_css(".time-tracker__state--pending", text: "Request sent")
+            end
+            expect(page).to have_css(".time-tracker__notice", text: "registered")
+            expect(Decidim::TimeTracker::Assignation.find_by(user:, activity:)).to be_pending
+          end
         end
 
         context "when user has accepted terms" do
@@ -117,15 +136,13 @@ describe "Time tracker page" do
 
           describe "user signs up for activity" do
             it "allows joining activity" do
-              expect(page).to have_button "Request to join activity"
+              within ".time-tracker__activity" do
+                click_on "Join"
 
-              click_on "Request to join activity"
-
-              within "#activities" do
-                within ".callout.success" do
-                  expect(page).to have_content "successfully"
-                end
+                expect(page).to have_css(".time-tracker__state--pending", text: "Request sent")
               end
+              expect(page).to have_css(".time-tracker__notice", text: "registered")
+              expect(Decidim::TimeTracker::Assignation.find_by(user:, activity:)).to be_pending
             end
           end
 
@@ -139,11 +156,9 @@ describe "Time tracker page" do
             context "when status is pending" do
               let(:status) { :pending }
 
-              it "shows a callout with the correct message" do
-                within "#activities .time-tracker-request" do
-                  within ".callout.warning" do
-                    expect(page).to have_content "Already applied"
-                  end
+              it "shows that the request is waiting" do
+                within ".time-tracker__activity" do
+                  expect(page).to have_css(".time-tracker__state--pending", text: "Request sent")
                 end
               end
             end
@@ -151,11 +166,9 @@ describe "Time tracker page" do
             context "when status is rejected" do
               let(:status) { :rejected }
 
-              it "shows a callout with the correct message" do
-                within "#activities .time-tracker-request" do
-                  within ".callout.alert" do
-                    expect(page).to have_content "rejected"
-                  end
+              it "shows that the request was turned down" do
+                within ".time-tracker__activity" do
+                  expect(page).to have_css(".time-tracker__state--rejected", text: "Not accepted")
                 end
               end
             end
@@ -163,10 +176,14 @@ describe "Time tracker page" do
             context "when status is accepted" do
               let(:status) { :accepted }
 
-              it "shows a callout with the correct message" do
-                within ".time-tracker-activity" do
-                  expect(page).to have_content "Time elapsed"
-                  expect(page).to have_content "0h0m0s"
+              it "puts the activity's timer under Your activities" do
+                within "#my-activities .time-tracker-activity" do
+                  expect(page).to have_content "0:00:00"
+                  expect(page).to have_button "Start"
+                end
+
+                within ".time-tracker__activity" do
+                  expect(page).to have_link "You're in — track time", href: "#activity-#{activity.id}"
                 end
               end
             end

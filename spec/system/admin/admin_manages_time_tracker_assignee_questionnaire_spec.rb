@@ -9,8 +9,8 @@ describe "Admin manages Time tracker assignee questionnaire" do
   let(:manifest_name) { "time_tracker" }
   let(:questionnaire) { time_tracker.assignee_questionnaire }
 
-  it_behaves_like "manage questionnaires"
-  it_behaves_like "manage questionnaire answers"
+  it_behaves_like "manage time tracker questionnaires"
+  it_behaves_like "time tracker manage questionnaire answers"
 
   def questionnaire_edit_path
     Decidim::EngineRouter.admin_proxy(component).edit_assignee_questionnaire_path

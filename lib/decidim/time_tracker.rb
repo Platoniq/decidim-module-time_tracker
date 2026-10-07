@@ -3,9 +3,9 @@
 require "decidim/time_tracker/admin"
 require "decidim/time_tracker/engine"
 require "decidim/time_tracker/admin_engine"
-require "decidim/time_tracker/reports"
-require "decidim/time_tracker/reports_engine"
+
 require "decidim/time_tracker/component"
+require "decidim/time_tracker/email_allowlist"
 module Decidim
   # This namespace holds the logic of the `TimeTracker` component. This component
   # allows users to create time_tracker in a participatory space.
@@ -35,11 +35,11 @@ module Decidim
 
       config.default_assignee_questionnaire_seeds.deep_symbolize_keys
     end
+
+    # Email addresses that alone receive Time Tracker emails, for demo and
+    # staging instances (see EmailAllowlist). Empty means everyone does; left
+    # nil, TIME_TRACKER_EMAIL_ALLOWLIST is read when a mail is about to go out
+    # (not here: figaro and the like load their variables after the gems).
+    config_accessor :email_allowlist
   end
 end
-
-Decidim.register_global_engine(
-  :decidim_time_tracker, # this is the name of the global method to access engine routes
-  Decidim::TimeTracker::ReportsEngine,
-  at: "/timetracker"
-)

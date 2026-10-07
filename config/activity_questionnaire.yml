@@ -1,6 +1,5 @@
 title: decidim.time_tracker.default_activity_questionnaire.title
 description: decidim.time_tracker.default_activity_questionnaire.description
-tos: decidim.time_tracker.default_activity_questionnaire.tos
 questions:
   - question_type: single_option
     position: 1

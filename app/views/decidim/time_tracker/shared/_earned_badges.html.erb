@@ -1,0 +1,35 @@
+<% badge_progress = Decidim::TimeTracker::BadgeProgress.new(current_user, current_organization) %>
+<% if badge_progress.any? %>
+  <section class="time-tracker__report-section" aria-labelledby="my-badges-title">
+    <div class="time-tracker__report-heading">
+      <h2 class="h4" id="my-badges-title"><%= t("decidim.time_tracker.badges.title") %></h2>
+      <%= link_to t("decidim.time_tracker.badges.how_it_works"), decidim.public_badges_path %>
+    </div>
+    <p class="time-tracker__report-lead"><%= t("decidim.time_tracker.badges.lead") %></p>
+
+    <ul class="time-tracker__badges">
+      <% badge_progress.statuses.each do |status| %>
+        <li class="time-tracker__badge<%= " is-locked" unless status.earned? %>">
+          <span class="time-tracker__badge-emblem" aria-hidden="true"><%= icon status.badge.icon_name %></span>
+          <div class="time-tracker__badge-body">
+            <strong><%= translated_attribute(status.badge.name) %></strong>
+            <span class="time-tracker__badge-level"><%= t("decidim.time_tracker.badges.level", level: status.level, max: status.badge.max_level) %></span>
+
+            <% if status.maxed? %>
+              <span class="time-tracker__badge-note"><%= t("decidim.time_tracker.badges.max_level") %></span>
+            <% else %>
+              <div class="time-tracker__progress-bar" role="progressbar"
+                   aria-label="<%= translated_attribute(status.badge.name) %>"
+                   aria-valuenow="<%= status.value %>" aria-valuemin="0" aria-valuemax="<%= status.next_threshold %>">
+                <span style="width: <%= status.percent %>%"></span>
+              </div>
+              <span class="time-tracker__badge-note">
+                <%= t("decidim.time_tracker.badges.progress.#{status.badge.metric}", value: status.value, next: status.next_threshold) %>
+              </span>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>

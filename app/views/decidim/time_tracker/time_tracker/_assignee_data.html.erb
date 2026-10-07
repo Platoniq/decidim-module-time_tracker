@@ -1,9 +1,6 @@
-<div class="row column time-tracker--assignee-data">
-  <div class="callout announcement large">
-    <h4 class="h4"><%= t(".title") %></h4><br>
-    <p><%= t(".description") %></p>
-    <div class="time-tracker--start-button-wrapper">
-      <%= link_to t(".answer"), assignee_questionnaire_path, class: "button button__sm time-tracker--start-button" %>
-    </div>
+<div class="time-tracker--assignee-data">
+  <%= cell("decidim/announcement", { title: t(".title"), body: t(".description") }) %>
+  <div class="time-tracker--start-button-wrapper">
+    <%= link_to t(".answer"), assignee_questionnaire_path, class: "button button__sm button__secondary time-tracker--start-button" %>
   </div>
 </div>

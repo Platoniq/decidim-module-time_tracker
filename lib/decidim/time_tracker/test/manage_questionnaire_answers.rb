@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-shared_examples_for "manage questionnaire answers" do
+shared_examples_for "time tracker manage questionnaire answers" do
   let(:first_type) { "short_answer" }
   let!(:first) do
     create(:questionnaire_question, questionnaire:, position: 1, question_type: first_type)

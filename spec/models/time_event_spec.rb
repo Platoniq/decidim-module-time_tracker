@@ -25,6 +25,63 @@ module Decidim
           expect(subject.user).to eq(assignation.user)
         end
       end
+
+      describe "#stop! completion criteria" do
+        let!(:activity) { create(:activity, min_events: 2, min_duration_minutes_per_event: 10) }
+        let!(:assignation) { create(:assignation, :accepted, activity:) }
+        let(:user) { assignation.user }
+
+        def track!(minutes)
+          event = create(:time_event, assignation:, activity:, user:, start: (minutes * 60).seconds.ago.to_i, stop: nil, total_seconds: 0)
+          event.stop!
+        end
+
+        it "files a pending completion for every batch of qualifying sessions" do
+          expect { track!(30) }.not_to change(ActivityCompletion, :count)
+          expect { track!(30) }.to change(ActivityCompletion.pending, :count).by(1)
+          expect { track!(30) }.not_to change(ActivityCompletion, :count)
+          expect { track!(30) }.to change(ActivityCompletion.pending, :count).by(1)
+        end
+
+        it "emails the space's admins about each completion waiting to be verified" do
+          allow(Decidim::EventsManager).to receive(:publish).and_call_original
+          completion_event = hash_including(event: "decidim.events.time_tracker.completion_requested_event")
+
+          track!(30)
+          expect(Decidim::EventsManager).not_to have_received(:publish).with(completion_event)
+
+          track!(30)
+          expect(Decidim::EventsManager).to have_received(:publish).with(
+            hash_including(event: "decidim.events.time_tracker.completion_requested_event",
+                           event_class: Decidim::TimeTracker::CompletionRequestedEvent,
+                           resource: activity,
+                           extra: { participant_name: user.name, force_email: true })
+          ).once
+        end
+
+        it "ignores sessions shorter than the minimum duration" do
+          expect { track!(5) }.not_to change(ActivityCompletion, :count)
+          expect { track!(30) }.not_to change(ActivityCompletion, :count)
+        end
+
+        it "does not complete the assignation or award scores by itself" do
+          track!(30)
+          track!(30)
+
+          expect(assignation.reload.completed_at).to be_nil
+          expect(Decidim::Gamification.status_for(user, :time_tracker_activities).score).to eq(0)
+        end
+
+        context "when the task has a time-based skill" do
+          let!(:skill) { create(:skill, :time_based, organization: create(:organization), tasks: [activity.task]) }
+
+          it "certifies the skill from tracked time" do
+            expect { track!(30) }.not_to change(SkillCertification, :count)
+            expect { track!(40) }.to change(SkillCertification, :count).by(1)
+            expect(SkillCertification.last.skill).to eq(skill)
+          end
+        end
+      end
     end
   end
 end

@@ -1,0 +1,18 @@
+<%= render partial: "decidim/time_tracker/admin/navigation" %>
+
+<% add_decidim_page_title(t("skills.edit.title", scope: "decidim.time_tracker.admin")) %>
+<div class="item_show__header">
+  <h1 class="item_show__header-title"><%= t("skills.edit.title", scope: "decidim.time_tracker.admin") %></h1>
+</div>
+
+<div class="item__edit-form">
+  <%= decidim_form_for(@form, url: skill_path(current_skill), html: { class: "form form-defaults edit_skill" }) do |form| %>
+    <%= render partial: "form", locals: { form: } %>
+
+    <div class="item__edit-sticky">
+      <div class="item__edit-sticky-container">
+        <%= form.submit t("skills.edit.submit", scope: "decidim.time_tracker.admin"), class: "button button__sm button__secondary" %>
+      </div>
+    </div>
+  <% end %>
+</div>

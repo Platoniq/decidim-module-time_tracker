@@ -7,14 +7,121 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/9372a7def91c50d04e8c/maintainability)](https://codeclimate.com/github/Platoniq/decidim-module-time_tracker/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/Platoniq/decidim-module-time_tracker/badge.svg?branch=main)](https://coveralls.io/github/Platoniq/decidim-module-time_tracker?branch=main)
 
-> **WARNING** This is not ready for production usage yet (though soon will be).
-
-A tool for Decidim that allows to track time dedicated by volunteers doing any arbitrary task.
+A tool for Decidim that records the time volunteers spend on organised work, and
+turns that record into recognition: verified work certifies **skills**, and
+skills, hours and milestones raise **badges**.
 
 ## Usage
 
-TimeTracker will be available as a Component for a Participatory
-Space.
+Time Tracker is a Component you add to a participatory space. Inside it you
+create **tasks**, and each task holds **activities** that volunteers apply to,
+are accepted onto, and then track their time against.
+
+Time alone does not earn anything. The chain is:
+
+1. **Join an activity.** The volunteer applies; an administrator accepts or rejects.
+2. **Track time.** A play / pause / stop timer, and an optional milestone (title,
+   description, photo) when a session ends.
+3. **An administrator verifies.** Meeting an activity's completion rule files a
+   request. Until an administrator verifies it, it counts for nothing.
+4. **A skill is certified.** Enough verified work on a task certifies the skills
+   attached to that task.
+5. **Badges level up**, automatically, from verified completions, certified
+   skills, hours tracked or milestones posted.
+
+### Skill or badge?
+
+| | Skill | Badge |
+| --- | --- | --- |
+| Answers | *What can this person do?* | *How much has this person done?* |
+| Attached to | The tasks that teach it | One metric, over every task or a chosen few |
+| Earned | Once, when work on one of its tasks meets the skill's rule | Level by level, automatically, as the count grows |
+| Levels | None: held or not | One or more, with thresholds |
+| On the profile | A "Certified skill" card with the date and the task | A round medal with "Level 2 of 3" |
+| Mark in the UI | Square, graduation cap | Round, icon of the metric |
+
+Skills can count towards badges (`skills_earned`, `required_skills`); badges
+never certify skills. The public `/badges` page opens with the same comparison.
+
+### Skills
+
+A **skill** is a competence the organisation certifies. Skills belong to the
+organisation, not to a component, so one definition is shared by every Time
+Tracker on the platform. A skill is attached to one or more tasks and earned in
+one of two ways:
+
+- **completed activities** — complete a number of the task's activities (or all
+  of them), each verified a set number of times;
+- **time spent** — track a total number of hours across the task's activities.
+  Note that this mode reads raw tracked time and does **not** require admin
+  verification.
+
+> **Attach skills to your tasks.** A task with no skill still certifies
+> something: the module falls back to certifying the task itself, using the
+> *task name* as the name of the competence. A volunteer's profile then reads
+> "Performance Play #2 (tech + cleanup)" instead of "Stage production". Group
+> several related tasks under one skill and the profile says something a person
+> could put on a CV.
+
+### Badges
+
+A **badge** is a levelled award over a single metric. Administrators choose what
+it counts and how many levels it has; the threshold for each level is prefilled
+from a curve suited to the metric and stays editable.
+
+| Metric | Counts |
+| --- | --- |
+| `completed_activities` | Activity completions an administrator verified |
+| `skills_earned` | Distinct skills certified |
+| `required_skills` | How many of the badge's own named skills are certified |
+| `time_dedicated_hours` | Hours tracked |
+| `milestones_created` | Milestones posted |
+
+A badge can be restricted to specific tasks, or count across every task.
+
+The `required_skills` metric is how you build "earned by one skill **or**
+several": name the skills, then let the level thresholds decide. Levels `1`
+means any one of them earns the badge; levels `1, 2, 3` over three skills means
+one earns level 1 and all three earn level 3.
+A `required_skills` badge over a single skill only restates that skill; use it
+to bundle several skills, or pick a metric that keeps counting after the skill
+is certified.
+
+### Public pages
+
+| Path | What it shows |
+| --- | --- |
+| `/badges` | The public explainer: every skill the organisation can certify with its earning rule in plain words, every badge with its thresholds, and where the signed-in participant stands. Replaces Decidim's core gamification page, which can only describe badges registered in code. |
+| `/my_voluntary_work` | The participant's own record across every Time Tracker component: time per activity, badge progress and dated skill certifications. |
+
+`/gamification/badges` redirects to `/badges`.
+
+## Trying it out
+
+The module ships a seed that builds a complete worked example — a youth-led
+theatre season with sixteen tasks in six strands, seven skills, seven badges and
+ten volunteers placed from "just joined" to "every badge earned", so every state
+the public pages can render is visible at once. A finished audition and some
+wrap-up work still ahead show the other activity states, and the volunteers wear
+the portraits Decidim ships for its own seeds.
+
+It creates its own participatory space and tags everything it makes, so it is
+safe to point at a running instance.
+
+```bash
+bundle exec rails decidim_time_tracker:demo_seed
+bundle exec rails decidim_time_tracker:demo_seed REPLACE=1   # rebuild it
+bundle exec rails decidim_time_tracker:demo_unseed           # remove it
+```
+
+Pass `ORGANIZATION_HOST=…` to target a specific organization; otherwise the
+first one is used.
+
+Every volunteer in the cast signs in with the same password, so anyone can look
+around as any of them; set it with `DEMO_PASSWORD=…`. The demo administrator
+(`demo-admin@example.org`) never shares it: it gets `DEMO_ADMIN_PASSWORD`, or a
+random password printed at the end of the run. Keep that one to yourself on any
+instance other people can reach.
 
 ## Installation
 
@@ -32,6 +139,16 @@ bundle exec rails decidim_time_tracker:webpacker:install
 bundle exec rails decidim_time_tracker:install:migrations
 bundle exec rails db:migrate
 ```
+
+### Emails on demo and staging instances
+
+Admins are emailed about join requests, completions and updates, and volunteers about their requests and skills. On a demo or staging instance, where the admins are real colleagues and the volunteers test accounts, set `TIME_TRACKER_EMAIL_ALLOWLIST` to the addresses that may receive Time Tracker emails (comma separated):
+
+```bash
+TIME_TRACKER_EMAIL_ALLOWLIST=harrison@platoniq.net
+```
+
+Time Tracker notifications are then emailed, one by one or in the digest, only to those addresses. Everyone still gets the in-app notification, and other Decidim emails are unaffected. Leave it unset in production. (`Decidim::TimeTracker.email_allowlist` sets the same thing from an initializer.)
 
 ## About Time tracker and attached questionnaires
 

@@ -3,6 +3,7 @@
     <h1 class="item_show__header-title">
       <%= t(".title") %>
       <%= link_to t("tasks.actions.new", scope: "decidim.time_tracker.admin", name: tasks_label), new_task_path, class: "button button__sm button__secondary" %>
+      <%= link_to t("skills.actions.manage", scope: "decidim.time_tracker.admin"), skills_path, class: "button button__sm button__transparent-secondary" %>
     </h1>
   </div>
 
@@ -11,6 +12,7 @@
       <table class="table-list">
         <thead>
           <tr>
+            <th></th>
             <th><%= t("models.task.fields.name", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.task.fields.activities_count", scope: "decidim.time_tracker") %></th>
             <th><%= t("models.task.fields.activities_start_at", scope: "decidim.time_tracker") %></th>
@@ -20,11 +22,17 @@
             <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker.admin") %></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="draggable-table" data-sort-url="<%= reorder_tasks_path %>" data-draggable-table>
           <% tasks.each do |task| %>
-            <tr data-id="<%= task.id %>">
+            <tr class="draggable-content task-<%= task.id %>" draggable="true" data-id="<%= task.id %>" data-record-id="<%= task.id %>">
+              <td class="text-center dragging-handle">
+                <%= icon("draggable", class: "dragger") %>
+              </td>
               <td>
                 <%= translated_attribute(task.name) %><br>
+                <% task.skills.each do |skill| %>
+                  <span class="label"><%= translated_attribute(skill.name) %></span>
+                <% end %>
               </td>
               <td>
                 <%= task.activities.count %><br>

@@ -5,7 +5,6 @@ require_dependency "decidim/components/namer"
 Decidim.register_component(:time_tracker) do |component|
   component.engine = Decidim::TimeTracker::Engine
   component.admin_engine = Decidim::TimeTracker::AdminEngine
-  component.admin_stylesheet = "decidim/time_tracker/admin/time_tracker"
   component.icon = "media/images/decidim_time_tracker.svg"
   component.permissions_class_name = "Decidim::TimeTracker::Permissions"
 
@@ -25,14 +24,23 @@ Decidim.register_component(:time_tracker) do |component|
     end
   end
 
+  # A time tracker that holds any work cannot be deleted: its tasks carry
+  # people's tracked time, certifications and badge progress. An empty one is
+  # removed together with the records CreateTimeTracker made for it, which no
+  # foreign key would otherwise clean up.
   component.on(:before_destroy) do |instance|
-    # Code executed before removing the component
     time_tracker = Decidim::TimeTracker::TimeTracker.find_by(decidim_component_id: instance.id)
+    next if time_tracker.blank?
 
-    answers = Decidim::Forms::Answer.where(questionnaire: time_tracker.questionnaire)
-    tasks = Decidim::TimeTracker::Task.where(time_tracker:)
+    assignee_data = time_tracker.assignee_data
+    questionnaires = [time_tracker.questionnaire, assignee_data&.questionnaire].compact
 
-    raise StandardError, "Can't remove this component, there are resources associated" if [answers, assignation_answers, tasks].any?(&:any?)
+    holds_work = time_tracker.tasks.exists? || questionnaires.any? { |questionnaire| questionnaire.answers.exists? }
+    raise StandardError, "Can't remove this component, there are resources associated" if holds_work
+
+    Decidim::TimeTracker::TosAcceptance.where(time_tracker:).delete_all
+    assignee_data&.destroy!
+    time_tracker.destroy!
   end
 
   # These actions permissions can be configured in the admin panel
@@ -188,10 +196,13 @@ Decidim.register_component(:time_tracker) do |component|
           admin_user,
           description: Decidim::Faker::Localized.sentence(word_count: 4),
           active: [true, false].sample,
-          start_date: 1.week.ago + (index * 1.week),
-          end_date: 1.week.from_now + (index * 1.week),
+          # Staggered so most activities are under way and have tracked time.
+          start_date: (4 - index).weeks.ago,
+          end_date: (4 - index).weeks.ago + 6.weeks,
           max_minutes_per_day: [15, 30, 45, 60].sample,
-          requests_start_at: 1.week.ago + (index * 3.days),
+          requests_start_at: (4 - index).weeks.ago - 3.days,
+          min_events: [1, 2].sample,
+          min_duration_minutes_per_event: [10, 15].sample,
           task:
         )
 
@@ -210,7 +221,7 @@ Decidim.register_component(:time_tracker) do |component|
             time_tracker:
           )
 
-          Decidim.traceability.create!(
+          assignation = Decidim.traceability.create!(
             Decidim::TimeTracker::Assignation,
             admin_user,
             activity:,
@@ -219,6 +230,32 @@ Decidim.register_component(:time_tracker) do |component|
             invited_at: 1.week.ago,
             invited_by_user: admin_user
           )
+
+          # Accepted volunteers have tracked some sessions, of different
+          # lengths and at different times, and filed the completions those
+          # earn, as stopping the timer would; an admin has verified some.
+          if assignation.accepted? && activity.start_date < 1.day.ago
+            # One session a day at most, so none goes past the daily cap.
+            (activity.start_date.to_date..1.day.ago.to_date).to_a.sample(rand(0..4)).each do |day|
+              started = Time.zone.local(day.year, day.month, day.day, rand(8..20), rand(0..59))
+              minutes = rand(10..activity.max_minutes_per_day)
+              Decidim::TimeTracker::TimeEvent.create!(
+                assignation:, activity:, user:,
+                start: started.to_i, stop: started.to_i + (minutes * 60), total_seconds: minutes * 60
+              )
+            end
+
+            qualifying = activity.time_events.where(user:)
+                                 .where(total_seconds: (activity.min_duration_minutes_per_event * 60)..)
+                                 .order(:start).to_a
+            qualifying.each_slice(activity.min_events).select { |batch| batch.size == activity.min_events }.each do |batch|
+              requested_at = Time.zone.at(batch.last.stop) + rand(1..30).minutes
+              completion = assignation.completions.create!(requested_at:)
+              verified_at = requested_at + rand(2..72).hours
+              completion.update!(verified_at:, verified_by: admin_user) if rand < 0.6 && verified_at.past?
+            end
+            assignation.sync_completed_at!
+          end
 
           questionnaire_parents.each do |resource|
             resource.questionnaire.questions.each do |question|

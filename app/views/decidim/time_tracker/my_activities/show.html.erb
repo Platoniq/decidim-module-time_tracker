@@ -1,0 +1,36 @@
+<%# Organisation-level page, outside the component, so the module stylesheet
+    is not already on the layout. %>
+<%= append_stylesheet_pack_tag "decidim_time_tracker" %>
+
+<%= render layout: "layouts/decidim/shared/layout_user_profile" do %>
+  <% add_decidim_page_title(t("time_tracker", scope: "layouts.decidim.user_profile")) %>
+  <% content_for(:subtitle) { t("time_tracker", scope: "layouts.decidim.user_profile") } %>
+
+  <div class="time-tracker__report">
+    <% if assignations_by_component.any? %>
+      <p class="time-tracker__meta time-tracker__report-total">
+        <span><%= icon "timer-line" %> <%= t("decidim.time_tracker.reports.total_time", duration: duration_in_words(total_time)) %></span>
+      </p>
+    <% end %>
+
+    <%= render partial: "decidim/time_tracker/shared/skills_earned", locals: { certifications: skill_certifications } %>
+
+    <%= render partial: "decidim/time_tracker/shared/earned_badges" %>
+
+    <% if assignations_by_component.any? %>
+      <% assignations_by_component.each do |component, assignations| %>
+        <section class="time-tracker__report-section">
+          <div class="time-tracker__report-heading">
+            <h2 class="h4">
+              <%= translated_attribute(component.participatory_space.title) %> — <%= translated_attribute(component.name) %>
+            </h2>
+            <%= link_to t("decidim.time_tracker.my_activities.show.component_report"), Decidim::EngineRouter.main_proxy(component).user_report_path %>
+          </div>
+          <%= render partial: "decidim/time_tracker/shared/assignation_list", locals: { assignations: } %>
+        </section>
+      <% end %>
+    <% else %>
+      <p class="time-tracker__empty"><%= t("decidim.time_tracker.my_activities.show.empty") %></p>
+    <% end %>
+  </div>
+<% end %>

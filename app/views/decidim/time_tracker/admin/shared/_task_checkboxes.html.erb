@@ -1,0 +1,21 @@
+<%# Tasks as checkboxes grouped by the space they belong to, instead of a
+    multiple select that needs ctrl-click. Locals: form (the form builder),
+    attribute (task_ids). %>
+<% selected = Array(form.object.public_send(attribute)).compact %>
+<div class="time-tracker-admin__checks">
+  <% form.object.grouped_task_options.each do |group_label, options| %>
+    <fieldset class="time-tracker-admin__check-group">
+      <legend><%= group_label %></legend>
+      <% options.each do |label, id| %>
+        <label class="time-tracker-admin__check">
+          <%= check_box_tag "#{form.object_name}[#{attribute}][]", id, selected.include?(id),
+                            id: "#{form.object_name}_#{attribute}_#{id}", data: { label: } %>
+          <span><%= label %></span>
+        </label>
+      <% end %>
+    </fieldset>
+  <% end %>
+  <% if form.object.grouped_task_options.empty? %>
+    <p class="help-text"><%= t("decidim.time_tracker.admin.shared.no_tasks") %></p>
+  <% end %>
+</div>
