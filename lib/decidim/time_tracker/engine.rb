@@ -63,6 +63,14 @@ module Decidim
         end
       end
 
+      # Spaces with a Time Tracker link to the skills and badges explainer
+      # from their own navigation (see SpaceNavLink).
+      initializer "decidim_time_tracker.space_nav_link" do
+        config.to_prepare do
+          Decidim::TimeTracker::SpaceNavLink.install!
+        end
+      end
+
       initializer "decidim_time_tracker.icons" do
         {
           "graduation-cap-line" => "A certified skill",

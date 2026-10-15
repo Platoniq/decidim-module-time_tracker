@@ -96,6 +96,8 @@ is certified.
 
 `/gamification/badges` redirects to `/badges`.
 
+Every participatory space with a published Time Tracker links to `/badges` ("How skills and badges work") from its own navigation: the dropdown under the space's breadcrumb and the component buttons on its landing page.
+
 ## Trying it out
 
 The module ships a seed that builds a complete worked example — a youth-led
