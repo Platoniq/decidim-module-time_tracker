@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,lib,vendor,db}/**/*", "LICENSE-AGPLv3.txt", "Rakefile", "README.md"]
 
-  s.add_dependency "decidim-accountability", Decidim::TimeTracker::COMPAT_DECIDIM_VERSION
   s.add_dependency "decidim-admin", Decidim::TimeTracker::COMPAT_DECIDIM_VERSION
   s.add_dependency "decidim-core", Decidim::TimeTracker::COMPAT_DECIDIM_VERSION
   s.add_dependency "decidim-forms", Decidim::TimeTracker::COMPAT_DECIDIM_VERSION

@@ -5,6 +5,8 @@ module Decidim
     module Admin
       # A command with all the business logic when creating a activity
       class CreateActivity < Decidim::Command
+        include Decidim::AttachmentAttributesMethods
+
         def initialize(form, task)
           @form = form
           @task = task
@@ -24,15 +26,24 @@ module Decidim
           Decidim.traceability.create!(
             Decidim::TimeTracker::Activity,
             @form.current_user,
-            description: @form.description,
-            active: @form.active,
-            start_date: @form.start_date,
-            end_date: @form.end_date,
-            max_minutes_per_day: @form.max_minutes_per_day,
-            requests_start_at: @form.requests_start_at,
-            task: @task
+            {
+              description: @form.description,
+              progress: @form.progress,
+              active: @form.active,
+              start_date: @form.start_date,
+              end_date: @form.end_date,
+              max_minutes_per_day: @form.max_minutes_per_day,
+              requests_start_at: @form.requests_start_at,
+              min_events: @form.min_events,
+              min_duration_minutes_per_event: @form.min_duration_minutes_per_event,
+              task: @task
+            }.merge(attachment_attributes(:image))
           )
         end
+
+        private
+
+        attr_reader :form
       end
     end
   end

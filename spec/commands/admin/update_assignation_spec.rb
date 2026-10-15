@@ -35,5 +35,44 @@ module Decidim::TimeTracker::Admin
         # expect(action_log.version).to be_present
       end
     end
+
+    describe "telling the volunteer" do
+      [[:accepted, Decidim::TimeTracker::AssignationAcceptedEvent],
+       [:rejected, Decidim::TimeTracker::AssignationRejectedEvent]].each do |new_status, event_class|
+        context "when the request is #{new_status}" do
+          let(:status) { new_status }
+
+          it "notifies them" do
+            expect(Decidim::EventsManager).to receive(:publish).with(
+              event: "decidim.events.time_tracker.assignation_#{new_status}_event",
+              event_class:,
+              resource: activity,
+              affected_users: [other_user]
+            )
+
+            subject.call
+          end
+        end
+      end
+
+      context "when the status does not change" do
+        let(:assignation) { create(:assignation, activity:, user: other_user, status: :accepted) }
+
+        it "does not notify them again" do
+          expect(Decidim::EventsManager).not_to receive(:publish)
+
+          subject.call
+        end
+      end
+
+      context "when the status is not one an admin can set" do
+        let(:status) { :pending }
+
+        it "is invalid and notifies nobody" do
+          expect(Decidim::EventsManager).not_to receive(:publish)
+          expect { subject.call }.to broadcast(:invalid)
+        end
+      end
+    end
   end
 end

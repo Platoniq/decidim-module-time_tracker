@@ -1,0 +1,30 @@
+<%# One entry per skill, however many tasks certified it: a volunteer who
+    earned "Group facilitation" on three tasks has one skill, not three. A task
+    without skills certifies itself, so it stands as its own entry. %>
+<% groups = certifications.group_by { |certification| certification.decidim_time_tracker_skill_id ? [:skill, certification.decidim_time_tracker_skill_id] : [:task, certification.decidim_time_tracker_task_id] } %>
+
+<section class="time-tracker__report-section" aria-labelledby="skills-earned-title">
+  <h2 class="h4" id="skills-earned-title"><%= t("decidim.time_tracker.reports.skills.title") %></h2>
+  <p class="time-tracker__report-lead"><%= t("decidim.time_tracker.reports.skills.lead") %></p>
+
+  <% if groups.any? %>
+    <ul class="time-tracker__skills">
+      <% groups.each_value do |earned| %>
+        <% first = earned.min_by(&:earned_at) %>
+        <li class="time-tracker__skill">
+          <span class="time-tracker__earning-mark time-tracker__earning-mark--skill" aria-hidden="true"><%= icon "graduation-cap-line" %></span>
+          <div>
+            <strong><%= translated_attribute(first.skill_name) %></strong>
+            <span class="time-tracker__skill-meta">
+              <%= t("decidim.time_tracker.reports.skills.earned",
+                    date: l(first.earned_at.to_date, format: :decidim_short_with_month_name_short),
+                    tasks: earned.map { |certification| translated_attribute(certification.task.name) }.uniq.to_sentence) %>
+            </span>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="time-tracker__empty"><%= t("decidim.time_tracker.reports.skills.empty") %></p>
+  <% end %>
+</section>

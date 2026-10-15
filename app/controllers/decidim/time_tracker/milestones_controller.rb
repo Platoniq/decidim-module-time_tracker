@@ -50,13 +50,17 @@ module Decidim
       end
 
       def activities
+        return [] if time_tracker.blank?
+
+        # Filtering by the activities' primary key already returns unique rows, so DISTINCT
+        # is unnecessary — and it would clash with the tasks/activities weight ordering on
+        # Postgres ("for SELECT DISTINCT, ORDER BY expressions must appear in select list").
         @activities ||= time_tracker.activities
                                     .where(id: Milestone.where(user:).select(:activity_id))
-                                    .distinct
       end
 
       def user
-        @user ||= Decidim::User.find_by(nickname: params[:nickname])
+        @user ||= Decidim::User.where(organization: current_organization).not_deleted.find_by(nickname: params[:nickname])
       end
     end
   end

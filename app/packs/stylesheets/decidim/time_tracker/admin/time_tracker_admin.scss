@@ -61,3 +61,267 @@
     }
   }
 }
+
+// Badge form: one row per level, so the thresholds read as a list of
+// statements rather than a comma-separated string in a single box.
+.badge-level-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.35rem 0;
+
+  &[hidden] {
+    display: none;
+  }
+
+  label {
+    margin: 0;
+    flex: 1 1 auto;
+  }
+
+  &__input {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 0 0 auto;
+  }
+
+  &__input input {
+    margin: 0;
+    width: 7rem;
+  }
+
+  &__unit {
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+}
+
+// Live rule preview on the skill and badge forms. The rule is assembled from
+// controls sitting apart on the page, so it is restated here as one sentence
+// the admin can read back.
+.admin-rule-preview {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.03);
+  border-left: 3px solid var(--primary, #5a3fa8);
+  border-radius: 0 3px 3px 0;
+
+  &__label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 0.2rem;
+  }
+
+  &__text {
+    display: block;
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+}
+
+// Fields that do not apply to the chosen rule are hidden outright rather than
+// left visible with "only used when..." help text.
+#skill-required-activities[hidden],
+#skill-required-completions[hidden],
+#skill-required-hours[hidden],
+#badge-skills-field[hidden],
+#badge-tasks-field[hidden] {
+  display: none;
+}
+
+// ─── Navigation: one tab per area, and a trail inside the tasks area ────────
+.time-tracker-admin__tabs {
+  @apply flex flex-wrap gap-1 mb-4 border-b border-gray-3;
+}
+
+.time-tracker-admin__tab {
+  @apply -mb-px px-4 py-2 border-b-2 border-transparent text-gray-2 font-semibold hover:text-secondary;
+
+  &.is-active {
+    @apply border-secondary text-secondary;
+  }
+}
+
+.time-tracker-admin__crumbs {
+  @apply mb-4 text-sm;
+
+  ol {
+    @apply flex flex-wrap items-center gap-1 m-0 p-0 list-none;
+  }
+
+  li + li::before {
+    content: "/";
+
+    @apply mr-1 text-gray;
+  }
+
+  a {
+    @apply text-secondary hover:underline;
+  }
+
+  [aria-current] {
+    @apply text-gray-2;
+  }
+}
+
+// ─── Skills & badges overview ───────────────────────────────────────────────
+.time-tracker-admin__intro {
+  @apply mb-6 p-4 rounded bg-background text-sm text-gray-2;
+
+  ol {
+    @apply mt-2 mb-0 ml-5 list-decimal;
+  }
+}
+
+.time-tracker-admin__notice {
+  @apply flex items-center gap-2 mt-3 mb-0 font-semibold;
+
+  svg {
+    @apply w-4 h-4 fill-current;
+  }
+}
+
+.time-tracker-admin__panel {
+  @apply mb-8;
+}
+
+.time-tracker-admin__table td {
+  @apply align-top;
+}
+
+.time-tracker-admin__muted {
+  @apply block text-sm text-gray-2 font-normal;
+}
+
+.time-tracker-admin__warning {
+  @apply text-sm font-semibold text-alert;
+}
+
+.time-tracker-admin__nowrap {
+  @apply whitespace-nowrap;
+}
+
+.time-tracker-admin__badge {
+  @apply inline-flex items-center gap-2;
+}
+
+.time-tracker-admin__emblem {
+  @apply grid place-items-center w-8 h-8 rounded-full flex-none bg-secondary text-white;
+
+  svg {
+    @apply w-4 h-4 fill-current;
+  }
+}
+
+// ─── Skill and badge forms: one card per step ───────────────────────────────
+.time-tracker-admin__form {
+  @apply flex flex-col gap-6;
+
+  .card {
+    @apply mb-0;
+  }
+}
+
+.time-tracker-admin__section-title {
+  @apply mb-4 text-lg font-semibold text-black;
+}
+
+.time-tracker-admin__subsection {
+  @apply mt-6 pt-6 border-t border-gray-3;
+
+  &[hidden] {
+    display: none;
+  }
+
+  &-title {
+    @apply mb-1 font-semibold text-black;
+  }
+}
+
+// A choice that needs explaining: a radio laid out as a card, with an icon,
+// a name and a sentence on what picking it means.
+.time-tracker-admin__choices {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-3;
+}
+
+.time-tracker-admin__choice {
+  @apply flex items-start gap-3 p-3 rounded border border-gray-3 cursor-pointer transition;
+
+  &:hover {
+    @apply border-secondary;
+  }
+
+  &:has(input:checked) {
+    @apply border-secondary bg-background-4;
+  }
+
+  input {
+    @apply mt-1;
+  }
+
+  &-icon {
+    @apply grid place-items-center w-9 h-9 rounded-full flex-none bg-secondary text-white;
+
+    svg {
+      @apply w-5 h-5 fill-current;
+    }
+  }
+
+  &-text {
+    @apply flex flex-col gap-0.5 text-sm text-gray-2;
+
+    strong {
+      @apply text-md text-black;
+    }
+  }
+}
+
+.time-tracker-admin__inline-choices {
+  @apply flex flex-wrap gap-6 my-2;
+
+  label {
+    @apply inline-flex items-center gap-2;
+  }
+}
+
+.time-tracker-admin__checks {
+  @apply flex flex-col gap-4 mt-2;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.time-tracker-admin__check-group {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1 m-0 p-0 border-0;
+
+  legend {
+    @apply mb-2 text-sm font-semibold text-gray-2;
+  }
+}
+
+.time-tracker-admin__check {
+  @apply inline-flex items-center gap-2;
+
+  input {
+    @apply m-0;
+  }
+}
+
+.time-tracker-admin__numbers {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4 mt-6;
+
+  > [hidden] {
+    display: none;
+  }
+}
+
+#badge-task-list[hidden] {
+  display: none;
+}

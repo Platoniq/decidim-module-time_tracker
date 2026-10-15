@@ -1,0 +1,62 @@
+<% add_decidim_meta_tags({
+                           title: translated_attribute(questionnaire.title),
+                           description: translated_attribute(questionnaire.description)
+                         }) %>
+
+<%= append_stylesheet_pack_tag "decidim_forms" %>
+<%= append_javascript_pack_tag "decidim_forms" %>
+
+<%= render layout: "layouts/decidim/shared/layout_center" do %>
+
+  <div class="py-10">
+    <%= link_to t("decidim.time_tracker.time_tracker.index.back_to_tasks", default: "Back to tasks"), root_path, class: "button button__sm button__secondary mb-6" %>
+
+    <div class="card p-4 mb-8 time-tracker--questionnaire-context">
+      <span class="text-sm text-muted"><%= t("decidim.time_tracker.activity_questionnaire.show.about_activity") %></span>
+      <h1 class="h3 pt-1"><%= stripped_translated_attribute activity.description %></h1>
+      <span class="text-sm text-muted"><%= stripped_translated_attribute activity.task.name %></span>
+      <% if activity.image.attached? %>
+        <img src="<%= activity.attached_uploader(:image).variant_url(:card) %>"
+             alt="<%= stripped_translated_attribute activity.description %>"
+             class="time-tracker-activity__image rounded mt-4 w-full object-cover" loading="lazy">
+      <% end %>
+    </div>
+
+    <% if questionnaire.title.present? %>
+      <h2 class="title-decorator inline-block text-left mb-4">
+        <%= translated_attribute questionnaire.title %>
+      </h2>
+    <% end %>
+
+    <% if questionnaire.description.present? %>
+      <div class="text-left editor-content">
+        <%= decidim_sanitize_editor_admin translated_attribute questionnaire.description %>
+      </div>
+    <% end %>
+  </div>
+
+  <% unless questionnaire_for.try(:component)&.try(:published?) %>
+    <%= cell("decidim/announcement", t("decidim.forms.questionnaires.show.questionnaire_not_published.body"), callout_class: "warning") %>
+  <% end %>
+
+  <section>
+    <% if allow_answers? %>
+      <% if visitor_can_answer? %>
+        <% if visitor_already_answered? %>
+          <%= cell("decidim/announcement", { title: t("decidim.forms.questionnaires.show.questionnaire_answered.title"), body: t("decidim.forms.questionnaires.show.questionnaire_answered.body") }) %>
+        <% else %>
+          <% if @form.responses_by_step.flatten.empty? %>
+            <%= cell("decidim/announcement", t("decidim.forms.questionnaires.show.empty")) %>
+          <% else %>
+            <%= render partial: "decidim/forms/questionnaires/questionnaire" %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <%= render partial: "decidim/forms/questionnaires/questionnaire_readonly" %>
+      <% end %>
+    <% else %>
+      <%= cell("decidim/announcement", { title: t("decidim.forms.questionnaires.show.questionnaire_closed.title"), body: t("decidim.forms.questionnaires.show.questionnaire_closed.body") }, callout_class: "warning") %>
+    <% end %>
+  </section>
+
+<% end %>

@@ -4,3 +4,5 @@ import "images/decidim/time_tracker/decidim_time_tracker.svg";
 import "images/decidim/time_tracker/pause_icon.svg";
 import "images/decidim/time_tracker/stop_icon.svg";
 import "images/decidim/time_tracker/play_icon.svg";
+import "images/decidim/gamification/badges/decidim_gamification_badges_time_tracker_activities.svg";
+import "images/decidim/gamification/badges/decidim_gamification_badges_time_tracker_skills.svg";

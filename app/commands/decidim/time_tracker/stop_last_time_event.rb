@@ -14,11 +14,13 @@ module Decidim
       # Executes the command. Broadcasts these events:
       #
       # - :ok when everything is valid.
+      # - :already_stopped when there is no running counter (including when
+      #   the user has never started one).
       # - :invalid if the form wasn't valid and we couldn't proceed.
       #
       # Returns nothing.
       def call
-        return broadcast(:already_stopped, @last_entry) if last_entry.stopped?
+        return broadcast(:already_stopped, last_entry) if last_entry.nil? || last_entry.stopped?
 
         begin
           stop_time_event!

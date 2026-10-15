@@ -7,11 +7,16 @@ module Decidim
     class Activity < ApplicationRecord
       include Decidim::Traceable
       include Decidim::Loggable
+      include Decidim::HasUploadValidations
 
       self.table_name = :decidim_time_tracker_activities
 
+      has_one_attached :image
+      validates_upload :image, uploader: Decidim::TimeTracker::ActivityImageUploader
+
       belongs_to :task,
-                 class_name: "Decidim::TimeTracker::Task"
+                 class_name: "Decidim::TimeTracker::Task",
+                 inverse_of: :activities
 
       has_many :assignations,
                class_name: "Decidim::TimeTracker::Assignation",
@@ -25,7 +30,29 @@ module Decidim
 
       scope :active, -> { where(active: true) }
 
+      validates :progress, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
+
+      def progress
+        p = super if self.class.column_names.include?("progress")
+        p.presence || progress_from_text
+      end
+
       delegate :questionnaire, to: :task
+      delegate :component, to: :task, allow_nil: true
+
+      # The writer lets upload validations run on unsaved records where the
+      # task association is not set (e.g. the passthru validator's dummy).
+      attr_writer :organization
+
+      def organization
+        @organization || component&.organization
+      end
+
+      # Lets Decidim's notifications and mailers name the space an activity
+      # belongs to; without it their "in <space>" read "in ".
+      def participatory_space
+        component&.participatory_space
+      end
 
       # total number of seconds spent by the user
       # not counting current counters
@@ -54,13 +81,13 @@ module Decidim
       # Returns how many seconds are available for this task in the current day
       # this can be less than the activity is allowed due the change of date
       def remaining_seconds_for_today
-        @remaining_seconds_for_today ||= [max_minutes_per_day * 60, (Time.current.end_of_day - Time.current).to_i].min
+        @remaining_seconds_for_today ||= [max_minutes_per_day.to_i * 60, (Time.current.end_of_day - Time.current).to_i].min
       end
 
       # how many seconds ara available for this task and user for the current day
       def user_remaining_for_date(user, date)
         total_seconds = user_total_seconds_for_date(user, date)
-        remaining = max_minutes_per_day * 60
+        remaining = max_minutes_per_day.to_i * 60
         remaining = remaining_seconds_for_today if date.beginning_of_day == Date.current
 
         [remaining - total_seconds, 0].max
@@ -68,6 +95,18 @@ module Decidim
 
       def user_remaining_for_today(user)
         user_remaining_for_date(user, Date.current)
+      end
+
+      # Admins set when join requests open; before that the activity is listed
+      # but nobody can ask to join yet.
+      def requests_open?
+        requests_start_at.blank? || requests_start_at <= Time.current
+      end
+
+      # Whether anyone may ask to join right now (who is asking is the
+      # permission's business, not the activity's).
+      def accepts_requests?
+        status.in?([:open, :not_started]) && requests_open?
       end
 
       def assignation_pending?(user)
@@ -86,6 +125,18 @@ module Decidim
         assignations.where(user:).count.positive?
       end
 
+      def satisfies_completion_criteria?(user)
+        return false if min_events.blank? || min_events <= 0
+        return false if min_duration_minutes_per_event.blank? || min_duration_minutes_per_event <= 0
+
+        # Check user's time events for this activity
+        events_count = time_events.where(user:)
+                                  .where(total_seconds: (min_duration_minutes_per_event * 60)..)
+                                  .count
+
+        events_count >= min_events
+      end
+
       def has_questions?
         questionnaire.questions.any?
       end
@@ -99,6 +150,8 @@ module Decidim
       end
 
       def answered_by?(user)
+        return false if user.blank?
+
         questionnaire.answered_by? session_token(user)
       end
 
@@ -115,10 +168,18 @@ module Decidim
       # :inactive if current status is inactive
       def status
         return :inactive unless active?
-        return :not_started if start_date > Time.current.beginning_of_day
-        return :finished if end_date < Time.current.beginning_of_day
+        return :not_started if start_date.present? && start_date > Time.current.beginning_of_day
+        return :finished if end_date.present? && end_date < Time.current.beginning_of_day
 
         :open
+      end
+
+      def display_status
+        return :inactive unless active?
+        return :completed if end_date.present? && end_date < Time.zone.today
+        return :work_in_progress if time_events.any?
+
+        :not_started
       end
 
       def self.log_presenter_class_for(_log)
@@ -134,6 +195,22 @@ module Decidim
       end
 
       private
+
+      def progress_from_text
+        [:description, :name].each do |attr|
+          next unless respond_to?(attr)
+
+          val = send(attr)
+          next if val.blank?
+
+          texts = val.is_a?(Hash) ? val.values : [val]
+          texts.each do |text|
+            match = text.to_s.match(/\((\d+)%\)/)
+            return match[1].to_i if match
+          end
+        end
+        nil
+      end
 
       def last_event_for(user)
         time_events.last_for(user)

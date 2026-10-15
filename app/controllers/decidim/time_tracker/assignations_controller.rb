@@ -12,7 +12,12 @@ module Decidim
           on(:ok) do |activity|
             render json: {
               message: I18n.t("assignations.request.success", scope: "decidim.time_tracker"),
-              activityId: activity.id
+              activityId: activity.id,
+              # The same "Request sent" state the page shows after a reload, so
+              # the row keeps its layout; the message is shown on its own.
+              html: render_to_string(partial: "decidim/time_tracker/time_tracker/activity_action", formats: [:html],
+                                     locals: { activity:, assignation: Assignation.find_by(activity:, user: current_user),
+                                               timer_path: "#activity-#{activity.id}" })
             }
           end
 
@@ -27,7 +32,7 @@ module Decidim
       private
 
       def activity
-        @activity ||= Activity.active.find_by(id: params[:activity_id])
+        @activity ||= time_tracker.activities.active.find_by(id: params[:activity_id])
       end
 
       def assignation

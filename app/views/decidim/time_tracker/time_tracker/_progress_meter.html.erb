@@ -1,0 +1,11 @@
+<div class="time-tracker__progress-meter">
+  <div class="time-tracker__progress-bar"
+       role="progressbar"
+       aria-label="<%= label %>"
+       aria-valuenow="<%= progress.round %>"
+       aria-valuemin="0"
+       aria-valuemax="100">
+    <span style="width: <%= progress.to_f.clamp(0, 100) %>%"></span>
+  </div>
+  <span class="time-tracker__progress-value"><%= number_to_percentage(progress, precision: 0) %></span>
+</div>

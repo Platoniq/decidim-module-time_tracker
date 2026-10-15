@@ -48,6 +48,54 @@ module Decidim::TimeTracker
       end
     end
 
+    describe "#completed_by?" do
+      let(:user) { create(:user) }
+      let(:active_one) { create(:activity, task:, active: true) }
+      let(:active_two) { create(:activity, task:, active: true) }
+      let(:inactive) { create(:activity, task:, active: false) }
+      let(:task) { create(:task, time_tracker:) }
+
+      before do
+        active_one
+        active_two
+        inactive
+      end
+
+      context "when the user has completed every active activity" do
+        before do
+          create(:assignation, :completed, activity: active_one, user:)
+          create(:assignation, :completed, activity: active_two, user:)
+        end
+
+        it "returns true" do
+          expect(task.completed_by?(user)).to be(true)
+        end
+      end
+
+      context "when the user has only completed some active activities" do
+        before do
+          create(:assignation, :completed, activity: active_one, user:)
+          create(:assignation, :accepted, activity: active_two, user:)
+        end
+
+        it "returns false" do
+          expect(task.completed_by?(user)).to be(false)
+        end
+      end
+
+      context "when the task has no active activities" do
+        let(:task) { create(:task, time_tracker:) }
+
+        before do
+          task.activities.update_all(active: false) # rubocop:disable Rails/SkipsModelValidations
+        end
+
+        it "returns false" do
+          expect(task.completed_by?(user)).to be(false)
+        end
+      end
+    end
+
     describe "#assignations_count" do
       context "without a filter parameter" do
         it "returns the accepted assignations count" do

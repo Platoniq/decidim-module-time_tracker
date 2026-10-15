@@ -1,0 +1,63 @@
+<div class="card time-tracker-admin__panel" id="badges">
+  <div class="item_show__header">
+    <h2 class="item_show__header-title">
+      <%= t("badges.index.title", scope: "decidim.time_tracker.admin") %>
+      <% if allowed_to? :create, :time_tracker_badge %>
+        <%= link_to new_badge_path, class: "button button__sm button__secondary" do %>
+          <%= icon "add-line" %> <%= t("badges.actions.new", scope: "decidim.time_tracker.admin") %>
+        <% end %>
+      <% end %>
+    </h2>
+  </div>
+
+  <div class="card-section">
+    <p class="help-text"><%= t("badges.index.description", scope: "decidim.time_tracker.admin") %></p>
+
+    <% if badges.any? %>
+      <div class="table-scroll">
+        <table class="table-list time-tracker-admin__table">
+          <thead>
+            <tr>
+              <th><%= t("models.badge.fields.name", scope: "decidim.time_tracker") %></th>
+              <th><%= t("models.badge.fields.metric", scope: "decidim.time_tracker") %></th>
+              <th><%= t("models.badge.fields.levels", scope: "decidim.time_tracker") %></th>
+              <th><%= t("models.badge.fields.active", scope: "decidim.time_tracker") %></th>
+              <th class="actions"><%= t("actions.title", scope: "decidim.time_tracker.admin") %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% badges.each do |badge| %>
+              <tr>
+                <td>
+                  <span class="time-tracker-admin__badge">
+                    <span class="time-tracker-admin__emblem" aria-hidden="true"><%= icon badge.icon_name %></span>
+                    <strong><%= translated_attribute(badge.name) %></strong>
+                  </span>
+                </td>
+                <td><%= badge_rule_sentence(badge) %></td>
+                <td class="time-tracker-admin__nowrap"><%= badge_levels_sentence(badge) %></td>
+                <td>
+                  <% if badge.active? %>
+                    <span class="label success"><%= t("decidim.time_tracker.admin.badges.index.shown") %></span>
+                  <% else %>
+                    <span class="label"><%= t("decidim.time_tracker.admin.badges.index.hidden") %></span>
+                  <% end %>
+                </td>
+                <td class="table-list__actions">
+                  <% if allowed_to? :update, :time_tracker_badge, badge: badge %>
+                    <%= icon_link_to "pencil-line", edit_badge_path(badge), t("badges.actions.edit", scope: "decidim.time_tracker.admin"), class: "action-icon--edit" %>
+                  <% end %>
+                  <% if allowed_to? :destroy, :time_tracker_badge, badge: badge %>
+                    <%= icon_link_to "close-circle-line", badge_path(badge), t("badges.actions.destroy", scope: "decidim.time_tracker.admin"), method: :delete, class: "action-icon--remove", data: { confirm: t("badges.actions.confirm_destroy", scope: "decidim.time_tracker.admin") } %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p><%= t("badges.index.empty", scope: "decidim.time_tracker.admin") %></p>
+    <% end %>
+  </div>
+</div>

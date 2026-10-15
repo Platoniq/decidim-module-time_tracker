@@ -25,5 +25,17 @@ module Decidim::TimeTracker
     it "broadcasts ok" do
       expect { subject.call }.to broadcast(:ok)
     end
+
+    it "emails the space's admins about the update" do
+      allow(Decidim::EventsManager).to receive(:publish)
+      subject.call
+
+      expect(Decidim::EventsManager).to have_received(:publish).with(
+        hash_including(event: "decidim.events.time_tracker.milestone_created_event",
+                       event_class: Decidim::TimeTracker::MilestoneCreatedEvent,
+                       resource: activity,
+                       extra: { participant_name: user.name, force_email: true })
+      )
+    end
   end
 end

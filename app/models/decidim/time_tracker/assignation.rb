@@ -32,10 +32,37 @@ module Decidim
                class_name: "Decidim::TimeTracker::Milestone",
                through: :user
 
+      has_many :completions,
+               class_name: "Decidim::TimeTracker::ActivityCompletion",
+               foreign_key: "decidim_time_tracker_assignation_id",
+               dependent: :destroy
+
       enum :status, { pending: 0, accepted: 1, rejected: 2 }
+
+      # An assignation counts as completed once it has at least one verified
+      # completion; completed_at mirrors the first verification.
+      scope :completed, -> { where.not(completed_at: nil) }
 
       def assignee
         Assignee.for(user)
+      end
+
+      def completed?
+        completed_at.present?
+      end
+
+      def verified_completions_count
+        completions.verified.count
+      end
+
+      def pending_completions
+        completions.pending
+      end
+
+      # Keeps completed_at (used by scopes and legacy UI) in sync with the
+      # verified completion records.
+      def sync_completed_at!
+        update!(completed_at: completions.verified.minimum(:verified_at))
       end
 
       def time_dedicated
@@ -50,15 +77,15 @@ module Decidim
         time_events.empty?
       end
 
-      # rubocop:disable Lint/UselessAssignment
       def self.sorted_by_status(*statuses)
-        accepted = self.accepted.sort_by(&:time_dedicated).reverse
-        pending = self.pending
-        rejected = self.rejected
+        collections = {
+          "accepted" => accepted.sort_by(&:time_dedicated).reverse,
+          "pending" => pending.to_a,
+          "rejected" => rejected.to_a
+        }
 
-        statuses.map { |status| send(status) }.sum
+        statuses.flat_map { |status| collections[status.to_s] }.compact
       end
-      # rubocop:enable Lint/UselessAssignment
 
       def self.log_presenter_class_for(_log)
         Decidim::TimeTracker::AdminLog::AssignationPresenter

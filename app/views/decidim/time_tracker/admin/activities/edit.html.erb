@@ -1,5 +1,21 @@
-<%= render partial: "decidim/time_tracker/admin/breadcrumbs" %>
+<%= render partial: "decidim/time_tracker/admin/navigation" %>
 
-<%= decidim_form_for(@form, url: task_activity_path, html: { class: "form edit_task_activity" }) do |f| %>
-  <%= render partial: "form", object: f, locals: { title: t(".title"), submit: t(".submit") } %>
-<% end %>
+<% add_decidim_page_title(t(".title")) %>
+<div class="item_show__header">
+  <h1 class="item_show__header-title">
+    <%= t(".title") %>
+    <%= link_to t("activities.actions.assignations", scope: "decidim.time_tracker.admin"), task_activity_assignations_path(current_task, current_activity), class: "button button__sm button__secondary" %>
+  </h1>
+</div>
+
+<div class="item__edit-form">
+  <%= decidim_form_for(@form, url: task_activity_path(current_task, current_activity), html: { class: "form form-defaults edit_task_activity" }) do |form| %>
+    <%= render partial: "form", locals: { form: } %>
+
+    <div class="item__edit-sticky">
+      <div class="item__edit-sticky-container">
+        <%= form.submit t(".submit"), class: "button button__sm button__secondary" %>
+      </div>
+    </div>
+  <% end %>
+</div>

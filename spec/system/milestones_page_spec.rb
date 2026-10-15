@@ -16,8 +16,8 @@ describe "Milestones page" do
 
   shared_examples_for "milestones page is rendered correctly" do
     it "shows total time dedicated" do
-      within ".time-tracker--clock" do
-        expect(page).to have_content("0h0m20s")
+      within ".time-tracker__stats" do
+        expect(page).to have_content("less than a minute")
       end
     end
 
@@ -34,9 +34,10 @@ describe "Milestones page" do
       expect(page).to have_link(user.name, href: decidim.profile_path(nickname: "timmy"))
       expect(page).to have_css(".milestone-card", count: 3)
 
+      # Newest first, like a gallery.
       within ".milestone-card", match: :first do
-        expect(page).to have_content(milestones.first.title)
-        expect(page).to have_content(milestones.first.description)
+        expect(page).to have_content(milestones.last.title)
+        expect(page).to have_content(milestones.last.description)
       end
     end
 

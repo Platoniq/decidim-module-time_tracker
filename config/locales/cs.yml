@@ -186,10 +186,6 @@ cs:
           update:
             error: Chyba při aktualizaci úlohy
             success: Úloha úspěšně aktualizována
-        time_tracker_exports:
-          create:
-            error: Chyba při importu dat o sledování času do odpovědnosti
-            success: Data sledování času byla úspěšně exportována do odpovědnosti
       admin_log:
         activity:
           create: "%{user_name} created the %{resource_name} activity"

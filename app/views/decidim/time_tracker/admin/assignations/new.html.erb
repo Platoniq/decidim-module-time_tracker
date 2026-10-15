@@ -1,4 +1,4 @@
-<%= render partial: "decidim/time_tracker/admin/breadcrumbs" %>
+<%= render partial: "decidim/time_tracker/admin/navigation" %>
 
 <%= decidim_form_for(@form, url: task_activity_assignations_path, html: { class: "form new_task_activity_assignation" }) do |f| %>
   <%= render partial: "form", object: f, locals: { title: t(".title") } %>

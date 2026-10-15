@@ -1,41 +1,80 @@
-<div class="time-tracker-activity" id="activity-<%= activity.id %>"
-  data-activity-id="<%= activity.id %>"
-  data-start-endpoint="<%= start_endpoint(activity) %>"
-  data-stop-endpoint="<%= stop_endpoint(activity) %>"
-  data-text-counter-stopped="<%= t ".counter_stopped" %>"
-  data-elapsed-time="<%= activity.user_seconds_elapsed(current_user) %>"
-  data-counter-active="<%= activity.counter_active_for?(current_user) %>"
-  data-remaining-time="<%= activity.user_remaining_for_today(current_user) %>">
-  <div class="content">
+<%# One of the visitor's own activities, with its timer. The data attributes
+    are read by time_tracker.js; the clock below is what it keeps ticking. %>
+<% assignation = task_list.assignation_for(activity) %>
+<% elapsed = activity.user_seconds_elapsed(current_user) %>
+<% verified = assignation.verified_completions_count %>
+<% pending = assignation.pending_completions.count %>
+<% rule = completion_rule_sentence(activity) %>
+<% limit = daily_limit_sentence(activity) %>
 
-    <h4 class="h4 pb-4"><%= translated_attribute activity.description %></h4>
-    <span><%= t("activity.info", scope: "decidim.components.time_tracker.views") %></span>
-    <div class="elapsed-time pt-2"><%= t("activity.time_elapsed", scope: "decidim.components.time_tracker.views") %> <div class="elapsed-time-clock pt-2"><%= clockify_seconds(activity.user_seconds_elapsed(current_user)) %></div></div>
-
-    <div class="top pt-2">
-      <% if activity.status != :open %>
-        <%= render partial: "callout_status", locals: { activity: activity } %>
+<article class="time-tracker-activity time-tracker__timer" id="activity-<%= activity.id %>"
+         data-activity-id="<%= activity.id %>"
+         data-start-endpoint="<%= start_endpoint(activity) %>"
+         data-stop-endpoint="<%= stop_endpoint(activity) %>"
+         data-text-counter-stopped="<%= t(".counter_stopped") %>"
+         data-text-session-saved="<%= t(".session_saved") %>"
+         data-elapsed-time="<%= elapsed %>"
+         data-counter-active="<%= activity.counter_active_for?(current_user) %>"
+         data-remaining-time="<%= activity.user_remaining_for_today(current_user) %>">
+  <div class="time-tracker__timer-main">
+    <div class="time-tracker__timer-image">
+      <% if activity.image.attached? %>
+        <img src="<%= activity.attached_uploader(:image).variant_url(:thumb) %>" alt="" loading="lazy">
       <% else %>
-        <div class="tracker-buttons">
-          <button class="danger button__lg time-tracker-activity-stop hidden">
-            <img src="<%= asset_pack_path("media/images/stop_icon.svg") %>" alt="Stop">
-          </button>
-          <button class="secondary button__lg time-tracker-activity-pause hidden">
-            <img src="<%= asset_pack_path("media/images/pause_icon.svg") %>" alt="Pause">
-          </button>
-          <button class="success button__lg time-tracker-activity-start">
-            <img src="<%= asset_pack_path("media/images/play_icon.svg") %>" alt="Play">
-          </button>
-        </div>
+        <%= icon "timer-line" %>
       <% end %>
     </div>
-    <div class="bottom">
-      <% if activity.allow_answers_for?(current_user) %>
-        <%= render partial: "answer_questionnaire", locals: { activity: activity } %>
-      <% end %>
-    </div>
-  </div>
-  <div class="callout alert hidden"></div>
 
-  <%= render partial: "milestone_form", locals: { activity: activity } %>
-</div>
+    <div class="time-tracker__timer-info">
+      <p class="time-tracker__timer-task"><%= stripped_translated_attribute activity.task.name %></p>
+      <h3 class="time-tracker__timer-title">
+        <%= link_to stripped_translated_attribute(activity.description), task_activity_path(activity.task, activity) %>
+      </h3>
+      <div class="time-tracker__meta">
+        <%= activity_status_label(activity) %>
+        <% if verified.positive? %>
+          <span class="label success"><%= t(".verified", count: verified) %></span>
+        <% end %>
+        <% if pending.positive? %>
+          <span class="label warning"><%= t(".awaiting_verification") %></span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="time-tracker__timer-clock">
+      <span class="time-tracker__clock" data-timer-clock aria-label="<%= t(".time_tracked") %>"><%= timer_clock(elapsed) %></span>
+      <span class="time-tracker__clock-caption"><%= t(".time_tracked") %></span>
+    </div>
+
+    <% if activity.status == :open %>
+      <div class="time-tracker__timer-controls tracker-buttons">
+        <button type="button" class="button button__sm button__secondary time-tracker-activity-start">
+          <%= icon "play-fill" %> <span><%= t(".start") %></span>
+        </button>
+        <button type="button" class="button button__sm button__transparent-secondary time-tracker-activity-pause" hidden>
+          <%= icon "pause-fill" %> <span><%= t(".pause") %></span>
+        </button>
+        <button type="button" class="button button__sm button__transparent-secondary time-tracker-activity-stop" hidden>
+          <%= icon "stop-fill" %> <span><%= t(".stop") %></span>
+        </button>
+      </div>
+    <% end %>
+  </div>
+
+  <% if activity.status != :open %>
+    <p class="time-tracker__timer-note"><%= render partial: "callout_status", locals: { activity: } %></p>
+  <% end %>
+
+  <% if rule || limit %>
+    <p class="time-tracker__timer-rule"><%= icon "information-line" %> <span><%= [rule, limit].compact.join(" ") %></span></p>
+  <% end %>
+
+  <div class="callout alert" role="alert" hidden></div>
+  <div class="callout success" role="status" hidden></div>
+
+  <% if activity.allow_answers_for?(current_user) %>
+    <%= render partial: "answer_questionnaire", locals: { activity: } %>
+  <% end %>
+
+  <%= render partial: "milestone_form", locals: { activity: } %>
+</article>

@@ -14,7 +14,7 @@ describe "Time tracker page" do
   end
 
   it "has a timer" do
-    expect(page).to have_content "0h0m0s"
+    expect(page).to have_content "0:00:00"
   end
 
   context "when user counts time" do
@@ -30,7 +30,7 @@ describe "Time tracker page" do
     end
 
     it "pauses the timer" do
-      expect(page).to have_no_content "0h0m0s"
+      expect(page).to have_no_content "0:00:00"
       page.find(".time-tracker-activity-pause").click
       expect(page).to have_no_css ".time-tracker-activity-pause"
       expect(page).to have_css ".time-tracker-activity-start"
@@ -84,17 +84,17 @@ describe "Time tracker page" do
       end
 
       it "has one counter started, one stopped" do
-        expect(page).to have_content("0h0m0s", count: 1)
-        expect(page).to have_content("0h0m", count: 2)
+        expect(page).to have_content("0:00:00", count: 1)
+        expect(page).to have_content("0:00:0", count: 2)
         within ".time-tracker-activity", match: :first do
-          expect(page).to have_no_content("0h0m0s")
+          expect(page).to have_no_content("0:00:00")
         end
       end
 
       it "stops runninng counters" do
         page.find(".time-tracker-activity-start").click
         sleep 1
-        expect(page).to have_no_content("0h0m0s")
+        expect(page).to have_no_content("0:00:00")
         within ".time-tracker-activity", match: :first do
           expect(page).to have_css(".time-tracker-activity-start")
           expect(page).to have_no_css(".time-tracker-activity-pause")

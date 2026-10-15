@@ -67,6 +67,52 @@ FactoryBot.define do
     trait :rejected do
       status { :rejected }
     end
+
+    trait :completed do
+      status { :accepted }
+      completed_at { Time.current }
+
+      after(:create) do |assignation|
+        create(:activity_completion, :verified, assignation:, verified_at: assignation.completed_at)
+      end
+    end
+  end
+
+  factory :activity_completion, class: "Decidim::TimeTracker::ActivityCompletion" do
+    assignation { create(:assignation) }
+    requested_at { Time.current }
+
+    trait :verified do
+      verified_at { Time.current }
+      verified_by { create(:user, :admin) }
+    end
+  end
+
+  factory :skill_certification, class: "Decidim::TimeTracker::SkillCertification" do
+    user { create(:user) }
+    task { create(:task) }
+    earned_at { Time.current }
+  end
+
+  factory :skill, class: "Decidim::TimeTracker::Skill" do
+    organization { create(:organization) }
+    name { Decidim::Faker::Localized.word }
+    description { Decidim::Faker::Localized.sentence(word_count: 3) }
+    earning_mode { "completed_activities" }
+
+    trait :time_based do
+      earning_mode { "time_spent" }
+      required_minutes { 60 }
+    end
+  end
+
+  factory :time_tracker_badge, class: "Decidim::TimeTracker::Badge" do
+    organization { create(:organization) }
+    name { Decidim::Faker::Localized.word }
+    description { Decidim::Faker::Localized.sentence(word_count: 3) }
+    metric { "completed_activities" }
+    levels { [1, 5, 15, 30] }
+    active { true }
   end
 
   factory :milestone, class: "Decidim::TimeTracker::Milestone" do

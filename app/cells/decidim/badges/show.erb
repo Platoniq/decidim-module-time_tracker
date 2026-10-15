@@ -1,0 +1,110 @@
+<%# Overrides Decidim core's badges tab on a participant's profile.
+
+    A volunteer's profile leads with what they earned in the time tracker:
+    each certified skill (when, and through which tasks) and each badge level
+    they reached. The two must not read as the same thing: skills are cards
+    with a square mark and a "Certified skill" label (a competence, held or
+    not), badges keep Decidim's round medal with its level (a tally that
+    climbs). Each section opens with one line saying which is which. Decidim's generic badges then appear only where the
+    participant has reached a level, so the tab reads as achievements rather
+    than a grid of zeros. Anyone without time tracker achievements sees the
+    core tab, whose "all badges" link points at the word-free /badges path
+    (see decidim_time_tracker.public_badges_path in the engine). %>
+<% volunteer = model.is_a?(Decidim::User) %>
+<% certifications = volunteer ? Decidim::TimeTracker::SkillCertification.where(user: model).includes(:skill, :task).order(earned_at: :asc).to_a : [] %>
+<% earned_badges = volunteer ? Decidim::TimeTracker::BadgeProgress.new(model, model.organization).earned : [] %>
+
+<% if certifications.any? || earned_badges.any? %>
+  <%# One entry per skill, however many tasks certified it; a task without
+      skills certifies itself, so it stands as its own entry. %>
+  <% skill_groups = certifications.group_by { |c| c.decidim_time_tracker_skill_id ? [:skill, c.decidim_time_tracker_skill_id] : [:task, c.decidim_time_tracker_task_id] } %>
+  <% other_badges = available_badges.reject { |badge| badge.name.to_s.start_with?("time_tracker_") }
+                                    .select { |badge| Decidim::Gamification.status_for(model, badge.name).level.positive? } %>
+
+  <div class="profile__badge-banner">
+    <%= icon "award-line" %>
+    <div>
+      <h2 class="h4"><%= t("decidim.time_tracker.profile_badges.title") %></h2>
+      <p>
+        <%= t("decidim.time_tracker.profile_badges.description") %>
+        <%= link_to t("decidim.time_tracker.badges.how_it_works"), public_badges_path, class: "text-secondary underline" %>
+      </p>
+    </div>
+  </div>
+
+  <% if skill_groups.any? %>
+    <h3 class="h5" style="margin-top: 2rem"><%= t("decidim.time_tracker.profile_badges.skills") %></h3>
+    <p class="text-gray-2" style="margin-top: .25rem"><%= t("decidim.time_tracker.profile_badges.skills_lead") %></p>
+    <%# The module's stylesheet is not loaded on profile pages, hence the
+        inline styles. %>
+    <ul style="display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 1rem; margin: 1rem 0 0; padding: 0; list-style: none">
+      <% skill_groups.each_value do |earned| %>
+        <% first = earned.min_by(&:earned_at) %>
+        <li data-skill="<%= first.decidim_time_tracker_skill_id || "task-#{first.decidim_time_tracker_task_id}" %>"
+            style="display: flex; gap: .875rem; align-items: flex-start; padding: 1rem; border: 1px solid #e1e5ef; border-radius: .5rem; background: #fff">
+          <span aria-hidden="true" style="display: grid; place-items: center; flex: none; width: 2.75rem; height: 2.75rem; border-radius: .5rem; background: var(--secondary); color: #fff">
+            <%= icon "graduation-cap-line", width: "1.5rem", height: "1.5rem", style: "fill: currentcolor" %>
+          </span>
+          <span style="display: block">
+            <span style="display: block; font-size: .75rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--secondary)">
+              <%= t("decidim.time_tracker.profile_badges.certified_skill") %>
+            </span>
+            <strong style="display: block; font-size: 1.125rem; line-height: 1.3"><%= translated_attribute(first.skill_name) %></strong>
+            <span class="text-gray-2" style="display: block; font-size: .875rem; margin-top: .25rem">
+              <%= t("decidim.time_tracker.reports.skills.earned",
+                    date: l(first.earned_at.to_date, format: :decidim_short_with_month_name_short),
+                    tasks: earned.map { |certification| translated_attribute(certification.task.name) }.uniq.to_sentence) %>
+            </span>
+          </span>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <% if earned_badges.any? %>
+    <h3 class="h5" style="margin-top: 2rem"><%= t("decidim.time_tracker.profile_badges.badges") %></h3>
+    <p class="text-gray-2" style="margin-top: .25rem"><%= t("decidim.time_tracker.profile_badges.badges_lead") %></p>
+    <div class="profile__badge-grid">
+      <% earned_badges.each do |status| %>
+        <div data-time-tracker-badge="<%= status.badge.id %>">
+          <div class="profile__badge">
+            <div class="profile__badge-outline" style="--value:<%= status.level.to_f / status.badge.max_level %>;<%= "--color:var(--primary)" if status.maxed? %>">
+              <div class="profile__badge-circle" style="display:flex;align-items:center;justify-content:center">
+                <%= icon status.badge.icon_name, width: "3rem", height: "3rem" %>
+              </div>
+            </div>
+            <div class="profile__badge-title"><%= t("decidim.time_tracker.badges.level", level: status.level, max: status.badge.max_level) %></div>
+          </div>
+          <div class="profile__badge-name"><%= translated_attribute(status.badge.name) %></div>
+          <div class="profile__badge-description"><%= translated_attribute(status.badge.description) %></div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if other_badges.any? %>
+    <h3 class="h5" style="margin-top: 2rem"><%= t("decidim.time_tracker.profile_badges.other_badges") %></h3>
+    <div class="profile__badge-grid">
+      <% other_badges.each do |badge| %>
+        <%= cell "decidim/badge", model, badge: %>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <div class="profile__badge-banner">
+    <%= icon "information-line" %>
+    <div>
+      <h2 class="h4"><%= t "decidim.gamification.title" %></h2>
+      <p>
+        <%= t "decidim.gamification.description" %>
+        <%= link_to t("decidim.gamification.all_badges_link"), public_badges_path, class: "text-secondary underline" %>
+      </p>
+    </div>
+  </div>
+
+  <div class="profile__badge-grid">
+    <% available_badges.each do |badge| %>
+      <%= cell "decidim/badge", model, badge: %>
+    <% end %>
+  </div>
+<% end %>

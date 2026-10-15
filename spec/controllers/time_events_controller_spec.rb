@@ -118,6 +118,29 @@ module Decidim::TimeTracker
           expect(resp["error"]).to eq("Counter already stopped")
         end
       end
+
+      context "when the user has never tracked any time" do
+        let!(:time_event) { nil }
+
+        it "returns already stopped instead of failing" do
+          get(:stop, params:)
+          expect(response).to have_http_status(:success)
+          expect(response.parsed_body["error"]).to eq("Counter already stopped")
+        end
+      end
+    end
+
+    context "when the activity belongs to another component" do
+      let(:other_time_tracker) { create(:time_tracker) }
+      let(:other_activity) { create(:activity, task: create(:task, time_tracker: other_time_tracker)) }
+
+      before { create(:assignation, activity: other_activity, user:) }
+
+      it "is not found through this component" do
+        expect { post(:start, params: { task_id: task.id, activity_id: other_activity.id }) }
+          .to raise_error(ActiveRecord::RecordNotFound)
+        expect(Decidim::TimeTracker::TimeEvent.where(activity: other_activity)).to be_empty
+      end
     end
   end
 end

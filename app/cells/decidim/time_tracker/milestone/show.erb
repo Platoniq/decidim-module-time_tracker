@@ -19,16 +19,16 @@
 
     <div class="card__grid-metadata">
       <% if list? %>
-        <div class="text"> <%= t(".time_dedicated") %></div>
+        <div class="text"> <%= t("decidim.time_tracker.milestone.time_dedicated") %></div>
         <div class="text">
           <strong><%= clockify_seconds(seconds_elapsed) %></strong>
         </div>
       <% else %>
         <div class="text">
-          <%= model.created_at.strftime("%d %b %Y") %>
+          <%= l model.created_at.to_date, format: :decidim_short_with_month_name_short %>
         </div>
         <div class="text">
-          <%= model.created_at.strftime("%H:%M") %>
+          <%= l model.created_at, format: :time_of_day %>
         </div>
       <% end %>
     </div>

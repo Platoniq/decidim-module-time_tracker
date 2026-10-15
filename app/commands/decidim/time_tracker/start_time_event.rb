@@ -70,12 +70,13 @@ module Decidim
       end
 
       def stop_previous_activity
-        previous = TimeEvent.where.not(activity: form.activity).last_for(form.user)
+        previous_events = TimeEvent.where.not(activity: form.activity).where(user: form.user, stop: nil)
 
-        return unless previous
-        return if previous.stopped? && previous.stop.to_i < start_time.to_i
+        previous_events.each do |event|
+          next if event.stopped? && event.stop.to_i < start_time.to_i
 
-        previous.stop!
+          event.stop!
+        end
       end
 
       def already_active?

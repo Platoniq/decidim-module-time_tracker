@@ -24,10 +24,7 @@
   },
   "homepage": "https://github.com/Platoniq/decidim-module-time_tracker#readme",
   "stylelint": {
-    "extends": "@decidim/stylelint-config",
-    "rules": {
-      "block-opening-brace-space-before": "always"
-    }
+    "extends": "@decidim/stylelint-config"
   },
   "devDependencies": {
     "@decidim/dev": "0.29.0",

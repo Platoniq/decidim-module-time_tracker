@@ -1,0 +1,91 @@
+<% participants = task_list.participants_for(activity) %>
+<% assignation = task_list.assignation_for(activity) %>
+<% rule = completion_rule_sentence(activity) %>
+<% limit = daily_limit_sentence(activity) %>
+<% add_decidim_meta_tags(title: stripped_translated_attribute(activity.description),
+                         description: [stripped_translated_attribute(task.name), rule].compact.join(" — "),
+                         image_url: (activity.attached_uploader(:image).variant_url(:card) if activity.image.attached?)) %>
+
+<% content_for :aside do %>
+  <%= render partial: "decidim/time_tracker/time_tracker/aside" %>
+<% end %>
+
+<%= render layout: "layouts/decidim/shared/layout_two_col" do %>
+  <section class="layout-main__section time-tracker__activity-page">
+    <%= link_to root_path(anchor: "task-#{task.id}"), class: "time-tracker__back" do %>
+      <%= icon "arrow-left-line" %> <%= t("decidim.time_tracker.activities.show.back") %>
+    <% end %>
+
+    <p class="time-tracker__eyebrow"><%= stripped_translated_attribute task.name %></p>
+    <h1 class="h2 time-tracker__activity-heading"><%= stripped_translated_attribute activity.description %></h1>
+
+    <div class="time-tracker__meta">
+      <%= activity_status_label(activity) %>
+      <% if (range = date_range(activity.start_date, activity.end_date)) %>
+        <span><%= icon "calendar-line" %> <%= range %></span>
+      <% end %>
+      <span><%= icon "group-line" %> <%= t("decidim.time_tracker.activities.show.volunteers", count: participants.size) %></span>
+      <span><%= icon "timer-line" %> <%= t("decidim.time_tracker.activities.show.tracked", duration: duration_in_words(activity.time_events.sum(:total_seconds))) %></span>
+    </div>
+
+    <% if activity.progress.present? %>
+      <%= render partial: "decidim/time_tracker/time_tracker/progress_meter", locals: { progress: activity.progress, label: t("decidim.time_tracker.activities.show.progress") } %>
+    <% end %>
+
+    <% if activity.image.attached? %>
+      <img class="time-tracker__activity-hero" src="<%= activity.attached_uploader(:image).variant_url(:card) %>" alt="">
+    <% end %>
+  </section>
+
+  <section class="layout-main__section time-tracker__panel" aria-labelledby="taking-part">
+    <h2 class="h4" id="taking-part"><%= t("decidim.time_tracker.activities.show.taking_part") %></h2>
+
+    <% if assignation&.accepted? %>
+      <p><%= t("decidim.time_tracker.activities.show.your_time", duration: duration_in_words(activity.user_seconds_elapsed(current_user))) %></p>
+    <% elsif !user_signed_in? && activity.accepts_requests? %>
+      <p><%= t("decidim.time_tracker.activities.show.sign_in_to_join") %></p>
+    <% elsif activity.accepts_requests? && assignation.nil? %>
+      <p><%= t("decidim.time_tracker.activities.show.how_joining_works") %></p>
+    <% end %>
+
+    <%= render partial: "decidim/time_tracker/time_tracker/activity_action",
+               locals: { activity:, assignation:, timer_path: root_path(anchor: "activity-#{activity.id}") } %>
+
+    <% if rule || limit %>
+      <ul class="time-tracker__rules">
+        <% if rule %><li><%= icon "check-double-line" %> <span><%= rule %></span></li><% end %>
+        <% if limit %><li><%= icon "time-line" %> <span><%= limit %></span></li><% end %>
+      </ul>
+    <% end %>
+  </section>
+
+  <section class="layout-main__section" aria-labelledby="earnings-title">
+    <h2 class="h4" id="earnings-title"><%= t("decidim.time_tracker.activities.show.earns") %></h2>
+    <%= render partial: "decidim/time_tracker/time_tracker/task_earnings", locals: { task:, bare: true } %>
+  </section>
+
+  <% if participants.any? %>
+    <section class="layout-main__section" aria-labelledby="volunteers-title">
+      <h2 class="h4" id="volunteers-title"><%= t("decidim.time_tracker.activities.show.volunteers", count: participants.size) %></h2>
+      <div class="time-tracker__people">
+        <% participants.each do |participant| %>
+          <%= cell "decidim/author", present(participant), layout: :compact %>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <% if milestones.any? %>
+    <section class="layout-main__section" id="milestones" aria-labelledby="milestones-title">
+      <h2 class="h4" id="milestones-title"><%= t("decidim.time_tracker.time_tracker.index.milestones_list") %></h2>
+      <div class="time-tracker__milestones">
+        <% milestones.each do |milestone| %>
+          <%= card_for milestone, type: :list %>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+<% end %>
+
+<%= append_stylesheet_pack_tag "decidim_time_tracker" %>
+<%= append_javascript_pack_tag "decidim_time_tracker" %>

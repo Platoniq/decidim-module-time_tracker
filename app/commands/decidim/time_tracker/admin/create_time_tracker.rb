@@ -32,8 +32,8 @@ module Decidim
           return unless seeds
           return unless seeds[:questions]
 
-          questions = seeds[:questions].map do |question|
-            Decidim::Forms::Question.create(prepare_question(question, questionnaire))
+          questions = seeds[:questions].each_with_index.map do |question, index|
+            Decidim::Forms::Question.create(prepare_question(question, questionnaire, index + 1))
           end
 
           seeds[:title] = i18nize(seeds[:title])
@@ -44,7 +44,7 @@ module Decidim
           questionnaire.attributes = seeds
         end
 
-        def prepare_question(question, questionnaire)
+        def prepare_question(question, questionnaire, position)
           if question.has_key?(:answer_options)
             question[:answer_options].map! do |answer_option|
               answer_option[:body] = i18nize(answer_option[:body])
@@ -52,7 +52,7 @@ module Decidim
             end
           end
 
-          question.merge(
+          question.reverse_merge(position:).merge(
             body: i18nize(question[:body]),
             description: i18nize(question[:description]),
             questionnaire:

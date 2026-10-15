@@ -5,7 +5,7 @@ module Decidim
     class TimeEventsController < Decidim::TimeTracker::ApplicationController
       include Decidim::FormFactory
 
-      helper_method :activity, :task, :assignation
+      helper_method :activity, :assignation
 
       def start
         enforce_permission_to :start, :time_events
@@ -52,16 +52,12 @@ module Decidim
 
       private
 
-      def task
-        Task.find(params[:task_id])
-      end
-
       def activity
-        Activity.find(params[:activity_id])
+        @activity ||= time_tracker.activities.find(params[:activity_id])
       end
 
       def assignation
-        Assignation.find_by(user: current_user, activity:)
+        @assignation ||= Assignation.find_by(user: current_user, activity:)
       end
     end
   end

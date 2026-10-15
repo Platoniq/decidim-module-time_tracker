@@ -39,14 +39,31 @@ module Decidim
         def update
           enforce_permission_to :update, :assignation, assignation: current_assignation
 
-          UpdateAssignation.call(current_assignation, current_user, params[:assignation_status].to_sym) do
+          UpdateAssignation.call(current_assignation, current_user, params[:assignation_status].to_s.to_sym) do
             on(:ok) do
               flash[:notice] = I18n.t("assignations.update.success", scope: "decidim.time_tracker.admin")
-              if params[:success_path].present?
-                redirect_to params[:success_path]
-              else
-                redirect_to EngineRouter.admin_proxy(current_component).task_activity_assignations_path(current_task, current_activity)
-              end
+              redirect_back_to_assignations
+            end
+
+            on(:invalid) do
+              flash[:alert] = I18n.t("assignations.update.error", scope: "decidim.time_tracker.admin")
+              redirect_back_to_assignations
+            end
+          end
+        end
+
+        def complete
+          enforce_permission_to :complete, :assignation, assignation: current_assignation
+
+          CompleteAssignation.call(current_assignation, current_user, complete: params[:revert].blank?) do
+            on(:ok) do
+              flash[:notice] = I18n.t("assignations.complete.success", scope: "decidim.time_tracker.admin")
+              redirect_back_to_assignations
+            end
+
+            on(:invalid) do
+              flash[:alert] = I18n.t("assignations.complete.error", scope: "decidim.time_tracker.admin")
+              redirect_back_to_assignations
             end
           end
         end
@@ -62,21 +79,29 @@ module Decidim
           end
         end
 
+        private
+
         # obtaining the users separately to have them ordered in a nice way
         def assignations
-          @assignations = Assignation.where(activity: current_activity.id).sorted_by_status(:pending, :accepted, :rejected)
+          @assignations ||= current_activity.assignations
+                                            .includes(:user, :invited_by_user)
+                                            .sorted_by_status(:pending, :accepted, :rejected)
         end
 
         def current_task
-          @current_task ||= Task.find(params[:task_id])
+          @current_task ||= scoped_task(params[:task_id])
         end
 
         def current_activity
-          @current_activity ||= Activity.find(params[:activity_id])
+          @current_activity ||= current_task.activities.find(params[:activity_id])
         end
 
         def current_assignation
-          @current_assignation ||= Assignation.find(params[:id])
+          @current_assignation ||= current_activity.assignations.find(params[:id])
+        end
+
+        def redirect_back_to_assignations
+          redirect_to success_path || EngineRouter.admin_proxy(current_component).task_activity_assignations_path(current_task, current_activity)
         end
       end
     end

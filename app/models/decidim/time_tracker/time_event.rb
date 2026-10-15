@@ -39,6 +39,8 @@ module Decidim
       end
 
       def stopped?
+        return true if start.blank?
+
         stop.to_i >= start
       end
 
@@ -54,6 +56,55 @@ module Decidim
         self.stop = Time.current.to_i
         self.total_seconds = stop - start
         save!
+
+        check_completion_criteria!
+        refresh_time_based_skills!
+      end
+
+      private
+
+      # Meeting the activity's completion criteria no longer completes the
+      # assignation directly: it files a pending completion that an admin has
+      # to verify before it counts towards badges and skills. Every further
+      # batch of `min_events` qualifying sessions files another one.
+      def check_completion_criteria!
+        min_events = activity.min_events
+        min_duration = activity.min_duration_minutes_per_event
+        return if min_events.blank? || min_events <= 0
+        return if min_duration.blank? || min_duration <= 0
+
+        qualifying_events = activity.time_events
+                                    .where(user:)
+                                    .where(total_seconds: (min_duration * 60)..)
+                                    .count
+
+        achievable = qualifying_events / min_events
+        recorded = assignation.completions.count
+        return unless achievable > recorded
+
+        assignation.completions.create!(requested_at: Time.current)
+        notify_admins_of_completion
+      end
+
+      # Admins verify completions, so they hear about each one by email
+      # whatever their notification digest setting.
+      def notify_admins_of_completion
+        Decidim::EventsManager.publish(
+          event: "decidim.events.time_tracker.completion_requested_event",
+          event_class: Decidim::TimeTracker::CompletionRequestedEvent,
+          resource: activity,
+          followers: activity.task.component.participatory_space.admins,
+          extra: { participant_name: user.name, force_email: true }
+        )
+      end
+
+      # Time-based skills certify from tracked time directly, so they must
+      # be re-evaluated whenever a counter stops.
+      def refresh_time_based_skills!
+        task = activity.task
+        return unless task.skills.where(earning_mode: "time_spent").any?
+
+        Decidim::TimeTracker::SkillCertifier.new(user, task).refresh
       end
     end
   end
