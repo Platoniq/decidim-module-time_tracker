@@ -17,18 +17,18 @@ module Decidim
       end
 
       def answer
-        enforce_permission_to_answer_questionnaire
+        enforce_permission_to_respond_questionnaire
 
         @form = form(Decidim::Forms::QuestionnaireForm).from_params(params, session_token:, ip_hash:)
 
-        Decidim::Forms::AnswerQuestionnaire.call(@form, questionnaire, allow_editing_answers: allow_editing_answers?) do
+        Decidim::Forms::ResponseQuestionnaire.call(@form, questionnaire, allow_editing_responses: allow_editing_responses?) do
           on(:ok) do
-            flash[:notice] = I18n.t("answer.success", scope: i18n_flashes_scope)
-            redirect_to after_answer_path
+            flash[:notice] = I18n.t("response.success", scope: i18n_flashes_scope)
+            redirect_to after_response_path
           end
 
           on(:invalid) do
-            flash.now[:alert] = I18n.t("answer.invalid", scope: i18n_flashes_scope)
+            flash.now[:alert] = I18n.t("response.invalid", scope: i18n_flashes_scope)
             render template: "decidim/time_tracker/activity_questionnaire/show"
           end
         end
@@ -47,7 +47,7 @@ module Decidim
       end
 
       # only allows answers if not in preview mode
-      def allow_answers?
+      def allow_responses?
         return false if current_user.blank?
 
         return true if params[:action] == "preview" && current_user.admin?
@@ -67,13 +67,13 @@ module Decidim
         task_activity_form_path(activity_id: activity.id, id: activity.questionnaire)
       end
 
-      def after_answer_path
+      def after_response_path
         Decidim::EngineRouter.main_proxy(current_component).root_path
       end
 
       # Override so can answer only if is an assignation can view
       # Also admins can preview it (but not answer)
-      def visitor_can_answer?
+      def visitor_can_respond?
         return false if current_user.blank?
 
         return true if params[:action] == "preview" && current_user.admin?
@@ -82,12 +82,12 @@ module Decidim
       end
 
       # Override to allow respond users once per-activity
-      def visitor_already_answered?
+      def visitor_already_responded?
         return false if current_user.blank?
 
         return false if params[:action] == "preview" && current_user.admin?
 
-        activity.questionnaire.answered_by?(session_token)
+        activity.questionnaire.responded_by?(session_token)
       end
 
       private

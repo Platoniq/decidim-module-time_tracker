@@ -40,10 +40,10 @@
   <% end %>
 
   <section>
-    <% if allow_answers? %>
-      <% if visitor_can_answer? %>
-        <% if visitor_already_answered? %>
-          <%= cell("decidim/announcement", { title: t("decidim.forms.questionnaires.show.questionnaire_answered.title"), body: t("decidim.forms.questionnaires.show.questionnaire_answered.body") }) %>
+    <% if allow_responses? %>
+      <% if visitor_can_respond? %>
+        <% if visitor_already_responded? %>
+          <%= cell("decidim/announcement", { title: t("decidim.forms.questionnaires.show.questionnaire_responded.title"), body: t("decidim.forms.questionnaires.show.questionnaire_responded.body") }) %>
         <% else %>
           <% if @form.responses_by_step.flatten.empty? %>
             <%= cell("decidim/announcement", t("decidim.forms.questionnaires.show.empty")) %>

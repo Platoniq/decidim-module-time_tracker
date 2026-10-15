@@ -11,6 +11,7 @@ base_path = "../" if File.basename(__dir__) == "development_app"
 require_relative "#{base_path}lib/decidim/time_tracker/version"
 
 gem "decidim", Decidim::TimeTracker::DECIDIM_VERSION
+gem "decidim-initiatives", Decidim::TimeTracker::DECIDIM_VERSION
 gem "decidim-time_tracker", path: "."
 
 gem "bootsnap", "~> 1.4"

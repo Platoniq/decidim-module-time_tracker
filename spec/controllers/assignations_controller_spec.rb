@@ -4,8 +4,6 @@ require "spec_helper"
 
 module Decidim::TimeTracker
   describe AssignationsController do
-    routes { Decidim::TimeTracker::Engine.routes }
-
     include_context "with a time_tracker"
 
     let(:user) { create(:user, :confirmed, organization:) }

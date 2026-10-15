@@ -32,11 +32,11 @@ describe "Destroying a time tracker component" do # rubocop:disable RSpec/Descri
   end
 
   context "when someone has answered one of its questionnaires" do
-    before { create(:answer, questionnaire: time_tracker.assignee_questionnaire, question: create(:questionnaire_question, questionnaire: time_tracker.assignee_questionnaire)) }
+    before { create(:response, questionnaire: time_tracker.assignee_questionnaire, question: create(:questionnaire_question, questionnaire: time_tracker.assignee_questionnaire)) }
 
     it "refuses, and keeps the answers" do
       expect { run_hooks }.to raise_error(StandardError, /resources associated/)
-      expect(time_tracker.assignee_questionnaire.answers).to exist
+      expect(time_tracker.assignee_questionnaire.responses).to exist
     end
   end
 

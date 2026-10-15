@@ -5,8 +5,6 @@ require "decidim/forms/test/factories"
 
 module Decidim::TimeTracker
   describe ActivityQuestionnaireController do
-    routes { Decidim::TimeTracker::Engine.routes }
-
     include_context "with a time_tracker"
 
     let(:user) { create(:user, :confirmed, organization:) }
@@ -35,9 +33,9 @@ module Decidim::TimeTracker
 
         expect(response).to have_http_status(:ok)
         expect(controller.helpers.questionnaire_for).to eq(time_tracker)
-        expect(controller.helpers.allow_answers?).to be(false)
-        expect(controller.helpers.visitor_can_answer?).to eq(can_answer)
-        expect(controller.helpers.visitor_already_answered?).not_to be(true)
+        expect(controller.helpers.allow_responses?).to be(false)
+        expect(controller.helpers.visitor_can_respond?).to eq(can_answer)
+        expect(controller.helpers.visitor_already_responded?).not_to be(true)
         expect(subject).to render_template(:show)
       end
     end
@@ -48,9 +46,9 @@ module Decidim::TimeTracker
 
         expect(response).to have_http_status(:ok)
         expect(controller.helpers.questionnaire_for).to eq(time_tracker)
-        expect(controller.helpers.allow_answers?).to be(true)
-        expect(controller.helpers.visitor_can_answer?).to be(true)
-        expect(controller.helpers.visitor_already_answered?).to be(false)
+        expect(controller.helpers.allow_responses?).to be(true)
+        expect(controller.helpers.visitor_can_respond?).to be(true)
+        expect(controller.helpers.visitor_already_responded?).to be(false)
         expect(subject).to render_template(:show)
       end
     end
@@ -85,7 +83,7 @@ module Decidim::TimeTracker
           end
 
           context "and questionnaire have questions" do
-            let!(:question) { create(:questionnaire_question, question_type: :short_answer, body: Decidim::Faker::Localized.word, questionnaire:) }
+            let!(:question) { create(:questionnaire_question, question_type: :short_response, body: Decidim::Faker::Localized.word, questionnaire:) }
 
             it_behaves_like "renders the form"
           end
@@ -94,7 +92,7 @@ module Decidim::TimeTracker
     end
 
     describe "POST #answer" do
-      let!(:question) { create(:questionnaire_question, question_type: :short_answer, body: Decidim::Faker::Localized.word, questionnaire:) }
+      let!(:question) { create(:questionnaire_question, question_type: :short_response, body: Decidim::Faker::Localized.word, questionnaire:) }
       let(:tos_agreement) { "0" }
       let(:form) do
         {
@@ -125,7 +123,7 @@ module Decidim::TimeTracker
           post(:answer, params:)
 
           expect(flash[:alert]).to be_present
-          expect(questionnaire).not_to be_answered_by(user)
+          expect(questionnaire).not_to be_responded_by(user)
           expect(response).to render_template(:show)
         end
       end
@@ -137,7 +135,7 @@ module Decidim::TimeTracker
           post(:answer, params:)
 
           expect(flash[:notice]).to be_present
-          expect(questionnaire).to be_answered_by(user)
+          expect(questionnaire).to be_responded_by(user)
           expect(response).to have_http_status(:redirect)
         end
       end

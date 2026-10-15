@@ -49,7 +49,7 @@ module Decidim
         answer.question.matrix_rows.to_h do |matrix_row|
           row_body = translated_attribute(matrix_row.body)
 
-          row_choices = answer.question.answer_options.map do |answer_option|
+          row_choices = answer.question.response_options.map do |answer_option|
             choice = choices.find_by(matrix_row:, answer_option:)
             choice.try(:custom_body) || choice.try(:body)
           end
