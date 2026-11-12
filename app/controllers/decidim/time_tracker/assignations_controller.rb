@@ -24,7 +24,7 @@ module Decidim
           on(:invalid) do
             render json: {
               message: I18n.t("assignations.request.error", scope: "decidim.time_tracker")
-            }, status: :unprocessable_entity
+            }, status: :unprocessable_content
           end
         end
       end

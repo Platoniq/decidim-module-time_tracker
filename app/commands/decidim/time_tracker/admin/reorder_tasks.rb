@@ -38,8 +38,8 @@ module Decidim
         def reorder_tasks
           transaction do
             order.each_with_index do |id, index|
-              task = tasks.find_by(id: id)
-              task.update!(weight: index + 1) if task.present?
+              task = tasks.find_by(id:)
+              (task.presence&.update!(weight: index + 1))
             end
           end
         end

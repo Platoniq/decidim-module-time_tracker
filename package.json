@@ -27,13 +27,13 @@
     "extends": "@decidim/stylelint-config"
   },
   "devDependencies": {
-    "@decidim/dev": "0.29.0",
-    "@decidim/eslint-config": "0.30.0",
-    "@decidim/prettier-config": "^0.30.0",
-    "@decidim/stylelint-config": "0.30.0"
+    "@decidim/dev": "^0.32.0",
+    "@decidim/eslint-config": "^0.32.0",
+    "@decidim/prettier-config": "^0.32.0",
+    "@decidim/stylelint-config": "^0.32.0"
   },
   "dependencies": {
-    "@decidim/browserslist-config": "^0.30.0",
-    "@decidim/webpacker": "^0.30.0"
+    "@decidim/browserslist-config": "^0.32.0",
+    "@decidim/webpacker": "^0.32.0"
   }
 }

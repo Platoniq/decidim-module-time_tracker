@@ -6,7 +6,8 @@ module Decidim
       include Decidim::Forms::Concerns::HasQuestionnaire
 
       # only allows answers if not in preview mode
-      def preview
+      # Authorized by Decidim::Components::BaseController (:read on the component)
+      def preview # rubocop:disable Decidim/EnforcePermissionTo
         return show if request.method == "GET"
 
         flash[":alert"] = I18n.t("questionnaire_in_preview_mode", scope: "decidim.time_tracker.time_tracker")
@@ -34,6 +35,8 @@ module Decidim
           end
         end
       end
+
+      protected
 
       def questionnaire_for
         time_tracker.assignee_data

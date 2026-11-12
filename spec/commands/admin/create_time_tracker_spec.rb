@@ -34,6 +34,8 @@ module Decidim::TimeTracker::Admin
     end
 
     describe "activity questionnaire seeds" do
+      # Captured when the file loads, before any example changes the global config
+      # rubocop:disable RSpec/LeakyLocalVariable
       default_activity_questionnaire_seeds = Decidim::TimeTracker.default_activity_questionnaire_seeds
       custom_activity_questionnaire_seeds = {
         tos: "TOS",
@@ -44,6 +46,7 @@ module Decidim::TimeTracker::Admin
           { question_type: "single_option", body: { en: "Question 2" }, answer_options: [{ body: "Answer Option 1", free_text: true }] }
         ]
       }
+      # rubocop:enable RSpec/LeakyLocalVariable
 
       context "when time_tracker_questionnaire_seeds config is the default" do
         before do
@@ -99,6 +102,8 @@ module Decidim::TimeTracker::Admin
     end
 
     describe "assignee questionnaire seeds" do
+      # Captured when the file loads, before any example changes the global config
+      # rubocop:disable RSpec/LeakyLocalVariable
       default_assignee_questionnaire_seeds = Decidim::TimeTracker.default_assignee_questionnaire_seeds
       custom_assignee_questionnaire_seeds = {
         tos: "TOS",
@@ -109,6 +114,7 @@ module Decidim::TimeTracker::Admin
           { question_type: "single_option", body: { en: "Question 2" }, answer_options: [{ body: "Answer Option 1", free_text: true }] }
         ]
       }
+      # rubocop:enable RSpec/LeakyLocalVariable
       context "when time_tracker_questionnaire_seeds config is the default" do
         before do
           Decidim::TimeTracker.default_assignee_questionnaire_seeds = default_assignee_questionnaire_seeds

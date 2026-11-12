@@ -8,7 +8,8 @@ module Decidim
       helper Decidim::TimeTracker::ApplicationHelper
       helper_method :activity, :task, :milestones
 
-      def show; end
+      # Authorized by Decidim::Components::BaseController (:read on the component)
+      def show; end # rubocop:disable Decidim/EnforcePermissionTo
 
       private
 

@@ -92,7 +92,7 @@ namespace :time_tracker do
           es: Faker::Lorem.sentence,
           ca: Faker::Lorem.sentence
         },
-        organization: organization,
+        organization:,
         published_at: rand(10..60).days.ago,
         start_date: rand(30..90).days.ago,
         end_date: rand(30..90).days.from_now
@@ -130,7 +130,7 @@ namespace :time_tracker do
 
     rand(5..15).times do
       task = Decidim::TimeTracker::Task.create!(
-        time_tracker: time_tracker,
+        time_tracker:,
         name: {
           en: Faker::Company.bs.titleize,
           es: Faker::Company.bs.titleize,
@@ -149,7 +149,7 @@ namespace :time_tracker do
     rand(2..5).times do |_i|
       start_date = rand(5..30).days.ago
       activity = Decidim::TimeTracker::Activity.create!(
-        task: task,
+        task:,
         description: {
           en: Faker::Lorem.sentence,
           es: Faker::Lorem.sentence,
@@ -157,7 +157,7 @@ namespace :time_tracker do
         },
         active: true,
         requests_start_at: start_date - 2.days,
-        start_date: start_date,
+        start_date:,
         end_date: start_date + rand(7..30).days,
         max_minutes_per_day: [120, 180, 240, 480].sample,
         created_at: start_date - 3.days
@@ -205,9 +205,9 @@ namespace :time_tracker do
 
     questionnaire.questions.each do |question|
       Decidim::Forms::Response.create!(
-        questionnaire: questionnaire,
-        question: question,
-        user: user,
+        questionnaire:,
+        question:,
+        user:,
         body: generate_answer_for_question(question),
         session_token: SecureRandom.hex(16),
         ip_hash: Faker::Internet.ip_v4_address,
@@ -240,7 +240,7 @@ namespace :time_tracker do
     Decidim::TimeTracker::Assignation.create!(
       decidim_user_id: user.id,
       activity_id: activity.id,
-      status: status,
+      status:,
       invited_at: is_invited ? activity.created_at + 1.day : nil,
       invited_by_user_id: is_invited ? Decidim::User.find_by(admin: true)&.id : nil,
       requested_at: is_invited ? nil : activity.created_at + rand(1..3).days
@@ -318,7 +318,7 @@ namespace :time_tracker do
       activity_id: activity.id,
       start: start_time.to_i,
       stop: stop_time.to_i,
-      total_seconds: total_seconds,
+      total_seconds:,
       created_at: start_time,
       updated_at: stop_time
     )

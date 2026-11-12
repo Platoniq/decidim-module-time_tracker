@@ -89,7 +89,7 @@ module Decidim
         # How many people each skill has certified, so admins can see which
         # rules are being met at all.
         def certified_counts
-          @certified_counts ||= SkillCertification.where(skill: skills)
+          @certified_counts ||= SkillCertification.where(skill: skills) # rubocop:disable Decidim/OrganizationScopedFinder -- skills are this organization's
                                                   .group(:decidim_time_tracker_skill_id)
                                                   .distinct
                                                   .count(:decidim_user_id)

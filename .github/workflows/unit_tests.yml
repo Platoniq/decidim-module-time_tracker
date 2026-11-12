@@ -8,8 +8,8 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 3.3.4
-  NODE_VERSION: 18.17.1
+  RUBY_VERSION: 3.4.7
+  NODE_VERSION: 22.14.0
 
 jobs:
   unit:
@@ -37,7 +37,7 @@ jobs:
           fetch-depth: 1
 
       - run: |
-          sudo apt-get update && sudo apt-get install -y imagemagick
+          sudo apt-get update && sudo apt-get install -y imagemagick libvips libvips-tools
 
       - uses: ruby/setup-ruby@v1
         with:

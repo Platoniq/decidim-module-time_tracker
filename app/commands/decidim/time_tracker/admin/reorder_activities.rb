@@ -31,7 +31,7 @@ module Decidim
 
         def reorder_activities
           @order.each_with_index do |id, index|
-            activity = @collection.find_by(id: id)
+            activity = @collection.find_by(id:)
             # Reordering only bumps the weight column; validations are intentionally skipped.
             activity.update_column(:weight, index) if activity # rubocop:disable Rails/SkipsModelValidations
           end

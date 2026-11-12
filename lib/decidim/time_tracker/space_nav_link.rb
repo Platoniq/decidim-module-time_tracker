@@ -3,20 +3,18 @@
 module Decidim
   module TimeTracker
     # Every participatory space with a published Time Tracker links to the
-    # public "How skills and badges work" page (/badges) from its own
-    # navigation: the dropdown under the space's breadcrumb and the component
-    # buttons on its landing page. Skills and badges are earned through the
+    # public "How skills and badges work" page (/badges) from the component
+    # buttons on its landing page (Decidim 0.32 removed the components dropdown
+    # under the space's breadcrumb). Skills and badges are earned through the
     # component but follow rules that span the platform, so the explainer is
     # one click away wherever the space is browsed, not only inside the
     # component.
     module SpaceNavLink
       ITEM_ID = "time-tracker-skills-badges"
 
-      # The cells whose nav_items list a space's components. The dropdown
-      # cell is the base class of every space type's dropdown; the landing
-      # page's main data block is defined per space type.
+      # The cells whose nav_items list a space's components: the landing
+      # page's main data block, defined per space type.
       CELLS = %w(
-        Decidim::ParticipatorySpaceDropdownMetadataCell
         Decidim::ParticipatoryProcesses::ContentBlocks::MainDataCell
         Decidim::Assemblies::ContentBlocks::MainDataCell
         Decidim::Conferences::ContentBlocks::MainDataCell

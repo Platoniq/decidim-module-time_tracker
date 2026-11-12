@@ -12,7 +12,8 @@ module Decidim
       helper Decidim::TimeTracker::ApplicationHelper
       helper_method :assignations_by_component, :skill_certifications, :total_time
 
-      def show; end
+      # Only lists the current user's own assignations
+      def show; end # rubocop:disable Decidim/EnforcePermissionTo
 
       private
 

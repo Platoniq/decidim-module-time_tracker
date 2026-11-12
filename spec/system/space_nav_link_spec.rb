@@ -18,11 +18,10 @@ describe "Skills and badges link in a space's navigation" do
       visit decidim_participatory_processes.participatory_process_path(participatory_process)
     end
 
-    it "links to the explainer from the landing page and the space dropdown" do
+    it "links to the explainer from the landing page" do
       within "#dropdown-menu-participatory-space" do
         expect(page).to have_link("How skills and badges work", href: "/badges")
       end
-      expect(page).to have_css("[id^='breadcrumb-secondary-dropdown'] a[href='/badges']", visible: :all)
     end
   end
 
