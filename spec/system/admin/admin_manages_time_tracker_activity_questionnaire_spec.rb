@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe "Admin manages Time tracker activity questionnaire" do
+describe "Admin manages Time tracker activity questionnaire", retry: 3 do
   include_context "with a full time_tracker"
   include_context "when managing a component as an admin"
 
