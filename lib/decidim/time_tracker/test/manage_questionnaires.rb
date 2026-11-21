@@ -88,7 +88,12 @@ shared_examples_for "manage questionnaires" do
   end
 
   def expand_all_questions
+    # Wait until the accordion has set aria-expanded on every question, and past the forms JS
+    # 100 ms timer that toggles questions with errors; clicking earlier gets undone (flaky specs).
+    expect(page).to have_no_css("button.question--collapse:not([aria-expanded])")
+    sleep 0.2
     find(".button.expand-all").click
+    expect(page).to have_no_css("button.question--collapse[aria-expanded='false']")
   end
 
   def visit_manage_questions_and_expand_all
