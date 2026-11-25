@@ -15,6 +15,7 @@ Decidim::Dev.dummy_app_path =
   File.expand_path(File.join(__dir__, "decidim_dummy_app"))
 
 require "decidim/dev/test/base_spec_helper"
+require_relative "support/chrome_storage_clear_fix"
 
 # rspec-retry comes with decidim-dev; examples tagged `retry: n` are retried (used for the flaky admin questionnaire system specs)
 require "rspec/retry"
