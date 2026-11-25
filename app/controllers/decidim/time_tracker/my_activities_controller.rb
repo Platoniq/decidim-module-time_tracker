@@ -10,7 +10,7 @@ module Decidim
 
       helper Decidim::ComponentPathHelper
       helper Decidim::TimeTracker::ApplicationHelper
-      helper_method :assignations_by_component, :skill_certifications, :total_time
+      helper_method :assignations_by_component, :skill_certifications, :total_time, :data_donation
 
       # Only lists the current user's own assignations
       def show; end # rubocop:disable Decidim/EnforcePermissionTo
@@ -35,6 +35,11 @@ module Decidim
 
       def total_time
         @total_time ||= assignations.sum(&:time_dedicated)
+      end
+
+      # The demographic data the user donated through the check-out survey, if any.
+      def data_donation
+        @data_donation ||= DataDonation.consented.find_by(user: current_user) # rubocop:disable Decidim/OrganizationScopedFinder
       end
     end
   end

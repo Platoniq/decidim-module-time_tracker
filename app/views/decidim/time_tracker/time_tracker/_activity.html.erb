@@ -11,6 +11,7 @@
          data-activity-id="<%= activity.id %>"
          data-start-endpoint="<%= start_endpoint(activity) %>"
          data-stop-endpoint="<%= stop_endpoint(activity) %>"
+         <% if checkout_survey? %> data-checkout-endpoint="<%= checkout_endpoint(activity) %>"<% end %>
          data-text-counter-stopped="<%= t(".counter_stopped") %>"
          data-text-session-saved="<%= t(".session_saved") %>"
          data-elapsed-time="<%= elapsed %>"

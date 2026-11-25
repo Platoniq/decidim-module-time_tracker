@@ -145,6 +145,26 @@ FactoryBot.define do
     end
   end
 
+  factory :checkout_response, class: "Decidim::TimeTracker::CheckoutResponse" do
+    time_event { create(:time_event, :stopped) }
+    activity { time_event.activity }
+    user { time_event.user }
+    work_nature { 2 }
+    work_value { 4 }
+    involved { %w(creating) }
+    usually_paid { "no" }
+  end
+
+  factory :data_donation, class: "Decidim::TimeTracker::DataDonation" do
+    user
+    organization { user.organization }
+    consented { true }
+    consented_at { Time.current }
+    consent_version { Decidim::TimeTracker::DataDonation::CONSENT_VERSION }
+    age_range { "25_34" }
+    gender_identities { %w(non_binary) }
+  end
+
   factory :assignee, class: "Decidim::TimeTracker::Assignee" do
     user
   end

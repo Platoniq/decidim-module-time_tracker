@@ -1,0 +1,125 @@
+<%# Check-out survey (policy tracker). time_tracker.js opens it after Stop,
+    fills in the time entry and posts it to that activity's checkout endpoint.
+    Every question is optional. %>
+<% scope = "decidim.time_tracker.time_tracker.checkout_survey" %>
+<dialog class="time-tracker__checkout" id="time-tracker-checkout" aria-labelledby="time-tracker-checkout-title">
+  <form method="dialog" class="time-tracker__checkout-form" data-checkout-form>
+    <input type="hidden" name="checkout_survey[time_event_id]" value="" data-checkout-time-event>
+
+    <header class="time-tracker__checkout-header">
+      <span class="time-tracker__checkout-check" aria-hidden="true"><%= icon "check-line" %></span>
+      <div>
+        <h2 id="time-tracker-checkout-title"><%= t("title", scope:) %> <span data-checkout-activity></span></h2>
+        <p><%= t("intro", scope:) %></p>
+      </div>
+      <button type="button" class="time-tracker__checkout-close" data-checkout-skip aria-label="<%= t("skip", scope:) %>"><%= icon "close-line" %></button>
+    </header>
+
+    <div class="time-tracker__checkout-body">
+      <section class="time-tracker__checkout-section">
+        <p class="time-tracker__checkout-kicker"><%= t("work.kicker", scope:) %></p>
+
+        <% { work_nature: %w(intellectual physical), work_value: %w(non_productive productive) }.each do |field, (low, high)| %>
+          <fieldset class="time-tracker__checkout-scale">
+            <legend><%= t("work.#{field}.question", scope:) %></legend>
+            <span class="time-tracker__checkout-end"><%= t("work.#{field}.#{low}", scope:) %></span>
+            <span class="time-tracker__checkout-dots">
+              <% Decidim::TimeTracker::CheckoutResponse::SCALE.each do |value| %>
+                <label>
+                  <input type="radio" name="checkout_survey[<%= field %>]" value="<%= value %>">
+                  <span class="sr-only"><%= t("work.scale_point", scope:, value:, total: 5) %></span>
+                </label>
+              <% end %>
+            </span>
+            <span class="time-tracker__checkout-end time-tracker__checkout-end--high"><%= t("work.#{field}.#{high}", scope:) %></span>
+          </fieldset>
+        <% end %>
+
+        <fieldset class="time-tracker__checkout-choices">
+          <legend><%= t("work.involved.question", scope:) %> <span class="time-tracker__checkout-hint"><%= t("choose_any", scope:) %></span></legend>
+          <% Decidim::TimeTracker::CheckoutResponse::INVOLVED.each do |key| %>
+            <label class="time-tracker__chip"><input type="checkbox" name="checkout_survey[involved][]" value="<%= key %>"><span><%= t("work.involved.#{key}", scope:) %></span></label>
+          <% end %>
+        </fieldset>
+
+        <fieldset class="time-tracker__checkout-choices time-tracker__checkout-choices--inline">
+          <legend><%= t("work.usually_paid.question", scope:) %></legend>
+          <% Decidim::TimeTracker::CheckoutResponse::USUALLY_PAID.each do |key| %>
+            <label class="time-tracker__chip"><input type="radio" name="checkout_survey[usually_paid]" value="<%= key %>"><span><%= t("work.usually_paid.#{key}", scope:) %></span></label>
+          <% end %>
+        </fieldset>
+      </section>
+
+      <% if ask_data_donation? %>
+        <section class="time-tracker__checkout-section" data-checkout-donation>
+          <p class="time-tracker__checkout-kicker"><%= t("donation.kicker", scope:) %></p>
+          <div class="time-tracker__checkout-consent">
+            <p><%= t("donation.explanation_html", scope:, min: Decidim::TimeTracker::DataDonation::MIN_GROUP) %></p>
+            <label class="time-tracker__checkout-agree">
+              <input type="checkbox" name="checkout_survey[donate]" value="true" data-checkout-consent>
+              <span><%= t("donation.agree", scope:) %></span>
+            </label>
+          </div>
+
+          <div class="time-tracker__checkout-fields" data-checkout-fields>
+            <div class="time-tracker__checkout-field">
+              <label for="checkout-age"><%= t("donation.age_range.label", scope:) %></label>
+              <select id="checkout-age" name="checkout_survey[age_range]" disabled>
+                <option value=""><%= t("prefer_not_to_say", scope:) %></option>
+                <% Decidim::TimeTracker::DataDonation::AGE_RANGES.each do |key| %>
+                  <option value="<%= key %>"><%= t("donation.age_range.#{key}", scope:) %></option>
+                <% end %>
+              </select>
+            </div>
+            <div class="time-tracker__checkout-field">
+              <label for="checkout-ethnicity"><%= t("donation.ethnicity.label", scope:) %></label>
+              <input type="text" id="checkout-ethnicity" name="checkout_survey[ethnicity]" maxlength="100" placeholder="<%= t("donation.ethnicity.placeholder", scope:) %>" disabled>
+            </div>
+            <fieldset class="time-tracker__checkout-choices time-tracker__checkout-field--wide" disabled>
+              <legend><%= t("donation.gender.label", scope:) %> <span class="time-tracker__checkout-hint"><%= t("choose_any", scope:) %></span></legend>
+              <% Decidim::TimeTracker::DataDonation::GENDER_IDENTITIES.each do |key| %>
+                <label class="time-tracker__chip"><input type="checkbox" name="checkout_survey[gender_identities][]" value="<%= key %>"><span><%= t("donation.gender.#{key}", scope:) %></span></label>
+              <% end %>
+              <input type="text" class="time-tracker__checkout-own-words" name="checkout_survey[gender_self_described]" maxlength="100" placeholder="<%= t("donation.gender.own_words", scope:) %>" aria-label="<%= t("donation.gender.own_words", scope:) %>">
+            </fieldset>
+            <div class="time-tracker__checkout-field">
+              <label for="checkout-disability"><%= t("donation.disability.label", scope:) %></label>
+              <select id="checkout-disability" name="checkout_survey[disability]" disabled>
+                <option value=""><%= t("prefer_not_to_say", scope:) %></option>
+                <% Decidim::TimeTracker::DataDonation::DISABILITY.each do |key| %>
+                  <option value="<%= key %>"><%= t("donation.disability.#{key}", scope:) %></option>
+                <% end %>
+              </select>
+            </div>
+            <div class="time-tracker__checkout-field">
+              <label for="checkout-migrant"><%= t("donation.migrant_background.label", scope:) %></label>
+              <select id="checkout-migrant" name="checkout_survey[migrant_background]" disabled>
+                <option value=""><%= t("prefer_not_to_say", scope:) %></option>
+                <% Decidim::TimeTracker::DataDonation::MIGRANT_BACKGROUND.each do |key| %>
+                  <option value="<%= key %>"><%= t("donation.migrant_background.#{key}", scope:) %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+
+          <label class="time-tracker__checkout-decline">
+            <input type="checkbox" name="checkout_survey[decline_donation]" value="true" data-checkout-decline>
+            <span><%= t("donation.decline", scope:) %></span>
+          </label>
+
+          <details class="time-tracker__checkout-how">
+            <summary><%= t("donation.how.title", scope:) %></summary>
+            <p><%= t("donation.how.body", scope:, min: Decidim::TimeTracker::DataDonation::MIN_GROUP) %></p>
+          </details>
+        </section>
+      <% end %>
+    </div>
+
+    <footer class="time-tracker__checkout-footer">
+      <p class="time-tracker__checkout-note" data-checkout-error role="alert" hidden></p>
+      <p class="time-tracker__checkout-note"><%= t("all_optional", scope:) %></p>
+      <button type="button" class="button button__sm button__transparent-secondary" data-checkout-skip><%= t("skip", scope:) %></button>
+      <button type="submit" class="button button__sm button__secondary" data-checkout-submit><%= t("submit", scope:) %></button>
+    </footer>
+  </form>
+</dialog>
