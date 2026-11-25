@@ -18,7 +18,8 @@ module Decidim
       private
 
       def assignations
-        @assignations ||= Assignation.where(user: current_user)
+        # the current user's own records
+        @assignations ||= Assignation.where(user: current_user) # rubocop:disable Decidim/OrganizationScopedFinder
                                      .includes(activity: { task: { time_tracker: :component } })
                                      .sorted_by_status(:accepted, :pending, :rejected)
       end
@@ -28,7 +29,8 @@ module Decidim
       end
 
       def skill_certifications
-        @skill_certifications ||= SkillCertification.where(user: current_user).includes(:skill, :task).order(earned_at: :asc)
+        # the current user's own records
+        @skill_certifications ||= SkillCertification.where(user: current_user).includes(:skill, :task).order(earned_at: :asc) # rubocop:disable Decidim/OrganizationScopedFinder
       end
 
       def total_time

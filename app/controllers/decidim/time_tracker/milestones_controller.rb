@@ -56,7 +56,8 @@ module Decidim
         # is unnecessary — and it would clash with the tasks/activities weight ordering on
         # Postgres ("for SELECT DISTINCT, ORDER BY expressions must appear in select list").
         @activities ||= time_tracker.activities
-                                    .where(id: Milestone.where(user:).select(:activity_id))
+                                    # user is scoped to the current organization; the result is limited to this time tracker
+                                    .where(id: Milestone.where(user:).select(:activity_id)) # rubocop:disable Decidim/OrganizationScopedFinder
       end
 
       def user

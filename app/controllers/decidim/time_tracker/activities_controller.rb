@@ -23,7 +23,8 @@ module Decidim
 
       # The latest milestone of each participant, like the index list.
       def milestones
-        @milestones ||= Milestone.where(activity:)
+        # activity is scoped to this task (task.activities)
+        @milestones ||= Milestone.where(activity:) # rubocop:disable Decidim/OrganizationScopedFinder
                                  .order(Arel.sql("decidim_user_id, created_at DESC"))
                                  .select("DISTINCT ON (decidim_user_id) *")
       end

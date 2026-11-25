@@ -57,7 +57,8 @@ module Decidim
       end
 
       def assignation
-        @assignation ||= Assignation.find_by(user: current_user, activity:)
+        # the current user's own assignation
+        @assignation ||= Assignation.find_by(user: current_user, activity:) # rubocop:disable Decidim/OrganizationScopedFinder
       end
     end
   end
