@@ -17,7 +17,7 @@ module Decidim
                            dataAnswered: DataDonation.answered_by?(current_user) }
           end
           on(:invalid) do
-            render json: { message: I18n.t("checkout_surveys.create.error", scope: "decidim.time_tracker") }, status: :unprocessable_entity
+            render json: { message: I18n.t("checkout_surveys.create.error", scope: "decidim.time_tracker") }, status: :unprocessable_content
           end
         end
       end
