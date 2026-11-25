@@ -1,5 +1,6 @@
 import TimerApi from "src/decidim/time_tracker/timer_api"
 import ActivityUI from "src/decidim/time_tracker/activity_ui"
+import openCheckoutSurvey from "src/decidim/time_tracker/checkout_survey"
 
 const POLL_EVERY = 8000;
 
@@ -125,10 +126,16 @@ const setUpTimers = () => {
     ui.stopButton?.addEventListener("click", () => {
       ui.setBusy(true);
       api.stop().
-        then(() => {
+        then((data) => {
           ui.stopCounter();
           ui.showNotice(element.dataset.textSessionSaved);
-          ui.showMilestone();
+          // Check-out survey first (when switched on), then the milestone form.
+          return openCheckoutSurvey({
+            endpoint: element.dataset.checkoutEndpoint,
+            stopResponse: data,
+            activityTitle: element.querySelector(".time-tracker__timer-title")?.textContent.trim(),
+            onNotice: showNotice
+          }).then(() => ui.showMilestone());
         }).
         catch((error) => ui.showError(error.message)).
         finally(() => ui.setBusy(false));

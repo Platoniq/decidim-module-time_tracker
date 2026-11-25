@@ -16,6 +16,11 @@ module Decidim
                  foreign_key: "decidim_user_id",
                  class_name: "Decidim::User"
 
+      has_one :checkout_response,
+              foreign_key: "decidim_time_tracker_time_event_id",
+              class_name: "Decidim::TimeTracker::CheckoutResponse",
+              dependent: :destroy
+
       # note that with the default order reversed
       # the "last" element needs to be found with .first
       default_scope { order(start: :desc) }

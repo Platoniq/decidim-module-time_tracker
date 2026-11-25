@@ -55,6 +55,10 @@ Decidim.register_component(:time_tracker) do |component|
     settings.attribute :assignations_label, type: :string, translated: true, editor: true
     settings.attribute :time_events_label, type: :string, translated: true, editor: true
     settings.attribute :milestones_label, type: :string, translated: true, editor: true
+    # Policy tracker (25 Nov 2026): a short survey when a volunteer checks out
+    # (stops the timer), and an optional consent form to donate demographic data.
+    settings.attribute :checkout_survey_enabled, type: :boolean, default: false
+    settings.attribute :data_donation_enabled, type: :boolean, default: false
   end
 
   component.settings(:step) do |settings|
