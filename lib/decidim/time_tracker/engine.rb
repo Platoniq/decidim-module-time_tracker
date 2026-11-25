@@ -16,6 +16,7 @@ module Decidim
           resources :activities, only: [:show] do
             post :start, controller: "time_events"
             post :stop, controller: "time_events"
+            post :checkout, controller: "checkout_surveys", action: :create
 
             resources :form, controller: "activity_questionnaire", only: [:show] do
               member do
@@ -135,6 +136,16 @@ module Decidim
           # Organization-level page aggregating the user's activities across
           # every time tracker component ("My voluntary work").
           get "/my_voluntary_work", to: "time_tracker/my_activities#show", as: :my_voluntary_work
+          delete "/my_voluntary_work/donated_data", to: "time_tracker/data_donations#destroy", as: :time_tracker_donated_data
+        end
+      end
+
+      # Deleting an account also deletes the demographic data the person donated.
+      initializer "decidim_time_tracker.forget_donated_data" do
+        # Decidim::DestroyAccount publishes its event_arguments ({ user_id:, ... }) here.
+        ActiveSupport::Notifications.subscribe("decidim.destroy_account:after") do |_name, data|
+          user_id = data[:user_id] if data.is_a?(Hash)
+          Decidim::TimeTracker::DataDonation.where(decidim_user_id: user_id).delete_all if user_id
         end
       end
 

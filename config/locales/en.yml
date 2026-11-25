@@ -72,6 +72,10 @@ en:
             activities_label: Name for "Activities"
             announcement: Announcement
             assignations_label: Name for "Assignations"
+            checkout_survey_enabled: Ask volunteers a short survey when they check
+              out (stop the timer)
+            data_donation_enabled: Invite volunteers to donate demographic data in
+              the check-out survey (optional for them, shown only in totals)
             milestones_label: Name for "Milestones"
             tasks_label: Name for "Tasks"
             time_events_label: Name for "Time Events"
@@ -490,6 +494,30 @@ en:
             error: Error updating the skill
             success: Skill updated successfully
         stats:
+          checkout:
+            avg_nature: Intellectual (1) – physical (5)
+            avg_value: Non-productive (1) – productive (5)
+            by_age_range: By age
+            by_disability: By disability
+            by_gender_identities: By gender identity
+            by_migrant_background: By migrant background
+            by_task: By task
+            disabled: The check-out survey is switched off for this component. Turn
+              it on in the component settings.
+            empty: No check-out answers yet.
+            everyone: Everyone
+            export: Download totals (CSV)
+            group: Group
+            hidden: Fewer than %{min} people, hidden
+            involved: What the work involved
+            people: People
+            responses: Answers
+            scales_help: Averages of the 1–5 scales. Groups with fewer than %{min}
+              people are hidden so nobody can be identified.
+            summary: "%{responses} answers from %{people} volunteers; %{donated} of
+              them donated demographic data."
+            title: Check-out survey
+            unpaid_share: Usually unpaid
           index:
             title: Stats
         tasks:
@@ -661,6 +689,10 @@ en:
           time_dedicated_hours: "%{value} of %{next} hours dedicated to reach the
             next level"
         title: My badges
+      checkout_surveys:
+        create:
+          error: Your answers could not be saved. Please try again.
+          success: Thank you, your answers have been saved.
       clock:
         hours: "%{n}h"
         minutes: "%{n}m"
@@ -670,6 +702,9 @@ en:
         sessions:
           one: Counts as done after one session of at least %{duration}.
           other: Counts as done after %{count} sessions of at least %{duration} each.
+      data_donations:
+        destroy:
+          success: Your donated data has been deleted.
       default_activity_questionnaire:
         description: Thank you for filling this questionnaire! We are asking you this
           set of questions to help you understand whether your project (and its actions
@@ -881,6 +916,12 @@ en:
       my_activities:
         show:
           component_report: View my full report for this space
+          donated:
+            confirm: Delete the data you donated? This cannot be undone.
+            intro: You donated this information on %{date}. It is only used in anonymous
+              totals.
+            title: Your donated data
+            withdraw: Withdraw and delete my data
           empty: You are not signed up for any activity yet.
       profile_badges:
         badges: Badges
@@ -959,6 +1000,84 @@ en:
           inactive: Inactive
           not_started: Will start on %{start_date}
           open: Open, started on %{start_date}
+        checkout_survey:
+          all_optional: Every question is optional.
+          choose_any: "(choose any)"
+          donation:
+            age_range:
+              '18_24': 18–24
+              '25_34': 25–34
+              '35_44': 35–44
+              '45_54': 45–54
+              '55_64': 55–64
+              65_plus: 65 or over
+              label: Age
+              under_18: Under 18
+            agree: I agree to donate the information below for the policy tracker.
+            decline: Don't ask me again
+            disability:
+              label: Do you have a disability?
+              'no': 'No'
+              'yes': 'Yes'
+            ethnicity:
+              label: Ethnic or racial background (in your own words)
+              placeholder: In your own words
+            explanation_html: Help us see <strong>who does which kind of work</strong>
+              in this process. Your answers are never shown next to your name, only
+              in anonymous totals (groups of at least %{min} people), and you can
+              withdraw them at any time from "My voluntary work".
+            gender:
+              agender: Agender
+              gender_fluid: Gender-fluid
+              label: Gender identity
+              man: Man
+              non_binary: Non-binary
+              own_words: In my own words…
+              trans: Trans
+              woman: Woman
+            how:
+              body: Your answers are stored separately from your profile and are never
+                shown with your name. Organisers only see totals, and any group with
+                fewer than %{min} people is hidden. The totals help the policy tracker
+                show who does which kind of work. You can see and delete what you
+                donated at any time in "My voluntary work"; deleting your account
+                deletes it too.
+              title: How we use this data
+            kicker: Donate your data · optional
+            migrant_background:
+              first_generation: Yes, first generation
+              label: Migrant background
+              'no': 'No'
+              second_generation: Yes, second generation
+          intro: Tell us about the work you just did. It takes about a minute.
+          prefer_not_to_say: Prefer not to say
+          skip: Skip
+          submit: Save
+          title: You've checked out of
+          work:
+            involved:
+              caring: Caring for others
+              creating: Creating
+              emotional_labour: Emotional labour
+              learning: Learning
+              maintenance: Maintenance
+              organising: Organising
+              question: What did it mostly involve?
+            kicker: About the work you just did
+            scale_point: "%{value} of %{total}"
+            usually_paid:
+              'no': 'No'
+              not_sure: Not sure
+              question: Would this work usually be paid?
+              'yes': 'Yes'
+            work_nature:
+              intellectual: Mostly intellectual
+              physical: Mostly physical
+              question: What kind of work was it?
+            work_value:
+              non_productive: Non-productive
+              productive: Productive
+              question: How would you describe its value?
         index:
           all:
             title: Tasks and activities

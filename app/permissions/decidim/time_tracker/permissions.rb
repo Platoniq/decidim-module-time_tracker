@@ -18,6 +18,8 @@ module Decidim
           allow_assignation?
         when :milestone
           allow_milestone?
+        when :checkout_survey
+          allow_checkout_survey?
         else
           allow!
         end
@@ -56,6 +58,14 @@ module Decidim
 
           allow!
         end
+      end
+
+      # The command also checks the time entry is the user's own, stopped one.
+      def allow_checkout_survey?
+        return false unless permission_action.action == :create
+        return false unless current_component&.published?
+
+        allow!
       end
 
       private

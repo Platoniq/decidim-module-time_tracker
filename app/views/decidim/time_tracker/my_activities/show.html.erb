@@ -32,5 +32,23 @@
     <% else %>
       <p class="time-tracker__empty"><%= t("decidim.time_tracker.my_activities.show.empty") %></p>
     <% end %>
+
+    <% if data_donation %>
+      <% scope = "decidim.time_tracker.time_tracker.checkout_survey.donation" %>
+      <section class="time-tracker__donated" id="donated-data" aria-labelledby="donated-data-title">
+        <h2 class="h4" id="donated-data-title"><%= t("decidim.time_tracker.my_activities.show.donated.title") %></h2>
+        <p><%= t("decidim.time_tracker.my_activities.show.donated.intro", date: l(data_donation.consented_at.to_date, format: :long)) %></p>
+        <ul class="time-tracker__donated-list">
+          <li><%= t("age_range.label", scope:) %>: <%= data_donation.age_range.present? ? t("age_range.#{data_donation.age_range}", scope:) : t("decidim.time_tracker.time_tracker.checkout_survey.prefer_not_to_say") %></li>
+          <li><%= t("ethnicity.label", scope:) %>: <%= data_donation.ethnicity.presence || t("decidim.time_tracker.time_tracker.checkout_survey.prefer_not_to_say") %></li>
+          <li><%= t("gender.label", scope:) %>: <%= (data_donation.gender_identities.map { |key| t("gender.#{key}", scope:) } + [data_donation.gender_self_described].compact_blank).join(", ").presence || t("decidim.time_tracker.time_tracker.checkout_survey.prefer_not_to_say") %></li>
+          <li><%= t("disability.label", scope:) %>: <%= data_donation.disability.present? ? t("disability.#{data_donation.disability}", scope:) : t("decidim.time_tracker.time_tracker.checkout_survey.prefer_not_to_say") %></li>
+          <li><%= t("migrant_background.label", scope:) %>: <%= data_donation.migrant_background.present? ? t("migrant_background.#{data_donation.migrant_background}", scope:) : t("decidim.time_tracker.time_tracker.checkout_survey.prefer_not_to_say") %></li>
+        </ul>
+        <%= button_to t("decidim.time_tracker.my_activities.show.donated.withdraw"), decidim.time_tracker_donated_data_path, method: :delete,
+                                                                                                                             class: "button button__sm button__transparent-secondary",
+                                                                                                                             data: { confirm: t("decidim.time_tracker.my_activities.show.donated.confirm") } %>
+      </section>
+    <% end %>
   </div>
 <% end %>

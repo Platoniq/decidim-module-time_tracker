@@ -1,0 +1,51 @@
+<%# Check-out survey totals (policy tracker). No names: averages only, and
+    demographic groups under the minimum size are hidden. %>
+<% scope = "decidim.time_tracker.admin.stats.checkout" %>
+<% survey = "decidim.time_tracker.time_tracker.checkout_survey" %>
+<div class="card" id="checkout-survey-stats">
+  <div class="item_show__header">
+    <h2 class="item_show__header-title">
+      <%= t("title", scope:) %>
+      <% if checkout_stats.any? %>
+        <%= link_to t("export", scope:), checkout_survey_stats_path(format: :csv), class: "button button__sm button__secondary" %>
+      <% end %>
+    </h2>
+  </div>
+  <div class="card-section">
+    <% unless current_component.settings.checkout_survey_enabled %>
+      <p><%= t("disabled", scope:) %></p>
+    <% end %>
+    <% if checkout_stats.any? %>
+      <p><%= t("summary", scope:, responses: checkout_stats.responses.size, people: checkout_stats.overall.people, donated: checkout_stats.donated_people) %></p>
+      <p class="help-text"><%= t("scales_help", scope:, min: Decidim::TimeTracker::DataDonation::MIN_GROUP) %></p>
+
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+
+      <h3 class="h5"><%= t("by_task", scope:) %></h3>
+      <%= render partial: "checkout_table", locals: { rows: [checkout_stats.overall] + checkout_stats.by_task } %>
+
+      <h3 class="h5"><%= t("involved", scope:) %></h3>
+      <p>
+        <%= safe_join(checkout_stats.involved_counts.map { |key, count| "#{t("work.involved.#{key}", scope: survey)}: #{count}" }, " · ") %>
+        <br>
+        <%= t("work.usually_paid.question", scope: survey) %>
+        <%= safe_join(checkout_stats.paid_counts.map { |key, count| "#{t("work.usually_paid.#{key}", scope: survey)}: #{count}" }, " · ") %>
+      </p>
+
+      <% if current_component.settings.data_donation_enabled %>
+        <% checkout_stats.by_dimension.each do |dimension, rows| %>
+          <% next if rows.empty? %>
+          <h3 class="h5"><%= t("by_#{dimension}", scope:) %></h3>
+          <%= render partial: "checkout_table", locals: { rows: } %>
+        <% end %>
+      <% end %>
+    <% elsif current_component.settings.checkout_survey_enabled %>
+      <p><%= t("empty", scope:) %></p>
+    <% end %>
+  </div>
+</div>
