@@ -26,7 +26,7 @@ module Decidim
           end
           on(:invalid) do |message|
             render json: { message: I18n.t("time_events.start.error", scope: "decidim.time_tracker"),
-                           error: message }, status: :unprocessable_entity
+                           error: message }, status: :unprocessable_content
           end
         end
       end
@@ -45,7 +45,7 @@ module Decidim
           end
           on(:invalid) do |message|
             render json: { message: I18n.t("time_events.stop.error", scope: "decidim.time_tracker"),
-                           error: message }, status: :unprocessable_entity
+                           error: message }, status: :unprocessable_content
           end
         end
       end
@@ -57,7 +57,8 @@ module Decidim
       end
 
       def assignation
-        @assignation ||= Assignation.find_by(user: current_user, activity:)
+        # the current user's own assignation
+        @assignation ||= Assignation.find_by(user: current_user, activity:) # rubocop:disable Decidim/OrganizationScopedFinder
       end
     end
   end

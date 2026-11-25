@@ -50,7 +50,7 @@ module Decidim::TimeTracker
 
           it "do not create a new assignation" do
             post(:create, params:)
-            expect(response).to have_http_status(:unprocessable_entity)
+            expect(response).to have_http_status(:unprocessable_content)
           end
         end
 
@@ -62,7 +62,7 @@ module Decidim::TimeTracker
 
           it "does not let them skip the terms by posting directly" do
             post(:create, params:)
-            expect(response).to redirect_to("/")
+            expect(response).to redirect_to("/en")
             expect(Decidim::TimeTracker::Assignation.where(user:)).to be_empty
           end
         end
@@ -83,7 +83,7 @@ module Decidim::TimeTracker
       context "when user is not logged in" do
         it "redirects" do
           post(:create, params:)
-          expect(response).to redirect_to("/users/sign_in")
+          expect(response).to redirect_to("/en/users/sign_in")
         end
       end
     end

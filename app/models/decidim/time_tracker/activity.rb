@@ -39,6 +39,8 @@ module Decidim
 
       delegate :questionnaire, to: :task
       delegate :component, to: :task, allow_nil: true
+      # Decidim 0.32 checks this on a notification's resource before showing or emailing it
+      delegate :can_participate?, to: :task, allow_nil: true
 
       # The writer lets upload validations run on unsaved records where the
       # task association is not set (e.g. the passthru validator's dummy).

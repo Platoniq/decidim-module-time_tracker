@@ -8,13 +8,15 @@ module Decidim
         # helper_methods below rely on; `helper` is what makes the rest of them
         # — clockify_seconds and friends — reachable from the templates.
         include Decidim::TimeTracker::ApplicationHelper
+
         helper Decidim::TimeTracker::ApplicationHelper
 
         helper_method :tasks, :current_task, :assignations, :pending_completions, :tasks_label, :activities_label, :assignations_label
 
         delegate :tasks, to: :time_tracker
 
-        def index
+        # Authorized by Decidim::Admin::Components::BaseController#enforce_component_permissions
+        def index # rubocop:disable Decidim/EnforcePermissionTo
           @tasks = tasks
         end
 
@@ -90,7 +92,8 @@ module Decidim
           end
         end
 
-        def verify_all_pending_completions
+        # Authorized by Decidim::Admin::Components::BaseController#enforce_component_permissions
+        def verify_all_pending_completions # rubocop:disable Decidim/EnforcePermissionTo
           return redirect_to(tasks_path) if pending_completions.blank?
 
           ok_count = invalid_count = 0
@@ -112,7 +115,8 @@ module Decidim
           redirect_to(tasks_path)
         end
 
-        def accept_all_pending_assignations
+        # Authorized by Decidim::Admin::Components::BaseController#enforce_component_permissions
+        def accept_all_pending_assignations # rubocop:disable Decidim/EnforcePermissionTo
           return redirect_to(tasks_path) if assignations.blank?
 
           ok_count = invalid_count = 0
@@ -145,7 +149,7 @@ module Decidim
         end
 
         def pending_completions
-          ActivityCompletion.pending
+          ActivityCompletion.pending # rubocop:disable Decidim/OrganizationScopedFinder -- scoped to this time tracker
                             .joins(assignation: { activity: :task })
                             .where(decidim_time_tracker_tasks: { time_tracker_id: time_tracker.id })
                             .order(:requested_at)

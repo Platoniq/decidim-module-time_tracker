@@ -42,7 +42,8 @@ module Decidim
           if @form.existing_user
             @existing_user = @form.user
           else
-            @existing_user = User.find_by(
+            # scoped to the organization of this time tracker
+            @existing_user = User.find_by( # rubocop:disable Decidim/OrganizationScopedFinder
               email: @form.email,
               organization: @activity.task.time_tracker.component.organization
             )

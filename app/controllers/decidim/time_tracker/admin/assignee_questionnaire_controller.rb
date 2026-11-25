@@ -8,6 +8,8 @@ module Decidim
         include Decidim::Forms::Admin::Concerns::HasQuestionnaireResponsesUrlHelper
 
         # only allows answers if not in preview mode
+        protected
+
         def allow_answers?
           return false unless current_user
 
@@ -53,7 +55,10 @@ module Decidim
           EngineRouter.admin_proxy(current_component).response_options_assignee_questionnaire_path(format: :json, **params)
         end
 
-        def response_options
+        public
+
+        # Routed (AJAX) action. Authorized by Decidim::Admin::Components::BaseController#enforce_component_permissions
+        def response_options # rubocop:disable Decidim/EnforcePermissionTo
           respond_to do |format|
             format.json do
               question = questionnaire&.questions&.find_by(id: params["id"])

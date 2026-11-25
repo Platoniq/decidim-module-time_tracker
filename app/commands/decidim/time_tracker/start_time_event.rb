@@ -70,7 +70,8 @@ module Decidim
       end
 
       def stop_previous_activity
-        previous_events = TimeEvent.where.not(activity: form.activity).where(user: form.user, stop: nil)
+        # the events of the user of the form (the current user)
+        previous_events = TimeEvent.where.not(activity: form.activity).where(user: form.user, stop: nil) # rubocop:disable Decidim/OrganizationScopedFinder
 
         previous_events.each do |event|
           next if event.stopped? && event.stop.to_i < start_time.to_i
@@ -80,7 +81,8 @@ module Decidim
       end
 
       def already_active?
-        @time_entry = TimeEvent.where(activity: form.activity).last_for(form.user)
+        # the activity of the form is one of this time tracker
+        @time_entry = TimeEvent.where(activity: form.activity).last_for(form.user) # rubocop:disable Decidim/OrganizationScopedFinder
 
         return false unless @time_entry
         return false if @time_entry.stopped?

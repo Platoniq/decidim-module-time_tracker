@@ -4,6 +4,8 @@ module Decidim
   module TimeTracker
     module Admin
       class AssigneeQuestionnaireAnswersController < AnswersController
+        protected
+
         def questionnaire_for
           time_tracker.assignee_data
         end

@@ -16,7 +16,7 @@ module Decidim
               # The same "Request sent" state the page shows after a reload, so
               # the row keeps its layout; the message is shown on its own.
               html: render_to_string(partial: "decidim/time_tracker/time_tracker/activity_action", formats: [:html],
-                                     locals: { activity:, assignation: Assignation.find_by(activity:, user: current_user),
+                                     locals: { activity:, assignation: Assignation.find_by(activity:, user: current_user), # rubocop:disable Decidim/OrganizationScopedFinder -- own assignation
                                                timer_path: "#activity-#{activity.id}" })
             }
           end
@@ -24,7 +24,7 @@ module Decidim
           on(:invalid) do
             render json: {
               message: I18n.t("assignations.request.error", scope: "decidim.time_tracker")
-            }, status: :unprocessable_entity
+            }, status: :unprocessable_content
           end
         end
       end
@@ -36,7 +36,8 @@ module Decidim
       end
 
       def assignation
-        @assignation ||= Assignation.accepted.find_by(id: params[:id])
+        # the current user's accepted assignations in this time tracker
+        @assignation ||= Assignation.accepted.where(user: current_user, activity: time_tracker.activities).find_by(id: params[:id]) # rubocop:disable Decidim/OrganizationScopedFinder
       end
     end
   end

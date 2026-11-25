@@ -1,0 +1,31 @@
+<% scope = "decidim.time_tracker.admin.stats.checkout" %>
+<div class="table-scroll">
+  <table class="table-list">
+    <thead>
+      <tr>
+        <th><%= t("group", scope:) %></th>
+        <th><%= t("people", scope:) %></th>
+        <th><%= t("responses", scope:) %></th>
+        <th><%= t("avg_nature", scope:) %></th>
+        <th><%= t("avg_value", scope:) %></th>
+        <th><%= t("unpaid_share", scope:) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% rows.each do |row| %>
+        <tr>
+          <td><%= row.label %></td>
+          <% if row.hidden %>
+            <td colspan="5" class="text-muted"><%= t("hidden", scope:, min: Decidim::TimeTracker::DataDonation::MIN_GROUP) %></td>
+          <% else %>
+            <td><%= row.people %></td>
+            <td><%= row.responses %></td>
+            <td><%= row.avg_nature || "–" %></td>
+            <td><%= row.avg_value || "–" %></td>
+            <td><%= row.unpaid_share ? "#{row.unpaid_share}%" : "–" %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

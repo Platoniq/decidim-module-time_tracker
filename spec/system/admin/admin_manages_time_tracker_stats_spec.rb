@@ -78,6 +78,33 @@ describe "Admin manages Time tracker stats" do
     end
   end
 
+  context "with check-out survey answers" do
+    let(:task) { create(:task, time_tracker:, name: { en: "Set up the room" }) }
+    let(:activity) { create(:activity, task:) }
+
+    before do
+      component.update!(settings: { checkout_survey_enabled: true, data_donation_enabled: true })
+      12.times do
+        volunteer = create(:user, :confirmed, organization:)
+        assignation = create(:assignation, user: volunteer, activity:)
+        event = create(:time_event, :stopped, assignation:, activity:, user: volunteer)
+        create(:checkout_response, time_event: event, work_nature: 4, work_value: 5, usually_paid: "no")
+        create(:data_donation, user: volunteer, gender_identities: %w(woman))
+      end
+      visit_time_tracker_admin_stats
+    end
+
+    it "shows totals only, and offers the CSV" do
+      within "#checkout-survey-stats" do
+        expect(page).to have_content("12 answers from 12 volunteers")
+        expect(page).to have_content("Set up the room")
+        expect(page).to have_content("By gender identity")
+        expect(page).to have_content("Woman")
+        expect(page).to have_link("Download totals (CSV)")
+      end
+    end
+  end
+
   def visit_time_tracker_admin_stats
     visit time_tracker_admin_stats_path
   end

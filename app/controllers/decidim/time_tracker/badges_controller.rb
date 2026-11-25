@@ -14,7 +14,8 @@ module Decidim
       helper Decidim::TimeTracker::BadgesHelper
       helper_method :badges, :skills, :platform_badges
 
-      def index; end
+      # Public page that explains the rules; shows no personal data
+      def index; end # rubocop:disable Decidim/EnforcePermissionTo
 
       private
 

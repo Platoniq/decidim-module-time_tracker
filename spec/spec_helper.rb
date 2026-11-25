@@ -16,6 +16,13 @@ Decidim::Dev.dummy_app_path =
 
 require "decidim/dev/test/base_spec_helper"
 
+# rspec-retry comes with decidim-dev; examples tagged `retry: n` are retried (used for the flaky admin questionnaire system specs)
+require "rspec/retry"
+RSpec.configure do |config|
+  config.verbose_retry = true
+  config.display_try_failure_messages = true
+end
+
 require "decidim/forms/test"
 require "decidim/time_tracker/test/time_tracker_context"
 require "decidim/time_tracker/test/manage_questionnaires"

@@ -141,6 +141,15 @@ module Decidim
           end
         end
       end
+
+      describe "#can_participate?" do
+        let(:user) { create(:user, :confirmed, organization: component.organization) }
+
+        it "follows the component, as Decidim checks it on notification resources" do
+          expect(activity.can_participate?(user)).to eq(component.can_participate?(user))
+          expect(task.can_participate?(user)).to eq(component.can_participate?(user))
+        end
+      end
     end
   end
 end

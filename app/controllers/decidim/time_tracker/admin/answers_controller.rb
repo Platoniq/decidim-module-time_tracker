@@ -35,7 +35,7 @@ module Decidim
         end
 
         def questionnaire
-          @questionnaire ||= Decidim::Forms::Questionnaire.find_by(questionnaire_for:)
+          @questionnaire ||= Decidim::Forms::Questionnaire.find_by(questionnaire_for:) # rubocop:disable Decidim/OrganizationScopedFinder -- questionnaire_for is scoped to this time tracker
         end
 
         def participants_query

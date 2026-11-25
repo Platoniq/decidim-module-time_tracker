@@ -47,5 +47,7 @@
   <% end %>
 <% end %>
 
+<%= render partial: "checkout_survey" if checkout_survey? && task_list.accepted_activities.any? %>
+
 <%= append_stylesheet_pack_tag "decidim_time_tracker" %>
 <%= append_javascript_pack_tag "decidim_time_tracker" %>

@@ -8,7 +8,8 @@ module Decidim
         helper Decidim::TimeTracker::Admin::ApplicationHelper
         helper_method :assignations, :current_task, :current_activity, :current_assignation
 
-        def index
+        # Authorized by Decidim::Admin::Components::BaseController#enforce_component_permissions
+        def index # rubocop:disable Decidim/EnforcePermissionTo
           @assignations = assignations
         end
 
