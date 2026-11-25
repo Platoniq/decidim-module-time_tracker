@@ -10,9 +10,9 @@ checksums = [
     package: "decidim-forms",
     files: {
       # Customized files containing shared examples on /lib/decidim/time_tracker/test/ to allow selecting the desired questionnaire on tests
-      "/lib/decidim/forms/test/shared_examples/manage_questionnaires.rb" => "bf6baafffd59839be65b11fcd9b40efd",
+      "/lib/decidim/forms/test/shared_examples/manage_questionnaires.rb" => "59d9183982221a9b7f7f9fc79ac27209",
       "/lib/decidim/forms/test/shared_examples/manage_questionnaire_responses.rb" => "4b4546adbc0cf5ae5f36a5b4fbab25d5",
-      "/lib/decidim/forms/test/shared_examples/manage_questionnaires/update_questions.rb" => "bb795f93959f7341e39f591e037f89ed"
+      "/lib/decidim/forms/test/shared_examples/manage_questionnaires/update_questions.rb" => "5189d75d79255a4d168e5165d85c653a"
     }
   }
 ]

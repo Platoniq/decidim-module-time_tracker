@@ -47,6 +47,8 @@ module Decidim
 
       delegate :questionnaire, to: :time_tracker
       delegate :component, to: :time_tracker
+      # Decidim 0.31.9+ checks this on a notification resource before showing or emailing it
+      delegate :can_participate?, to: :time_tracker
 
       # Lets Decidim's notifications and mailers name the space a task is in.
       def participatory_space
