@@ -785,3 +785,377 @@
     }
   }
 }
+
+// Check-out survey (policy tracker): a dialog after Stop.
+.time-tracker__checkout {
+  width: min(760px, calc(100vw - 24px));
+  max-height: calc(100vh - 32px);
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgb(0 0 0 / 35%);
+  color: #1f1f2e;
+
+  &::backdrop {
+    background: rgb(24 16 40 / 55%);
+  }
+
+  &-form {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 32px);
+    margin: 0;
+  }
+
+  &-header {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 20px 24px 14px;
+    border-bottom: 1px solid #ece9f3;
+
+    h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    p {
+      margin: 2px 0 0;
+      color: #5d5a6b;
+      font-size: 0.9rem;
+    }
+  }
+
+  &-check {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgb(var(--secondary-rgb) / 12%);
+    color: var(--secondary);
+
+    svg {
+      width: 22px;
+      height: 22px;
+      fill: currentcolor;
+    }
+  }
+
+  &-close {
+    margin-left: auto;
+    color: #8a879a;
+    cursor: pointer;
+
+    svg {
+      width: 22px;
+      height: 22px;
+      fill: currentcolor;
+    }
+  }
+
+  &-body {
+    overflow-y: auto;
+    padding: 4px 24px;
+  }
+
+  &-section {
+    padding: 14px 0;
+    border-bottom: 1px solid #f0edf5;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  &-kicker {
+    margin: 0 0 8px;
+    color: var(--secondary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  fieldset {
+    margin: 0 0 12px;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+
+  legend {
+    margin-bottom: 6px;
+    padding: 0;
+    font-weight: 600;
+    font-size: 0.97rem;
+  }
+
+  &-hint {
+    color: #8a879a;
+    font-weight: 400;
+  }
+
+  &-scale {
+    display: grid !important;
+    grid-template-columns: 120px 1fr 120px;
+    gap: 4px 10px;
+    align-items: center;
+
+    legend {
+      grid-column: 1 / -1;
+    }
+  }
+
+  &-end {
+    color: #5d5a6b;
+    font-size: 0.82rem;
+
+    &--high {
+      text-align: right;
+    }
+  }
+
+  &-dots {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 6px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 16px;
+      right: 16px;
+      height: 2px;
+      background: #e3def0;
+    }
+
+    label {
+      position: relative;
+      cursor: pointer;
+    }
+
+    input {
+      appearance: none;
+      display: block;
+      width: 22px;
+      height: 22px;
+      margin: 0;
+      border: 2px solid #cfc6e6;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+
+      &:checked {
+        border-color: var(--secondary);
+        background: var(--secondary);
+        box-shadow: 0 0 0 4px rgb(var(--secondary-rgb) / 15%);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--secondary);
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  &-choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    align-items: center;
+
+    legend {
+      width: 100%;
+    }
+  }
+
+  &-consent {
+    margin: 2px 0 12px;
+    padding: 12px 14px;
+    border: 1px solid #e6def8;
+    border-radius: 10px;
+    background: #f7f4fd;
+    color: #3c3950;
+    font-size: 0.87rem;
+    line-height: 1.45;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &-agree,
+  &-decline {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-top: 8px;
+    cursor: pointer;
+  }
+
+  &-agree {
+    font-weight: 600;
+    color: #1f1f2e;
+  }
+
+  &-decline {
+    color: #5d5a6b;
+    font-size: 0.85rem;
+  }
+
+  &-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 16px;
+    opacity: 0.55;
+
+    &.is-enabled {
+      opacity: 1;
+    }
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &-field {
+    label {
+      display: block;
+      margin: 0 0 4px;
+      color: #3c3950;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    select,
+    input[type="text"] {
+      width: 100%;
+    }
+
+    &--wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  &-own-words {
+    flex: 1 1 180px;
+    min-width: 160px;
+  }
+
+  &-how {
+    margin-top: 10px;
+    color: #5d5a6b;
+    font-size: 0.85rem;
+
+    summary {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+
+  &-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+    align-items: center;
+    padding: 14px 24px;
+    border-top: 1px solid #ece9f3;
+    background: #fcfbfe;
+  }
+
+  &-note {
+    flex: 1 1 200px;
+    margin: 0;
+    color: #6d6a7c;
+    font-size: 0.8rem;
+
+    &[role="alert"] {
+      color: #b42318;
+      flex-basis: 100%;
+    }
+  }
+}
+
+.time-tracker__chip {
+  display: inline-flex;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  span {
+    padding: 5px 12px;
+    border: 1px solid #d9d3e8;
+    border-radius: 999px;
+    background: #fff;
+    color: #2d2a3a;
+    font-size: 0.85rem;
+  }
+
+  input:checked + span {
+    border-color: var(--secondary);
+    background: var(--secondary);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  input:focus-visible + span {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+  }
+
+  input:disabled + span {
+    cursor: not-allowed;
+  }
+}
+
+// "Your donated data" on My voluntary work.
+.time-tracker__donated {
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid #e6def8;
+  border-radius: 12px;
+  background: #faf8fe;
+
+  h2 {
+    margin: 0 0 0.25rem;
+  }
+
+  > p {
+    margin: 0 0 1rem;
+    color: #5d5a6b;
+  }
+}
+
+.time-tracker__donated-list {
+  display: grid;
+  grid-template-columns: minmax(12rem, max-content) 1fr;
+  gap: 0.5rem 1.5rem;
+  margin: 0 0 1.25rem;
+
+  dt {
+    color: #5d5a6b;
+    font-weight: 600;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+
+    dd {
+      margin-bottom: 0.5rem;
+    }
+  }
+}

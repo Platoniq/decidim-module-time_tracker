@@ -12,6 +12,7 @@ module Decidim
       routes do
         # Add admin engine routes here
         get :stats, to: "stats#index"
+        get "stats/checkout_survey", to: "stats#checkout_survey", as: :checkout_survey_stats
 
         resources :skills, except: [:show]
         resources :badges, except: [:show]
