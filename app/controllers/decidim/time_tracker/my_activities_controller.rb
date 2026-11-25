@@ -12,12 +12,14 @@ module Decidim
       helper Decidim::TimeTracker::ApplicationHelper
       helper_method :assignations_by_component, :skill_certifications, :total_time
 
-      def show; end
+      # Only lists the current user's own assignations
+      def show; end # rubocop:disable Decidim/EnforcePermissionTo
 
       private
 
       def assignations
-        @assignations ||= Assignation.where(user: current_user)
+        # the current user's own records
+        @assignations ||= Assignation.where(user: current_user) # rubocop:disable Decidim/OrganizationScopedFinder
                                      .includes(activity: { task: { time_tracker: :component } })
                                      .sorted_by_status(:accepted, :pending, :rejected)
       end
@@ -27,7 +29,8 @@ module Decidim
       end
 
       def skill_certifications
-        @skill_certifications ||= SkillCertification.where(user: current_user).includes(:skill, :task).order(earned_at: :asc)
+        # the current user's own records
+        @skill_certifications ||= SkillCertification.where(user: current_user).includes(:skill, :task).order(earned_at: :asc) # rubocop:disable Decidim/OrganizationScopedFinder
       end
 
       def total_time

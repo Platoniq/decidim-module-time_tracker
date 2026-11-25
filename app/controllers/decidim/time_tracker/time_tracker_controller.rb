@@ -8,7 +8,8 @@ module Decidim
       helper Decidim::TimeTracker::ApplicationHelper
       helper_method :start_endpoint, :stop_endpoint
 
-      def index
+      # Authorized by Decidim::Components::BaseController (:read on the component)
+      def index # rubocop:disable Decidim/EnforcePermissionTo
         @form = form(MilestoneForm).instance
         @form.attachment = form(Decidim::AttachmentForm).instance
       end

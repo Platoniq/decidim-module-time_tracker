@@ -11,7 +11,8 @@ module Decidim
       # Renders our own template instead of the stock questionnaire page so
       # participants see which activity they are answering about (the
       # questionnaire itself is shared by every activity of the component).
-      def show
+      # Authorized by Decidim::Components::BaseController (:read on the component)
+      def show # rubocop:disable Decidim/EnforcePermissionTo
         @form = form(Decidim::Forms::QuestionnaireForm).from_model(questionnaire)
         render template: "decidim/time_tracker/activity_questionnaire/show"
       end
@@ -35,12 +36,15 @@ module Decidim
       end
 
       # only allows answers if not in preview mode
-      def preview
+      # Authorized by Decidim::Components::BaseController (:read on the component)
+      def preview # rubocop:disable Decidim/EnforcePermissionTo
         return show if request.method == "GET"
 
         flash[":alert"] = I18n.t("questionnaire_in_preview_mode", scope: "decidim.time_tracker.time_tracker")
         redirect_to preview_task_activity_form_path(activity_id: activity.id, id: activity.questionnaire)
       end
+
+      protected
 
       def questionnaire_for
         time_tracker
